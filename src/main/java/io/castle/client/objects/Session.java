@@ -60,6 +60,10 @@ public class Session extends BaseRequesterObject {
 	return new CastleJWT(token).isValid();
     }
 
+    public boolean requiresMFA() {
+	return new CastleJWT(token).requiresMFA();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
