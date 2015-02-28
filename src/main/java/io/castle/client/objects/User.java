@@ -32,6 +32,13 @@ public class User extends BaseRequesterObject {
     @JsonProperty("locked_at")
     private Date lockedAt;
     private String username;
+    @JsonProperty("devices_count")
+    private Integer devicesCount;
+    @JsonProperty("alerts_count")
+    private Integer alertsCount;
+    @JsonProperty("network_count")
+    private Integer networkCount;
+    private Integer score;
     
     public User() {
 	
@@ -130,62 +137,97 @@ public class User extends BaseRequesterObject {
         this.username = username;
     }
 
+    public Integer getDevicesCount() {
+	return devicesCount;
+    }
+
+    public void setDevicesCount(Integer devicesCount) {
+	this.devicesCount = devicesCount;
+    }
+
+    public Integer getAlertsCount() {
+	return alertsCount;
+    }
+
+    public void setAlertsCount(Integer alertsCount) {
+	this.alertsCount = alertsCount;
+    }
+
+    public Integer getNetworkCount() {
+	return networkCount;
+    }
+
+    public void setNetworkCount(Integer networkCount) {
+	this.networkCount = networkCount;
+    }
+
+    public Integer getScore() {
+	return score;
+    }
+
+    public void setScore(Integer score) {
+	this.score = score;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        if (!super.equals(o)) return false;
+	if (this == o) return true;
+	if (!(o instanceof User)) return false;
+	if (!super.equals(o)) return false;
 
-        User user = (User) o;
+	User user = (User) o;
 
-        if (mfaEnabled != user.mfaEnabled) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
-        if (image != null ? !image.equals(user.image) : user.image != null) return false;
-        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
-        if (lastSeenAt != null ? !lastSeenAt.equals(user.lastSeenAt) : user.lastSeenAt != null) return false;
-        if (lockedAt != null ? !lockedAt.equals(user.lockedAt) : user.lockedAt != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (sessionsCount != null ? !sessionsCount.equals(user.sessionsCount) : user.sessionsCount != null)
-            return false;
-        if (updatedAt != null ? !updatedAt.equals(user.updatedAt) : user.updatedAt != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+	if (mfaEnabled != user.mfaEnabled) return false;
+	if (devicesCount != null ? !devicesCount.equals(user.devicesCount) : user.devicesCount != null) return false;
+	if (email != null ? !email.equals(user.email) : user.email != null) return false;
+	if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+	if (image != null ? !image.equals(user.image) : user.image != null) return false;
+	if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+	if (lastSeenAt != null ? !lastSeenAt.equals(user.lastSeenAt) : user.lastSeenAt != null) return false;
+	if (lockedAt != null ? !lockedAt.equals(user.lockedAt) : user.lockedAt != null) return false;
+	if (name != null ? !name.equals(user.name) : user.name != null) return false;
+	if (sessionsCount != null ? !sessionsCount.equals(user.sessionsCount) : user.sessionsCount != null)
+	    return false;
+	if (updatedAt != null ? !updatedAt.equals(user.updatedAt) : user.updatedAt != null) return false;
+	if (username != null ? !username.equals(user.username) : user.username != null) return false;
 
-        return true;
+	return true;
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
-        result = 31 * result + (lastSeenAt != null ? lastSeenAt.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (image != null ? image.hashCode() : 0);
-        result = 31 * result + (mfaEnabled ? 1 : 0);
-        result = 31 * result + (sessionsCount != null ? sessionsCount.hashCode() : 0);
-        result = 31 * result + (lockedAt != null ? lockedAt.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        return result;
+	int result = super.hashCode();
+	result = 31 * result + (email != null ? email.hashCode() : 0);
+	result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+	result = 31 * result + (lastSeenAt != null ? lastSeenAt.hashCode() : 0);
+	result = 31 * result + (name != null ? name.hashCode() : 0);
+	result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+	result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+	result = 31 * result + (image != null ? image.hashCode() : 0);
+	result = 31 * result + (mfaEnabled ? 1 : 0);
+	result = 31 * result + (sessionsCount != null ? sessionsCount.hashCode() : 0);
+	result = 31 * result + (lockedAt != null ? lockedAt.hashCode() : 0);
+	result = 31 * result + (username != null ? username.hashCode() : 0);
+	result = 31 * result + (devicesCount != null ? devicesCount.hashCode() : 0);
+	return result;
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", updatedAt=" + updatedAt +
-                ", lastSeenAt=" + lastSeenAt +
-                ", name='" + name + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", image=" + image +
-                ", mfaEnabled=" + mfaEnabled +
-                ", sessionsCount=" + sessionsCount +
-                ", lockedAt=" + lockedAt +
-                ", username='" + username + '\'' +
-                "} " + super.toString();
+	return "User{" +
+		"email='" + email + '\'' +
+		", updatedAt=" + updatedAt +
+		", lastSeenAt=" + lastSeenAt +
+		", name='" + name + '\'' +
+		", firstName='" + firstName + '\'' +
+		", lastName='" + lastName + '\'' +
+		", image=" + image +
+		", mfaEnabled=" + mfaEnabled +
+		", sessionsCount=" + sessionsCount +
+		", lockedAt=" + lockedAt +
+		", username='" + username + '\'' +
+		", devicesCount=" + devicesCount +
+		"} " + super.toString();
     }
 
     public static class Requester {
