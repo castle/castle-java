@@ -153,9 +153,8 @@ For details about the different error codes look here https://api.castle.io/#err
     Session session = Session.setUserInfoHeaders(userHeader).create(testUser);
 
     //Check the token validation
-    CastleJWT jwt = session.getJWT();
-    assertFalse(jwt.hasExpired());
-    assertTrue(jwt.isValid());
+    assertFalse(session.hasExpired());
+    assertTrue(session.isValid());
 
     //Find a session
     Session found = Session.setSession(session).setUserInfoHeaders(userHeaders).find(session.getId(), testUser);

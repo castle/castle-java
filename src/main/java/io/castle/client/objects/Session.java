@@ -52,8 +52,12 @@ public class Session extends BaseRequesterObject {
 	this.token = token;
     }
 
-    public CastleJWT getJWT() {
-        return new CastleJWT(token);
+    public boolean hasExpired() {
+	return new CastleJWT(token).hasExpired();
+    }
+
+    public boolean isValid() {
+	return new CastleJWT(token).isValid();
     }
 
     @Override

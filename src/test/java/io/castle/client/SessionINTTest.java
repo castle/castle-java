@@ -13,23 +13,20 @@ public class SessionINTTest extends GenericINTTest {
     public void createSession() {
 	Session session = Session.setUserInfoHeaders(userHeader).create(testUser);
 	assertNotNull(session.getContext());
-	CastleJWT jwt = session.getJWT();
-	assertFalse(jwt.hasExpired());
-	assertTrue(jwt.isValid());
+	assertFalse(session.hasExpired());
+	assertTrue(session.isValid());
     }
 
     @Test
     public void deleteSession() {
 	Session session = Session.setUserInfoHeaders(userHeader).create(testUser);
 	assertNotNull(session.getContext());
-	CastleJWT jwt = session.getJWT();
-	assertFalse(jwt.hasExpired());
-	assertTrue(jwt.isValid());
+	assertFalse(session.hasExpired());
+	assertTrue(session.isValid());
 	Session found = Session.setUserInfoHeaders(userHeader).find(session.getId(), testUser);
 	assertNotNull(found);
-	jwt = found.getJWT();
-	assertFalse(jwt.hasExpired());
-	assertTrue(jwt.isValid());
+	assertFalse(found.hasExpired());
+	assertTrue(found.isValid());
 	Session.setUserInfoHeaders(userHeader).delete(testUser, session);
 	found = Session.setUserInfoHeaders(userHeader).find(session.getId(), testUser);
 	assertNull(found);
