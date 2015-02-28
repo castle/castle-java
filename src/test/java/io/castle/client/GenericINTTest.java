@@ -14,8 +14,8 @@ public class GenericINTTest {
 
     @Before
     public void setup() {
-        Castle.setApiBaseURI(URI.create("https://secure.userbin.com/v1"));
-        Castle.setSecret(System.getenv("USERBIN_TEST"));
+        Castle.setApiBaseURI(URI.create("https://api.castle.io/v1"));
+        Castle.setSecret(System.getenv("CASTLE_TEST"));
 
         userHeader = new UserInfoHeader();
         userHeader.setIp("2.66.20.56");
