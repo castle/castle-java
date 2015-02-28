@@ -92,7 +92,7 @@ To test the API all the endpoints have their own INTTest. Just set the system en
 All Object collections returns a list of 30 items with the getPage() method and fetched the next page with the fetchNextPage() method.
 
 ### Exception handling
-All errors returned from the api rais an UserbinException.
+All errors returned from the api rais an CastleException.
 
 This exception contains the error details and the response code returned from the api.
 For details about the different error codes look here https://api.castle.io/#errors
@@ -100,7 +100,7 @@ For details about the different error codes look here https://api.castle.io/#err
 ```java
     try {
         User.find("missingId");
-    } catch(UserbinException u) {
+    } catch(CastleException u) {
       int code = u.getResponseCode();
       Error error = u.getError();
     }
@@ -153,7 +153,7 @@ For details about the different error codes look here https://api.castle.io/#err
     Session session = Session.setUserInfoHeaders(userHeader).create(testUser);
 
     //Check the token validation
-    UserbinJWT jwt = session.getJWT();
+    CastleJWT jwt = session.getJWT();
     assertFalse(jwt.hasExpired());
     assertTrue(jwt.isValid());
 
@@ -271,13 +271,13 @@ public class OkHttpSupplier implements HttpConnectorSupplier {
 }
 ```
 
-and hand a supplier to the Userbin object -
+and hand a supplier to the Castle object -
 
 ```
 final OkHttpClient client = new OkHttpClient();
 final OkUrlFactory factory = new OkUrlFactory(client);
 final OkHttpSupplier supplier = new OkHttpSupplier(factory);
-Userbin.setHttpConnectorSupplier(supplier);
+Castle.setHttpConnectorSupplier(supplier);
 ```            
 
 #### Timeouts
