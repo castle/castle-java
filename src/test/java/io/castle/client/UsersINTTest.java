@@ -1,5 +1,6 @@
 package io.castle.client;
 
+import io.castle.client.exceptions.CastleException;
 import io.castle.client.objects.User;
 import io.castle.client.objects.UserCollection;
 import org.junit.*;
@@ -43,6 +44,25 @@ public class UsersINTTest extends GenericINTTest {
             }
         }
         assertFalse(contains);
+    }
+
+    @Test
+    public void findAllUsers() {
+	UserCollection users = User.listUsers();
+	int i = 0;
+	do {
+	    for(User u : users.getPage()) {
+		try {
+		    //User.delete(u);
+		    i++;
+		}catch(CastleException e) {
+		    System.err.println("User id: " + u.getId());
+		    e.printStackTrace();
+		}
+	    }
+	}
+	while(users.fetchNextPage());
+	System.out.println("Found " + i + " users");
     }
 
     @Test
