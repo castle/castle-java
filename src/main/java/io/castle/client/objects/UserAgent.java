@@ -1,11 +1,14 @@
 package io.castle.client.objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UserAgent {
     private String raw;
     private String browser;
     private String version;
     private String platform;
     private String os;
+    @JsonIgnore
     private boolean mobile;
 
     public String getRaw() {

@@ -15,7 +15,6 @@ import java.util.List;
 public class Session extends BaseRequesterObject {
 
     private Context context;
-    private boolean current;
     @JsonProperty("updated_at")
     private Date updatedAt;
     private String token;
@@ -26,14 +25,6 @@ public class Session extends BaseRequesterObject {
 
     public void setContext(Context context) {
 	this.context = context;
-    }
-
-    public boolean isCurrent() {
-	return current;
-    }
-
-    public void setCurrent(boolean current) {
-	this.current = current;
     }
 
     public Date getUpdatedAt() {
@@ -72,7 +63,6 @@ public class Session extends BaseRequesterObject {
 
         Session session = (Session) o;
 
-        if (current != session.current) return false;
         if (context != null ? !context.equals(session.context) : session.context != null) return false;
         if (token != null ? !token.equals(session.token) : session.token != null) return false;
         if (updatedAt != null ? !updatedAt.equals(session.updatedAt) : session.updatedAt != null) return false;
@@ -84,7 +74,6 @@ public class Session extends BaseRequesterObject {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (context != null ? context.hashCode() : 0);
-        result = 31 * result + (current ? 1 : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         result = 31 * result + (token != null ? token.hashCode() : 0);
         return result;
@@ -94,7 +83,6 @@ public class Session extends BaseRequesterObject {
     public String toString() {
         return "Session{" +
                 "context=" + context +
-                ", current=" + current +
                 ", updatedAt=" + updatedAt +
                 ", token='" + token + '\'' +
                 "} " + super.toString();
