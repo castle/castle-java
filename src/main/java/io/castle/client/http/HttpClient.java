@@ -1,6 +1,7 @@
 package io.castle.client.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Lists;
@@ -47,7 +48,7 @@ public class HttpClient {
 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	try {
 
-	    MapperSupport.objectMapper().disable(SerializationFeature.INDENT_OUTPUT).writeValue(baos, map);
+	    MapperSupport.objectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).disable(SerializationFeature.INDENT_OUTPUT).writeValue(baos, map);
 	} catch (IOException e) {
 	    logger.warn(String.format("could not serialize client agent details [%s]", e.getMessage()), e);
 	}
