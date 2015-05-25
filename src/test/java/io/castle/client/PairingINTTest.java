@@ -3,6 +3,7 @@ package io.castle.client;
 import io.castle.client.exceptions.CastleException;
 import io.castle.client.objects.Pairing;
 import io.castle.client.objects.PairingRequest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -76,6 +77,4 @@ public class PairingINTTest extends GenericINTTest {
 	    assertEquals(400, e.getResponseCode());
 	}
     }
-
-
 }
