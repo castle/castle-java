@@ -8,6 +8,8 @@ import org.junit.Before;
 import java.net.URI;
 import java.util.UUID;
 
+import static org.junit.Assert.assertNotNull;
+
 public class GenericINTTest {
     protected User testUser;
     protected UserInfoHeader userHeader;
@@ -15,7 +17,9 @@ public class GenericINTTest {
     @Before
     public void setup() {
         Castle.setApiBaseURI(URI.create("https://api.castle.io/v1"));
-        Castle.setSecret(System.getenv("CASTLE_TEST"));
+        final String castleTest = System.getenv("CASTLE_TEST");
+        assertNotNull("CASTLE_TEST environment variable must be set", castleTest);
+        Castle.setSecret(castleTest);
 
         userHeader = new UserInfoHeader();
         userHeader.setIp("2.66.20.56");
