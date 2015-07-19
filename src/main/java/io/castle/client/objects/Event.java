@@ -16,25 +16,19 @@ import java.util.Map;
 public class Event extends BaseRequesterObject {
 
     public enum EventName {
-        BACKUP_CODES_GENERATED("backup_codes.generated"),
-        CHALLENGE_FAILES("challenge.failed"),
-        CHALLENGE_VERIFIED("challenge.verified"),
-        PARING_DESTROYED("pairing.destroyed"),
-        PARING_SET_DEFAULT("pairing.set_default"),
-        PARING_VERIFIED("pairing.verified"),
-        SESSION_CREATED("session.created"),
-        SESSION_DESTROYED("session.destroyed"),
-        SESSION_FAILED("session.failed"),
-        TRUSTED_DEVICE_CREATED("trusted_device.created"),
-        TRUSTED_DEVICE_DESTROYED("trusted_device.destroyed"),
-        USER_CREATED("user.created"),
-        USER_UPDATED("user.updated"),
-        USER_DESTROYED("user.destroyed"),
-        USER_LOCKED("user.locked"),
-        USER_UNLOCKED("user.unlocked"),
-        USER_MFA_ENABLED("user.mfa_enabled"),
-        USER_MFA_DISABLED("user.mfs_disabled"),
-        LOGIN_SUCCEEDED("$login.succeeded");
+        LOGIN_SUCCEEDED("$login.succeeded"),
+        LOGIN_FAILED("$login.failed"),
+        LOGOUT_SUCCEEDED("$logout.succeeded"),
+        REGISTRATION_SUCCEEDED("$registration.succeeded"),
+        REGISTRATION_FAILED("$registration.failed"),
+        CHALLENGE_REQUESTED("$challenge.requested"),
+        CHALLENGE_SUCCEEDED("$challenge.succeeded"),
+        CHALLENGE_FAILED("$challenge.failed"),
+        PASSWORD_RESET_REQUESTED("$password_reset.requested"),
+        PASSWORD_RESET_SUCCEEDED("$password_reset.succeeded"),
+        PASSWORD_RESET_FAILED("$password_reset.failed"),
+        PASSWORD_CHANGE_SUCCEEDED("$password_change.succeeded"),
+        PASSWORD_CHANGE_FAILED("$password_change.failed");
 
         private final String eventName;
 
