@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+@Ignore
 public class UsersINTTest extends GenericINTTest {
 
     private static UUID testId;

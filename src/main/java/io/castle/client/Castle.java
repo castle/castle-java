@@ -10,7 +10,7 @@ public class Castle {
 
     private static volatile URI apiBaseURI = API_BASE_URI;
 
-    private static final String VERSION = "0.5.0-SNAPSHOT";
+    private static final String VERSION = "0.5.2-SNAPSHOT";
 
     public static final String USER_AGENT = "castle-java/" + Castle.VERSION;
 

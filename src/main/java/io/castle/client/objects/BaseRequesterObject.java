@@ -2,10 +2,8 @@ package io.castle.client.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Maps;
 
 import java.util.Date;
-import java.util.Map;
 
 public class BaseRequesterObject {
 
@@ -83,12 +81,6 @@ public class BaseRequesterObject {
                 '}';
     }
 
-    public static Map<String, String> getUserHeaders(UserInfoHeader data) {
-        Map<String, String> headers = Maps.newHashMap();
-        headers.put("X-Userbin-Ip", data.getIp());
-        headers.put("X-Userbin-User-Agent", data.getUserAgent());
-        return headers;
-    }
 
 
 }

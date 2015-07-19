@@ -3,6 +3,7 @@ package io.castle.client;
 import io.castle.client.objects.Event;
 import io.castle.client.objects.EventCollection;
 import io.castle.client.objects.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -14,7 +15,20 @@ import static org.junit.Assert.*;
 
 public class EventINTTest extends GenericINTTest {
 
+
     @Test
+    public void trackUser(){
+        Event event = new Event();
+        event.setUserId("1234");
+        event.setName(Event.EventName.LOGIN_SUCCEEDED);
+        Event returnedEvent = Event.setUserInfoHeader(userHeader).trackEvent(event);
+        assertNotNull(returnedEvent.getId());
+        assertNotNull(returnedEvent.getCreatedAt());
+    }
+
+
+    @Test
+    @Ignore
     public void getUserEvents() {
         Session.setUserInfoHeaders(userHeader).create(testUser);
         EventCollection events = Event.setUserInfoHeader(userHeader).listAllUserEvents(testUser);
@@ -24,6 +38,7 @@ public class EventINTTest extends GenericINTTest {
     }
 
     @Test
+    @Ignore
     public void getAllEvents() {
         EventCollection events = Event.setUserInfoHeader(userHeader).listAllEvents();
         assertNotNull(events);
@@ -35,6 +50,7 @@ public class EventINTTest extends GenericINTTest {
     }
 
     @Test
+    @Ignore
     public void getAllEventsForQuery() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         Map<String,String> query = new HashMap<>();

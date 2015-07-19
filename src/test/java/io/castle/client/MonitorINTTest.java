@@ -2,10 +2,10 @@ package io.castle.client;
 
 import io.castle.client.objects.Monitoring;
 import io.castle.client.objects.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-
+@Ignore
 public class MonitorINTTest extends GenericINTTest{
 
     @Test

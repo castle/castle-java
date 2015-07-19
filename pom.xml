@@ -5,7 +5,7 @@
 	<groupId>io.castle</groupId>
 	<artifactId>castle-java</artifactId>
 	<packaging>jar</packaging>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.5.2-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}:${project.version}</name>
 	<url>https://github.com/YouCruit/castle-java</url>
 	<properties>
