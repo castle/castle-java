@@ -4,30 +4,16 @@
 
 ## Installation
 
-Add the Maven repository to your repositories in `pom.xml` or `settings.xml`:
+Clone the repository:
 
-```xml
-<repository>
-  <id>youcruit-cloudbees-snapshot</id>
-  <name>youcruit-cloudbees-snapshot</name>
-  <url>http://repository-youcruit.forge.cloudbees.com/snapshot/</url>
-  <releases>
-    <enabled>false</enabled>
-  </releases>
-  <snapshots>
-    <enabled>true</enabled>
-  </snapshots>
-</repository>
-```  
- 
-Add the project declaration to your `pom.xml`:
-  
-```xml
-<dependency>
-  <groupId>io.castle</groupId>
-  <artifactId>castle-java</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
-</dependency>
+```bash
+$ git clone git@github.com:castle/castle-java.git
+```
+
+Build it:
+
+```
+$ mvn clean install
 ```
 
 Load and configure the library with your Castle API secret:
