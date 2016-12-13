@@ -284,10 +284,10 @@ public class HttpClient {
         }
         if (this.info != null) {
             headers.put("X-Castle-Ip", this.info.getIp());
-            if(this.info.getCookieId()==null) {
+            if(this.info.getClientId()==null) {
                 headers.put("X-Castle-Cookie-Id", "");
             }else{
-                headers.put("X-Castle-Cookie-Id", this.info.getCookieId());
+                headers.put("X-Castle-Cookie-Id", this.info.getClientId());
             }
             headers.put("X-Castle-Headers", this.info.getHeaders());
         }

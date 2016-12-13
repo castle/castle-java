@@ -25,7 +25,7 @@ public class UserInfoHeader {
 
     private String ip;
     private String userAgent;
-    private String cookieId;
+    private String clientId;
     private String headers;
 
     public String getIp() {
@@ -44,12 +44,12 @@ public class UserInfoHeader {
         this.userAgent = userAgent;
     }
 
-    public String getCookieId() {
-        return cookieId;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setCookieId(String cookieId) {
-        this.cookieId = cookieId;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getHeaders() {
@@ -69,7 +69,7 @@ public class UserInfoHeader {
 
         if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
         if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null) return false;
-        if (cookieId != null ? !cookieId.equals(that.cookieId) : that.cookieId != null) return false;
+        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
         if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
 
         return true;
@@ -79,7 +79,7 @@ public class UserInfoHeader {
     public int hashCode() {
         int result = ip != null ? ip.hashCode() : 0;
         result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
-        result = 31 * result + (cookieId != null ? cookieId.hashCode() : 0);
+        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
         result = 31 * result + (headers != null ? headers.hashCode() : 0);
         return result;
     }
@@ -95,7 +95,7 @@ public class UserInfoHeader {
     public static UserInfoHeader fromRequest(HttpServletRequest request) {
         UserInfoHeader infoHeader = new UserInfoHeader();
         infoHeader.setIpFromRequest(request);
-        infoHeader.setCookieIdFromRequest(request);
+        infoHeader.setClientIdFromRequest(request);
         infoHeader.setHeadersFromRequest(request);
         return infoHeader;
     }
@@ -107,9 +107,9 @@ public class UserInfoHeader {
         setIp(request.getRemoteAddr());
     }
 
-    public void setCookieIdFromRequest(HttpServletRequest request) {
+    public void setClientIdFromRequest(HttpServletRequest request) {
         if (request.getCookies() == null) {
-            setCookieId(null);
+            setClientId(null);
             return;
         }
         Optional<Cookie> cookie = Iterators.tryFind(Iterators.forArray(request.getCookies()), new Predicate<Cookie>() {
@@ -119,9 +119,9 @@ public class UserInfoHeader {
             }
         });
         if (cookie.isPresent()) {
-            setCookieId(cookie.get().getValue());
+            setClientId(cookie.get().getValue());
         } else {
-            setCookieId(null);
+            setClientId(null);
         }
     }
 
