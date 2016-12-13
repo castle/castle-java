@@ -16,6 +16,7 @@ public class Event extends BaseRequesterObject {
     private Map<String, Object> details;
     private String name;
     private String userId;
+    private String action;
 
     public Context getContext() {
         return context;
@@ -48,6 +49,15 @@ public class Event extends BaseRequesterObject {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @JsonProperty("action")
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     @Override
@@ -127,13 +137,12 @@ public class Event extends BaseRequesterObject {
             return resultEvent;
         }
 
-        public Event track(Event event) {
+        public void track(Event event) {
             String path = "track";
             URI eventUri = UriBuilder.newBuilder().path(path, false).build();
             HttpClient client = new HttpClient(eventUri, this.info, this.session);
-            Event resultEvent = client.post(new TypeReference<Event>() {
-            }, event);
-            return resultEvent;
+            client.post(new TypeReference<Event>() {}, event);
+            return;
         }
     }
 
