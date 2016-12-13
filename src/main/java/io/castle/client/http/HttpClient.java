@@ -265,7 +265,7 @@ public class HttpClient {
     }
 
     private Map<String, String> createAuthorizationHeaders() {
-        String authString = ":" + Castle.getSecret();
+        String authString = ":" + Castle.getAPISecret();
         headers.put("Authorization", "Basic " + StringUtils.newStringUtf8(base64.encode(authString.getBytes())).trim());
         return headers;
     }

@@ -50,11 +50,11 @@ public class Castle {
 	Castle.httpConnectorSupplier = supplier;
     }
 
-    public static String getSecret() {
+    public static String getAPISecret() {
 	return Castle.secret;
     }
 
-    public static void setSecret(String secret) {
+    public static void setAPISecret(String secret) {
 	Castle.secret = secret;
     }
 

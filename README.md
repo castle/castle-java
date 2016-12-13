@@ -19,56 +19,25 @@ $ mvn clean install
 Load and configure the library with your Castle API secret:
 
 ```java
-Castle.setSecret("YOUR_API_SECRET");
+Castle.setAPISecret("YOUR_API_SECRET");
 ```
 
-## Tracking security events
+## Documentation
 
-`trackEvent` lets you record the security-related actions your users perform. The more actions you track, the more accurate Castle is in identifying fraudsters.
-
-When you have access to a **logged in user**, set `setUserId` to the same user identifier as when you initiated Castle.js.
-
-```java
-Event event = new Event();
-event.setName(Event.EventName.LOGIN_SUCCEEDED);
-event.setUserId("1234");
-
-UserInfoHeader userInfoHeader = UserInfoHeader.fromRequest(req);
-Event.setUserInfoHeader(userInfoHeader).trackEvent(event);
-```
-
-When you **don't** have access to a logged in user just omit `setUserId`, typically when tracking `LOGIN_FAILED` and `PASSWORD_RESET_REQUESTED`.
-
-### Supported events
-
-- `LOGIN_SUCCEEDED`: Record when a user attempts to log in.
-- `LOGIN_FAILED`: Record when a user logs out.
-- `LOGOUT_SUCCEEDED`:  Record when a user logs out.
-- `REGISTRATION_SUCCEEDED`: Capture account creation, both when a user signs up as well as when created manually by an administrator.
-- `REGISTRATION_FAILED`: Record when an account failed to be created.
-- `CHALLENGE_REQUESTED`: Record when a user is prompted with additional verification, such as two-factor authentication or a captcha.
-- `CHALLENGE_SUCCEEDED`: Record when additional verification was successful.
-- `CHALLENGE_FAILED`: Record when additional verification failed.
-- `PASSWORD_RESET_REQUESTED`: An attempt was made to reset a user’s password.
-- `PASSWORD_RESET_SUCCEEDED`: The user completed all of the steps in the password reset process and the password was successfully reset. Password resets **do not** required knowledge of the current password.
-- `PASSWORD_RESET_FAILED`: Use to record when a user failed to reset their password.
-- `PASSWORD_CHANGE_SUCCEEDED`: Use to record when a user changed their password. This event is only logged when users change their **own** password.
-- `PASSWORD_CHANGE_FAILED`:  Use to record when a user failed to change their password.
+[Official Castle docs](https://castle.io/docs)
 
 ## Exceptions
 
-`CastleException` will be thrown if the Castle API returns a 400 or a 500 level HTTP response.
+`CastleException` will be thrown if the Castle API returns a 400 or a 500 level HTTP response. The exception contains error details and the response code returned from the API. See https://api.castle.io/#errors for details about the different error codes, .
 
 ```java
 try {
-    Event.setUserInfoHeader(InfoHeader).trackEvent(incorrectEvent);
+    Event.setUserInfoHeader(userInfoHeader).track(event);
 } catch(CastleException u) {
     int code = u.getResponseCode();
     Error error = u.getError();
 }
 ```
-
-The exception contains error details and the response code returned from the API. For details about the different error codes look here https://api.castle.io/#errors
 
 ## Configuration
 
@@ -76,12 +45,12 @@ The exception contains error details and the response code returned from the API
 
 The client can be configured to accept any HTTP stack that implements
 `java.net.HttpURLConnection` by implementing the `HttpConnectorSupplier`
- interface. 
- 
-For example, to use [OkHttp](http://square.github.io/okhttp/) as a connection 
+ interface.
+
+For example, to use [OkHttp](http://square.github.io/okhttp/) as a connection
 supplier, create a supplier class:
- 
-```java 
+
+```java
 public class OkHttpSupplier implements HttpConnectorSupplier {
     private final OkUrlFactory urlFactory;
 
@@ -96,16 +65,16 @@ public class OkHttpSupplier implements HttpConnectorSupplier {
 }
 ```
 
-And hand a supplier to the Castle object:
+Then send a supplier to the Castle object:
 
 ```
 final OkHttpClient client = new OkHttpClient();
 final OkUrlFactory factory = new OkUrlFactory(client);
 final OkHttpSupplier supplier = new OkHttpSupplier(factory);
 Castle.setHttpConnectorSupplier(supplier);
-```            
+```
 
 ### Timeouts
 
-The default connection and request timeouts can be set in milliseconds using the 
-`Castle.setConnectionTimeout` and `Castle.setRequestTimeout` methods.
+The default connection and request timeouts can be set in milliseconds using the
+`Castle.setConnectionTimeout` (default: 3 s) and `Castle.setRequestTimeout` (default: 30 s) methods.

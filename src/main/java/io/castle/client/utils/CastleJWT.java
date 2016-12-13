@@ -28,7 +28,7 @@ public class CastleJWT {
     public boolean isValid() {
 	String calculatedHash;
 	try {
-	    calculatedHash = Utils.signature(Castle.getSecret(), this.getHeader(), this.header + "." + this.token);
+	    calculatedHash = Utils.signature(Castle.getAPISecret(), this.getHeader(), this.header + "." + this.token);
 	    return calculatedHash.equals(this.signature);
 	} catch (Exception e) {
 	    throw new CastleException("Failed to generate hash", e);

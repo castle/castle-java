@@ -11,11 +11,11 @@ public class CastleException extends RuntimeException {
     private int responseCode = -1;
     private io.castle.client.objects.Error error;
     private URI uri;
-    
+
     public CastleException(String message) {
 	super(message);
     }
-    
+
     public CastleException(String message, Throwable t) {
 	super(message, t);
     }
@@ -33,9 +33,9 @@ public class CastleException extends RuntimeException {
         this.error = error;
         this.uri = uri;
     }
-    
+
     public CastleException() {
-	
+
     }
 
     public int getResponseCode() {
