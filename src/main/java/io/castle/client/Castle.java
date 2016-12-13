@@ -18,7 +18,7 @@ public class Castle {
 
     private static volatile int connectionTimeout = 3 * 1000;
 
-    private static volatile int requestTimeout = 60 * 1000;
+    private static volatile int requestTimeout = 30 * 1000;
 
     private static volatile boolean disableTracking = false;
 
