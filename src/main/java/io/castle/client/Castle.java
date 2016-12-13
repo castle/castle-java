@@ -6,7 +6,7 @@ import java.net.URI;
 
 public class Castle {
 
-    private static final URI API_BASE_URI = URI.create("https://api.castle.io/");
+    private static final URI API_BASE_URI = URI.create("https://api.castle.io/v1/");
 
     private static volatile URI apiBaseURI = API_BASE_URI;
 
