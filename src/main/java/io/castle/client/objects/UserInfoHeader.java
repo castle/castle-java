@@ -101,10 +101,24 @@ public class UserInfoHeader {
     }
 
     public void setIpFromRequest(HttpServletRequest request) {
-        // TODO: to add support for proxy headers see info in: http://stackoverflow.com/questions/11452938/how-to-use-http-x-forwarded-for-properly
-        // Example from rack: https://github.com/rack/rack/blob/master/lib/rack/request.rb#L347
-        // HTTP_X_FORWARDED_FOR should be read, note that it may have multiple parts separate by commas
-        setIp(request.getRemoteAddr());
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        setIp(ip);
     }
 
     public void setClientIdFromRequest(HttpServletRequest request) {
