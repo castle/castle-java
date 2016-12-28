@@ -117,6 +117,12 @@ public class UserInfoHeader {
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
+        if (ip != null) {
+            int idx = ip.indexOf(',');
+            if (idx > -1) {
+                ip = ip.substring(0, idx);
+            }
+        }
 
         setIp(ip);
     }
