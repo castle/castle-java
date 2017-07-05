@@ -48,7 +48,7 @@ public class UserInfoHeader {
         return clientId;
     }
 
-    public void setClientId(String clientId) {
+	public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
@@ -128,21 +128,34 @@ public class UserInfoHeader {
     }
 
     public void setClientIdFromRequest(HttpServletRequest request) {
-        if (request.getCookies() == null) {
-            setClientId(null);
-            return;
-        }
-        Optional<Cookie> cookie = Iterators.tryFind(Iterators.forArray(request.getCookies()), new Predicate<Cookie>() {
-            @Override
-            public boolean apply(Cookie cookie) {
-                return cookie.getName().equals("__cid");
-            }
-        });
-        if (cookie.isPresent()) {
-            setClientId(cookie.get().getValue());
-        } else {
-            setClientId(null);
-        }
+    		String clientId = getCookieId(request);
+    		if (clientId == null) {
+    			clientId = getDeviceIdHeader(request);
+    		}
+    		setClientId(clientId);
+    }
+    
+    public String getDeviceIdHeader(HttpServletRequest request) {
+    		return request.getHeader("X-Castle-Device-Id");
+    }
+    
+    public String getCookieId(HttpServletRequest request) {
+	    	 if (request.getCookies() == null) {
+	    		 return null;
+	    	 } else {
+	    		 Optional<Cookie> cookie = Iterators.tryFind(Iterators.forArray(request.getCookies()), new Predicate<Cookie>() {
+	    			 @Override
+	    			 public boolean apply(Cookie cookie) {
+	    				 return cookie.getName().equals("__cid");
+	    			 }
+		     });
+	    		
+	    		 if (cookie.isPresent()) {
+	    			 return cookie.get().getValue();
+	    		 } else {
+	    			 return null;
+	    		 }
+	    	 }
     }
 
     public void setHeadersFromRequest(HttpServletRequest request) {
