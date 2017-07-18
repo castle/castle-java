@@ -33,7 +33,7 @@ public class HttpClient {
 
     private static final String APPLICATION_JSON = "application/json";
 
-    private static final String BINDINGS_VERSION = "1.2";
+    private static final String BINDINGS_VERSION = "1.3";
 
     private static String clientAgentDetails() {
 
@@ -285,9 +285,9 @@ public class HttpClient {
         if (this.info != null) {
             headers.put("X-Castle-Ip", this.info.getIp());
             if(this.info.getClientId()==null) {
-                headers.put("X-Castle-Cookie-Id", "");
+                headers.put("X-Castle-Client-Id", "");
             }else{
-                headers.put("X-Castle-Cookie-Id", this.info.getClientId());
+                headers.put("X-Castle-Client-Id", this.info.getClientId());
             }
             headers.put("X-Castle-Headers", this.info.getHeaders());
         }

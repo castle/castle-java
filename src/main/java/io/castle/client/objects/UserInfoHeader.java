@@ -18,7 +18,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-
 public class UserInfoHeader {
 
     private static final Logger logger = Logger.getLogger(UserInfoHeader.class);
@@ -62,15 +61,21 @@ public class UserInfoHeader {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserInfoHeader)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof UserInfoHeader))
+            return false;
 
         UserInfoHeader that = (UserInfoHeader) o;
 
-        if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
-        if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null) return false;
-        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
-        if (headers != null ? !headers.equals(that.headers) : that.headers != null) return false;
+        if (ip != null ? !ip.equals(that.ip) : that.ip != null)
+            return false;
+        if (userAgent != null ? !userAgent.equals(that.userAgent) : that.userAgent != null)
+            return false;
+        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null)
+            return false;
+        if (headers != null ? !headers.equals(that.headers) : that.headers != null)
+            return false;
 
         return true;
     }
@@ -86,10 +91,7 @@ public class UserInfoHeader {
 
     @Override
     public String toString() {
-        return "UserInfoData{" +
-                "ip='" + ip + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                '}';
+        return "UserInfoData{" + "ip='" + ip + '\'' + ", userAgent='" + userAgent + '\'' + '}';
     }
 
     public static UserInfoHeader fromRequest(HttpServletRequest request) {
@@ -128,20 +130,34 @@ public class UserInfoHeader {
     }
 
     public void setClientIdFromRequest(HttpServletRequest request) {
-        if (request.getCookies() == null) {
-            setClientId(null);
-            return;
+        String clientId = getCookieId(request);
+        if (clientId == null) {
+            clientId = getClientIdHeader(request);
         }
-        Optional<Cookie> cookie = Iterators.tryFind(Iterators.forArray(request.getCookies()), new Predicate<Cookie>() {
-            @Override
-            public boolean apply(Cookie cookie) {
-                return cookie.getName().equals("__cid");
-            }
-        });
-        if (cookie.isPresent()) {
-            setClientId(cookie.get().getValue());
+        setClientId(clientId);
+    }
+
+    public String getClientIdHeader(HttpServletRequest request) {
+        return request.getHeader("X-Castle-Client-Id");
+    }
+
+    public String getCookieId(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return null;
         } else {
-            setClientId(null);
+            Optional<Cookie> cookie = Iterators.tryFind(Iterators.forArray(request.getCookies()),
+                    new Predicate<Cookie>() {
+                        @Override
+                        public boolean apply(Cookie cookie) {
+                            return cookie.getName().equals("__cid");
+                        }
+                    });
+
+            if (cookie.isPresent()) {
+                return cookie.get().getValue();
+            } else {
+                return null;
+            }
         }
     }
 
@@ -157,8 +173,8 @@ public class UserInfoHeader {
             // TODO: see if we need to normalize header names like we do in ruby
             // for now we split on '-', capitalize and join again
             // https://github.com/castle/castle-ruby/blob/master/lib/castle-rb/client.rb#L40
-            String normalizeHeaderName = Joiner.on("-").join(Lists.transform(Arrays.asList(headerName.split("-")),
-                    new Function<String, String>() {
+            String normalizeHeaderName = Joiner.on("-")
+                    .join(Lists.transform(Arrays.asList(headerName.split("-")), new Function<String, String>() {
                         @Override
                         public String apply(String part) {
                             return WordUtils.capitalize(part);
