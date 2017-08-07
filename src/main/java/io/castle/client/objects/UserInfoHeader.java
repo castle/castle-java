@@ -10,7 +10,8 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import io.castle.client.http.MapperSupport;
 import org.apache.commons.lang3.text.WordUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import java.util.*;
 
 public class UserInfoHeader {
 
-    private static final Logger logger = Logger.getLogger(UserInfoHeader.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserInfoHeader.class);
 
     private String ip;
     private String userAgent;

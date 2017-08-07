@@ -1,13 +1,14 @@
 package io.castle.client.http;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.net.HttpURLConnection;
 
 class IOUtils {
 
-    private static final Logger logger = Logger.getLogger("intercom-java");
+    private static final Logger logger = LoggerFactory.getLogger(IOUtils.class);
 
     /**
      * Close a HttpURLConnection, ignores checked Exceptions and nulls,

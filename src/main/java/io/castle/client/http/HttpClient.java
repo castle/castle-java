@@ -13,7 +13,8 @@ import io.castle.client.objects.Session;
 import io.castle.client.objects.UserInfoHeader;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class HttpClient {
 
-    private static final Logger logger = Logger.getLogger(HttpClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpClient.class);
 
     private static final String CLIENT_AGENT_DETAILS = clientAgentDetails();
 
