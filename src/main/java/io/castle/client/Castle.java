@@ -1,77 +1,44 @@
 package io.castle.client;
 
-import io.castle.client.http.HttpConnectorSupplier;
+import io.castle.client.api.CastleApi;
+import io.castle.client.api.CastleApiImpl;
 
-import java.net.URI;
+import javax.servlet.http.HttpServletRequest;
 
 public class Castle {
 
-    private static final URI API_BASE_URI = URI.create("https://api.castle.io/v1/");
+    private static Castle instance = new Castle();
 
-    private static volatile URI apiBaseURI = API_BASE_URI;
-
-    private static final String VERSION = "0.5.2-SNAPSHOT";
-
-    public static final String USER_AGENT = "castle-java/" + Castle.VERSION;
-
-    private static volatile String secret;
-
-    private static volatile int connectionTimeout = 3 * 1000;
-
-    private static volatile int requestTimeout = 30 * 1000;
-
-    private static volatile boolean disableTracking = false;
-
-    private static volatile HttpConnectorSupplier httpConnectorSupplier = HttpConnectorSupplier.defaultSupplier;
-
-    public static int getConnectionTimeout() {
-	return connectionTimeout;
+    private Castle() {
+        // Load configuration
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public static void setConnectionTimeout(int connectionTimeout) {
-	Castle.connectionTimeout = connectionTimeout;
+    public static Castle sdk() {
+        return instance;
     }
 
-    public static int getRequestTimeout() {
-	return requestTimeout;
+    /**
+     * Create a API context for the given request.
+     * Tracking is ON by default.
+     *
+     * @param request The request for data extraction
+     * @return a API reference to make backend calls to the castle.io rest api.
+     */
+    public CastleApi onRequest(HttpServletRequest request) {
+        return onRequest(request, false);
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public static void setRequestTimeout(int requestTimeout) {
-	Castle.requestTimeout = requestTimeout;
+    /**
+     * Create a API context for the given request.
+     *
+     * @param request    The request for data extraction
+     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
+     * @return a API reference to make backend calls to the castle.io rest api.
+     */
+    public CastleApi onRequest(HttpServletRequest request, boolean doNotTrack) {
+        //TODO current implementation is a fake empty class
+        return new CastleApiImpl();
     }
 
-    public static HttpConnectorSupplier getHttpConnectorSupplier() {
-	return httpConnectorSupplier;
-    }
-
-    public static void setHttpConnectorSupplier(HttpConnectorSupplier supplier) {
-	Castle.httpConnectorSupplier = supplier;
-    }
-
-    public static String getAPISecret() {
-	return Castle.secret;
-    }
-
-    public static void setAPISecret(String secret) {
-	Castle.secret = secret;
-    }
-
-    public static URI getApiBaseURI() {
-	return Castle.apiBaseURI;
-    }
-
-    public static void setApiBaseURI(URI apiBaseURI) {
-	Castle.apiBaseURI = apiBaseURI;
-    }
-
-    public static void setDisableTracking(boolean disableTracking) {
-        Castle.disableTracking = disableTracking;
-    }
-
-    public static boolean isDisableTracking() {
-        return Castle.disableTracking;
-    }
 
 }
