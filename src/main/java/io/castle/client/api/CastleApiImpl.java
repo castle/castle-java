@@ -4,6 +4,7 @@ import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.model.AuthenticateAction;
 import io.castle.client.internal.model.CastleContext;
+import io.castle.client.internal.utils.CastleContextBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,10 +23,11 @@ public class CastleApiImpl implements CastleApi {
     }
 
     private CastleContext buildContext() {
-        //TODO create a full castle context object
-        CastleContext creating = new CastleContext();
-        creating.setIp("12.12.12.12");
-        return creating;
+        CastleContextBuilder builder = new CastleContextBuilder();
+        CastleContext context = builder
+                .fromHttpServletRequest(this.request)
+                .build();
+        return context;
     }
 
     @Override

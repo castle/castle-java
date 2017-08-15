@@ -2,6 +2,7 @@ package io.castle.client.internal.model;
 
 import com.google.gson.annotations.SerializedName;
 
+
 public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
@@ -140,4 +141,5 @@ public class CastleContext {
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
+
 }
