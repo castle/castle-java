@@ -1,5 +1,6 @@
 package io.castle.client.api;
 
+import com.google.gson.JsonElement;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.model.AuthenticateAction;
@@ -43,10 +44,10 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public AuthenticateAction authenticate(String event, String userId, Object properties) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        String contextJson = configuration.getModel().getGson().toJson(context);
-        String propertiesJson = null;
+        JsonElement contextJson = configuration.getModel().getGson().toJsonTree(context);
+        JsonElement propertiesJson = null;
         if (properties != null) {
-            propertiesJson = configuration.getModel().getGson().toJson(properties);
+            propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
         }
         return restApi.sendAuthenticateSync(event, userId, contextJson, propertiesJson);
     }
@@ -67,10 +68,10 @@ public class CastleApiImpl implements CastleApi {
             return;
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        String contextJson = configuration.getModel().getGson().toJson(context);
-        String propertiesJson = null;
+        JsonElement contextJson = configuration.getModel().getGson().toJsonTree(context);
+        JsonElement propertiesJson = null;
         if (properties != null) {
-            propertiesJson = configuration.getModel().getGson().toJson(properties);
+            propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
         }
         restApi.sendTrackRequest(event, userId, contextJson, propertiesJson);
     }
