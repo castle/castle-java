@@ -1,8 +1,8 @@
-package io.castle.client.model;
+package io.castle.client.internal.model;
 
-public class CastleSdkRef {
-    private String name = "Castle";
-    private String version = "0.6.0-SNAPSHOT";
+public class CastleOS {
+    private String name;
+    private String version;
 
     public String getName() {
         return name;

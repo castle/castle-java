@@ -1,4 +1,4 @@
-package io.castle.client.model;
+package io.castle.client.internal.model;
 
 public class CastleDevice {
     private String id;

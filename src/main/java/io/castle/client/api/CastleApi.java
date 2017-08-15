@@ -1,6 +1,6 @@
 package io.castle.client.api;
 
-import io.castle.client.model.AuthenticateAction;
+import io.castle.client.internal.model.AuthenticateAction;
 
 public interface CastleApi {
 

@@ -1,7 +1,7 @@
-package io.castle.client.model;
+package io.castle.client.internal.model;
 
 import com.google.common.collect.ImmutableList;
-import io.castle.client.model.json.CastleGsonModel;
+import io.castle.client.internal.model.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

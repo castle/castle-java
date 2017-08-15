@@ -1,4 +1,6 @@
-package io.castle.client.model;
+package io.castle.client.internal.config;
+
+import io.castle.client.internal.model.AuthenticateStrategy;
 
 import java.util.List;
 

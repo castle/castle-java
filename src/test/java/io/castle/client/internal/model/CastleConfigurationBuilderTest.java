@@ -1,5 +1,7 @@
-package io.castle.client.model;
+package io.castle.client.internal.model;
 
+import io.castle.client.internal.config.CastleConfiguration;
+import io.castle.client.internal.config.CastleConfigurationBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

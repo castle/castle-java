@@ -1,9 +1,9 @@
-package io.castle.client.model.json;
+package io.castle.client.internal.model.json;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.castle.client.model.CastleHeaders;
+import io.castle.client.internal.model.CastleHeaders;
 
 public class CastleGsonModel {
 

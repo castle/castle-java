@@ -1,6 +1,8 @@
-package io.castle.client.model;
+package io.castle.client.internal.config;
 
 import com.google.common.base.Preconditions;
+import io.castle.client.internal.model.AuthenticateAction;
+import io.castle.client.internal.model.AuthenticateStrategy;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -87,10 +89,10 @@ public class CastleConfigurationBuilder {
     }
 
     public CastleConfiguration build() {
-        Preconditions.checkState(apiSecret != null, "The apiSecret for the castleSDK must be provided in the configuration");
-        Preconditions.checkState(whiteListHeaders != null,"A whitelist of headers must be provided. If not sure, then use the default values provided by method withDefaultWhitelist");
-        Preconditions.checkState(blackListHeaders != null,"A blacklist of headers must be provided. If not sure, then use the default values provided by method withDefaultBlacklist");
-        Preconditions.checkState(failoverStrategy != null,"A failover strategy must be provided. If not sure, then use the default values provided by method withDefaultFailoverStrategy");
+        Preconditions.checkState(apiSecret != null && !apiSecret.isEmpty(), "The apiSecret for the castleSDK must be provided in the configuration");
+        Preconditions.checkState(whiteListHeaders != null, "A whitelist of headers must be provided. If not sure, then use the default values provided by method withDefaultWhitelist");
+        Preconditions.checkState(blackListHeaders != null, "A blacklist of headers must be provided. If not sure, then use the default values provided by method withDefaultBlacklist");
+        Preconditions.checkState(failoverStrategy != null, "A failover strategy must be provided. If not sure, then use the default values provided by method withDefaultFailoverStrategy");
         return new CastleConfiguration(timeout, failoverStrategy, whiteListHeaders, blackListHeaders, apiSecret);
     }
 }

@@ -1,8 +1,6 @@
-package io.castle.client.model;
+package io.castle.client.internal.model;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class CastleContext {
     private boolean active = true;

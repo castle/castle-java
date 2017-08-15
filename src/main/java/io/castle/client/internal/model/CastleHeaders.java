@@ -1,4 +1,4 @@
-package io.castle.client.model;
+package io.castle.client.internal.model;
 
 import java.util.List;
 
