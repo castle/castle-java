@@ -6,195 +6,229 @@ import io.castle.client.internal.model.CastleContext;
 import io.castle.client.internal.model.CastleHeader;
 import io.castle.client.internal.model.CastleHeaders;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
 public class CastleContextBuilderTest {
 
-    CastleContext expectedContext;
-    MockHttpServletRequest request;
-    CastleContextBuilder builder;
-    String clientId;
-    CastleConfigurationBuilder castleConfigurationBuilder;
-    List<CastleHeader> listOfHeaders;
-    CastleHeaders expectedHeaders;
+    @Test
+    public void buildContextWithDefaultSetup() {
 
-    @Before
-    public void prepare() {
+        //Given
+        CastleConfiguration configuration = CastleConfigurationBuilder.defaultConfigBuilder().withApiSecret("anyValid").build();
+        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        HttpServletRequest standardRequest = getStandardRequestMock();
+        CastleContext standardContext = getStandardContext();
 
-        //given
-        request = new MockHttpServletRequest();
-        builder = new CastleContextBuilder();
+        //When
+        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
 
-        String valueContolCache = "max-age=0";
-        String keyControlCache = "Cache-Control";
-        String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";
-        String ip = "8.8.8.8";
-        String userAgentHeader = "User-Agent";
-        String customClientIdHeader = "X-Castle-Client-Id";
-        String acceptHeader = "Accept";
-        String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        String AcceptLanguageHeader = "Accept-Language";
-        String acceptLanguage = "en-US,en;q=0.5";
-        String connectionHeader = "Connection";
-        String connection = "keep-alive";
-        String refererHeader = "Referer";
-        String referer = "http://localhost:8080/";
-        String Header = "Host";
-        String host = "localhost:8080";
-        String acceptEncodingHeader = "Accept-Encoding";
-        String acceptEncoding = "gzip, deflate";
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
 
-        clientId = "vblxmkKK-6__54sd44d";
+    @Test
+    public void blockHeadersOnBlackList() {
 
+        //Given a Configuration that block the accept-language header
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("anyValid")
+                .withBlackListHeaders("Cookie", acceptLanguageHeader)
+                .build();
+        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        HttpServletRequest standardRequest = getStandardRequestMock();
+
+        //And a expected castle context without the accept-language header
+        CastleContext standardContext = getStandardContext();
+        List<CastleHeader> listOfHeaders = new ArrayList<>();
+        listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
+        listOfHeaders.add(new CastleHeader(acceptHeader, accept));
+        listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
+        standardContext.getHeaders().setHeaders(listOfHeaders);
+
+        //When
+        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    @Test
+    public void blackListIsMoreRelevantThatWhitelist() {
+
+        //Given a Configuration that block the accept-language header
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("anyValid")
+                .withBlackListHeaders(connectionHeader)
+                .withWhiteListHeaders(connectionHeader)
+                .build();
+        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        HttpServletRequest standardRequest = getStandardRequestMock();
+
+        //And a expected castle context without any header
+        CastleContext standardContext = getStandardContext();
+        List<CastleHeader> listOfHeaders = new ArrayList<>();
+        standardContext.getHeaders().setHeaders(listOfHeaders);
+
+        //When
+        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    @Test
+    public void whiteListPassHeadersToTheContext() {
+
+        //Given a Configuration that block the accept-language header
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("anyValid")
+                .withDefaultBlacklist()
+                .withWhiteListHeaders(connectionHeader)
+                .build();
+        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        HttpServletRequest standardRequest = getStandardRequestMock();
+
+        //And a expected castle context with a single whitelisted header
+        CastleContext standardContext = getStandardContext();
+        List<CastleHeader> listOfHeaders = new ArrayList<>();
+        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
+        standardContext.getHeaders().setHeaders(listOfHeaders);
+
+        //When
+        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    @Test
+    public void clientIdIsInFirstPlaceTakenFromCookie() {
+
+        //Given a Configuration that block the accept-language header
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("anyValid")
+                .build();
+        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+
+        //And a http request with __cid cookie
+        MockHttpServletRequest standardRequest = getStandardRequestMock();
+        Cookie cookie = new Cookie("__cid", "valueFromCookie");
+        standardRequest.setCookies(cookie);
+        //And a custom castle header
+        standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
+
+
+        //And a expected context value with matching clientId
+        CastleContext standardContext = getStandardContext();
+        standardContext.setClientId("valueFromCookie");
+
+        //When
+        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    @Test
+    public void clientIdUseFailoverValueFromHeaders() {
+
+        //Given a Configuration that block the accept-language header
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("anyValid")
+                .build();
+        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+
+        //And a http request without __cid cookie
+        MockHttpServletRequest standardRequest = getStandardRequestMock();
+        //And a custom castle header
+        standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
+
+
+        //And a expected context value with matching clientId
+        CastleContext standardContext = getStandardContext();
+        standardContext.setClientId("valueFromHeaders");
+
+        //When
+        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    private String valueContolCache = "max-age=0";
+    private String keyControlCache = "Cache-Control";
+    private String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";
+    private String ip = "8.8.8.8";
+    private String userAgentHeader = "User-Agent";
+    private String customClientIdHeader = "X-Castle-Client-Id";
+    private String acceptHeader = "Accept";
+    private String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+    private String acceptLanguageHeader = "Accept-Language";
+    private String acceptLanguage = "en-US,en;q=0.5";
+    private String connectionHeader = "Connection";
+    private String connection = "keep-alive";
+    private String refererHeader = "Referer";
+    private String referer = "http://localhost:8080/";
+    private String headerHost = "Host";
+    private String hostValue = "localhost:8080";
+    private String acceptEncodingHeader = "Accept-Encoding";
+    private String acceptEncoding = "gzip, deflate";
+
+    public MockHttpServletRequest getStandardRequestMock() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRemoteAddr(ip);
         request.addHeader(keyControlCache, valueContolCache);
         request.addHeader(userAgentHeader, userAgent);
 //        request.addHeader(customClientIdHeader, clientId);
         request.addHeader(acceptHeader, accept);
-        request.addHeader(AcceptLanguageHeader, acceptLanguage);
+        request.addHeader(acceptLanguageHeader, acceptLanguage);
         request.addHeader(acceptEncodingHeader, acceptEncoding);
-        request.addHeader(Header, host);
+        request.addHeader(headerHost, hostValue);
         request.addHeader(refererHeader, referer);
         request.addHeader(connectionHeader, connection);
+        return request;
+    }
 
-        listOfHeaders = new ArrayList<>();
-        listOfHeaders.add(new CastleHeader(keyControlCache, valueContolCache));
-//        listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
-//        listOfHeaders.add(new CastleHeader(customClientIdHeader, clientId));
+    private List<CastleHeader> getStandardHeaders() {
+        List<CastleHeader> listOfHeaders = new ArrayList<>();
+        listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
         listOfHeaders.add(new CastleHeader(acceptHeader, accept));
-        listOfHeaders.add(new CastleHeader(AcceptLanguageHeader, acceptLanguage));
+        listOfHeaders.add(new CastleHeader(acceptLanguageHeader, acceptLanguage));
         listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
-        listOfHeaders.add(new CastleHeader(Header, host));
-        listOfHeaders.add(new CastleHeader(refererHeader, referer));
-        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
-        expectedHeaders = new CastleHeaders();
-        expectedHeaders.setHeaders(listOfHeaders);
+//        listOfHeaders.add(new CastleHeader(keyControlCache, valueContolCache));
+//        listOfHeaders.add(new CastleHeader(customClientIdHeader, clientId));
+//        listOfHeaders.add(new CastleHeader(headerHost, hostValue));
+//        listOfHeaders.add(new CastleHeader(refererHeader, referer));
+//        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
+        return listOfHeaders;
+    }
 
-        expectedContext = new CastleContext();
+    public CastleHeaders getStandardCastleHeaders() {
+        CastleHeaders headers = new CastleHeaders();
+        headers.setHeaders(getStandardHeaders());
+        return headers;
+    }
 
-        expectedContext.setHeaders(expectedHeaders);
+    public CastleContext getStandardContext() {
+        CastleContext expectedContext = new CastleContext();
+        expectedContext.setHeaders(getStandardCastleHeaders());
         expectedContext.setUserAgent(userAgent);
         expectedContext.setIp(ip);
-        expectedContext.setClientId(clientId);
-
-        castleConfigurationBuilder = CastleConfigurationBuilder.aConfigBuilder();
-        castleConfigurationBuilder
-                .withDefaultFailoverStrategy()
-                .withTimeout(500)
-                .withApiSecret("testApiSecret");
+//        expectedContext.setClientId(clientId);
+        return expectedContext;
     }
 
-    @Test
-    public void buildContextFromDefaultHTTPServletRequest() {
-        //given
-        MockHttpServletRequest freshRequest = new MockHttpServletRequest();
-        freshRequest.setRemoteAddr(null);
-        CastleContext expected = new CastleContext();
-        List<CastleHeader> emptyHeadersList = new ArrayList<>();
-        CastleHeaders emptyHeaders = new CastleHeaders();
-        emptyHeaders.setHeaders(emptyHeadersList);
-        expected.setHeaders(emptyHeaders);
 
-        //when
-        CastleContext context = builder.fromHttpServletRequest(freshRequest).build();
-
-        //then all fields in the built context should be set to null
-        //(except for headers, since the MockHttpServletRequest implementation does not allow to set null instead of an empty list)
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(expected);
-    }
-
-    @Test
-    public void buildContextFromHTTPServletRequestWithCidCookie() {
-
-        //given
-        Cookie cookie = new Cookie("__cid", clientId);
-        request.setCookies(cookie);
-
-        expectedHeaders.setHeaders(listOfHeaders);
-        expectedContext.setHeaders(expectedHeaders);
-
-        //when
-        CastleContext context = builder.fromHttpServletRequest(request).build();
-
-        // then all the headers set during setUp should be passed and the cid id should be taken from the cid cookie
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(expectedContext);
-    }
-
-    @Test
-    public void buildContextFromHTTPServletRequestWithoutCidCookie() {
-        //given
-        String alternativeClientId = "KKDjdjjeii_kkd_-mmkkd";
-        expectedContext.setClientId(alternativeClientId);
-        request.addHeader("X-Castle-Client-Id", alternativeClientId);
-
-
-        //when
-        CastleContext context = builder.fromHttpServletRequest(request).build();
-
-        //then all the headers set during setUp should be passed and the cid id should be taken from the custom Castle-Id header
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(expectedContext);
-    }
-
-    @Test
-    public void buildContextWithEmptyConfiguration() {
-
-        //given
-        CastleConfiguration configuration = castleConfigurationBuilder
-                .withBlackListHeaders(new LinkedList<String>())
-                .withWhiteListHeaders(new LinkedList<String>())
-                .build();
-
-        Cookie cookie = new Cookie("__cid", clientId);
-        request.setCookies(cookie);
-
-        List<CastleHeader> emptyHeadersList = new ArrayList<>();
-        CastleHeaders emptyHeaders = new CastleHeaders();
-        emptyHeaders.setHeaders(emptyHeadersList);
-        expectedContext.setHeaders(emptyHeaders);
-
-        //when
-        CastleContext context = builder.fromHttpServletRequest(request)
-                .withConfiguration(configuration)
-                .build();
-
-        //then all headers should be left blank???
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(expectedContext);
-    }
-
-    @Test
-    public void buildContextWithDefaultWhitelistHeaders() {
-
-        //given
-        CastleConfiguration configuration = castleConfigurationBuilder
-                .withBlackListHeaders(new LinkedList<String>())
-                .withDefaultWhitelist()
-                .build();
-
-        Cookie cookie = new Cookie("__cid", clientId);
-        Cookie session = new Cookie("SESSIONID", "node0u06kx7plbtd11m246ilq8hfuh0");
-        request.setCookies(session, cookie);
-
-        CastleHeader cookiesHeader = new CastleHeader("Cookie", "JSESSIONID node0u06kx7plbtd11m246ilq8hfuh0.node0; __cid vblxmkKK-6__54sd44d");
-        listOfHeaders.add(cookiesHeader);
-
-        expectedHeaders.setHeaders(listOfHeaders);
-        expectedContext.setHeaders(expectedHeaders);
-
-        //when
-        CastleContext context = builder.fromHttpServletRequest(request)
-                .withConfiguration(configuration)
-                .build();
-
-        //then ????
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(expectedContext);
-
-    }
 }

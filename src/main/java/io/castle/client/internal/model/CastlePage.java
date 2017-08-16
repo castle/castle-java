@@ -46,4 +46,15 @@ public class CastlePage {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        return "CastlePage{" +
+                "path='" + path + '\'' +
+                ", referrer='" + referrer + '\'' +
+                ", search='" + search + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

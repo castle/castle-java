@@ -17,19 +17,19 @@ public class CastleConfigurationBuilderTest {
         CastleConfiguration config = builder.build();
         //then the configuration match the default values
         Assertions.assertThat(config.getApiSecret()).isEqualTo(apiSecret);
-        Assertions.assertThat(config.getBlackListHeaders()).contains("Cookie");
+        Assertions.assertThat(config.getBlackListHeaders()).contains("cookie");
         Assertions.assertThat(config.getWhiteListHeaders()).contains(
-                "User-Agent",
-                "Accept-Language",
-                "Accept-Encoding",
-                "Accept-Charset",
-                "Accept",
-                "Accept-Datetime",
-                "X-Forwarded-For",
-                "Forwarded",
-                "X-Forwarded",
-                "X-Real-IP",
-                "REMOTE_ADDR");
+                "user-agent",
+                "accept-language",
+                "accept-encoding",
+                "accept-charset",
+                "accept",
+                "accept-datetime",
+                "x-forwarded-for",
+                "forwarded",
+                "x-forwarded",
+                "x-real-ip",
+                "remote-addr");
         Assertions.assertThat(config.getFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
         Assertions.assertThat(config.getTimeout()).isEqualTo(500);
 

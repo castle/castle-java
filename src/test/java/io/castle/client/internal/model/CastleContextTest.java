@@ -3,7 +3,9 @@ package io.castle.client.internal.model;
 import com.google.common.collect.ImmutableList;
 import io.castle.client.internal.model.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 public class CastleContextTest {
 
@@ -24,7 +26,7 @@ public class CastleContextTest {
     }
 
     @Test
-    public void completeContextJsonSpec() {
+    public void completeContextJsonSpec() throws JSONException {
 
         //given
         CastleContext aContext = new CastleContext();
@@ -109,7 +111,7 @@ public class CastleContextTest {
                 "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
                 "\"timezone\":\"timezone\"," +
                 "\"userAgent\":\"userAgent\"}";
-        Assertions.assertThat(contextJson).isEqualTo(expectedJson);
+        JSONAssert.assertEquals(expectedJson,contextJson,true);
 
         // And json to object create the same structure
         CastleContext fromJson = model.getGson().fromJson(expectedJson, CastleContext.class);

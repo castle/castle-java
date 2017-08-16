@@ -46,4 +46,15 @@ public class CastleLocation {
     public void setSpeed(Long speed) {
         this.speed = speed;
     }
+
+    @Override
+    public String toString() {
+        return "CastleLocation{" +
+                "city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", speed=" + speed +
+                '}';
+    }
 }

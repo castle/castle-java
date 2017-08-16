@@ -28,4 +28,13 @@ public class CastleScreen {
     public void setDensity(int density) {
         this.density = density;
     }
+
+    @Override
+    public String toString() {
+        return "CastleScreen{" +
+                "width=" + width +
+                ", height=" + height +
+                ", density=" + density +
+                '}';
+    }
 }

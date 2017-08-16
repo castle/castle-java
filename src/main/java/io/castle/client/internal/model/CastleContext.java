@@ -7,17 +7,17 @@ public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
     private String clientId;
+    private String ip;
+    private String locale;
+    private String timezone;
     private CastlePage page;
     private CastleReferrer referrer;
     private CastleHeaders headers;
-    private String ip;
     private CastleSdkRef library = new CastleSdkRef();
-    private String locale;
     private CastleLocation location;
     private CastleNetwork network;
     private CastleOS os;
     private CastleScreen screen;
-    private String timezone;
 
     @SerializedName("userAgent")
     private String userAgent;
@@ -142,4 +142,24 @@ public class CastleContext {
         this.userAgent = userAgent;
     }
 
+    @Override
+    public String toString() {
+        return "CastleContext{" +
+                "active=" + active +
+                ", device=" + device +
+                ", clientId='" + clientId + '\'' +
+                ", ip='" + ip + '\'' +
+                ", locale='" + locale + '\'' +
+                ", timezone='" + timezone + '\'' +
+                ", page=" + page +
+                ", referrer=" + referrer +
+                ", headers=" + headers +
+                ", library=" + library +
+                ", location=" + location +
+                ", network=" + network +
+                ", os=" + os +
+                ", screen=" + screen +
+                ", userAgent='" + userAgent + '\'' +
+                '}';
+    }
 }

@@ -9,14 +9,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 
 public class CastleContextBuilder {
 
     private CastleContext context;
     private CastleHeaders headers;
+    private final CastleConfiguration configuration;
 
-    public CastleContextBuilder() {
+    public CastleContextBuilder(CastleConfiguration configuration) {
+        this.configuration = configuration;
         context = new CastleContext();
     }
 
@@ -28,36 +29,24 @@ public class CastleContextBuilder {
     public CastleContextBuilder fromHttpServletRequest(HttpServletRequest request) {
         context.setClientId(setClientIdFromHttpServletRequest(request));
         this.headers = setCastleHeadersFromHttpServletRequest(request);
-        context.setUserAgent(setUserAgentFromHttpServletRequest(request));
-        context.setIp(setIpFromHttpServletRequest(request));
+        context.setUserAgent(request.getHeader("User-Agent"));
+        context.setIp(request.getRemoteAddr());
         return this;
     }
 
-    public CastleContextBuilder withConfiguration(CastleConfiguration configuration) {
-
-        //Todo: implement proper behaviour for using whitelist and blacklist from the configuration
-        List<CastleHeader> headersList = new ArrayList<>();
-        CastleHeaders newHeaders = new CastleHeaders();
-        newHeaders.setHeaders(headersList);
-
-        this.headers = newHeaders;
-        return this;
-    }
-
-    private String setIpFromHttpServletRequest(HttpServletRequest request) {
-        return request.getRemoteAddr();
-    }
-
-    private String setUserAgentFromHttpServletRequest(HttpServletRequest request) {
-        return request.getHeader("User-Agent");
-    }
-
+    /**
+     * Load the headers from the HttpRequest.
+     * A header will be passed only when it is not on the blacklist and it appears on the whitelist
+     * @param request
+     * @return headers model for castle backend
+     */
     private CastleHeaders setCastleHeadersFromHttpServletRequest(HttpServletRequest request) {
         ArrayList<CastleHeader> castleHeadersList = new ArrayList<>();
         for (Enumeration<String> headerNames = request.getHeaderNames(); headerNames.hasMoreElements(); ) {
             String key = headerNames.nextElement();
-            // TODO: what headers should we exclude from the context object? Or maybe none? Is this why we have Whitelist and blacklist?
-            if (!key.equals("User-Agent") && !key.equals("X-Castle-Client-Id")) {
+            String keyLower = key.toLowerCase();
+            if (!configuration.getBlackListHeaders().contains(keyLower)
+                    && configuration.getWhiteListHeaders().contains(keyLower)) {
                 castleHeadersList.add(new CastleHeader(key, request.getHeader(key)));
             }
         }

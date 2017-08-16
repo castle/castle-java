@@ -37,4 +37,14 @@ public class CastleNetwork {
     public void setWifi(boolean wifi) {
         this.wifi = wifi;
     }
+
+    @Override
+    public String toString() {
+        return "CastleNetwork{" +
+                "bluetooth=" + bluetooth +
+                ", cellular=" + cellular +
+                ", carrier='" + carrier + '\'' +
+                ", wifi=" + wifi +
+                '}';
+    }
 }

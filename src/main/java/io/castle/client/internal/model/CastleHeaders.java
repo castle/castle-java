@@ -13,4 +13,11 @@ public class CastleHeaders {
     public void setHeaders(List<CastleHeader> headers) {
         this.headers = headers;
     }
+
+    @Override
+    public String toString() {
+        return "CastleHeaders{" +
+                "headers=" + headers +
+                '}';
+    }
 }

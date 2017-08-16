@@ -1,9 +1,12 @@
 package io.castle.client.internal.config;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import io.castle.client.internal.model.AuthenticateAction;
 import io.castle.client.internal.model.AuthenticateStrategy;
+import io.castle.client.internal.utils.HeaderNormalizer;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,6 +81,14 @@ public class CastleConfigurationBuilder {
         return this;
     }
 
+    public CastleConfigurationBuilder withWhiteListHeaders(String... whiteListHeaders) {
+        return withWhiteListHeaders(ImmutableList.copyOf(whiteListHeaders));
+    }
+
+    public CastleConfigurationBuilder withBlackListHeaders(String... black) {
+        return withBlackListHeaders(ImmutableList.copyOf(black));
+    }
+
     public CastleConfigurationBuilder withBlackListHeaders(List<String> blackListHeaders) {
         this.blackListHeaders = blackListHeaders;
         return this;
@@ -93,6 +104,13 @@ public class CastleConfigurationBuilder {
         Preconditions.checkState(whiteListHeaders != null, "A whitelist of headers must be provided. If not sure, then use the default values provided by method withDefaultWhitelist");
         Preconditions.checkState(blackListHeaders != null, "A blacklist of headers must be provided. If not sure, then use the default values provided by method withDefaultBlacklist");
         Preconditions.checkState(failoverStrategy != null, "A failover strategy must be provided. If not sure, then use the default values provided by method withDefaultFailoverStrategy");
-        return new CastleConfiguration(timeout, failoverStrategy, whiteListHeaders, blackListHeaders, apiSecret);
+        return new CastleConfiguration(timeout,
+                failoverStrategy,
+                HeaderNormalizer.normalizeList(whiteListHeaders),
+                HeaderNormalizer.normalizeList(blackListHeaders),
+                apiSecret
+        );
     }
+
+
 }
