@@ -1,11 +1,13 @@
 package io.castle.client.api;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.model.AuthenticateAction;
 import io.castle.client.internal.model.CastleContext;
 import io.castle.client.internal.utils.CastleContextBuilder;
+import io.castle.client.internal.utils.ContextMerge;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,13 +16,21 @@ public class CastleApiImpl implements CastleApi {
     private final HttpServletRequest request;
     private final boolean doNotTrack;
     private final CastleSdkInternalConfiguration configuration;
-    private final CastleContext context;
+    private final JsonObject contextJson;
 
     public CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration) {
         this.request = request;
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
-        this.context = buildContext();
+        CastleContext castleContext = buildContext();
+        this.contextJson = configuration.getModel().getGson().toJsonTree(castleContext).getAsJsonObject();
+    }
+
+    private CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
+        this.request = request;
+        this.doNotTrack = doNotTrack;
+        this.configuration = configuration;
+        this.contextJson = contextJson;
     }
 
     private CastleContext buildContext() {
@@ -33,7 +43,9 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public CastleApi mergeContext(Object additionalContext) {
-        return this;
+        JsonObject contextToMerge = configuration.getModel().getGson().toJsonTree(additionalContext).getAsJsonObject();
+        JsonObject mergedContext = new ContextMerge().merge(this.contextJson, contextToMerge);
+        return new CastleApiImpl(request, doNotTrack, configuration, mergedContext);
     }
 
     @Override
@@ -44,7 +56,6 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public AuthenticateAction authenticate(String event, String userId, Object properties) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        JsonElement contextJson = configuration.getModel().getGson().toJsonTree(context);
         JsonElement propertiesJson = null;
         if (properties != null) {
             propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
@@ -68,7 +79,6 @@ public class CastleApiImpl implements CastleApi {
             return;
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        JsonElement contextJson = configuration.getModel().getGson().toJsonTree(context);
         JsonElement propertiesJson = null;
         if (properties != null) {
             propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
