@@ -39,6 +39,7 @@ public class OkRestApiBackend implements RestApi {
     public int sendTrackRequest(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload) {
         JsonObject json = new JsonObject();
         json.add("name", new JsonPrimitive(event));
+        // TODO: adding user_id will cause null pointer exception if there is none
         json.add("user_id", new JsonPrimitive(userId));
         json.add("context", contextPayload);
         if (propertiesPayload != null) {
