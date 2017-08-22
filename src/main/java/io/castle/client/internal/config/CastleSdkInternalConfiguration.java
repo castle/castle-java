@@ -1,6 +1,5 @@
 package io.castle.client.internal.config;
 
-import io.castle.client.deprecated.CastleDeprecated;
 import io.castle.client.internal.backend.OkRestApiBackend;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.backend.RestApiFactory;
