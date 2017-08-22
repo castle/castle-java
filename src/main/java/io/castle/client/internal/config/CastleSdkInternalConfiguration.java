@@ -1,5 +1,6 @@
 package io.castle.client.internal.config;
 
+import com.google.common.io.BaseEncoding;
 import io.castle.client.internal.backend.OkRestApiBackend;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.backend.RestApiFactory;
@@ -9,8 +10,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 
 import java.io.IOException;
 
@@ -56,9 +55,7 @@ public class CastleSdkInternalConfiguration {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         final String authString = ":" + configuration.getApiSecret();
-        //TODO migrate to a no dependency base64 implementation.
-        final Base64 base64 = new Base64(1024);
-        final String authStringBase64 = "Basic " + StringUtils.newStringUtf8(base64.encode(authString.getBytes())).trim();
+        final String authStringBase64 = "Basic " + BaseEncoding.base64().encode(authString.getBytes());
 
         final OkHttpClient client = new OkHttpClient()
                 .newBuilder()

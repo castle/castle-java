@@ -11,18 +11,34 @@ import javax.servlet.http.HttpServletRequest;
 public class Castle {
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
-    private static Castle instance = new Castle();
-
     private final CastleSdkInternalConfiguration configuration;
 
-    private Castle() {
-        // Load configuration
-        configuration = CastleSdkInternalConfiguration.getInternalConfiguration();
+    public Castle(CastleSdkInternalConfiguration configuration) {
+        this.configuration = configuration;
     }
 
+
+    private static Castle instance;
+
     public static Castle sdk() {
+        if (instance != null) {
+            initializeSDK();
+        }
         return instance;
     }
+
+    /**
+     * Verify SDK configuration and initialize the internal configuration.
+     */
+    public static void verifySdkConfiguration() {
+        initializeSDK();
+    }
+
+    private static synchronized void initializeSDK() {
+        CastleSdkInternalConfiguration loadedConfig = CastleSdkInternalConfiguration.getInternalConfiguration();
+        instance = new Castle(loadedConfig);
+    }
+
 
     /**
      * Create a API context for the given request.
