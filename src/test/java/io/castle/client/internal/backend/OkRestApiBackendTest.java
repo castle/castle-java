@@ -2,9 +2,13 @@ package io.castle.client.internal.backend;
 
 import com.google.gson.JsonElement;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
-import io.castle.client.internal.model.AuthenticateAction;
+import io.castle.client.model.AsyncCallbackHandler;
+import io.castle.client.model.AuthenticateAction;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +16,12 @@ import static org.junit.Assert.*;
 @Ignore
 public class OkRestApiBackendTest {
 
-    CastleSdkInternalConfiguration castleSdkInternalConfiguration = CastleSdkInternalConfiguration.getInternalConfiguration();
+    CastleSdkInternalConfiguration castleSdkInternalConfiguration;
+
+    @Before
+    public void setUp() throws Exception {
+        castleSdkInternalConfiguration = CastleSdkInternalConfiguration.getInternalConfiguration();
+    }
 
     @Test
     public void testAuthenticationRequest() {
@@ -38,10 +47,16 @@ public class OkRestApiBackendTest {
         JsonElement jsonElement = castleSdkInternalConfiguration.getModel().getGson().toJsonTree(example);
 
         //When
-        int sendTrackStatus = restApi.sendTrackRequest("$login.succeeded", "1234", null, jsonElement);
+        restApi.sendTrackRequest("$login.succeeded", "1234", null, jsonElement, new AsyncCallbackHandler<Boolean>() {
+            @Override
+            public void onResponse(Boolean response) {
 
+            }
+        });
+
+        //TODO clean dev tests and create integration tests for real backend integration.
         //Then response code is correct
-        assertEquals(201, sendTrackStatus);
+//        assertEquals(201, sendTrackStatus);
     }
 
     private static class ExampleProperties {

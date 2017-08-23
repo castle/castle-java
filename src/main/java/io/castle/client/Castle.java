@@ -3,6 +3,7 @@ package io.castle.client;
 import io.castle.client.api.CastleApi;
 import io.castle.client.api.CastleApiImpl;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
+import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,11 @@ public class Castle {
 
     public static Castle sdk() {
         if (instance != null) {
-            initializeSDK();
+            try {
+                initializeSDK();
+            } catch (CastleSdkConfigurationException e) {
+                throw new IllegalStateException("Castle SDK initialization failure. Ensure the the configuration is correct and that the verifySdkConfiguration method is called during application initialization");
+            }
         }
         return instance;
     }
@@ -30,11 +35,11 @@ public class Castle {
     /**
      * Verify SDK configuration and initialize the internal configuration.
      */
-    public static void verifySdkConfiguration() {
+    public static void verifySdkConfiguration() throws CastleSdkConfigurationException {
         initializeSDK();
     }
 
-    private static synchronized void initializeSDK() {
+    private static synchronized void initializeSDK() throws CastleSdkConfigurationException {
         CastleSdkInternalConfiguration loadedConfig = CastleSdkInternalConfiguration.getInternalConfiguration();
         instance = new Castle(loadedConfig);
     }

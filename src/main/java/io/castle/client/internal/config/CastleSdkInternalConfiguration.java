@@ -4,7 +4,8 @@ import com.google.common.io.BaseEncoding;
 import io.castle.client.internal.backend.OkRestApiBackend;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.backend.RestApiFactory;
-import io.castle.client.internal.model.json.CastleGsonModel;
+import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.model.CastleSdkConfigurationException;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -12,7 +13,11 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+//TODO configuration will be loaded from:
+// 1) environment variables
+// 2) classpath resources
 public class CastleSdkInternalConfiguration {
 
     private final RestApiFactory restApiFactory;
@@ -25,7 +30,7 @@ public class CastleSdkInternalConfiguration {
         this.configuration = configuration;
     }
 
-    public static CastleSdkInternalConfiguration getInternalConfiguration() {
+    public static CastleSdkInternalConfiguration getInternalConfiguration() throws CastleSdkConfigurationException {
         CastleGsonModel modelInstance = new CastleGsonModel();
         CastleConfiguration configuration = loadConfiguration();
         RestApiFactory apiFactory = loadRestApiFactory(modelInstance, configuration);
@@ -37,10 +42,17 @@ public class CastleSdkInternalConfiguration {
      *
      * @return
      */
-    private static CastleConfiguration loadConfiguration() {
+    private static CastleConfiguration loadConfiguration() throws CastleSdkConfigurationException {
         //TODO implement all options
         String envApiSecret = System.getenv("CASTLE_SDK_API_SECRET");
-        return CastleConfigurationBuilder.defaultConfigBuilder().withApiSecret(envApiSecret).build();
+        String castleAppId = System.getenv("CASTLE_APP_ID");
+        //TODO Load whitelist from environment
+        //TODO Load blacklist from environment
+        return CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret(envApiSecret)
+                .withCastleAppId(castleAppId)
+                .build();
     }
 
 
@@ -59,6 +71,7 @@ public class CastleSdkInternalConfiguration {
 
         final OkHttpClient client = new OkHttpClient()
                 .newBuilder()
+                .connectTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS)
                 .addInterceptor(logging)
                 .addInterceptor(new Interceptor() {
                     @Override

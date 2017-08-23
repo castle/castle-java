@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
-import io.castle.client.internal.model.AuthenticateAction;
-import io.castle.client.internal.model.CastleContext;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.CastleContext;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.ContextMerge;
 
@@ -87,9 +87,22 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void identify(String userId, boolean active, Object traits) {
+    public void identify(String userId, boolean active, Object traits, Object properties) {
         if (doNotTrack) {
             return;
         }
+        JsonElement traitsJson = null;
+        if (traits != null) {
+            traitsJson = configuration.getModel().getGson().toJsonTree(traits);
+        }
+        JsonElement propertiesJson = null;
+        if (properties != null) {
+            propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
+        }
+
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        restApi.sendIdentifyRequest(userId,contextJson,active,traitsJson,propertiesJson);
     }
+
+    //TODO Ask about the review endpoint. How to get the review ids??.
 }

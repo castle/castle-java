@@ -1,9 +1,9 @@
 package io.castle.client.internal.utils;
 
 import io.castle.client.internal.config.CastleConfiguration;
-import io.castle.client.internal.model.CastleContext;
-import io.castle.client.internal.model.CastleHeader;
-import io.castle.client.internal.model.CastleHeaders;
+import io.castle.client.model.CastleContext;
+import io.castle.client.model.CastleHeader;
+import io.castle.client.model.CastleHeaders;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

@@ -1,9 +1,9 @@
-package io.castle.client.internal.model.json;
+package io.castle.client.internal.json;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
-import io.castle.client.internal.model.CastleHeader;
-import io.castle.client.internal.model.CastleHeaders;
+import io.castle.client.model.CastleHeader;
+import io.castle.client.model.CastleHeaders;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;

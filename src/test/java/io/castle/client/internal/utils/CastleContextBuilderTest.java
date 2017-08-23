@@ -2,9 +2,10 @@ package io.castle.client.internal.utils;
 
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
-import io.castle.client.internal.model.CastleContext;
-import io.castle.client.internal.model.CastleHeader;
-import io.castle.client.internal.model.CastleHeaders;
+import io.castle.client.model.CastleContext;
+import io.castle.client.model.CastleHeader;
+import io.castle.client.model.CastleHeaders;
+import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -18,10 +19,14 @@ import java.util.List;
 public class CastleContextBuilderTest {
 
     @Test
-    public void buildContextWithDefaultSetup() {
+    public void buildContextWithDefaultSetup() throws CastleSdkConfigurationException {
 
         //Given
-        CastleConfiguration configuration = CastleConfigurationBuilder.defaultConfigBuilder().withApiSecret("anyValid").build();
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("anyValidKey")
+                .withCastleAppId("anyValidAppId")
+                .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration);
         HttpServletRequest standardRequest = getStandardRequestMock();
         CastleContext standardContext = getStandardContext();
@@ -34,12 +39,13 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void blockHeadersOnBlackList() {
+    public void blockHeadersOnBlackList() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
-                .withApiSecret("anyValid")
+                .withApiSecret("anyValidKey")
+                .withCastleAppId("anyValidAppId")
                 .withBlackListHeaders("Cookie", acceptLanguageHeader)
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration);
@@ -61,12 +67,13 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void blackListIsMoreRelevantThatWhitelist() {
+    public void blackListIsMoreRelevantThatWhitelist() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
-                .withApiSecret("anyValid")
+                .withApiSecret("anyValidKey")
+                .withCastleAppId("anyValidAppId")
                 .withBlackListHeaders(connectionHeader)
                 .withWhiteListHeaders(connectionHeader)
                 .build();
@@ -86,12 +93,13 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void whiteListPassHeadersToTheContext() {
+    public void whiteListPassHeadersToTheContext() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
-                .withApiSecret("anyValid")
+                .withApiSecret("anyValidKey")
+                .withCastleAppId("anyValidAppId")
                 .withDefaultBlacklist()
                 .withWhiteListHeaders(connectionHeader)
                 .build();
@@ -112,12 +120,13 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void clientIdIsInFirstPlaceTakenFromCookie() {
+    public void clientIdIsInFirstPlaceTakenFromCookie() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
-                .withApiSecret("anyValid")
+                .withApiSecret("anyValidKey")
+                .withCastleAppId("anyValidAppId")
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration);
 
@@ -141,12 +150,13 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void clientIdUseFailoverValueFromHeaders() {
+    public void clientIdUseFailoverValueFromHeaders() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
-                .withApiSecret("anyValid")
+                .withApiSecret("anyValidKey")
+                .withCastleAppId("anyValidAppId")
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration);
 

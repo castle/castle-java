@@ -2,21 +2,26 @@ package io.castle.client.internal.model;
 
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class CastleConfigurationBuilderTest {
 
     @Test
-    public void buildDefaultConfiguration() {
+    public void buildDefaultConfiguration() throws CastleSdkConfigurationException {
         //given
         CastleConfigurationBuilder builder = CastleConfigurationBuilder.defaultConfigBuilder();
         String apiSecret = "TestApiSecret";
+        String castleAppId = "TestCastleAppId";
         builder.withApiSecret(apiSecret);
+        builder.withCastleAppId(castleAppId);
         //when
         CastleConfiguration config = builder.build();
         //then the configuration match the default values
         Assertions.assertThat(config.getApiSecret()).isEqualTo(apiSecret);
+        Assertions.assertThat(config.getCastleAppId()).isEqualTo(castleAppId);
         Assertions.assertThat(config.getBlackListHeaders()).contains("cookie");
         Assertions.assertThat(config.getWhiteListHeaders()).contains(
                 "user-agent",
@@ -36,8 +41,8 @@ public class CastleConfigurationBuilderTest {
 
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void doNotAllowToCreateAConfigurationWithoutApiSecret() {
+    @Test(expected = CastleSdkConfigurationException.class)
+    public void doNotAllowToCreateAConfigurationWithoutApiSecret() throws CastleSdkConfigurationException {
         //given
         CastleConfigurationBuilder builder = CastleConfigurationBuilder.aConfigBuilder();
         //when
@@ -45,8 +50,8 @@ public class CastleConfigurationBuilderTest {
         //then a exception is throw
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void defaultConfigBuilderDoNotContaintApiSecret() {
+    @Test(expected = CastleSdkConfigurationException.class)
+    public void defaultConfigBuilderDoNotContainApiSecret() throws CastleSdkConfigurationException {
         //given
         CastleConfigurationBuilder builder = CastleConfigurationBuilder.defaultConfigBuilder();
         //when

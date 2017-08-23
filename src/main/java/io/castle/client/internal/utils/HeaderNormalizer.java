@@ -7,15 +7,18 @@ import java.util.List;
 
 public class HeaderNormalizer {
 
-    public static String normalize(String headerName){
-        if( headerName == null) {
+    public static String normalize(String headerName) {
+        if (headerName == null) {
             return null;
         }
-        return headerName.toLowerCase().replaceAll("_","-");
+        return headerName.toLowerCase().replaceAll("_", "-");
     }
 
 
     public static List<String> normalizeList(List<String> headers) {
+        if (headers == null) {
+            return null;
+        }
         ImmutableList.Builder<String> builder = ImmutableList.builder();
         for (Iterator<String> iterator = headers.iterator(); iterator.hasNext(); ) {
             String value = iterator.next();

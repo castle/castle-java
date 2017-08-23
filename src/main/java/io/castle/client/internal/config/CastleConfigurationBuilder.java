@@ -1,12 +1,13 @@
 package io.castle.client.internal.config;
 
-import com.google.common.base.Preconditions;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import io.castle.client.internal.model.AuthenticateAction;
-import io.castle.client.internal.model.AuthenticateStrategy;
+import io.castle.client.internal.backend.CastleBackendProvider;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.AuthenticateStrategy;
 import io.castle.client.internal.utils.HeaderNormalizer;
+import io.castle.client.model.CastleSdkConfigurationException;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class CastleConfigurationBuilder {
     private List<String> whiteListHeaders;
     private List<String> blackListHeaders;
     private String apiSecret;
+    private String castleAppId;
+    private CastleBackendProvider backendProvider;
 
     private CastleConfigurationBuilder() {
     }
@@ -26,11 +29,12 @@ public class CastleConfigurationBuilder {
      * @return builder to set the apiSecret
      */
     public static CastleConfigurationBuilder defaultConfigBuilder() {
-        CastleConfigurationBuilder builder = new CastleConfigurationBuilder();
-        builder.withDefaultWhitelist();
-        builder.withDefaultBlacklist();
-        builder.withTimeout(500);
-        builder.withDefaultFailoverStrategy();
+        CastleConfigurationBuilder builder = new CastleConfigurationBuilder()
+                .withDefaultWhitelist()
+                .withDefaultBlacklist()
+                .withTimeout(500)
+                .withDefaultFailoverStrategy()
+                .withDefaultBackendProvider();
         return builder;
     }
 
@@ -76,6 +80,10 @@ public class CastleConfigurationBuilder {
         return this.withFailoverStrategy(new AuthenticateStrategy(AuthenticateAction.ALLOW));
     }
 
+    public CastleConfigurationBuilder withDefaultBackendProvider() {
+        return this.withBackendProvider(CastleBackendProvider.OKHTTP);
+    }
+
     public CastleConfigurationBuilder withWhiteListHeaders(List<String> whiteListHeaders) {
         this.whiteListHeaders = whiteListHeaders;
         return this;
@@ -99,18 +107,47 @@ public class CastleConfigurationBuilder {
         return this;
     }
 
-    public CastleConfiguration build() {
-        Preconditions.checkState(apiSecret != null && !apiSecret.isEmpty(), "The apiSecret for the castleSDK must be provided in the configuration");
-        Preconditions.checkState(whiteListHeaders != null, "A whitelist of headers must be provided. If not sure, then use the default values provided by method withDefaultWhitelist");
-        Preconditions.checkState(blackListHeaders != null, "A blacklist of headers must be provided. If not sure, then use the default values provided by method withDefaultBlacklist");
-        Preconditions.checkState(failoverStrategy != null, "A failover strategy must be provided. If not sure, then use the default values provided by method withDefaultFailoverStrategy");
+    public CastleConfiguration build() throws CastleSdkConfigurationException {
+        ImmutableList.Builder<String> builder = ImmutableList.builder();
+        if (castleAppId == null || castleAppId.isEmpty()) {
+            builder.add("The castleAppId for the castleSDK must be provided in the configuration. Read documentation for further details.");
+        }
+        if (apiSecret == null || apiSecret.isEmpty()) {
+            builder.add("The apiSecret for the castleSDK must be provided in the configuration. Read documentation for further details.");
+        }
+        if (whiteListHeaders == null) {
+            builder.add("A whitelist of headers must be provided. If not sure, then use the default values provided by method withDefaultWhitelist. Read documentation for further details.");
+        }
+        if (blackListHeaders == null) {
+            builder.add("A blacklist of headers must be provided. If not sure, then use the default values provided by method withDefaultBlacklist. Read documentation for further details.");
+        }
+        if (failoverStrategy == null) {
+            builder.add("A failover strategy must be provided. If not sure, then use the default values provided by method withDefaultFailoverStrategy. Read documentation for further details.");
+        }
+        if (backendProvider == null) {
+            builder.add("A backend provider must be selected. If not sure, then use the default values provided by method withDefaultBackendProvider. Read documentation for further details.");
+        }
+        ImmutableList<String> errorMessages = builder.build();
+        if (!errorMessages.isEmpty()) {
+            throw new CastleSdkConfigurationException(Joiner.on(System.lineSeparator()).join(errorMessages));
+        }
         return new CastleConfiguration(timeout,
                 failoverStrategy,
                 HeaderNormalizer.normalizeList(whiteListHeaders),
                 HeaderNormalizer.normalizeList(blackListHeaders),
-                apiSecret
-        );
+                apiSecret,
+                castleAppId,
+                backendProvider);
     }
 
+    public CastleConfigurationBuilder withCastleAppId(String castleAppId) {
+        this.castleAppId = castleAppId;
+        return this;
+    }
+
+    public CastleConfigurationBuilder withBackendProvider(CastleBackendProvider backendProvider) {
+        this.backendProvider = backendProvider;
+        return this;
+    }
 
 }

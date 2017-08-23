@@ -1,4 +1,4 @@
-package io.castle.client.internal.model;
+package io.castle.client.model;
 
 import com.google.gson.annotations.SerializedName;
 

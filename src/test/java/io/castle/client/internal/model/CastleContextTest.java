@@ -1,7 +1,8 @@
 package io.castle.client.internal.model;
 
 import com.google.common.collect.ImmutableList;
-import io.castle.client.internal.model.json.CastleGsonModel;
+import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.model.*;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.junit.Test;
