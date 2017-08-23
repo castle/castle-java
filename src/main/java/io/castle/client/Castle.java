@@ -2,6 +2,7 @@ package io.castle.client;
 
 import io.castle.client.api.CastleApi;
 import io.castle.client.api.CastleApiImpl;
+import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
@@ -12,30 +13,30 @@ import javax.servlet.http.HttpServletRequest;
 public class Castle {
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
-    private final CastleSdkInternalConfiguration configuration;
+    private final CastleSdkInternalConfiguration internalConfiguration;
 
-    public Castle(CastleSdkInternalConfiguration configuration) {
-        this.configuration = configuration;
+    public Castle(CastleSdkInternalConfiguration internalConfiguration) {
+        this.internalConfiguration = internalConfiguration;
     }
-
 
     private static Castle instance;
 
+    /**
+     * Get the SDK singleton instance.
+     *
+     * @return
+     */
     public static Castle sdk() {
-        if (instance != null) {
-            try {
-                initializeSDK();
-            } catch (CastleSdkConfigurationException e) {
-                throw new IllegalStateException("Castle SDK initialization failure. Ensure the the configuration is correct and that the verifySdkConfiguration method is called during application initialization");
-            }
+        if (instance == null) {
+            throw new IllegalStateException("Castle SDK must be initialized be a call to verifySdkConfigurationAndInitialize");
         }
         return instance;
     }
 
     /**
-     * Verify SDK configuration and initialize the internal configuration.
+     * Verify SDK internalConfiguration and initialize the internal internalConfiguration.
      */
-    public static void verifySdkConfiguration() throws CastleSdkConfigurationException {
+    public static void verifySdkConfigurationAndInitialize() throws CastleSdkConfigurationException {
         initializeSDK();
     }
 
@@ -64,7 +65,11 @@ public class Castle {
      * @return a API reference to make backend calls to the castle.io rest api.
      */
     public CastleApi onRequest(HttpServletRequest request, boolean doNotTrack) {
-        return new CastleApiImpl(request, doNotTrack, configuration);
+        return new CastleApiImpl(request, doNotTrack, internalConfiguration);
+    }
+
+    public CastleConfiguration getSdkConfiguration() {
+        return internalConfiguration.getConfiguration();
     }
 
 

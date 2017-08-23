@@ -15,9 +15,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-//TODO configuration will be loaded from:
-// 1) environment variables
-// 2) classpath resources
 public class CastleSdkInternalConfiguration {
 
     private final RestApiFactory restApiFactory;
@@ -32,29 +29,10 @@ public class CastleSdkInternalConfiguration {
 
     public static CastleSdkInternalConfiguration getInternalConfiguration() throws CastleSdkConfigurationException {
         CastleGsonModel modelInstance = new CastleGsonModel();
-        CastleConfiguration configuration = loadConfiguration();
+        CastleConfiguration configuration = new ConfigurationLoader().loadConfiguration();
         RestApiFactory apiFactory = loadRestApiFactory(modelInstance, configuration);
         return new CastleSdkInternalConfiguration(apiFactory, modelInstance, configuration);
     }
-
-    /**
-     * Load the configuration from environment variables.
-     *
-     * @return
-     */
-    private static CastleConfiguration loadConfiguration() throws CastleSdkConfigurationException {
-        //TODO implement all options
-        String envApiSecret = System.getenv("CASTLE_SDK_API_SECRET");
-        String castleAppId = System.getenv("CASTLE_APP_ID");
-        //TODO Load whitelist from environment
-        //TODO Load blacklist from environment
-        return CastleConfigurationBuilder
-                .defaultConfigBuilder()
-                .withApiSecret(envApiSecret)
-                .withCastleAppId(castleAppId)
-                .build();
-    }
-
 
     /**
      * Currently only the okHttp backend is available
