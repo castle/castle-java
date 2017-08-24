@@ -1,9 +1,15 @@
 package io.castle.client;
 
+import io.castle.client.internal.backend.RestApiFactory;
 import io.castle.client.internal.config.CastleConfiguration;
+import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class CastleTest {
 
@@ -79,5 +85,16 @@ public class CastleTest {
         //Then exception is throw
     }
 
+    @Test
+    public void sdkInstanceCanBeModifiedForTestProposes() throws CastleSdkConfigurationException, NoSuchFieldException, IllegalAccessException {
+        //Given a SDK instance
+        Castle.verifySdkConfigurationAndInitialize();
+        RestApiFactory mockFactory = Mockito.mock(RestApiFactory.class);
+        Castle sdk = Castle.sdk();
+        //When the utils are used to override the internal backend factory  
+        SdkMockUtil.modifyInternalBackendFactory(sdk, mockFactory);
+        //Then the internal rest factory is mocked
+        Assertions.assertThat(sdk.getInternalConfiguration().getRestApiFactory()).isSameAs(mockFactory);
+    }
 
 }
