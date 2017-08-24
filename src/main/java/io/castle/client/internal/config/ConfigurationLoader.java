@@ -11,14 +11,14 @@ import java.util.Properties;
 
 /**
  * Load the SDK configuration using the following criteria:
- * 1) environment values have precedence.
+ * 1) Environment values have precedence.
  * 2) If no environment value is provided, then try value from classpath property file.
  * <p>
  * Properties are loaded from file castle_sdk.properties.
  */
 class ConfigurationLoader {
 
-    static final String SDK_PROPERTY_FILENAME = "castle_sdk.properties";
+    static String SDK_PROPERTY_FILENAME;
 
     private final Properties castleConfigurationProperties;
 
@@ -31,6 +31,7 @@ class ConfigurationLoader {
     }
 
     private static Properties loadPropertiesFile() {
+        SDK_PROPERTY_FILENAME = setPropertiesFilePath();
         Properties loaded = new Properties();
         URL configFile = Castle.class.getClassLoader().getResource(ConfigurationLoader.SDK_PROPERTY_FILENAME);
         if (configFile != null) {
@@ -69,5 +70,14 @@ class ConfigurationLoader {
             envApiSecret = properties.getProperty(propertyName);
         }
         return envApiSecret;
+    }
+
+    private static String setPropertiesFilePath(){
+        String propertiesFile = System.getenv("CASTLE_PROPERTIES_FILE");
+        if (propertiesFile != null){
+            return propertiesFile;
+        } else {
+            return "castle_sdk.properties";
+        }
     }
 }

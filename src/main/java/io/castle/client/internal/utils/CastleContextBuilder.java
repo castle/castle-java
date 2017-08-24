@@ -37,8 +37,8 @@ public class CastleContextBuilder {
     /**
      * Load the headers from the HttpRequest.
      * A header will be passed only when it is not on the blacklist and it appears on the whitelist
-     * @param request
-     * @return headers model for castle backend
+     * @param request The HttpRequest containing the headers.
+     * @return headers Model for castle backend.
      */
     private CastleHeaders setCastleHeadersFromHttpServletRequest(HttpServletRequest request) {
         ArrayList<CastleHeader> castleHeadersList = new ArrayList<>();

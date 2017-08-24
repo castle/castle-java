@@ -8,3 +8,4 @@ To check test coverate run:
     mvn clean test jacoco:report
 
 Coverage report will be on the page "target/jacoco-ut/index.html"
+

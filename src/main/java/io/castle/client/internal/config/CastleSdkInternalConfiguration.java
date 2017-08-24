@@ -37,11 +37,12 @@ public class CastleSdkInternalConfiguration {
     /**
      * Currently only the okHttp backend is available
      *
-     * @param modelInstance GSON model instance to use
-     * @return the configured RestApiFactory to make backend REST calls.
+     * @param modelInstance GSON model instance to use.
+     * @param configuration CastleConfiguration instance. TODO!!!!!
+     * @return The configured RestApiFactory to make backend REST calls.
      */
     private static RestApiFactory loadRestApiFactory(final CastleGsonModel modelInstance, final CastleConfiguration configuration) {
-        //TODO Temp logging of request. Should we provide logging trace funcionalities to the end users?
+        //TODO Temp logging of request. Should we provide logging trace functionalities to the end users?
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         final String authString = ":" + configuration.getApiSecret();
