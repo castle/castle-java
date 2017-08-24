@@ -72,5 +72,11 @@ public class Castle {
         return internalConfiguration.getConfiguration();
     }
 
-
+    /**
+     * Package accessible method for tests proposes.
+     * @return the internal sdk configuration
+     */
+    CastleSdkInternalConfiguration getInternalConfiguration() {
+        return internalConfiguration;
+    }
 }
