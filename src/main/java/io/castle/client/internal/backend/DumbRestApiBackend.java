@@ -1,28 +1,64 @@
 package io.castle.client.internal.backend;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Dump implementation of the castle backend. No calls to the Castle backend are realized.
  * <p>
  * This provider can be used in test environments.
  */
-public class DumpRestApiBackend implements RestApi {
+public class DumbRestApiBackend implements RestApi {
 
     private final CastleConfiguration configuration;
 
-    public DumpRestApiBackend(CastleConfiguration configuration) {
+    public String event;
+    public String userId;
+    public JsonElement contextPayload;
+    public JsonElement propertiesPayload;
+    public JsonElement traits;
+    public boolean active;
+
+
+    public DumbRestApiBackend(CastleConfiguration configuration) {
         this.configuration = configuration;
     }
 
+    private String jsonElementToString(JsonElement element) {
+        String elementString = null;
+        if (element != null) {
+            elementString = element.toString();
+        }
+        return elementString;
+    }
+
+    // list of parameters added to dumb backend in order to test that events get passed correctly.
+    public List<String> getListOfParameters() {
+
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(this.event);
+        arrayList.add(this.userId);
+        arrayList.add(jsonElementToString(this.propertiesPayload));
+        arrayList.add(jsonElementToString(this.contextPayload));
+        arrayList.add(jsonElementToString(this.traits));
+        arrayList.add(String.valueOf(active));
+
+        return arrayList;
+    }
 
     @Override
     public void sendTrackRequest(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload) {
-        // No-op
+        this.event = event;
+        this.userId = userId;
+        this.contextPayload = contextPayload;
+        this.propertiesPayload = propertiesPayload;
     }
 
     @Override
@@ -47,6 +83,10 @@ public class DumpRestApiBackend implements RestApi {
 
     @Override
     public void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson, JsonElement propertiesPayload) {
-        //no-op
+        this.userId = userId;
+        this.contextPayload = contextJson;
+        this.active = active;
+        this.traits = traitsJson;
+        this.propertiesPayload = propertiesPayload;
     }
 }

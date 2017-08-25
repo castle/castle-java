@@ -54,6 +54,11 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public CastleApi doNotTrack(boolean doNotTrack) {
+        return new CastleApiImpl(request, doNotTrack, configuration);
+    }
+
+    @Override
     public AuthenticateAction authenticate(String event, String userId, Object properties) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         JsonElement propertiesJson = null;

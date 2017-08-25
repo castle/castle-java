@@ -22,49 +22,49 @@ public class ContextMerge {
         return mergeDeep(base, addition);
     }
 
-    private JsonObject mergeDeep(JsonObject target, JsonObject source) {
-        Set<String> targetProperties = target.keySet();
-        Set<String> sourceProperties = source.keySet();
+    private JsonObject mergeDeep(JsonObject base, JsonObject addition) {
+        Set<String> baseProperties = base.keySet();
+        Set<String> additionProperties = addition.keySet();
 
-        Set<String> onlyOnTarget = Sets.difference(targetProperties, sourceProperties);
-        Set<String> onlyOnSource = Sets.difference(sourceProperties, targetProperties);
-        Set<String> propertiesToMerge = Sets.intersection(targetProperties, sourceProperties);
+        Set<String> onlyOnBase = Sets.difference(baseProperties, additionProperties);
+        Set<String> onlyOnAddition = Sets.difference(additionProperties, baseProperties);
+        Set<String> propertiesToMerge = Sets.intersection(baseProperties, additionProperties);
 
         JsonObject result = new JsonObject();
 
-        for (Iterator<String> iterator = onlyOnTarget.iterator(); iterator.hasNext(); ) {
-            String targetProp = iterator.next();
-            addEntryToResult(result, targetProp, target.get(targetProp));
+        for (Iterator<String> iterator = onlyOnBase.iterator(); iterator.hasNext(); ) {
+            String baseProp = iterator.next();
+            addEntryToResult(result, baseProp, base.get(baseProp));
         }
-        for (Iterator<String> iterator = onlyOnSource.iterator(); iterator.hasNext(); ) {
-            String sourceProp = iterator.next();
-            addEntryToResult(result, sourceProp, source.get(sourceProp));
+        for (Iterator<String> iterator = onlyOnAddition.iterator(); iterator.hasNext(); ) {
+            String additionProp = iterator.next();
+            addEntryToResult(result, additionProp, addition.get(additionProp));
         }
         for (Iterator<String> iterator = propertiesToMerge.iterator(); iterator.hasNext(); ) {
             String key = iterator.next();
-            JsonElement sourceValue = source.get(key);
-            JsonElement targetValue = target.get(key);
-            if (sourceValue.isJsonNull()) {
-                addEntryToResult(result, key, sourceValue);
+            JsonElement additionValue = addition.get(key);
+            JsonElement baseValue = base.get(key);
+            if (additionValue.isJsonNull()) {
+                addEntryToResult(result, key, additionValue);
             } else {
-                if (sourceValue.isJsonObject()) {
-                    if (targetValue.isJsonObject()) {
-                        addEntryToResult(result, key, mergeDeep(targetValue.getAsJsonObject(), sourceValue.getAsJsonObject()));
-                    } else if (targetValue.isJsonArray()) {
-                        addEntryToResult(result, key, sourceValue);
-                    } else if (targetValue.isJsonPrimitive()) {
-                        addEntryToResult(result, key, sourceValue);
+                if (additionValue.isJsonObject()) {
+                    if (baseValue.isJsonObject()) {
+                        addEntryToResult(result, key, mergeDeep(baseValue.getAsJsonObject(), additionValue.getAsJsonObject()));
+                    } else if (baseValue.isJsonArray()) {
+                        addEntryToResult(result, key, additionValue);
+                    } else if (baseValue.isJsonPrimitive()) {
+                        addEntryToResult(result, key, additionValue);
                     }
-                } else if (sourceValue.isJsonArray()) {
-                    if (targetValue.isJsonObject()) {
-                        addEntryToResult(result, key, sourceValue);
-                    } else if (targetValue.isJsonArray()) {
-                        addEntryToResult(result, key, mergeDeep(targetValue.getAsJsonArray(), sourceValue.getAsJsonArray()));
-                    } else if (targetValue.isJsonPrimitive()) {
-                        addEntryToResult(result, key, sourceValue);
+                } else if (additionValue.isJsonArray()) {
+                    if (baseValue.isJsonObject()) {
+                        addEntryToResult(result, key, additionValue);
+                    } else if (baseValue.isJsonArray()) {
+                        addEntryToResult(result, key, mergeDeep(baseValue.getAsJsonArray(), additionValue.getAsJsonArray()));
+                    } else if (baseValue.isJsonPrimitive()) {
+                        addEntryToResult(result, key, additionValue);
                     }
-                } else if (sourceValue.isJsonPrimitive()) {
-                    addEntryToResult(result, key, sourceValue);
+                } else if (additionValue.isJsonPrimitive()) {
+                    addEntryToResult(result, key, additionValue);
                 }
             }
         }

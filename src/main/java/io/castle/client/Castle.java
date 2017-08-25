@@ -28,7 +28,7 @@ public class Castle {
      */
     public static Castle sdk() {
         if (instance == null) {
-            throw new IllegalStateException("Castle SDK must be initialized be a call to verifySdkConfigurationAndInitialize");
+            throw new IllegalStateException("Castle SDK must be initialized via a call to verifySdkConfigurationAndInitialize");
         }
         return instance;
     }

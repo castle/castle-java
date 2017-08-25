@@ -1,9 +1,7 @@
-package io.castle.client.internal.model;
+package io.castle.client.model;
 
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -47,7 +45,7 @@ public class CastleConfigurationBuilderTest {
         CastleConfigurationBuilder builder = CastleConfigurationBuilder.aConfigBuilder();
         //when
         builder.build();
-        //then a exception is throw
+        //then a exception is thrown
     }
 
     @Test(expected = CastleSdkConfigurationException.class)
@@ -56,7 +54,21 @@ public class CastleConfigurationBuilderTest {
         CastleConfigurationBuilder builder = CastleConfigurationBuilder.defaultConfigBuilder();
         //when
         builder.build();
-        //then a exception is throw
+        //then a exception is thrown
+    }
+
+
+
+    @Test(expected = CastleSdkConfigurationException.class)
+    public void builderWithEmptyAppIDAndAPISecretException() throws CastleSdkConfigurationException {
+        //given
+        CastleConfigurationBuilder builder = CastleConfigurationBuilder.aConfigBuilder();
+        builder.withApiSecret("");
+        builder.withCastleAppId("");
+
+        //when
+        builder.build();
+        //then a exception is thrown
     }
 
 }

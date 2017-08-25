@@ -6,5 +6,5 @@ package io.castle.client.internal.backend;
  * The default value is OKHTTP.
  */
 public enum CastleBackendProvider {
-    OKHTTP, DUMP
+    OKHTTP, DUMB
 }

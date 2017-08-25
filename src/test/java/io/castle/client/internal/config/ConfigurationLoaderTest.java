@@ -93,7 +93,7 @@ public class ConfigurationLoaderTest {
         //when
         CastleConfiguration castleConfiguration = loader.loadConfiguration();
 
-        //TODO: generate file input stream.
+        //TODO: generate file input stream error.
 
     }
 

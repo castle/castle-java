@@ -9,10 +9,7 @@ import io.castle.client.model.AuthenticateResponse;
 import io.castle.client.internal.json.CastleGsonModel;
 import okhttp3.*;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 public class OkRestApiBackend implements RestApi {
 

@@ -55,4 +55,16 @@ public class CastleDevice {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "CastleDevice{" +
+                "id='" + id + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", token='" + token + '\'' +
+                '}';
+    }
 }

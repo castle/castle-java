@@ -18,6 +18,8 @@ public interface CastleApi {
 
     AuthenticateAction authenticate(String event, String userId, @Nullable Object properties);
 
+    CastleApi doNotTrack(boolean doNotTrack);
+
     /**
      *
      * @param event TODO!!!!!!!!!!

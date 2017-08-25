@@ -133,7 +133,8 @@ public class CastleContextBuilderTest {
         //And a http request with __cid cookie
         MockHttpServletRequest standardRequest = getStandardRequestMock();
         Cookie cookie = new Cookie("__cid", "valueFromCookie");
-        standardRequest.setCookies(cookie);
+        Cookie someOtherCookie = new Cookie("Some", "cookie");
+        standardRequest.setCookies(cookie, someOtherCookie);
         //And a custom castle header
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
@@ -239,6 +240,5 @@ public class CastleContextBuilderTest {
 //        expectedContext.setClientId(clientId);
         return expectedContext;
     }
-
 
 }
