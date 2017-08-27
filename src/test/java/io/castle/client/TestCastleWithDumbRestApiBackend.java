@@ -167,12 +167,11 @@ public class TestCastleWithDumbRestApiBackend {
 
         //no exception thrown
         // TODO: order gets changed during merge
-        // TODO: true gets wrapped around "" during merge
         Assertions.assertThat(dumbRestApiBackend.getListOfParameters())
                 .contains("$login.failed",
                         null,
                         null,
-                        "{\"ip\":\"127.0.0.1\",\"headers\":{},\"client_id\":\"test_client_id\",\"active\":\"true\",\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}"
+                        "{\"ip\":\"127.0.0.1\",\"headers\":{},\"client_id\":\"test_client_id\",\"active\":true,\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}"
                 );
     }
 

@@ -14,7 +14,7 @@ public class ContextMergeTest {
     public void mergeIndependentJsonTrees() throws JSONException {
         String targetJson = "{\"a\":10}";
         String sourceJson = "{\"b\":20}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\"}";
+        String expectedResult = "{\"a\":10,\"b\":20}";
         runTestCase(targetJson, sourceJson, expectedResult);
     }
 
@@ -22,7 +22,7 @@ public class ContextMergeTest {
     public void mergeIndependentDeeplyJsonTrees() throws JSONException {
         String targetJson = "{\"x\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         String sourceJson = "{\"b\":20, \"x\":{\"y\":{\"z\":{\"merge\":\"toAddValue\"}}}}";
-        String expectedResult = "{\"b\":\"20\",\"x\":{\"y\":{\"z\":{\"a\":\"test\",\"merge\":\"toAddValue\"}}}}";
+        String expectedResult = "{\"b\":20,\"x\":{\"y\":{\"z\":{\"a\":\"test\",\"merge\":\"toAddValue\"}}}}";
         runTestCase(targetJson, sourceJson, expectedResult);
     }
 
@@ -30,7 +30,7 @@ public class ContextMergeTest {
     public void nullOnSourceMustDeleteProperty() throws JSONException {
         String targetJson = "{\"a\":10,\"test\":\"targetValue\"}";
         String sourceJson = "{\"b\":20,\"test\":null}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\"}";
+        String expectedResult = "{\"a\":10,\"b\":20}";
         runTestCase(targetJson, sourceJson, expectedResult);
     }
 
@@ -38,7 +38,7 @@ public class ContextMergeTest {
     public void sourceReplaceTargetPrimitiveCase() throws JSONException {
         String targetJson = "{\"a\":10,\"test\":\"targetValue\"}";
         String sourceJson = "{\"b\":20,\"test\":\"sourceValue\"}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":\"sourceValue\"}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":\"sourceValue\"}";
         runTestCase(targetJson, sourceJson, expectedResult);
     }
 
@@ -46,7 +46,7 @@ public class ContextMergeTest {
     public void sourceAndTargetMergeOnObjectCase() throws JSONException {
         String targetJson = "{\"a\":10,\"test\":{\"x\":12}}";
         String sourceJson = "{\"b\":20,\"test\":{\"y\":34}}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":{\"x\":\"12\",\"y\":\"34\"}}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":{\"x\":12,\"y\":34}}";
         runTestCase(targetJson, sourceJson, expectedResult);
     }
 
@@ -54,7 +54,7 @@ public class ContextMergeTest {
     public void sourceAndTargetAddArrays() throws JSONException {
         String targetJson = "{\"a\":10,\"test\":[\"t1\",\"t2\"]}";
         String sourceJson = "{\"b\":20,\"test\":[\"s1\",\"s2\"]}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":[\"t1\",\"t2\",\"s1\",\"s2\"]}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":[\"t1\",\"t2\",\"s1\",\"s2\"]}";
         runTestCase(targetJson, sourceJson, expectedResult);
     }
 
@@ -62,7 +62,7 @@ public class ContextMergeTest {
     public void baseWithArrayAdditionWithJsonObject() throws JSONException {
         String additionJson = "{\"a\":10,\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         String baseJson = "{\"b\":20,\"test\":[\"s1\",\"s2\"]}";
-        String expectedResult = "{\"b\":\"20\",\"a\":\"10\",\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
+        String expectedResult = "{\"b\":20,\"a\":10,\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
 
@@ -70,7 +70,7 @@ public class ContextMergeTest {
     public void baseWithPrimitiveAdditionWithJsonObject() throws JSONException {
         String additionJson = "{\"a\":10,\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         String baseJson = "{\"b\":20,\"test\":10}";
-        String expectedResult = "{\"b\":\"20\",\"a\":\"10\",\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
+        String expectedResult = "{\"b\":20,\"a\":10,\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
 
@@ -86,7 +86,7 @@ public class ContextMergeTest {
     public void  baseWithJsonObjectAdditionWithArray() throws JSONException {
         String baseJson = "{\"a\":10,\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         String additionJson = "{\"b\":20,\"test\":[\"s1\",\"s2\"]}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":[\"s1\",\"s2\"]}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":[\"s1\",\"s2\"]}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
 
@@ -94,7 +94,7 @@ public class ContextMergeTest {
     public void baseWithArrayAdditionWithArray() throws JSONException {
         String baseJson = "{\"a\":10,\"test\":[\"s1\",\"s3\"]}";
         String additionJson = "{\"b\":20,\"test\":[\"s2\",\"s4\"]}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":[\"s1\",\"s3\",\"s2\",\"s4\"]}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":[\"s1\",\"s3\",\"s2\",\"s4\"]}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
 
@@ -102,7 +102,7 @@ public class ContextMergeTest {
     public void baseWithPrimitiveAdditionWithArray() throws JSONException {
         String baseJson = "{\"a\":10,\"test\":11}";
         String additionJson = "{\"b\":20,\"test\":[\"s1\",\"s2\"]}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":[\"s1\",\"s2\"]}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":[\"s1\",\"s2\"]}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
 
@@ -111,9 +111,18 @@ public class ContextMergeTest {
     public void baseAndAdditionArraysWithJsonObjectElements() throws JSONException {
         String baseJson = "{\"a\":10,\"test\":[{\"y\":{\"z\":{\"a\":\"test\"}}},\"s2\"]}";
         String additionJson = "{\"b\":20,\"test\":[\"s1\",[\"s3\",\"s4\"]]}";
-        String expectedResult = "{\"a\":\"10\",\"b\":\"20\",\"test\":[{\"y\":{\"z\":{\"a\":\"test\"}}},\"s2\",\"s1\",[\"s3\",\"s4\"]]}";
+        String expectedResult = "{\"a\":10,\"b\":20,\"test\":[{\"y\":{\"z\":{\"a\":\"test\"}}},\"s2\",\"s1\",[\"s3\",\"s4\"]]}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
+
+    @Test
+    public void baseAndAdditionWithBooleanValues() throws JSONException {
+        String baseJson = "{\"a\":true}";
+        String additionJson = "{\"b\":false}";
+        String expectedResult = "{\"a\":true,\"b\":false}";
+        runTestCase(baseJson, additionJson, expectedResult);
+    }
+
 
 
     private void runTestCase(String targetJson, String sourceJson, String expectedResult) throws JSONException {

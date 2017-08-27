@@ -52,7 +52,8 @@ public class ContextMerge {
                         addEntryToResult(result, key, mergeDeep(baseValue.getAsJsonObject(), additionValue.getAsJsonObject()));
                     } else if (baseValue.isJsonArray()) {
                         addEntryToResult(result, key, additionValue);
-                    } else if (baseValue.isJsonPrimitive()) {
+                        //if jsonElement.isJsonPrimitive()
+                    } else {
                         addEntryToResult(result, key, additionValue);
                     }
                 } else if (additionValue.isJsonArray()) {
@@ -60,10 +61,12 @@ public class ContextMerge {
                         addEntryToResult(result, key, additionValue);
                     } else if (baseValue.isJsonArray()) {
                         addEntryToResult(result, key, mergeDeep(baseValue.getAsJsonArray(), additionValue.getAsJsonArray()));
-                    } else if (baseValue.isJsonPrimitive()) {
+                        //if jsonElement.isJsonPrimitive()
+                    } else {
                         addEntryToResult(result, key, additionValue);
                     }
-                } else if (additionValue.isJsonPrimitive()) {
+                    //if jsonElement.isJsonPrimitive()
+                } else {
                     addEntryToResult(result, key, additionValue);
                 }
             }
@@ -77,7 +80,7 @@ public class ContextMerge {
         } else if (value.isJsonArray()) {
             result.add(key, deepCopy(value.getAsJsonArray()));
         } else if (value.isJsonPrimitive()) {
-            result.add(key, new JsonPrimitive(value.getAsString()));
+            result.add(key, value.getAsJsonPrimitive());
         }
     }
 
@@ -105,7 +108,8 @@ public class ContextMerge {
                 result.add(deepCopy(jsonElement.getAsJsonObject()));
             } else if (jsonElement.isJsonArray()) {
                 result.add(deepCopy(jsonElement.getAsJsonArray()));
-            } else if (jsonElement.isJsonPrimitive()) {
+                //if jsonElement.isJsonPrimitive()
+            } else {
                 result.add(new JsonPrimitive(jsonElement.getAsString()));
             }
         }
