@@ -50,8 +50,8 @@ public class TestCastleWithDumbRestApiBackend {
         // and an authenticate request is made
         AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id);
 
-        // then the dumb backend should return the default Authenticate.Action in the configuration
-        Assert.assertEquals(AuthenticateAction.ALLOW, authenticateAction);
+        // then the dumb backend should return the AuthenticateAction in the configuration, which is set from the properties file
+        Assert.assertEquals(AuthenticateAction.CHALLENGE, authenticateAction);
     }
 
 
@@ -66,8 +66,8 @@ public class TestCastleWithDumbRestApiBackend {
 
         // and an authenticate request is made
         AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id, strings);
-        // then the dumb backend should return the default Authenticate.Action in the configuration
-        Assert.assertEquals(AuthenticateAction.ALLOW, authenticateAction);
+        // then the dumb backend should return the AuthenticateAction in the configuration
+        Assert.assertEquals(AuthenticateAction.CHALLENGE, authenticateAction);
     }
 
     @Test

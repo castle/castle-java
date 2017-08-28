@@ -1,30 +1,33 @@
 package io.castle.client.internal.config;
 
 import io.castle.client.internal.backend.CastleBackendProvider;
-import io.castle.client.model.AuthenticateStrategy;
+import io.castle.client.model.AuthenticateFailoverStrategy;
 
 import java.util.List;
 
+/**
+ * Application level settings used by the SDK singleton.
+ * <p>
+ * TODO: should we add support for overwriting some settings on a request basis???
+ * Configuration values will be loaded from the environment or from the class path by a call to {@link ConfigurationLoader#loadConfiguration()}.
+ */
 public class CastleConfiguration {
 
     private final int timeout;
 
-    /**
-     * The authentication strategy in case of timeout on response.
-     * If null, then the timeout exception will be throw.
-     */
-    private final AuthenticateStrategy failoverStrategy;
+    private final AuthenticateFailoverStrategy authenticateFailoverStrategy;
 
     private final List<String> whiteListHeaders;
+
     private final List<String> blackListHeaders;
 
     private final String apiSecret;
     private final String castleAppId;
     private final CastleBackendProvider backendProvider;
 
-    public CastleConfiguration(int timeout, AuthenticateStrategy failoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider) {
+    public CastleConfiguration(int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider) {
         this.timeout = timeout;
-        this.failoverStrategy = failoverStrategy;
+        this.authenticateFailoverStrategy = authenticateFailoverStrategy;
         this.whiteListHeaders = whiteListHeaders;
         this.blackListHeaders = blackListHeaders;
         this.apiSecret = apiSecret;
@@ -36,8 +39,8 @@ public class CastleConfiguration {
         return timeout;
     }
 
-    public AuthenticateStrategy getFailoverStrategy() {
-        return failoverStrategy;
+    public AuthenticateFailoverStrategy getAuthenticateFailoverStrategy() {
+        return authenticateFailoverStrategy;
     }
 
     public List<String> getWhiteListHeaders() {
@@ -59,4 +62,5 @@ public class CastleConfiguration {
     public CastleBackendProvider getBackendProvider() {
         return backendProvider;
     }
+
 }

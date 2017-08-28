@@ -10,6 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Makes it possible to create a {@code CastleApi} instance with the proper configuration, HTTP layer and context object.
+ * <p>
+ *
+ */
 public class Castle {
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
@@ -68,6 +73,10 @@ public class Castle {
         return new CastleApiImpl(request, doNotTrack, internalConfiguration);
     }
 
+    /**
+     *
+     * @return
+     */
     public CastleConfiguration getSdkConfiguration() {
         return internalConfiguration.getConfiguration();
     }
