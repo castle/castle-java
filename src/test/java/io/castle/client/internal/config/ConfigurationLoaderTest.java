@@ -66,7 +66,7 @@ public class ConfigurationLoaderTest {
                         "Cookie"
                 )
                 .withDefaultBackendProvider()
-                .withTimeout(30)
+                .withTimeout(100)
                 .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE))
                 .build();
 
