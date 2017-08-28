@@ -2,6 +2,9 @@ package io.castle.client.internal.config;
 
 import com.google.common.base.Splitter;
 import io.castle.client.Castle;
+import io.castle.client.internal.backend.CastleBackendProvider;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
 
 import java.io.IOException;
@@ -10,47 +13,119 @@ import java.net.URL;
 import java.util.Properties;
 
 /**
- * Load the SDK configuration using the following criteria:
- * 1) Environment values have precedence.
- * 2) If no environment value is provided, then try value from classpath property file.
+ * Loads the SDK configuration from the environment or classpath, granting precedence to the environment.
  * <p>
- * Properties are loaded from file castle_sdk.properties.
+ * The following criteria are used when loading a configuration value:
+ * <ol>
+ * <li> environment values take precedence over values written in properties files;
+ * <li> if no environment value is provided, then a value from classpath properties file is taken;
+ * <li> If neither an environment variable nor a value in a properties file is provided, default values are set for some
+ * fields in the resulting {@link CastleConfiguration}.
+ * </ol><p>
+ * It is necessary to at least provide values for the API Secret and the APP ID settings, since they don't have
+ * defaults.
+ * <p>
+ * Properties are loaded from file {@code castle_sdk.properties} by default.
+ * In order to specify a different file, set the {@code CASTLE_PROPERTIES_FILE} environmental variable.
  */
 class ConfigurationLoader {
 
-    static String SDK_PROPERTY_FILENAME;
+    /**
+     * The name of the properties file in the classpath whose values will be loaded.
+     */
+    static String SDK_PROPERTIES_FILENAME;
 
+    /**
+     * An instance of Properties that can be used instead of environmental variables or a properties file.
+     */
     private final Properties castleConfigurationProperties;
 
+    /**
+     * Creates a configurationLoader that will load a castleConfiguration from an instance of Properties.
+     *
+     * @param properties properties containing the values that will be passed to the castleConfiguration loaded.
+     */
     ConfigurationLoader(Properties properties) {
         this.castleConfigurationProperties = properties;
     }
 
+    /**
+     * Creates a configurationLoader that will load a castleConfiguration from a properties file.
+     * <p>
+     * A properties file in the classpath will be loaded if the {@code CASTLE_PROPERTIES_FILE} is set to its name.
+     * If this variable is not set, then the file named {@code castle_sdk.properties} in the classpath will be loaded,
+     * provided that it exists.
+     */
     ConfigurationLoader() {
         this(loadPropertiesFile());
     }
 
     private static Properties loadPropertiesFile() {
-        SDK_PROPERTY_FILENAME = setPropertiesFilePath();
+        SDK_PROPERTIES_FILENAME = setPropertiesFilePath();
         Properties loaded = new Properties();
-        URL configFile = Castle.class.getClassLoader().getResource(ConfigurationLoader.SDK_PROPERTY_FILENAME);
+        URL configFile = Castle.class.getClassLoader().getResource(ConfigurationLoader.SDK_PROPERTIES_FILENAME);
         if (configFile != null) {
-            try (final InputStream streamFromFile = Castle.class.getClassLoader().getResourceAsStream(ConfigurationLoader.SDK_PROPERTY_FILENAME)) {
+            try (final InputStream streamFromFile = Castle.class.getClassLoader()
+                    .getResourceAsStream(ConfigurationLoader.SDK_PROPERTIES_FILENAME)) {
                 loaded.load(streamFromFile);
             } catch (IOException e) {
-                //OK, no file configuration, create a empty new properties just for security against side effects of the failed load operation
+                //OK, no file configuration, create a empty new properties just for security against side effects of the
+                // failed load operation
                 loaded = new Properties();
             }
         }
         return loaded;
     }
 
+    /**
+     * Loads the application level configuration for the Castle.io SDK with values taken from environmental variables,
+     * a properties file or default values in that order of precedence.
+     * <p>
+     * When wrong failover strategy or backend, null is returned instead.
+     *
+     * @return a CastleConfiguration instance
+     * @throws CastleSdkConfigurationException if at least one of apiSecret or castleAppId is not provided in either the
+     *                                         environment or the properties file in the classpath
+     * @throws NumberFormatException           if the provided timeout environmental variable or property is not
+     *                                         parsable into an int
+     */
+    public CastleConfiguration loadConfiguration() throws CastleSdkConfigurationException, NumberFormatException {
+        String envApiSecret = loadConfigurationValue(
+                castleConfigurationProperties,
+                "api_secret",
+                "CASTLE_SDK_API_SECRET"
+        );
+        String castleAppId = loadConfigurationValue(
+                castleConfigurationProperties,
+                "app_id",
+                "CASTLE_SDK_APP_ID"
+        );
+        String whiteListValue = loadConfigurationValue(
+                castleConfigurationProperties,
 
-    public CastleConfiguration loadConfiguration() throws CastleSdkConfigurationException {
-        String envApiSecret = loadConfigurationValue(castleConfigurationProperties, "api_secret", "CASTLE_SDK_API_SECRET");
-        String castleAppId = loadConfigurationValue(castleConfigurationProperties, "app_id", "CASTLE_SDK_APP_ID");
-        String whiteListValue = loadConfigurationValue(castleConfigurationProperties, "white_list", "CASTLE_SDK_WHITELIST_HEADERS");
-        String blackListValue = loadConfigurationValue(castleConfigurationProperties, "black_list", "CASTLE_SDK_BLACKLIST_HEADERS");
+                "white_list",
+                "CASTLE_SDK_WHITELIST_HEADERS"
+        );
+        String blackListValue = loadConfigurationValue(
+                castleConfigurationProperties,
+                "black_list",
+                "CASTLE_SDK_BLACKLIST_HEADERS"
+        );
+        String timeoutValue = loadConfigurationValue(
+                castleConfigurationProperties,
+                "timeout",
+                "CASTLE_SDK_TIMEOUT"
+        );
+        String backendProviderValue = loadConfigurationValue(
+                castleConfigurationProperties,
+                "backend_provider",
+                "CASTLE_SDK_BACKEND_PROVIDER"
+        );
+        String authenticateFailoverStrategyValue = loadConfigurationValue(
+                castleConfigurationProperties,
+                "failover_strategy",
+                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY"
+        );
         CastleConfigurationBuilder builder = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret(envApiSecret)
@@ -61,20 +136,37 @@ class ConfigurationLoader {
         if (blackListValue != null) {
             builder.withBlackListHeaders(Splitter.on(",").splitToList(blackListValue));
         }
+        if (timeoutValue != null) {
+            // might throw NumberFormatException if string is not parsable to int
+            int timeout = Integer.parseInt(timeoutValue);
+            builder.withTimeout(timeout);
+        }
+        if (authenticateFailoverStrategyValue != null) {
+            builder.withAuthenticateFailoverStrategy(
+                    new AuthenticateFailoverStrategy(
+                            AuthenticateAction.fromAction(authenticateFailoverStrategyValue)
+                    )
+            );
+        }
+        if (backendProviderValue != null) {
+            builder.withBackendProvider(
+                    CastleBackendProvider.valueOf(backendProviderValue)
+            );
+        }
         return builder.build();
     }
 
     private String loadConfigurationValue(Properties properties, String propertyName, String environmentName) {
-        String envApiSecret = System.getenv(environmentName);
-        if (envApiSecret == null) {
-            envApiSecret = properties.getProperty(propertyName);
+        String getenv = System.getenv(environmentName);
+        if (getenv == null) {
+            getenv = properties.getProperty(propertyName);
         }
-        return envApiSecret;
+        return getenv;
     }
 
-    private static String setPropertiesFilePath(){
+    private static String setPropertiesFilePath() {
         String propertiesFile = System.getenv("CASTLE_PROPERTIES_FILE");
-        if (propertiesFile != null){
+        if (propertiesFile != null) {
             return propertiesFile;
         } else {
             return "castle_sdk.properties";

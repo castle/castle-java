@@ -70,13 +70,13 @@ public class DumbRestApiBackend implements RestApi {
 
     @Override
     public AuthenticateAction sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload) {
-        return configuration.getFailoverStrategy().getDefaultAction();
+        return configuration.getAuthenticateFailoverStrategy().getDefaultAction();
     }
 
     @Override
     public void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, AsyncCallbackHandler<AuthenticateAction> asyncCallbackHandler) {
         if (asyncCallbackHandler != null) {
-            asyncCallbackHandler.onResponse(configuration.getFailoverStrategy().getDefaultAction());
+            asyncCallbackHandler.onResponse(configuration.getAuthenticateFailoverStrategy().getDefaultAction());
         }
     }
 

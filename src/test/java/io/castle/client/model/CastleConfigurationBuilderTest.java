@@ -33,7 +33,7 @@ public class CastleConfigurationBuilderTest {
                 "x-forwarded",
                 "x-real-ip",
                 "remote-addr");
-        Assertions.assertThat(config.getFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
+        Assertions.assertThat(config.getAuthenticateFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
         Assertions.assertThat(config.getTimeout()).isEqualTo(500);
 
 

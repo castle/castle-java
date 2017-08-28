@@ -104,7 +104,7 @@ public class OkRestApiBackend implements RestApi {
         } catch (IOException e) {
             Castle.logger.error("HTTP layer. Error sending request.", e);
         }
-        return configuration.getFailoverStrategy().getDefaultAction();
+        return configuration.getAuthenticateFailoverStrategy().getDefaultAction();
     }
 
     @Override
@@ -114,7 +114,7 @@ public class OkRestApiBackend implements RestApi {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                asyncCallbackHandler.onResponse(configuration.getFailoverStrategy().getDefaultAction());
+                asyncCallbackHandler.onResponse(configuration.getAuthenticateFailoverStrategy().getDefaultAction());
             }
 
             @Override
@@ -134,7 +134,7 @@ public class OkRestApiBackend implements RestApi {
             String action = authenticateResponse.getAction();
             authenticateAction = AuthenticateAction.fromAction(action);
         } else {
-            authenticateAction = configuration.getFailoverStrategy().getDefaultAction();
+            authenticateAction = configuration.getAuthenticateFailoverStrategy().getDefaultAction();
         }
         return authenticateAction;
     }
