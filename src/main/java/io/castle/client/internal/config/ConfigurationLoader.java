@@ -102,7 +102,6 @@ class ConfigurationLoader {
         );
         String whiteListValue = loadConfigurationValue(
                 castleConfigurationProperties,
-
                 "white_list",
                 "CASTLE_SDK_WHITELIST_HEADERS"
         );
@@ -126,10 +125,20 @@ class ConfigurationLoader {
                 "failover_strategy",
                 "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY"
         );
+        String apiBaseUrl = loadConfigurationValue(
+                castleConfigurationProperties,
+                "base_url",
+                "CASTLE_SDK_BASE_URL"
+        );
         CastleConfigurationBuilder builder = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret(envApiSecret)
                 .withCastleAppId(castleAppId);
+        if (apiBaseUrl != null) {
+            builder.withApiBaseUrl(apiBaseUrl);
+        } else {
+            builder.withDefaultApiBaseUrl();
+        }
         if (whiteListValue != null) {
             builder.withWhiteListHeaders(Splitter.on(",").splitToList(whiteListValue));
         }

@@ -58,7 +58,6 @@ public class CastleConfigurationBuilderTest {
     }
 
 
-
     @Test(expected = CastleSdkConfigurationException.class)
     public void builderWithEmptyAppIDAndAPISecretException() throws CastleSdkConfigurationException {
         //given

@@ -70,8 +70,6 @@ public class CastleTest {
     }
 
 
-
-
     @Test
     public void sdkInstanceCanBeModifiedForTestProposes() throws CastleSdkConfigurationException, NoSuchFieldException, IllegalAccessException {
         //Given a SDK instance

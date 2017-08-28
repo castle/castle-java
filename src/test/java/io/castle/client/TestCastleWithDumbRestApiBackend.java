@@ -10,12 +10,14 @@ import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Ignore
 public class TestCastleWithDumbRestApiBackend {
 
     Castle sdk;

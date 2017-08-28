@@ -14,7 +14,8 @@ public class ContextMerge {
     /**
      * Merge the base and the addition json tree.
      * The base value is not mutated during the process. References to the addition tree elements may be used on the resulting tree.
-     * @param base JsonObject whose elements will be modified.
+     *
+     * @param base     JsonObject whose elements will be modified.
      * @param addition JsonObject containing the elements that will be updated in the base.
      * @return A JsonObject whose elements are the result of taking a copy of the base and updating them according to the elements of the addition JsonObject.
      */

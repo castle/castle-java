@@ -13,13 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Makes it possible to create a {@code CastleApi} instance with the proper configuration, HTTP layer and context object.
  * <p>
- *
  */
 public class Castle {
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
     private final CastleSdkInternalConfiguration internalConfiguration;
 
+    /**
+     * Public constructor for test proposes only. Please use the static sdk() method to get the SDK instance.
+     *
+     * @param internalConfiguration
+     */
     public Castle(CastleSdkInternalConfiguration internalConfiguration) {
         this.internalConfiguration = internalConfiguration;
     }
@@ -74,7 +78,6 @@ public class Castle {
     }
 
     /**
-     *
      * @return
      */
     public CastleConfiguration getSdkConfiguration() {
@@ -83,6 +86,7 @@ public class Castle {
 
     /**
      * Package accessible method for tests proposes.
+     *
      * @return the internal sdk configuration
      */
     CastleSdkInternalConfiguration getInternalConfiguration() {

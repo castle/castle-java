@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class CastleConfiguration {
 
+    private final String apiBaseUrl;
     private final int timeout;
 
     private final AuthenticateFailoverStrategy authenticateFailoverStrategy;
@@ -25,7 +26,8 @@ public class CastleConfiguration {
     private final String castleAppId;
     private final CastleBackendProvider backendProvider;
 
-    public CastleConfiguration(int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider) {
+    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider) {
+        this.apiBaseUrl = apiBaseUrl;
         this.timeout = timeout;
         this.authenticateFailoverStrategy = authenticateFailoverStrategy;
         this.whiteListHeaders = whiteListHeaders;
@@ -33,6 +35,10 @@ public class CastleConfiguration {
         this.apiSecret = apiSecret;
         this.castleAppId = castleAppId;
         this.backendProvider = backendProvider;
+    }
+
+    public String getApiBaseUrl() {
+        return apiBaseUrl;
     }
 
     public int getTimeout() {

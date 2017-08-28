@@ -3,10 +3,10 @@ package io.castle.client.internal.backend;
 import com.google.gson.*;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
+import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateResponse;
-import io.castle.client.internal.json.CastleGsonModel;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -21,11 +21,8 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl track;
     private final HttpUrl authenticate;
 
-    public OkRestApiBackend(OkHttpClient client, CastleGsonModel modelInstance, CastleConfiguration configuration) {
-        this(client, modelInstance, configuration, HttpUrl.parse("https://api.castle.io/"));
-    }
-
-    public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration, HttpUrl baseUrl) {
+    public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
+        HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
         this.client = client;
         this.model = model;
         this.configuration = configuration;
@@ -68,14 +65,9 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //TODO should we care of failing track events?
-                if (!response.isSuccessful()) {
-                    Castle.logger.info("HTTP layer. Track event not delivered.");
-                }
                 if (asyncCallbackHandler != null) {
                     asyncCallbackHandler.onResponse(response.isSuccessful());
                 }
-
             }
         });
     }
@@ -109,7 +101,6 @@ public class OkRestApiBackend implements RestApi {
 
     @Override
     public void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, final AsyncCallbackHandler<AuthenticateAction> asyncCallbackHandler) {
-
         Request request = buildAuthenticateRequest(event, userId, contextPayload, propertiesPayload);
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -132,7 +123,11 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             AuthenticateResponse authenticateResponse = gson.fromJson(jsonResponse, AuthenticateResponse.class);
             String action = authenticateResponse.getAction();
-            authenticateAction = AuthenticateAction.fromAction(action);
+            if (action == null) {
+                authenticateAction = configuration.getAuthenticateFailoverStrategy().getDefaultAction();
+            } else {
+                authenticateAction = AuthenticateAction.fromAction(action);
+            }
         } else {
             authenticateAction = configuration.getAuthenticateFailoverStrategy().getDefaultAction();
         }

@@ -5,8 +5,6 @@ import com.google.gson.JsonObject;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
 
-import java.util.concurrent.Future;
-
 public interface RestApi {
 
     /**

@@ -37,6 +37,7 @@ public class CastleContextBuilder {
     /**
      * Load the headers from the HttpRequest.
      * A header will be passed only when it is not on the blacklist and it appears on the whitelist
+     *
      * @param request The HttpRequest containing the headers.
      * @return headers Model for castle backend.
      */
