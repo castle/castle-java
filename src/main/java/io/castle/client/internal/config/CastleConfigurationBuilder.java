@@ -18,7 +18,7 @@ public class CastleConfigurationBuilder {
     private List<String> blackListHeaders;
     private String apiSecret;
     private String castleAppId;
-    private CastleBackendProvider backendProvider;
+    private CastleBackendProvider backendProvider = CastleBackendProvider.OKHTTP; //Unique available backend on the current version
 
     private CastleConfigurationBuilder() {
     }
@@ -131,10 +131,11 @@ public class CastleConfigurationBuilder {
         if (!errorMessages.isEmpty()) {
             throw new CastleSdkConfigurationException(Joiner.on(System.lineSeparator()).join(errorMessages));
         }
+        HeaderNormalizer normalizer = new HeaderNormalizer();
         return new CastleConfiguration(timeout,
                 failoverStrategy,
-                HeaderNormalizer.normalizeList(whiteListHeaders),
-                HeaderNormalizer.normalizeList(blackListHeaders),
+                normalizer.normalizeList(whiteListHeaders),
+                normalizer.normalizeList(blackListHeaders),
                 apiSecret,
                 castleAppId,
                 backendProvider);

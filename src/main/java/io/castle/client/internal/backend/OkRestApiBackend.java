@@ -18,15 +18,17 @@ public class OkRestApiBackend implements RestApi {
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
 
-    private final HttpUrl baseUrl;
     private final HttpUrl track;
     private final HttpUrl authenticate;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel modelInstance, CastleConfiguration configuration) {
-        this.model = modelInstance;
+        this(client, modelInstance, configuration, HttpUrl.parse("https://api.castle.io/"));
+    }
+
+    public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration, HttpUrl baseUrl) {
         this.client = client;
+        this.model = model;
         this.configuration = configuration;
-        this.baseUrl = HttpUrl.parse("https://api.castle.io/");
         this.track = baseUrl.resolve("/v1/track.json");
         this.authenticate = baseUrl.resolve("/v1/authenticate");
     }

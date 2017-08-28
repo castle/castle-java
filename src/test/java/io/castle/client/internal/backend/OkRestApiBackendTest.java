@@ -1,18 +1,21 @@
 package io.castle.client.internal.backend;
 
 import com.google.gson.JsonElement;
+import io.castle.client.Castle;
+import io.castle.client.SdkMockUtil;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.CastleSdkConfigurationException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.*;
 
-//Temp test to fast check of http layer. Setup env variable CASTLE_SDK_API_SECRET to run the test
 @Ignore
 public class OkRestApiBackendTest {
 

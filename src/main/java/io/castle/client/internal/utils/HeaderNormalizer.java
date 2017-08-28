@@ -7,7 +7,7 @@ import java.util.List;
 
 public class HeaderNormalizer {
 
-    public static String normalize(String headerName) {
+    public String normalize(String headerName) {
         if (headerName == null) {
             return null;
         }
@@ -15,7 +15,7 @@ public class HeaderNormalizer {
     }
 
 
-    public static List<String> normalizeList(List<String> headers) {
+    public List<String> normalizeList(List<String> headers) {
         if (headers == null) {
             return null;
         }
