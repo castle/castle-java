@@ -126,6 +126,29 @@ public class ConfigurationLoaderTest {
         testLoad(expectedConfiguration);
     }
 
+    @Test
+    public void ignoreNonExistingPropertiesFileTest() throws CastleSdkConfigurationException {
+        //given a property file not existing is provided
+        setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
+        ConfigurationLoader loader = new ConfigurationLoader();
+        //and a minimal setup on env is provided
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_API_SECRET",
+                "1234"
+        );
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_APP_ID",
+                "test_app_id_env"
+        );
+        //Then configuration is loaded correctly and the default values are used
+        CastleConfiguration expectedConfiguration = CastleConfigurationBuilder.defaultConfigBuilder()
+                .withApiSecret("1234")
+                .withCastleAppId("test_app_id_env")
+                .build();
+        testLoad(expectedConfiguration);
+
+    }
+
     @Test(expected = NumberFormatException.class)
     public void testTimeoutWithNonParsableInt() throws CastleSdkConfigurationException {
         //given
