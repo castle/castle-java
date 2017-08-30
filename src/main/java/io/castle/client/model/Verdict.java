@@ -1,15 +1,15 @@
 package io.castle.client.model;
 
-public class AuthenticateResponse {
+public class Verdict {
 
-    private String action;
+    private AuthenticateAction action;
     private String userId;
 
-    public String getAction() {
+    public AuthenticateAction getAction() {
         return action;
     }
 
-    public void setAction(String action) {
+    public void setAction(AuthenticateAction action) {
         this.action = action;
     }
 

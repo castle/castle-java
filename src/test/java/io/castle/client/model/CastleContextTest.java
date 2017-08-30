@@ -8,6 +8,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class CastleContextTest {
 
     private CastleGsonModel model = new CastleGsonModel();
@@ -96,7 +99,7 @@ public class CastleContextTest {
         //when
         String contextJson = model.getGson().toJson(aContext);
 
-        //Then
+        //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
                 "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\",\"token\":\"d_token\"}," +
                 "\"client_id\":\"clientIDX\"," +
@@ -117,6 +120,52 @@ public class CastleContextTest {
         // And json to object create the same structure
         CastleContext fromJson = model.getGson().fromJson(expectedJson, CastleContext.class);
         Assertions.assertThat(fromJson).isEqualToComparingFieldByFieldRecursively(aContext);
+    }
+
+    @Test
+    public void notMatchingHeadersJsonElementsAreIgnored() {
+
+        //Given a json with headers not matching the api contract
+        String notMatchingJson = "{\"active\":true," +
+                "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\",\"token\":\"d_token\"}," +
+                "\"client_id\":\"clientIDX\"," +
+                "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
+                "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
+                "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"," +
+                "\"badKey1\":[\"v1\",\"v2\"],\"badKey2\":{\"nested\":\"value\"}" + // Invalid headers fields
+                "}," +
+                "\"ip\":\"ip\"," +
+                "\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}," +
+                "\"locale\":\"locale\"," +
+                "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
+                "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
+                "\"os\":{\"name\":\"o_name\",\"version\":\"0_version\"}," +
+                "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
+                "\"timezone\":\"timezone\"," +
+                "\"userAgent\":\"userAgent\"}";
+
+        //When CastleContext is created
+        CastleContext created = model.getGson().fromJson(notMatchingJson, CastleContext.class);
+
+        //Then the bad headers are ignored
+        List<CastleHeader> headers = created.getHeaders().getHeaders();
+        Assertions.assertThat(headers)
+                .usingElementComparator(new Comparator<CastleHeader>() {
+                    @Override
+                    public int compare(CastleHeader castleHeader, CastleHeader that) {
+                        String key = castleHeader.getKey();
+                        String value = castleHeader.getValue();
+                        if (key != null ? !key.equals(that.getKey()) : that.getKey() != null) {
+                            return -1;
+                        }
+                        if (value != null ? !value.equals(that.getValue()) : that.getValue() != null) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                })
+                .containsExactlyInAnyOrder(new CastleHeader("key1", "value1"), new CastleHeader("key2", "value2"));
+
     }
 
     @Test

@@ -3,9 +3,9 @@ package io.castle.client.internal.config;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import io.castle.client.internal.backend.CastleBackendProvider;
+import io.castle.client.internal.utils.HeaderNormalizer;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.internal.utils.HeaderNormalizer;
 import io.castle.client.model.CastleSdkConfigurationException;
 
 import java.util.LinkedList;
@@ -70,7 +70,8 @@ public class CastleConfigurationBuilder {
     /**
      *
      */
-    private CastleBackendProvider backendProvider;
+    private CastleBackendProvider backendProvider = CastleBackendProvider.OKHTTP; //Unique available backend on the current version
+    private String apiBaseUrl;
 
 
     private CastleConfigurationBuilder() {
@@ -90,6 +91,7 @@ public class CastleConfigurationBuilder {
         CastleConfigurationBuilder builder = new CastleConfigurationBuilder()
                 .withDefaultWhitelist()
                 .withDefaultBlacklist()
+                .withDefaultApiBaseUrl()
                 .withTimeout(500)
                 .withDefaultAuthenticateFailoverStrategy()
                 .withDefaultBackendProvider();
@@ -100,6 +102,7 @@ public class CastleConfigurationBuilder {
      * Provides a fresh castleConfigurationBuilder.
      * <p>
      * The only default value provided is the timeout, which is set to 500 milliseconds.
+     *
      * @return a castleConfigurationBuilder with all values set to null, except timeout
      */
     public static CastleConfigurationBuilder aConfigBuilder() {
@@ -187,6 +190,15 @@ public class CastleConfigurationBuilder {
      */
     public CastleConfigurationBuilder withDefaultAuthenticateFailoverStrategy() {
         return this.withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW));
+    }
+
+    /**
+     * TODO doc
+     *
+     * @return
+     */
+    public CastleConfigurationBuilder withDefaultApiBaseUrl() {
+        return this.withApiBaseUrl("https://api.castle.io/");
     }
 
     /**
@@ -299,14 +311,18 @@ public class CastleConfigurationBuilder {
             builder.add("A backend provider must be selected. If not sure, then use the default values provided " +
                     "by method withDefaultBackendProvider. Read documentation for further details.");
         }
+        if (apiBaseUrl == null) {
+            builder.add("A apiBaseUrl value must be selected. If not sure, then use the default values provided by method withDefaultApiBaseUrl. Read documentation for further details.");
+        }
         ImmutableList<String> errorMessages = builder.build();
         if (!errorMessages.isEmpty()) {
             throw new CastleSdkConfigurationException(Joiner.on(System.lineSeparator()).join(errorMessages));
         }
-        return new CastleConfiguration(timeout,
+        HeaderNormalizer normalizer = new HeaderNormalizer();
+        return new CastleConfiguration(apiBaseUrl, timeout,
                 failoverStrategy,
-                HeaderNormalizer.normalizeList(whiteListHeaders),
-                HeaderNormalizer.normalizeList(blackListHeaders),
+                normalizer.normalizeList(whiteListHeaders),
+                normalizer.normalizeList(blackListHeaders),
                 apiSecret,
                 castleAppId,
                 backendProvider);
@@ -331,6 +347,11 @@ public class CastleConfigurationBuilder {
      */
     public CastleConfigurationBuilder withBackendProvider(CastleBackendProvider backendProvider) {
         this.backendProvider = backendProvider;
+        return this;
+    }
+
+    public CastleConfigurationBuilder withApiBaseUrl(String apiBaseUrl) {
+        this.apiBaseUrl = apiBaseUrl;
         return this;
     }
 

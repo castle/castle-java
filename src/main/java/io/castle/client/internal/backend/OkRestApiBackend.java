@@ -3,10 +3,10 @@ package io.castle.client.internal.backend;
 import com.google.gson.*;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateResponse;
 import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.model.AsyncCallbackHandler;
+import io.castle.client.model.CastleRuntimeException;
+import io.castle.client.model.Verdict;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -18,16 +18,15 @@ public class OkRestApiBackend implements RestApi {
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
 
-    private final HttpUrl baseUrl;
     private final HttpUrl track;
     private final HttpUrl authenticate;
 
-    public OkRestApiBackend(OkHttpClient client, CastleGsonModel modelInstance, CastleConfiguration configuration) {
-        this.model = modelInstance;
+    public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
+        HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
         this.client = client;
+        this.model = model;
         this.configuration = configuration;
-        this.baseUrl = HttpUrl.parse("https://api.castle.io/");
-        this.track = baseUrl.resolve("/v1/track.json");
+        this.track = baseUrl.resolve("/v1/track");
         this.authenticate = baseUrl.resolve("/v1/authenticate");
     }
 
@@ -66,14 +65,9 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //TODO should we care of failing track events?
-                if (!response.isSuccessful()) {
-                    Castle.logger.info("HTTP layer. Track event not delivered.");
-                }
                 if (asyncCallbackHandler != null) {
                     asyncCallbackHandler.onResponse(response.isSuccessful());
                 }
-
             }
         });
     }
@@ -94,59 +88,72 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public AuthenticateAction sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload) {
+    public Verdict sendAuthenticateSync(String event, final String userId, JsonElement contextPayload, JsonElement propertiesPayload) {
         Request request = buildAuthenticateRequest(event, userId, contextPayload, propertiesPayload);
         try {
             Response response = client.newCall(request).execute();
-            return extractAuthenticationAction(response);
+            return extractAuthenticationAction(response, userId);
         } catch (IOException e) {
             Castle.logger.error("HTTP layer. Error sending request.", e);
+            if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
+                throw new CastleRuntimeException(e);
+            } else {
+                Verdict verdict = new Verdict();
+                verdict.setUserId(userId);
+                verdict.setAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction());
+                return verdict;
+            }
         }
-        return configuration.getAuthenticateFailoverStrategy().getDefaultAction();
     }
 
     @Override
-    public void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, final AsyncCallbackHandler<AuthenticateAction> asyncCallbackHandler) {
-
+    public void sendAuthenticateAsync(String event, final String userId, JsonElement contextPayload, JsonElement propertiesPayload, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
         Request request = buildAuthenticateRequest(event, userId, contextPayload, propertiesPayload);
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                asyncCallbackHandler.onResponse(configuration.getAuthenticateFailoverStrategy().getDefaultAction());
+                if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
+                    asyncCallbackHandler.onException(e);
+                } else {
+                    // TODO common method call
+                    Verdict verdict = new Verdict();
+                    verdict.setUserId(userId);
+                    verdict.setAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction());
+                    asyncCallbackHandler.onResponse(verdict);
+                }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                asyncCallbackHandler.onResponse(extractAuthenticationAction(response));
+                asyncCallbackHandler.onResponse(extractAuthenticationAction(response, userId));
             }
         });
 
     }
 
-    private AuthenticateAction extractAuthenticationAction(Response response) throws IOException {
-        AuthenticateAction authenticateAction;
+    private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
             Gson gson = model.getGson();
-            AuthenticateResponse authenticateResponse = gson.fromJson(jsonResponse, AuthenticateResponse.class);
-            String action = authenticateResponse.getAction();
-            authenticateAction = AuthenticateAction.fromAction(action);
-        } else {
-            authenticateAction = configuration.getAuthenticateFailoverStrategy().getDefaultAction();
+            Verdict verdict = gson.fromJson(jsonResponse, Verdict.class);
+            if (verdict.getAction() != null) {
+                return verdict;
+            }
         }
-        return authenticateAction;
+        Verdict verdict = new Verdict();
+        verdict.setUserId(userId);
+        verdict.setAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction());
+        return verdict;
     }
 
     @Override
-    public void sendIdentifyRequest(String userId, JsonObject contextPayload, boolean active, JsonElement traitsJson, JsonElement propertiesPayload) {
+    public void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson) {
         JsonObject json = new JsonObject();
         json.add("user_id", new JsonPrimitive(userId));
-        json.add("context", contextPayload);
+        json.add("active", new JsonPrimitive(active));
+        json.add("context", contextJson);
         if (traitsJson != null) {
             json.add("traits", traitsJson);
-        }
-        if (propertiesPayload != null) {
-            json.add("properties", propertiesPayload);
         }
         RequestBody body = RequestBody.create(JSON, json.toString());
         Request request = new Request.Builder()

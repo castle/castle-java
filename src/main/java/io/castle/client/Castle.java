@@ -11,12 +11,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Makes it possible to create an instance of {@code CastleApi} with the proper configuration, an HTTP layer and a
- * context object while verifying that the client has been properly configured.
- * <p>
  * Through static methods, creates a singleton instance of this class which keeps in its internal configuration
  * application the application level settings loaded from
- *
  *
  */
 public class Castle {
@@ -24,6 +20,11 @@ public class Castle {
 
     private final CastleSdkInternalConfiguration internalConfiguration;
 
+    /**
+     * Public constructor for test proposes only. Please use the static sdk() method to get the SDK instance.
+     *
+     * @param internalConfiguration
+     */
     public Castle(CastleSdkInternalConfiguration internalConfiguration) {
         this.internalConfiguration = internalConfiguration;
     }
@@ -79,7 +80,6 @@ public class Castle {
     }
 
     /**
-     *
      * @return
      */
     public CastleConfiguration getSdkConfiguration() {
@@ -88,6 +88,7 @@ public class Castle {
 
     /**
      * Package accessible method for testing purposes.
+     *
      * @return the internal sdk configuration
      */
     CastleSdkInternalConfiguration getInternalConfiguration() {

@@ -11,8 +11,9 @@ public class HeadNormalizerTest {
     public void nullHeaderName() {
         //given
         String header = null;
+        HeaderNormalizer normalizer = new HeaderNormalizer();
         //when
-        String normalized = HeaderNormalizer.normalize(header);
+        String normalized = normalizer.normalize(header);
         //then
         Assert.assertNull(normalized);
     }
@@ -21,8 +22,9 @@ public class HeadNormalizerTest {
     public void nullListOfHeaders() {
         //given
         List<String> header = null;
+        HeaderNormalizer normalizer = new HeaderNormalizer();
         //when
-        List<String> normalized = HeaderNormalizer.normalizeList(header);
+        List<String> normalized = normalizer.normalizeList(header);
         //then
         Assert.assertNull(normalized);
     }

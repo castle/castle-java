@@ -1,6 +1,5 @@
 package io.castle.client.internal.config;
 
-import io.castle.client.internal.backend.CastleBackendProvider;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
@@ -23,11 +22,13 @@ public class ConfigurationLoaderTest {
         Properties properties = new Properties();
         properties.setProperty("api_secret", "212312");
         properties.setProperty("app_id", "F");
+        properties.setProperty("base_url", "http://valid.value.com");
         ConfigurationLoader loader = new ConfigurationLoader(properties);
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("212312")
                 .withCastleAppId("F")
+                .withApiBaseUrl("http://valid.value.com")
                 .build();
 
         //when
@@ -45,6 +46,7 @@ public class ConfigurationLoaderTest {
                 .aConfigBuilder()
                 .withApiSecret("test_api_secret")
                 .withCastleAppId("test_app_id")
+                .withApiBaseUrl("https://testing.api.dev.castle/v1/")
                 .withWhiteListHeaders(
                         "TestWhite",
                         "User-Agent",
@@ -64,7 +66,7 @@ public class ConfigurationLoaderTest {
                         "Cookie"
                 )
                 .withDefaultBackendProvider()
-                .withTimeout(600)
+                .withTimeout(100)
                 .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE))
                 .build();
 
@@ -83,10 +85,6 @@ public class ConfigurationLoaderTest {
                 "700"
         );
         setEnvAndTestCorrectness(
-                "CASTLE_SDK_BACKEND_PROVIDER",
-                "DUMB"
-        );
-        setEnvAndTestCorrectness(
                 "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
                 "DENY"
         );
@@ -103,6 +101,11 @@ public class ConfigurationLoaderTest {
                 "test_app_id_env"
         );
 
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_BASE_URL",
+                "https://api.dev.castle.io/v1/"
+        );
+
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
                 .aConfigBuilder()
                 .withApiSecret("1234")
@@ -115,12 +118,35 @@ public class ConfigurationLoaderTest {
                         "TestBlackEnv",
                         "Cookie"
                 )
-                .withBackendProvider(CastleBackendProvider.DUMB)
+                .withApiBaseUrl("https://api.dev.castle.io/v1/")
                 .withTimeout(700)
                 .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.DENY))
                 .build();
 
         testLoad(expectedConfiguration);
+    }
+
+    @Test
+    public void ignoreNonExistingPropertiesFileTest() throws CastleSdkConfigurationException {
+        //given a property file not existing is provided
+        setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
+        ConfigurationLoader loader = new ConfigurationLoader();
+        //and a minimal setup on env is provided
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_API_SECRET",
+                "1234"
+        );
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_APP_ID",
+                "test_app_id_env"
+        );
+        //Then configuration is loaded correctly and the default values are used
+        CastleConfiguration expectedConfiguration = CastleConfigurationBuilder.defaultConfigBuilder()
+                .withApiSecret("1234")
+                .withCastleAppId("test_app_id_env")
+                .build();
+        testLoad(expectedConfiguration);
+
     }
 
     @Test(expected = NumberFormatException.class)

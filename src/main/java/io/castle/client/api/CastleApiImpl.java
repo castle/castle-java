@@ -4,11 +4,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.CastleContext;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.ContextMerge;
+import io.castle.client.model.AsyncCallbackHandler;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.CastleContext;
+import io.castle.client.model.Verdict;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 public class CastleApiImpl implements CastleApi {
@@ -49,17 +52,17 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public AuthenticateAction authenticate(String event, String userId) {
-        return authenticate(event, userId, null);
-    }
-
-    @Override
     public CastleApi doNotTrack(boolean doNotTrack) {
         return new CastleApiImpl(request, doNotTrack, configuration);
     }
 
     @Override
-    public AuthenticateAction authenticate(String event, String userId, Object properties) {
+    public Verdict authenticate(String event, String userId) {
+        return authenticate(event, userId, null);
+    }
+
+    @Override
+    public Verdict authenticate(String event, String userId, Object properties) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         JsonElement propertiesJson = null;
         if (properties != null) {
@@ -69,17 +72,38 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public void authenticateAsync(String event, String userId, @Nullable Object properties, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        JsonElement propertiesJson = null;
+        if (properties != null) {
+            propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
+        }
+        restApi.sendAuthenticateAsync(event, userId, contextJson, propertiesJson, asyncCallbackHandler);
+
+    }
+
+    @Override
+    public void authenticateAsync(String event, String userId, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        authenticateAsync(event, userId, null, asyncCallbackHandler);
+    }
+
+    @Override
     public void track(String event) {
-        track(event, null, null);
+        track(event, null, null, null);
     }
 
     @Override
     public void track(String event, String userId) {
-        track(event, userId, null);
+        track(event, userId, null, null);
     }
 
     @Override
     public void track(String event, String userId, Object properties) {
+        track(event, userId, properties, null);
+    }
+
+    @Override
+    public void track(String event, @Nullable String userId, @Nullable Object properties, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         if (doNotTrack) {
             return;
         }
@@ -88,11 +112,11 @@ public class CastleApiImpl implements CastleApi {
         if (properties != null) {
             propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
         }
-        restApi.sendTrackRequest(event, userId, contextJson, propertiesJson);
+        restApi.sendTrackRequest(event, userId, contextJson, propertiesJson, asyncCallbackHandler);
     }
 
     @Override
-    public void identify(String userId, boolean active, Object traits, Object properties) {
+    public void identify(String userId, @Nullable Object traits, boolean active) {
         if (doNotTrack) {
             return;
         }
@@ -100,13 +124,18 @@ public class CastleApiImpl implements CastleApi {
         if (traits != null) {
             traitsJson = configuration.getModel().getGson().toJsonTree(traits);
         }
-        JsonElement propertiesJson = null;
-        if (properties != null) {
-            propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
-        }
-
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendIdentifyRequest(userId,contextJson,active,traitsJson,propertiesJson);
+        restApi.sendIdentifyRequest(userId, contextJson, active, traitsJson);
+    }
+
+    @Override
+    public void identify(String userId) {
+        identify(userId, null, true);
+    }
+
+    @Override
+    public void identify(String userId, @Nullable Object traits) {
+        identify(userId, traits, true);
     }
 
     //TODO Ask about the review endpoint. How to get the review ids??.

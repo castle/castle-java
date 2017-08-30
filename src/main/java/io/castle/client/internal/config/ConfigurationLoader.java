@@ -31,11 +31,6 @@ import java.util.Properties;
 class ConfigurationLoader {
 
     /**
-     * The name of the properties file in the classpath whose values will be loaded.
-     */
-    static String SDK_PROPERTIES_FILENAME;
-
-    /**
      * An instance of Properties that can be used instead of environmental variables or a properties file.
      */
     private final Properties castleConfigurationProperties;
@@ -61,20 +56,23 @@ class ConfigurationLoader {
     }
 
     private static Properties loadPropertiesFile() {
-        SDK_PROPERTIES_FILENAME = setPropertiesFilePath();
+        String propertyFile = getPropertiesFilePath();
         Properties loaded = new Properties();
-        URL configFile = Castle.class.getClassLoader().getResource(ConfigurationLoader.SDK_PROPERTIES_FILENAME);
+        URL configFile = Castle.class.getClassLoader().getResource(propertyFile);
         if (configFile != null) {
-            try (final InputStream streamFromFile = Castle.class.getClassLoader()
-                    .getResourceAsStream(ConfigurationLoader.SDK_PROPERTIES_FILENAME)) {
-                loaded.load(streamFromFile);
-            } catch (IOException e) {
-                //OK, no file configuration, create a empty new properties just for security against side effects of the
-                // failed load operation
-                loaded = new Properties();
-            }
+            InputStream resourceAsStream = Castle.class.getClassLoader().getResourceAsStream(propertyFile);
+            loaded = new PropertiesReader().loadPropertiesFromStream(loaded, resourceAsStream);
         }
         return loaded;
+    }
+
+    private static String getPropertiesFilePath() {
+        String propertiesFile = System.getenv("CASTLE_PROPERTIES_FILE");
+        if (propertiesFile != null) {
+            return propertiesFile;
+        } else {
+            return "castle_sdk.properties";
+        }
     }
 
     /**
@@ -102,7 +100,6 @@ class ConfigurationLoader {
         );
         String whiteListValue = loadConfigurationValue(
                 castleConfigurationProperties,
-
                 "white_list",
                 "CASTLE_SDK_WHITELIST_HEADERS"
         );
@@ -126,10 +123,20 @@ class ConfigurationLoader {
                 "failover_strategy",
                 "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY"
         );
+        String apiBaseUrl = loadConfigurationValue(
+                castleConfigurationProperties,
+                "base_url",
+                "CASTLE_SDK_BASE_URL"
+        );
         CastleConfigurationBuilder builder = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret(envApiSecret)
                 .withCastleAppId(castleAppId);
+        if (apiBaseUrl != null) {
+            builder.withApiBaseUrl(apiBaseUrl);
+        } else {
+            builder.withDefaultApiBaseUrl();
+        }
         if (whiteListValue != null) {
             builder.withWhiteListHeaders(Splitter.on(",").splitToList(whiteListValue));
         }
@@ -164,12 +171,4 @@ class ConfigurationLoader {
         return getenv;
     }
 
-    private static String setPropertiesFilePath() {
-        String propertiesFile = System.getenv("CASTLE_PROPERTIES_FILE");
-        if (propertiesFile != null) {
-            return propertiesFile;
-        } else {
-            return "castle_sdk.properties";
-        }
-    }
 }

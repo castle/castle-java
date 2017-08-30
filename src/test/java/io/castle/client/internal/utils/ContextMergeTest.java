@@ -83,7 +83,7 @@ public class ContextMergeTest {
     }
 
     @Test
-    public void  baseWithJsonObjectAdditionWithArray() throws JSONException {
+    public void baseWithJsonObjectAdditionWithArray() throws JSONException {
         String baseJson = "{\"a\":10,\"test\":{\"y\":{\"z\":{\"a\":\"test\"}}}}";
         String additionJson = "{\"b\":20,\"test\":[\"s1\",\"s2\"]}";
         String expectedResult = "{\"a\":10,\"b\":20,\"test\":[\"s1\",\"s2\"]}";
@@ -122,7 +122,6 @@ public class ContextMergeTest {
         String expectedResult = "{\"a\":true,\"b\":false}";
         runTestCase(baseJson, additionJson, expectedResult);
     }
-
 
 
     private void runTestCase(String targetJson, String sourceJson, String expectedResult) throws JSONException {
