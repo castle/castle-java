@@ -350,6 +350,11 @@ public class CastleConfigurationBuilder {
         return this;
     }
 
+    /**
+     * TODO
+     * @param apiBaseUrl
+     * @return
+     */
     public CastleConfigurationBuilder withApiBaseUrl(String apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;
         return this;

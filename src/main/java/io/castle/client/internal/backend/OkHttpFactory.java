@@ -48,7 +48,6 @@ public class OkHttpFactory implements RestApiFactory {
                 .build();
     }
 
-
     @Override
     public RestApi buildBackend() {
         return new OkRestApiBackend(client, modelInstance, configuration);
