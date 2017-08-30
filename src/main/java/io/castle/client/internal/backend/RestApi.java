@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.Verdict;
 
 public interface RestApi {
 
@@ -37,7 +38,7 @@ public interface RestApi {
      * @param propertiesPayload properties json
      * @return AuthenticateAction enum value to be used on login logic.
      */
-    AuthenticateAction sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload);
+    Verdict sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload);
 
     /**
      * Async version of the authentication endpoint. This method will return immediately and the response will be passed to the asyncCallbackHandler in the future.
@@ -48,7 +49,7 @@ public interface RestApi {
      * @param propertiesPayload    properties json
      * @param asyncCallbackHandler callback to pass the AuthenticateAction enum value to be used on login logic.
      */
-    void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, AsyncCallbackHandler<AuthenticateAction> asyncCallbackHandler);
+    void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      * Async call to the identify endpoint. This method will return immediately.
@@ -57,7 +58,6 @@ public interface RestApi {
      * @param contextJson       context json
      * @param active            is this call realized as part of a active session of the user
      * @param traitsJson        additional trait json
-     * @param propertiesPayload properties json
      */
-    void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson, JsonElement propertiesPayload);
+    void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson);
 }

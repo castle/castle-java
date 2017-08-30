@@ -59,7 +59,7 @@ public abstract class AbstractCastleHttpLayerTest {
             }
             value = result.get();
         }
-        Assertions.assertThat(value).isNotNull().isEqualTo(expected);
+        Assertions.assertThat(value).isNotNull().isEqualToComparingFieldByField(expected);
 
     }
 

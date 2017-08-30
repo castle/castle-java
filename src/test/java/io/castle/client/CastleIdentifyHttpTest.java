@@ -16,33 +16,43 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
 
-        // And a mock Request
+        // and a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
+        // and
+        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        trait.setX("valueX");
+        trait.setY(234567);
+
         // and an authenticate request is made
-        sdk.onRequest(request).identify(id, true);
+        sdk.onRequest(request).identify(id, trait);
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 
     @Test
     public void identifyEndpointFailuresAreIgnoredTest() throws InterruptedException {
-        //given
+        // given
         server.enqueue(new MockResponse().setResponseCode(404));
         String id = "12345";
 
-        // And a mock Request
+        // and a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
+        //and
+        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        trait.setX("valueX");
+        trait.setY(234567);
+
         // and an authenticate request is made
-        sdk.onRequest(request).identify(id, true);
+        sdk.onRequest(request).identify(id, trait);
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -56,62 +66,17 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
         CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
         trait.setX("valueX");
         trait.setY(234567);
 
         // and an authenticate request is made
-        sdk.onRequest(request).identify(id, true, trait, properties);
+        sdk.onRequest(request).identify(id, trait, true);
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 
-
-    private static class CustomAppProperties {
-        private String a;
-        private int b;
-
-        public String getA() {
-            return a;
-        }
-
-        public void setA(String a) {
-            this.a = a;
-        }
-
-        public int getB() {
-            return b;
-        }
-
-        public void setB(int b) {
-            this.b = b;
-        }
-    }
-
-    private static class CustomAppIdentifyTrait {
-        private String x;
-        private int y;
-
-        public String getX() {
-            return x;
-        }
-
-        public void setX(String x) {
-            this.x = x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
-    }
 }

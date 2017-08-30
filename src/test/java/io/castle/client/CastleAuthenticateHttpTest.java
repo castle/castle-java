@@ -2,6 +2,7 @@ package io.castle.client;
 
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.Verdict;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
@@ -28,11 +29,16 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        final AtomicReference<AuthenticateAction> result = new AtomicReference<>();
-        AsyncCallbackHandler<AuthenticateAction> handler = new AsyncCallbackHandler<AuthenticateAction>() {
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
             @Override
-            public void onResponse(AuthenticateAction response) {
+            public void onResponse(Verdict response) {
                 result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                throw new IllegalStateException(exception);
             }
         };
         // and an authenticate request is made
@@ -44,7 +50,10 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 recordedRequest.getBody().readUtf8());
 
         // and
-        waitForValueAndVerify(result, AuthenticateAction.DENY);
+        Verdict expected = new Verdict();
+        expected.setAction(AuthenticateAction.DENY);
+        expected.setUserId("12345");
+        waitForValueAndVerify(result, expected);
     }
 
     @Test
@@ -60,11 +69,16 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        final AtomicReference<AuthenticateAction> result = new AtomicReference<>();
-        AsyncCallbackHandler<AuthenticateAction> handler = new AsyncCallbackHandler<AuthenticateAction>() {
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
             @Override
-            public void onResponse(AuthenticateAction response) {
+            public void onResponse(Verdict response) {
                 result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                throw new IllegalStateException(exception);
             }
         };
         CustomAppProperties properties = new CustomAppProperties();
@@ -77,7 +91,10 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 recordedRequest.getBody().readUtf8());
 
         // and
-        waitForValueAndVerify(result, AuthenticateAction.DENY);
+        Verdict expected = new Verdict();
+        expected.setAction(AuthenticateAction.DENY);
+        expected.setUserId("12345");
+        waitForValueAndVerify(result, expected);
     }
 
 
@@ -90,11 +107,16 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        final AtomicReference<AuthenticateAction> result = new AtomicReference<>();
-        AsyncCallbackHandler<AuthenticateAction> handler = new AsyncCallbackHandler<AuthenticateAction>() {
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
             @Override
-            public void onResponse(AuthenticateAction response) {
+            public void onResponse(Verdict response) {
                 result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                throw new IllegalStateException(exception);
             }
         };
         // and an authenticate request is made
@@ -106,7 +128,10 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 recordedRequest.getBody().readUtf8());
 
         // and
-        waitForValueAndVerify(result, AuthenticateAction.CHALLENGE);
+        Verdict expected = new Verdict();
+        expected.setAction(AuthenticateAction.CHALLENGE);
+        expected.setUserId("12345");
+        waitForValueAndVerify(result, expected);
     }
 
 
@@ -121,10 +146,11 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and an authenticate request is made
-        AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id);
 
         // then
-        Assert.assertEquals(AuthenticateAction.CHALLENGE, authenticateAction);
+        Assert.assertEquals(AuthenticateAction.CHALLENGE, verdict.getAction());
+        Assert.assertEquals(id, verdict.getUserId());
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
@@ -147,10 +173,11 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and an authenticate request is made
-        AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id);
 
         // then
-        Assert.assertEquals(AuthenticateAction.DENY, authenticateAction);
+        Assert.assertEquals(AuthenticateAction.DENY, verdict.getAction());
+        Assert.assertEquals("12345", verdict.getUserId());
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
@@ -176,10 +203,11 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         properties.setB(123456);
 
         // and an authenticate request is made
-        AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id, properties);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties);
 
         // then
-        Assert.assertEquals(AuthenticateAction.DENY, authenticateAction);
+        Assert.assertEquals(AuthenticateAction.DENY, verdict.getAction());
+        Assert.assertEquals("12345", verdict.getUserId());
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
@@ -201,10 +229,11 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         properties.setB(123456);
 
         // and an authenticate request is made
-        AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id, properties);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties);
 
         // then
-        Assert.assertEquals(AuthenticateAction.CHALLENGE, authenticateAction);
+        Assert.assertEquals(AuthenticateAction.CHALLENGE, verdict.getAction());
+        Assert.assertEquals("12345", verdict.getUserId());
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
@@ -226,10 +255,11 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         properties.setB(123456);
 
         // and an authenticate request is made
-        AuthenticateAction authenticateAction = sdk.onRequest(request).authenticate(event, id, properties);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties);
 
         // then
-        Assert.assertEquals(AuthenticateAction.CHALLENGE, authenticateAction);
+        Assert.assertEquals(AuthenticateAction.CHALLENGE, verdict.getAction());
+        Assert.assertEquals("12345", verdict.getUserId());
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();

@@ -24,14 +24,18 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         customExtraContext.setAddString("String value");
         customExtraContext.setCondition(true);
         customExtraContext.setValue(10L);
+        // and trait object
+        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        trait.setX("valueX");
+        trait.setY(234567);
 
         // and an authenticate request is made
-        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, true);
+        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, trait);
         //When
 
         //Then the json send contains a extended context object
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"},\"add_string\":\"String value\",\"condition\":true,\"value\":10}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"},\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 

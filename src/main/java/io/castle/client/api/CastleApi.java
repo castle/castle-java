@@ -2,6 +2,7 @@ package io.castle.client.api;
 
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.Verdict;
 
 import javax.annotation.Nullable;
 
@@ -44,7 +45,7 @@ public interface CastleApi {
      * @param userId TODO!!!!!!!!!!
      * @return TODO!!!!!!!!!!
      */
-    AuthenticateAction authenticate(String event, String userId);
+    Verdict authenticate(String event, String userId);
 
     /**
      * @param event      TODO!!!!!!!!!!
@@ -52,11 +53,11 @@ public interface CastleApi {
      * @param properties TODO!!!!!!!!!!
      * @return
      */
-    AuthenticateAction authenticate(String event, String userId, @Nullable Object properties);
+    Verdict authenticate(String event, String userId, @Nullable Object properties);
 
-    void authenticateAsync(String event, String userId, @Nullable Object properties, AsyncCallbackHandler<AuthenticateAction> asyncCallbackHandler);
+    void authenticateAsync(String event, String userId, @Nullable Object properties, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
-    void authenticateAsync(String event, String userId, AsyncCallbackHandler<AuthenticateAction> asyncCallbackHandler);
+    void authenticateAsync(String event, String userId, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
 
     /**
@@ -92,20 +93,32 @@ public interface CastleApi {
 
     /**
      * Call to the identify endpoint @see <a href="https://api.castle.io/docs#identify">The docs</a>
+     * <p>
+     * traits parameter is empty by default.
+     * active parameter is true by default.
      *
      * @param userId user unique ID
-     * @param active is this call realized in an active user session
      */
-    void identify(String userId, boolean active);
+    void identify(String userId);
+
+    /**
+     *
+     * Call to the identify endpoint @see <a href="https://api.castle.io/docs#identify">The docs</a>
+     * <p>
+     * active parameter is true by default.
+     *
+     * @param userId user unique ID
+     * @param traits additional traits parameters to send
+     */
+    void identify(String userId, Object traits);
 
     /**
      * Call to the identify endpoint @see <a href="https://api.castle.io/docs#identify">The docs</a>
      *
-     * @param userId     user unique ID
-     * @param active     is this call realized in an active user session
-     * @param traits     additional traits parameters to send
-     * @param properties additional properties parameters to send
+     * @param userId user unique ID
+     * @param traits additional traits parameters to send
+     * @param active is this call realized in an active user session
      */
-    void identify(String userId, boolean active, @Nullable Object traits, @Nullable Object properties);
+    void identify(String userId, @Nullable Object traits, boolean active);
 
 }

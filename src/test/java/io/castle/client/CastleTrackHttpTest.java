@@ -88,6 +88,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
             public void onResponse(Boolean response) {
                 result.set(response);
             }
+
+            @Override
+            public void onException(Exception exception) {
+                result.set(false);
+            }
         };
         sdk.onRequest(request).track(event, null, null, callback);
 
