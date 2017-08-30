@@ -15,6 +15,7 @@ public class CastleContextBuilder {
     private CastleContext context;
     private CastleHeaders headers;
     private final CastleConfiguration configuration;
+    private final HeaderNormalizer headerNormalizer = new HeaderNormalizer();
 
     public CastleContextBuilder(CastleConfiguration configuration) {
         this.configuration = configuration;
@@ -45,15 +46,23 @@ public class CastleContextBuilder {
         ArrayList<CastleHeader> castleHeadersList = new ArrayList<>();
         for (Enumeration<String> headerNames = request.getHeaderNames(); headerNames.hasMoreElements(); ) {
             String key = headerNames.nextElement();
-            String keyLower = key.toLowerCase();
-            if (!configuration.getBlackListHeaders().contains(keyLower)
-                    && configuration.getWhiteListHeaders().contains(keyLower)) {
-                castleHeadersList.add(new CastleHeader(key, request.getHeader(key)));
-            }
+            String headerValue = request.getHeader(key);
+            addHeaderValue(castleHeadersList, key, headerValue);
         }
+        //A CGI specific header is added for compliance with other castle sdk libraries
+        addHeaderValue(castleHeadersList, "REMOTE_ADDR",request.getRemoteAddr());
+
         CastleHeaders headers = new CastleHeaders();
         headers.setHeaders(castleHeadersList);
         return headers;
+    }
+
+    private void addHeaderValue(ArrayList<CastleHeader> castleHeadersList, String key, String headerValue) {
+        String keyNormalized = headerNormalizer.normalize(key);
+        if (!configuration.getBlackListHeaders().contains(keyNormalized)
+                && configuration.getWhiteListHeaders().contains(keyNormalized)) {
+            castleHeadersList.add(new CastleHeader(key, headerValue));
+        }
     }
 
     private String setClientIdFromHttpServletRequest(HttpServletRequest request) {

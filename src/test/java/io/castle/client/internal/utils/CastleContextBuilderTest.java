@@ -57,6 +57,7 @@ public class CastleContextBuilderTest {
         listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
         listOfHeaders.add(new CastleHeader(acceptHeader, accept));
         listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
+        listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
         standardContext.getHeaders().setHeaders(listOfHeaders);
 
         //When
@@ -196,6 +197,7 @@ public class CastleContextBuilderTest {
     private String hostValue = "localhost:8080";
     private String acceptEncodingHeader = "Accept-Encoding";
     private String acceptEncoding = "gzip, deflate";
+    private String cgiSpecHeaderName = "REMOTE_ADDR";
 
     public MockHttpServletRequest getStandardRequestMock() {
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -218,6 +220,7 @@ public class CastleContextBuilderTest {
         listOfHeaders.add(new CastleHeader(acceptHeader, accept));
         listOfHeaders.add(new CastleHeader(acceptLanguageHeader, acceptLanguage));
         listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
+        listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
 //        listOfHeaders.add(new CastleHeader(keyControlCache, valueContolCache));
 //        listOfHeaders.add(new CastleHeader(customClientIdHeader, clientId));
 //        listOfHeaders.add(new CastleHeader(headerHost, hostValue));

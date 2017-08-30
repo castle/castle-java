@@ -50,8 +50,7 @@ that can be optionally configured:
  * Whitelisted Headers: this is a comma-separated list of strings representing HTTP headers
  that will get passed to the context object with each call to the Castle.io API,
  unless they are blacklisted.
- * Authenticate Failover Strategy: it can be set to `ALLOW`, `DENY` or `CHALLENGE`.
- TODO: Support for setting the strategy to throwTimeoutException.
+ * Authenticate Failover Strategy: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
  This sets the action that will be taken when a synchronous request to the authenticate endpoint
  of the Castle.io API fails.
  * Timeout: an integer that represents the time in milliseconds after which a request fails. 
@@ -65,7 +64,7 @@ If the value of any of this is left unspecified, the client will be configured w
 
 Settings can be provided as a Java Properties file in the classpath or through
 environmental variables.
-When both of these options ar used, environmental variables take precedence over Java
+When both of these options are used, environmental variables take precedence over Java
 properties.
 When neither option is used, the client's initialization will provide a default value or fail,
 in case there is no such value.
@@ -87,7 +86,7 @@ Base URL | `https://api.castle.io/` | `base_url` | `CASTLE_SDK_BASE_URL` |
 
 By default, the SDK will look for the Java Properties file named `castle_sdk.properties`
 in the classpath.
-An alternative filename can be chosen by setting the `CASTLE_PROPERTIES_FILE` to a different value.
+An alternative filename can be chosen by setting the `CASTLE_PROPERTIES_FILE` environment variable to a different value.
 
 The following is a sample Java Properties file containing all of the settings that can be
 modified: 
@@ -152,8 +151,14 @@ contains has a context object in JSON format in a private filed.
 Its data consists of metadata taken from the `HttpServletRequest` passed to `onRequest`.
 In particular, TODO: specify exactly what is passed.
 
-It is possible to provide additional metadata to the context by creating a `io.castle.client.model.CastleContext` instance
+It is possible to provide additional metadata to the context using the fluent api on `io.castle.client.api.CastleApi` as follows:
+```java
+        Castle.sdk().onRequest(req).mergeContext(additionalContextObject);
+```
 
+Any POJO class can be used as an argument of the mergeContext class. To get a complete override of the default castle, use a instance of `io.castle.client.model.CastleContext`.
+
+TODO merge process definition and possibility to merge multiple context objects.
 
 ## Authenticate
 

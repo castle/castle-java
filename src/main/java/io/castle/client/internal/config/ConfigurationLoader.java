@@ -7,7 +7,6 @@ import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
@@ -149,10 +148,19 @@ class ConfigurationLoader {
             builder.withTimeout(timeout);
         }
         if (authenticateFailoverStrategyValue != null) {
+            if (authenticateFailoverStrategyValue.compareTo("throw") == 0) {
+                builder.withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy());
+            } else {
+                builder.withAuthenticateFailoverStrategy(
+                        new AuthenticateFailoverStrategy(
+                                AuthenticateAction.fromAction(authenticateFailoverStrategyValue)
+                        )
+                );
+            }
+        } else {
+            //TODO What is the default failover strategy?? for now ALLOW
             builder.withAuthenticateFailoverStrategy(
-                    new AuthenticateFailoverStrategy(
-                            AuthenticateAction.fromAction(authenticateFailoverStrategyValue)
-                    )
+                    new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW)
             );
         }
         if (backendProviderValue != null) {

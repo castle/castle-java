@@ -4,6 +4,7 @@ import io.castle.client.internal.backend.OkHttpFactory;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
+import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
 import okhttp3.mockwebserver.MockWebServer;
 import org.assertj.core.api.Assertions;
@@ -15,8 +16,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractCastleHttpLayerTest {
 
+    private final AuthenticateFailoverStrategy testAuthenticateFailoverStrategy;
+
     Castle sdk;
     MockWebServer server;
+
+    protected AbstractCastleHttpLayerTest(AuthenticateFailoverStrategy testAuthenticateFailoverStrategy) {
+        this.testAuthenticateFailoverStrategy = testAuthenticateFailoverStrategy;
+    }
 
     @Before
     public void prepare() throws NoSuchFieldException, IllegalAccessException, CastleSdkConfigurationException, IOException {
@@ -33,7 +40,7 @@ public abstract class AbstractCastleHttpLayerTest {
                 .withWhiteListHeaders(configuration.getWhiteListHeaders())
                 .withCastleAppId(configuration.getCastleAppId())
                 .withBackendProvider(configuration.getBackendProvider())
-                .withAuthenticateFailoverStrategy(configuration.getAuthenticateFailoverStrategy())
+                .withAuthenticateFailoverStrategy(testAuthenticateFailoverStrategy)
                 .withTimeout(configuration.getTimeout())
                 .build();
         OkHttpFactory mockedFactory = new OkHttpFactory(mockedApiConfiguration, sdk.getInternalConfiguration().getModel());
@@ -49,6 +56,11 @@ public abstract class AbstractCastleHttpLayerTest {
 
 
     protected <T> void waitForValueAndVerify(AtomicReference<T> result, T expected) {
+        T extracted = waitForValue(result);
+        Assertions.assertThat(extracted).isEqualToComparingFieldByField(expected);
+    }
+
+    protected <T> T waitForValue(AtomicReference<T> result) {
         T value = result.get();
         int maxNrOfSleeps = 10;
         while (value == null && maxNrOfSleeps > 0) {
@@ -59,8 +71,8 @@ public abstract class AbstractCastleHttpLayerTest {
             }
             value = result.get();
         }
-        Assertions.assertThat(value).isNotNull().isEqualToComparingFieldByField(expected);
-
+        Assertions.assertThat(value).isNotNull();
+        return value;
     }
 
 

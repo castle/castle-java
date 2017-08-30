@@ -127,6 +127,37 @@ public class ConfigurationLoaderTest {
     }
 
     @Test
+    public void loadFailoverThrowStrategyFromEnv() throws CastleSdkConfigurationException {
+        //given a property file not existing is provided
+        setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
+        // and a minimal sdk configuration is provided in environment
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_APP_ID",
+                "test_app_id_env"
+        );
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_API_SECRET",
+                "1234"
+        );
+        // and the failover strategy environment value is throw
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
+                "throw"
+        );
+        // and a expected config is the default configuration with the throw strategy
+        CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("1234")
+                .withCastleAppId("test_app_id_env")
+                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy())
+                .build();
+
+        // when then
+        testLoad(expectedConfiguration);
+    }
+
+
+    @Test
     public void ignoreNonExistingPropertiesFileTest() throws CastleSdkConfigurationException {
         //given a property file not existing is provided
         setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
@@ -171,8 +202,6 @@ public class ConfigurationLoaderTest {
         ConfigurationLoader loader = new ConfigurationLoader();
         //when
         loader.loadConfiguration();
-
-        //TODO: generate file input stream error.
     }
 
     private void setEnvAndTestCorrectness(String variable, String value) throws CastleSdkConfigurationException {

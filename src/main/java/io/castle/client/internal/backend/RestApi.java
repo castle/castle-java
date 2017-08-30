@@ -9,16 +9,6 @@ import io.castle.client.model.Verdict;
 public interface RestApi {
 
     /**
-     * Send a async track request
-     *
-     * @param event             event name
-     * @param userId            unique userId
-     * @param contextPayload    context json
-     * @param propertiesPayload properties json
-     */
-    void sendTrackRequest(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload);
-
-    /**
      * Send a async track request and provide a callback that inform if the request success or fail.
      *
      * @param event                event name

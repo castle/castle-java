@@ -1,5 +1,7 @@
 package io.castle.client;
 
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.AuthenticateFailoverStrategy;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
@@ -9,6 +11,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
+
+    public CastleMergeHttpTest() {
+        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
+    }
 
     @Test
     public void mergeContextIsSendOnHttp() throws InterruptedException {
@@ -35,7 +41,7 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
 
         //Then the json send contains a extended context object
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"},\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"},\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 

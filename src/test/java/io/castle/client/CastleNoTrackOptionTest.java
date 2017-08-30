@@ -1,8 +1,12 @@
 package io.castle.client;
 
 import io.castle.client.api.CastleApi;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.AuthenticateFailoverStrategy;
+import io.castle.client.model.Verdict;
 import okhttp3.mockwebserver.MockResponse;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -10,27 +14,30 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
 
+    public CastleNoTrackOptionTest() {
+        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
+    }
+
     @Test
     public void noTrackOptionDisableRequests() throws InterruptedException {
 
         //Given a mock HTTP request is provided
         HttpServletRequest request = new MockHttpServletRequest();
-        //And response from authenticate is prepared
-        server.enqueue(new MockResponse().setBody(
-                "{\n" +
-                        "  \"action\": \"deny\",\n" +
-                        "  \"user_id\": \"12345\"\n" +
-                        "}"));
         //And a CastleApi is created with doNotTrack option
         CastleApi castleApi = sdk.onRequest(request).doNotTrack(true);
+
         //When all API call are executed
         castleApi.track("testEvent");
         castleApi.identify("userId", true);
-        castleApi.authenticate("testEvent", "userId");
+        Verdict verdict = castleApi.authenticate("testEvent", "userId");
+        //and we await the timeout period to avoid concurrency races
+        Thread.sleep(120);
 
-        //Then only the authenticate call is executed
-        server.takeRequest();
-        Assertions.assertThat(server.getRequestCount()).isEqualTo(1);
+        //Then no calls are made to the backend
+        Assertions.assertThat(server.getRequestCount()).isEqualTo(0);
+        //And the Verdict is the default ALLOW value
+        Assert.assertEquals(AuthenticateAction.ALLOW, verdict.getAction());
+        Assert.assertEquals("userId", verdict.getUserId());
     }
 
     @Test

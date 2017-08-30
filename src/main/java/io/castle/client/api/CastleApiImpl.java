@@ -1,11 +1,13 @@
 package io.castle.client.api;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.ContextMerge;
+import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.CastleContext;
@@ -63,6 +65,12 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public Verdict authenticate(String event, String userId, Object properties) {
+        if (doNotTrack) {
+            return VerdictBuilder.failover("no track option enabled")
+                    .withAction(AuthenticateAction.ALLOW)
+                    .withUserId(userId)
+                    .build();
+        }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         JsonElement propertiesJson = null;
         if (properties != null) {
@@ -73,6 +81,7 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void authenticateAsync(String event, String userId, @Nullable Object properties, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        Preconditions.checkNotNull(asyncCallbackHandler,"The async handler can not be null");
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         JsonElement propertiesJson = null;
         if (properties != null) {

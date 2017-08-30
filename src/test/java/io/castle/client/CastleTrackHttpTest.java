@@ -1,6 +1,8 @@
 package io.castle.client;
 
 import io.castle.client.model.AsyncCallbackHandler;
+import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.AuthenticateFailoverStrategy;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
@@ -12,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
+
+    public CastleTrackHttpTest() {
+        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
+    }
 
     @Test
     public void trackEndpointWithUserIDTest() throws InterruptedException {
@@ -28,7 +34,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -52,7 +58,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -69,7 +75,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
+        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -98,7 +104,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the dumb backend should return the default Authenticate.Action in the configuration
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
+        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
                 recordedRequest.getBody().readUtf8());
 
         waitForValueAndVerify(result, Boolean.FALSE);

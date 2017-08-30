@@ -70,4 +70,17 @@ public class CastleConfigurationBuilderTest {
         //then a exception is thrown
     }
 
+    @Test(expected = CastleSdkConfigurationException.class)
+    public void builderWithoutBackendProviderException() throws CastleSdkConfigurationException {
+        //given
+        CastleConfigurationBuilder builder = CastleConfigurationBuilder.aConfigBuilder();
+        builder.withApiSecret("valid");
+        builder.withCastleAppId("valid");
+        builder.withBackendProvider(null);
+
+        //when
+        builder.build();
+        //then a exception is thrown
+    }
+
 }
