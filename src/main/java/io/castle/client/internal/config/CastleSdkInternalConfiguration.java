@@ -38,7 +38,7 @@ public class CastleSdkInternalConfiguration {
      * Currently only the okHttp backend is available
      *
      * @param modelInstance GSON model instance to use.
-     * @param configuration CastleConfiguration instance. TODO!!!!!
+     * @param configuration CastleConfiguration instance.
      * @return The configured RestApiFactory to make backend REST calls.
      */
     private static RestApiFactory loadRestApiFactory(final CastleGsonModel modelInstance, final CastleConfiguration configuration) {

@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
  * <p>
  * Methods of this interface can be used to track security events and implement a work flow for adaptive authentication.
  *
- * TODO: describe shortly identify and review
+ * TODO: describe shortly identify and review methods
  * <p>
  * A {@code castleApi} instance contains all necessary configurations to correctly call the Castle.io API.
  * In particular, it contains:

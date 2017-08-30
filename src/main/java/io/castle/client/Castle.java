@@ -11,8 +11,12 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Makes it possible to create a {@code CastleApi} instance with the proper configuration, HTTP layer and context object.
+ * Makes it possible to create an instance of {@code CastleApi} with the proper configuration, an HTTP layer and a
+ * context object while verifying that the client has been properly configured.
  * <p>
+ * Through static methods, creates a singleton instance of this class which keeps in its internal configuration
+ * application the application level settings loaded from
+ *
  *
  */
 public class Castle {
@@ -27,11 +31,12 @@ public class Castle {
     private static Castle instance;
 
     /**
-     * Get the SDK singleton instance.
+     * Gets the SDK singleton instance.
      *
      * @return
+     * @throws IllegalStateException
      */
-    public static Castle sdk() {
+    public static Castle sdk() throws IllegalStateException {
         if (instance == null) {
             throw new IllegalStateException("Castle SDK must be initialized via a call to verifySdkConfigurationAndInitialize");
         }
@@ -39,7 +44,7 @@ public class Castle {
     }
 
     /**
-     * Verify SDK internalConfiguration and initialize the internal internalConfiguration.
+     * Verify SDK internalConfiguration and initialize the internal Configuration.
      */
     public static void verifySdkConfigurationAndInitialize() throws CastleSdkConfigurationException {
         initializeSDK();
@@ -82,7 +87,7 @@ public class Castle {
     }
 
     /**
-     * Package accessible method for tests proposes.
+     * Package accessible method for testing purposes.
      * @return the internal sdk configuration
      */
     CastleSdkInternalConfiguration getInternalConfiguration() {
