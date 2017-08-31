@@ -74,7 +74,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         // when an identify request is made with a trait object and active option
         sdk.onRequest(request).identify(id, trait, false);
 
-        // then the dumb backend should return the default Authenticate.Action in the configuration
+        // then
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals("{\"user_id\":\"12345\",\"active\":false,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());

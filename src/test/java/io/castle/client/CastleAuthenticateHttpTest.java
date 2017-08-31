@@ -45,7 +45,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
             @Override
             public void onException(Exception exception) {
-                throw new IllegalStateException(exception);
+                Assertions.fail("error on request", exception);
             }
         };
         // and an authenticate request is made
@@ -86,7 +86,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
             @Override
             public void onException(Exception exception) {
-                throw new IllegalStateException(exception);
+                Assertions.fail("error on request", exception);
             }
         };
         CustomAppProperties properties = new CustomAppProperties();
@@ -125,7 +125,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
             @Override
             public void onException(Exception exception) {
-                throw new IllegalStateException(exception);
+                Assertions.fail("error on request", exception);
             }
         };
         // and an authenticate request is made

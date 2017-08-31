@@ -1,6 +1,7 @@
 package io.castle.client.api;
 
 import io.castle.client.model.AsyncCallbackHandler;
+import io.castle.client.model.Review;
 import io.castle.client.model.Verdict;
 
 import javax.annotation.Nullable;
@@ -100,7 +101,6 @@ public interface CastleApi {
     void identify(String userId);
 
     /**
-     *
      * Call to the identify endpoint @see <a href="https://api.castle.io/docs#identify">The docs</a>
      * <p>
      * active parameter is true by default.
@@ -118,5 +118,21 @@ public interface CastleApi {
      * @param active is this call realized in an active user session
      */
     void identify(String userId, @Nullable Object traits, boolean active);
+
+    /**
+     * Call to the review endpoint @see <a href="https://api.castle.io/docs#review">The docs</a>
+     *
+     * @param reviewId
+     * @return review model object
+     */
+    Review review(String reviewId);
+
+    /**
+     * Async call to the review endpoint @see <a href="https://api.castle.io/docs#review">The docs</a>
+     *
+     * @param reviewId
+     * @return review model object
+     */
+    void reviewAsync(String reviewId, AsyncCallbackHandler<Review> callbackHandler);
 
 }

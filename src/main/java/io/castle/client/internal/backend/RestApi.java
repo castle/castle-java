@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.Review;
 import io.castle.client.model.Verdict;
 
 public interface RestApi {
@@ -50,4 +51,18 @@ public interface RestApi {
      * @param traitsJson        additional trait json
      */
     void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson);
+
+    /**
+     * doc TODO
+     * @param reviewId
+     * @return
+     */
+    Review sendReviewRequest(String reviewId);
+
+    /**
+     * doc TODO
+     * @param reviewId
+     * @param callbackHandler
+     */
+    void sendReviewRequest(String reviewId, AsyncCallbackHandler<Review> callbackHandler);
 }

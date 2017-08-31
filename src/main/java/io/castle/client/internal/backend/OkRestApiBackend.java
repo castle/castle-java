@@ -8,6 +8,7 @@ import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.internal.utils.VerdictTransportModel;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.CastleRuntimeException;
+import io.castle.client.model.Review;
 import io.castle.client.model.Verdict;
 import okhttp3.*;
 
@@ -22,6 +23,7 @@ public class OkRestApiBackend implements RestApi {
 
     private final HttpUrl track;
     private final HttpUrl authenticate;
+    private final HttpUrl reviewsBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
         HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
@@ -30,6 +32,7 @@ public class OkRestApiBackend implements RestApi {
         this.configuration = configuration;
         this.track = baseUrl.resolve("/v1/track");
         this.authenticate = baseUrl.resolve("/v1/authenticate");
+        this.reviewsBase = baseUrl.resolve("/v1/reviews/");
     }
 
     @Override
@@ -55,12 +58,16 @@ public class OkRestApiBackend implements RestApi {
             @Override
             public void onFailure(Call call, IOException e) {
                 Castle.logger.error("HTTP layer. Error sending track request.", e);
-                asyncCallbackHandler.onResponse(false);
+                if (asyncCallbackHandler != null) {
+                    asyncCallbackHandler.onException(e);
+                }
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                asyncCallbackHandler.onResponse(response.isSuccessful());
+                if (asyncCallbackHandler != null) {
+                    asyncCallbackHandler.onResponse(response.isSuccessful());
+                }
             }
         });
     }
@@ -169,6 +176,51 @@ public class OkRestApiBackend implements RestApi {
                 Castle.logger.debug("Identify request successful");
             }
         });
+    }
 
+    @Override
+    public Review sendReviewRequest(String reviewId) {
+        Request request = createReviewRequest(reviewId);
+        try {
+            Response response = client.newCall(request).execute();
+            return extractReview(response);
+        } catch (IOException e) {
+            //TODO how to handle error on review loading??
+            return null;
+        }
+    }
+
+    @Override
+    public void sendReviewRequest(String reviewId, final AsyncCallbackHandler<Review> callbackHandler) {
+        Request request = createReviewRequest(reviewId);
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackHandler.onException(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                callbackHandler.onResponse(extractReview(response));
+            }
+        });
+    }
+
+    private Review extractReview(Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String jsonResponse = response.body().string();
+            Gson gson = model.getGson();
+            return gson.fromJson(jsonResponse, Review.class);
+        }
+        //TODO what to return on a failing response like 404 or 403
+        return null;
+    }
+
+    private Request createReviewRequest(String reviewId) {
+        HttpUrl reviewUrl = reviewsBase.resolve(reviewId);
+        return new Request.Builder()
+                .url(reviewUrl)
+                .get()
+                .build();
     }
 }

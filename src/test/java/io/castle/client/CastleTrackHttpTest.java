@@ -6,6 +6,7 @@ import io.castle.client.model.AuthenticateFailoverStrategy;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -32,7 +33,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // and an authenticate request is made
         sdk.onRequest(request).track(event, id);
 
-        // then the dumb backend should return the default Authenticate.Action in the configuration
+        // then
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
                 recordedRequest.getBody().readUtf8());
@@ -56,7 +57,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // and an authenticate request is made
         sdk.onRequest(request).track(event, id, properties);
 
-        // then the dumb backend should return the default Authenticate.Action in the configuration
+        // then
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
                 recordedRequest.getBody().readUtf8());
@@ -73,26 +74,26 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // and an authenticate request is made
         sdk.onRequest(request).track(event);
 
-        // then the dumb backend should return the default Authenticate.Action in the configuration
+        // then
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
                 recordedRequest.getBody().readUtf8());
     }
 
     @Test
-    public void trackEndpointTimeoutTestTest() throws InterruptedException {
-        //given
+    public void trackEndpointTimeoutTest() throws InterruptedException {
+        // given the backend will timeout
         server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE));
         String event = "any.valid.event";
-        // And a mock Request
+        // and a mock Request
         final HttpServletRequest request = new MockHttpServletRequest();
 
+        // and a async handler is prepared
         final AtomicReference<Boolean> result = new AtomicReference<>();
-        // and an authenticate request is made
         AsyncCallbackHandler<Boolean> callback = new AsyncCallbackHandler<Boolean>() {
             @Override
             public void onResponse(Boolean response) {
-                result.set(response);
+                Assertions.fail("Request should end with an timeout exception and not result");
             }
 
             @Override
@@ -100,13 +101,15 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
                 result.set(false);
             }
         };
+        // when an authenticate request is made
         sdk.onRequest(request).track(event, null, null, callback);
 
-        // then the dumb backend should return the default Authenticate.Action in the configuration
+        // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}}}",
                 recordedRequest.getBody().readUtf8());
 
+        // and the onException method must be called
         waitForValueAndVerify(result, Boolean.FALSE);
     }
 

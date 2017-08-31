@@ -8,10 +8,7 @@ import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.ContextMerge;
 import io.castle.client.internal.utils.VerdictBuilder;
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.CastleContext;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +61,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public Verdict authenticate(String event, String userId, Object properties) {
+    public Verdict authenticate(String event, String userId,@Nullable Object properties) {
         if (doNotTrack) {
             return VerdictBuilder.failover("no track option enabled")
                     .withAction(AuthenticateAction.ALLOW)
@@ -80,7 +77,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void authenticateAsync(String event, String userId, @Nullable Object properties, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+    public void authenticateAsync(String event, @Nullable String userId, @Nullable Object properties, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
         Preconditions.checkNotNull(asyncCallbackHandler,"The async handler can not be null");
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         JsonElement propertiesJson = null;
@@ -112,7 +109,8 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void track(String event, @Nullable String userId, @Nullable Object properties, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+    public void track(String event, @Nullable String userId, @Nullable Object properties,  @Nullable AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+        Preconditions.checkNotNull(event);
         if (doNotTrack) {
             return;
         }
@@ -126,6 +124,7 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void identify(String userId, @Nullable Object traits, boolean active) {
+        Preconditions.checkNotNull(userId);
         if (doNotTrack) {
             return;
         }
@@ -144,8 +143,23 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void identify(String userId, @Nullable Object traits) {
+        Preconditions.checkNotNull(userId);
         identify(userId, traits, true);
     }
 
-    //TODO Ask about the review endpoint. How to get the review ids??.
+
+    @Override
+    public Review review(String reviewId) {
+        Preconditions.checkNotNull(reviewId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendReviewRequest(reviewId);
+    }
+
+    @Override
+    public void reviewAsync(String reviewId, AsyncCallbackHandler<Review> callbackHandler) {
+        Preconditions.checkNotNull(reviewId);
+        Preconditions.checkNotNull(callbackHandler);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        restApi.sendReviewRequest(reviewId, callbackHandler);
+    }
 }

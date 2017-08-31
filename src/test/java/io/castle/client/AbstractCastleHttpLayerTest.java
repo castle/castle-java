@@ -6,6 +6,7 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
+import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
@@ -20,6 +21,7 @@ public abstract class AbstractCastleHttpLayerTest {
 
     Castle sdk;
     MockWebServer server;
+    HttpUrl testServerBaseUrl;
 
     protected AbstractCastleHttpLayerTest(AuthenticateFailoverStrategy testAuthenticateFailoverStrategy) {
         this.testAuthenticateFailoverStrategy = testAuthenticateFailoverStrategy;
@@ -33,9 +35,10 @@ public abstract class AbstractCastleHttpLayerTest {
         //Given a SDK instance
         sdk = new Castle(CastleSdkInternalConfiguration.getInternalConfiguration());
         CastleConfiguration configuration = sdk.getInternalConfiguration().getConfiguration();
+        testServerBaseUrl = server.url("/");
         CastleConfiguration mockedApiConfiguration = CastleConfigurationBuilder.aConfigBuilder()
                 .withApiSecret(configuration.getApiSecret())
-                .withApiBaseUrl(server.url("/").toString())
+                .withApiBaseUrl(testServerBaseUrl.toString())
                 .withBlackListHeaders(configuration.getBlackListHeaders())
                 .withWhiteListHeaders(configuration.getWhiteListHeaders())
                 .withCastleAppId(configuration.getCastleAppId())
