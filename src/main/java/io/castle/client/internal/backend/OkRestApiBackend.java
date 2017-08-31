@@ -113,7 +113,7 @@ public class OkRestApiBackend implements RestApi {
             @Override
             public void onFailure(Call call, IOException e) {
                 if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
-                    asyncCallbackHandler.onException(e);
+                    asyncCallbackHandler.onException(new CastleRuntimeException(e));
                 } else {
                     asyncCallbackHandler.onResponse(
                             VerdictBuilder.failover(e.getMessage())
