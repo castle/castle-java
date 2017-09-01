@@ -203,7 +203,7 @@ Below is a full list of all keys Castle understands:
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
-          "version": "0.6.0-SNAPSHOT""
+          "version": "0.6.0-SNAPSHOT"
         },
         "locale": "nl-NL", // will default to Accept-Language header with q==1
         "location": { // will default to IP location 
@@ -250,7 +250,7 @@ The following is a sample default context created:
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
-          "version": "0.6.0-SNAPSHOT""
+          "version": "0.6.0-SNAPSHOT"
         },
         "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1" //will default to headers.user_agent
       }
