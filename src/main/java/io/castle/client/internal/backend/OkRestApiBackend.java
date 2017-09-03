@@ -23,6 +23,7 @@ public class OkRestApiBackend implements RestApi {
 
     private final HttpUrl track;
     private final HttpUrl authenticate;
+    private final HttpUrl identify;
     private final HttpUrl reviewsBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
@@ -33,6 +34,7 @@ public class OkRestApiBackend implements RestApi {
         this.track = baseUrl.resolve("/v1/track");
         this.authenticate = baseUrl.resolve("/v1/authenticate");
         this.reviewsBase = baseUrl.resolve("/v1/reviews/");
+        this.identify = baseUrl.resolve("/v1/identify");
     }
 
     @Override
@@ -162,7 +164,7 @@ public class OkRestApiBackend implements RestApi {
         }
         RequestBody body = RequestBody.create(JSON, json.toString());
         Request request = new Request.Builder()
-                .url(authenticate)
+                .url(identify)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {

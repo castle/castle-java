@@ -7,7 +7,7 @@ To generate the javadoc documentation run:
 
     mvn clean compile javadoc:javadoc
 
-The java will be located in the `target/site` directory.
+The javadoc will be located inside the `target/site` directory.
 
 To check test coverage run:
     
@@ -17,14 +17,58 @@ The coverage report will be on the page `target/jacoco-ut/index.html`
 
 # Quickstart
 
-TODO
+When using Maven, add the following dependency to your `pom.xml` file:
+```xml
+        <dependency>
+            <groupId>io.castle</groupId>
+            <artifactId>castle-java</artifactId>
+            <version>0.6.0-SNAPSHOT</version>
+        </dependency>
+```
 
-TODO: Create internal references to other sections in the README.md
+Go to the settings page of your Castle account and find your **API Secret** and your **APP ID**.
+Then create the a new file named `castle_sdk.properties` with the following content:
+
+```properties
+app_id=<API_Secret>
+api_secret=<APP_ID>
+
+```
+
+All other settings will be set to their default values.
+
+Place the file in your classpath (for instance in `src/main/resources`).
+
+Next, the SDK must be properly initialized, so that some configuration errors are discovered early.
+Make sure this line of code is executed once during the initialization of the application using the SDK:
+
+```java
+Castle.verifySdkConfigurationAndInitialize();
+```
+
+Todo: maybe write about ServletContextListener for servlets
+
+
+Once the SDK has been initialized, it suffices to get an instance of the `io.castle.client.api.CastleApi` interface
+in the following manner:
+
+```java
+CastleApi newAPIRef = Castle.sdk().onRequest(req)
+```
+
+Here `req` is an instance of `HttpServletRequest`.
+
+
+
+
+TODO: secure mode
+
 
 # Where to Find Documentation
 
-The [offical Castle documentation](https://castle.io/docs) contains information for other platforms
-and documents all possible use cases of the API.
+The official Castle [documentation](https://castle.io/docs) documents all possible use cases of the API.
+It also contains information on support for other platforms.
+
 This file contains a guide that should get you started as quickly as possible with the Java SDK.
 There is also available a Javadoc.
 TODO: point to the right URL with the javadoc
@@ -39,8 +83,8 @@ Before running an application that uses the Castle Java SDK,
 there are two settings that must be configured.
 These are:
 
- * **App ID**: an identifier for the application associated with a valid Castle account; 
- * **API Secret**: an identifier that will be used for authentication purposes.
+ * **App ID**: an application identifier associated with a valid Castle account; 
+ * **API Secret**: a secret that will be used for authentication purposes.
  
 Both of them can be found in the settings page of a Castle account.
 If they are are not provided, the client's initialization process will fail.
@@ -54,27 +98,25 @@ that can be optionally configured:
  that will get passed to the context object with each call to the Castle API,
  unless they are blacklisted. See [The Context Object](#the-context-object).
  * **Authenticate Failover Strategy**: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
- This sets the action that will be taken when a request to the `/v1/authenticate` endpoint
- of the Castle API fails. See also [Authenticate](#authenticate)
+ See also [Authenticate](#authenticate)
  * **Timeout**: an integer that represents the time in milliseconds after which a request fails. 
  * **Backend Provider**: The HTTP layer that will be used to make requests to the Castle API.
  Currently there is only one available and it uses [OkHttp](https://square.github.io/okhttp/).
  * **Base URL**: The base endpoint of the Castle API without any relative path.
  
-If the value of any of this is left unspecified, the client will be configured with their default values.
+If the value of any of these keys is left unspecified, the client will be configured with their default values.
+See *[Where to Configure Settings](#where-to-configure-settings)* for a list of the default values. 
 
-## Where to Configure settings
+## Where to Configure Settings
 
-Settings can be provided as a Java Properties file in the classpath or through
+Settings can be provided as a Java Properties file in the classpath, or through
 environmental variables.
-When both of these options are used, environmental variables take precedence over Java
-properties.
-When neither option is used, the client's initialization process will provide a default value or fail,
-in case there is no such value.
+When both of these options are used, environmental variables take precedence over the Java
+Properties file.
 
-The following table shows the default value for each setting,
-as well as the key that can be used to set its value in a properties
-file or the environmental variable that can be used instead:
+The following table shows the default value for each setting.
+It also shows the key that can be used to set its value in a Properties file.
+Finally, it also contains the environmental variable that can be used instead of the key in the Java Properties file:
 
 Setting | Default values, when they exist | Properties file key | Environmental variable |
 --- | --- | --- | --- |
@@ -87,21 +129,23 @@ Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUT
 Backend Provider | `OKHTTP` | `backend_provide` | `CASTLE_SDK_BACKEND_PROVIDER` |
 Base URL | `https://api.castle.io/` | `base_url` | `CASTLE_SDK_BASE_URL` |
 
-By default, the SDK will look for the Java Properties file named `castle_sdk.properties`
-in the classpath.
-An alternative filename can be chosen by setting the `CASTLE_PROPERTIES_FILE` environment variable to a different value.
+By default, the SDK will look in the classpath for the Java Properties file named `castle_sdk.properties`.
+An alternative file can be chosen by setting the `CASTLE_PROPERTIES_FILE` environment variable to a different value.
 
 The following is a sample Java Properties file containing all of the settings that can be
 modified: 
     
-    app_id=
-    api_secret=
-    white_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
-    black_list=Cookie
-    timeout=500
-    backend_provider=OKHTTP
-    failover_strategy=ALLOW
-    base_url=https://api.castle.io/
+```properties
+app_id=
+api_secret=
+white_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
+black_list=Cookie
+timeout=500
+backend_provider=OKHTTP
+failover_strategy=ALLOW
+base_url=https://api.castle.io/
+```
+
 
 ## Initializing the SDK
 
@@ -109,14 +153,17 @@ The Castle Java SDK must be initialized once in the life cycle of an application
 There is a static method in the `io.castle.client.Castle` class to do so.
 Before trying to call any API method, the `io.castle.client.Castle#verifySdkConfigurationAndInitialize`
 should be called, preferably during the initialization process of the application using the SDK.
-Then the most basic errors will be discovered as early as possible.
+This method will discover the the most basic configuration errors as early as possible.
+
+## Secure Mode
+
+TODO
 
 # API calls
 
-The `io.castle.client.api.CastleApi` interface has all methods needed to perform calls to
-the Castle API.
-Once the SDK has been initialized as described above, getting an instance of `CastleApi` is a matter of calling the
-`io.castle.client.Castle#onRequest` method in the context of a Java Servlet.
+The `io.castle.client.api.CastleApi` interface has all methods needed to perform requests to the Castle API.
+Once the SDK has been properly initialized, as described above, getting an instance of `CastleApi` is a matter of
+calling the `io.castle.client.Castle#onRequest` method in the context of a Java Servlet.
 
 The following is an example of such a use case:
 ```java
@@ -143,7 +190,7 @@ public class SomeServlet extends HttpServlet {
 
 Notice that the `io.castle.client.Castle#sdk` method is called first in order to get the singleton
 instance of the `io.castle.client.Castle` class.
-With this instance it is possible to use non-static methods of `io.castle.client.Castle`.
+With this instance it is possible to use the non-static methods of `io.castle.client.Castle`.
 
 ## The Context Object
 
@@ -161,8 +208,6 @@ CastleApi newAPIRef = Castle.sdk().onRequest(req).mergeContext(additionalContext
 ```
 
 Any POJO class can be used as an argument of the mergeContext class.
-To get a complete override of the default context,
-use a instance of `io.castle.client.model.CastleContext`.
 
 Notice that the signature of the `mergeContext` method is `CastleApi`, which means that
 the merge operation results in a new reference to a `CastleApi` instance whose context object is set to the merged
@@ -175,7 +220,7 @@ Below is a full list of all keys Castle understands:
  
 ```JSON
     {
-        "active": true, // if absent default to true
+        "active": true,
         "device": {
           "id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
           "manufacturer": "Apple",
@@ -198,15 +243,14 @@ Below is a full list of all keys Castle understands:
         },
         "headers": {
             "Accept-Language": "en-US,en;q=0.8"
-          }
-        },
+          },
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
           "version": "0.6.0-SNAPSHOT"
         },
-        "locale": "nl-NL", // will default to Accept-Language header with q==1
-        "location": { // will default to IP location 
+        "locale": "pl-PL",
+        "location": {
           "city": "San Francisco",
           "country": "United States",
           "latitude": 40.3194747,
@@ -215,7 +259,7 @@ Below is a full list of all keys Castle understands:
         },
         "network": {
           "bluetooth": false,
-          "carrier": "T-Mobile NL",
+          "carrier": "T-Mobile PL",
           "cellular": true,
           "wifi": false
         },
@@ -233,20 +277,20 @@ Below is a full list of all keys Castle understands:
       }
 ```
 
+To get a complete override of the default context, use a instance of `io.castle.client.model.CastleContext`.
+
 ### Default Context
 
-As seen above the default context gets constructed from a `HttpServletRequest`.
-The following is a sample default context created:
+As seen above, the default context gets constructed from a `HttpServletRequest`.
+The following is a sample default context created in such a manner:
 
 ```JSON
     {
-        "active": true, // default to true
+        "active": true,
         "client_id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
         "headers": {
-            "Accept-Language": "en-US,en;q=0.8",
-            ...
-          }
-        },
+            "Accept-Language": "en-US,en;q=0.8"
+          },
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
@@ -256,15 +300,20 @@ The following is a sample default context created:
       }
 ```
 The following remarks explain how the values of the fields are set:
+* The default value for the `active` key is `true`.
 * The `client_id` key is derived from the cookie `__cid`.
-* If the key `__cid`  does not exist, the `client_id` key takes its value from the header `X-Castle-Client-Id`. 
-* All HTTP headers along with the `REMOTE_ADDR` CGI header are taken from the `HttpServletRequest`; 
-a JSON Object with the header name as key and the header value as value is created and set as value for the `headers` key
-in the context JSON.
-* After it is created, `headers` object gets filtered according to the blacklist and whitelist;
+* If the key `__cid` in the cookie header does not exist, the `client_id` key takes its value from the header
+`X-Castle-Client-Id`. 
+* A JSON Object is created and set as value for the `headers` key in the context JSON.
+All HTTP headers, along with the `REMOTE_ADDR` CGI header, are taken from the `HttpServletRequest` and
+are used as key-values of the JSON object.
+This is done in such a way that each header's name is taken as a key and its contents are used as the value.
+* After it is created, the `headers` object gets filtered according to the blacklist and whitelist specified in the
+[configuration](#configuring-the-sdk);
 that is, headers in the blacklist are never passed to the context, while those headers that are whitelisted,
 but not blacklisted, get passed to the context.
-* The library key is added specifying the version of the SDK used.
+* The library key is added by default.
+Its value specifies the version of the SDK used.
 * The the value of the `User-Agent` HTTP header is used as the value for the `userAgent` key in the context.
 
 ### Merging Strategy
@@ -278,7 +327,7 @@ More specifically, when the optional context is provided, the merging strategy w
         + JSON objects get recursively merged using the same strategy;
         + JSON arrays get combined in such a way that elements in the additional context get appended to
         elements in the original context;
-        + JSON primitives in the original context get overwritten.
+        + JSON primitives in the original context get overwritten by JSON primitives in the additional context.
 * If the optional context contains a key and a null value, and if the key is present in the original context,
 the key is removed from the context.
 
@@ -287,16 +336,73 @@ the key is removed from the context.
 Information on when to use this method can be found in the section
 on [adaptive authentication](https://castle.io/docs/authentication) of the official documentation.
 
-The `io.castle.client.api.CastleApi#authenticate` method makes a synchronous call to the
+The `io.castle.client.api.CastleApi#authenticate` method makes a synchronous POST request to the
 `/v1/authenticate` endpoint of the Castle API.
-It returns a `io.castle.client.model.Verdict` instance.
-A verdict contains the following fields:
+This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-boolean).
+
+There are two required parameters that need to be specified in order to make a request to the authenticate endpoint:
+
+* **Event**: a string with the name of an event (TODO: What kinds of events can there be besides "$login.succeeded").
+* **User ID**: a string representing a user ID.
+
+Moreover, there is an additional optional parameter that can be specified:
+
+* **Properties**: object for recording additional information connected to the event.
+
+TODO: What about traits???
+
+The properties parameter takes any POJO class.
+It gets sent in JSON format.
+
+The return value of an authenticate call is a `io.castle.client.model.Verdict` instance.
+An instance of `Verdict` contains the following fields:
 
 * **Authenticate action**: Can be one of `ALLOW`, `DENY` or `CHALLENGE`.
 The semantics of each action is described in the documentation referred at the beginning of this section.
 * **User ID**: a string representing a user id associated to an authentication attempt.
-* **Failover boolean**:
-* **Failover reason**:
+* **Failover boolean**: `true` if the authenticate failover strategy was used, `false` otherwise. 
+* **Failover reason**: A string with information on the reason why the authenticate failover strategy was used. 
+
+### The Authenticate Failover Strategy
+
+It is the strategy that will be used when a request to the `/v1/authenticate` endpoint
+of the Castle API fails.
+Also, see [`doNotTrack` boolean](the-donottrack-boolean) for another use case of a failover strategy.
+
+It can be one of the following options:
+* return a specific *authenticate action* inside an instance of `Verdict`;
+* throw an `io.castle.client.model.CastleRuntimeException`.
+
+See [configuration](#configuring-the-sdk) to find out how to enable a failover strategy and to
+learn about its default value.
+
+
+
+### Asynchronous requests to authenticate
+
+The Castle Java SDK also offers support for making asynchronous POST requests to the authenticate endpoint.
+The only thing that is needed is to implement an instance of the `io.castle.client.model.AsyncCallbackHandler`
+interface.
+Then `io.castle.client.api.CastleApi#authenticateAsync` must be called specifying the same parameters as for its sync counterpart. 
+
+The following snippet provides an example of an async call to the authenticate endpoint:
+```java
+        ...
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                ...
+            }
+        };
+        sdk.onRequest(request).authenticateAsync(event, id, handler);
+        ...
+```
 
 ## Track
 
@@ -304,16 +410,64 @@ For information on the use cases of this method, go to the sections on
 [adaptive authentication](https://castle.io/docs/authentication) and 
 [security events](https://castle.io/docs/events) of the official documentation.
 
-The `io.castle.client.api.CastleApi#track` method makes an asynchronous call to the
+The `io.castle.client.api.CastleApi#track` method makes an asynchronous POST request to the
 `/v1/track` endpoint of the Castle API.
+This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-boolean).
+
+The only required parameter for a call to the track endpoint is **Event**.
+This is a string, whose semantics is specified in the documentation featured at the beginning of this section.
+
+Optional parameters are:
+
+* **User ID**: a string representing the id of a user. 
+* **Properties**: object for recording additional information connected to the event.
+
+Again, the properties parameter takes any POJO class and it gets sent in JSON format.
+
+The signature of this method if `void`.
 
 ## Identify
+
+Go to [Tracking user activity with Castle.js](https://castle.io/docs/tracking), the
+[Castle.js reference](https://castle.io/docs/castlejs) and
+[identify subsection of Integrating through Segment](https://castle.io/docs/segment#identify) for information on identify.
+
+The `io.castle.client.api.CastleApi#identify` method makes an asynchronous POST request to the
+`/v1/identify` endpoint of the Castle API.
+This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-boolean).
+
+The only required parameter is **User ID**, a string representing the id of a user.
+
+Optional parameters are:
+
+* **Traits**: Optional object for recording additional information connected to the user (e.g. email, username, etc).
+* **Active**: boolean specifying that the identify call is associated with an active user session.
+
+The traits parameter takes any POJO class and sends it in JSON format.
 
 ## Review
 
 Go to the section on [webhooks](https://castle.io/docs/webhooks) of the official documentation in order
-to learn how to use the review method.
+to learn how to use the review method. TODO: find out more references to the official docs.
 
-## The 'doNotTrack' Boolean
+The `io.castle.client.api.CastleApi#review` method makes a GET request to the
+`/v1/reviews/{reviewId}` of the Castle API.
+The `reviewId` parameter of the method specifies the endpoint of the request.
 
-TODO: describe its behavior for all API calls.
+The signature of the method is `io.castle.client.model.Review`.
+An instance of `Review` contains data parsed from the review JSON object sent by Castle in the body of the response.
+
+## The `doNotTrack` Boolean
+
+The `io.castle.client.api.CastleApi` instance obtained from a call to `io.castle.client.Castle#onRequest`
+contains a boolean in a private field named `doNotTrack`.
+The its default value is `false`, but it can be set to true by specifying so using the `doNotTrack` parameter
+of the `onRequestMethod`.
+
+The following list specifies the behaviour of each API call when this field is set to `true`:
+
+* **Authenticate**: the method returns a `Veredict` with `authenticateAction` set to `Allow` and `failover` set to
+`true`.
+* **Track**: the method  returns immediately and no request is made.
+* **Identify**: the method returns immediately and no request is made.
+* **Review**: not applicable. 

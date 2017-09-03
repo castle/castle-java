@@ -142,7 +142,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .withUserId(id)
                 .build();
 
-        verifyFailoverResponse(result, expected,false);
+        verifyFailoverResponse(result, expected, false);
     }
 
 
@@ -304,7 +304,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
      */
     private void verifyFailoverResponse(AtomicReference<Verdict> result, Verdict expected, boolean expectedExactReasonMatch) {
         Verdict extractedVerdict = waitForValue(result);
-        verifyFailoverResponse(extractedVerdict, expected,expectedExactReasonMatch);
+        verifyFailoverResponse(extractedVerdict, expected, expectedExactReasonMatch);
     }
 
     /**
@@ -317,7 +317,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(extractedVerdict.getAction()).isEqualTo(expected.getAction());
         Assertions.assertThat(extractedVerdict.getUserId()).isEqualTo(expected.getUserId());
         Assertions.assertThat(extractedVerdict.isFailover()).isTrue();
-        if(expectedExactReasonMatch) {
+        if (expectedExactReasonMatch) {
             Assertions.assertThat(extractedVerdict.getFailoverReason()).isEqualTo(expected.getFailoverReason());
         } else {
             Assertions.assertThat(extractedVerdict.getFailoverReason()).isNotEmpty();
