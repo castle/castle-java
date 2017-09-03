@@ -65,7 +65,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void authenticationAsyncEndpointWithPropertiesTest() throws InterruptedException {
+    public void authenticationAsyncEndpointWithPropertiesAndTraitsTest() throws InterruptedException {
         //given
         server.enqueue(new MockResponse().setBody(
                 "{\n" +
@@ -90,12 +90,13 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
             }
         };
         CustomAppProperties properties = new CustomAppProperties();
+        CustomAppTraits traits = new CustomAppTraits();
         // and an authenticate request is made
-        sdk.onRequest(request).authenticateAsync(event, id, properties, handler);
+        sdk.onRequest(request).authenticateAsync(event, id, properties, traits, handler);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"b\":0}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"b\":0},\"traits\":{\"y\":0}}",
                 recordedRequest.getBody().readUtf8());
 
         // and
@@ -203,7 +204,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void authenticationEndpointWithPropertiesTest() throws InterruptedException {
+    public void authenticationEndpointWithPropertiesAndTraitsTest() throws InterruptedException {
         //given
         server.enqueue(new MockResponse().setBody(
                 "{\n" +
@@ -219,8 +220,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         properties.setA("valueA");
         properties.setB(123456);
 
+        CustomAppTraits traits = new CustomAppTraits();
+        traits.setX("valueX");
+        traits.setY(654321);
+
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, traits);
 
         // then
         Verdict expected = VerdictBuilder.success()
@@ -231,7 +236,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"traits\":{\"x\":\"valueX\",\"y\":654321}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -249,7 +254,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         properties.setB(123456);
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, null);
 
         // then
         Verdict expected = VerdictBuilder.failover("Client Error")
@@ -284,7 +289,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         properties.setB(123456);
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, null);
 
         // then a illegal json failover is provided
         Verdict expected = VerdictBuilder.failover("Illegal json format")

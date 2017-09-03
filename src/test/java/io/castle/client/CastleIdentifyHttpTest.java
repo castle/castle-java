@@ -44,7 +44,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and
-        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        CustomAppTraits trait = new CustomAppTraits();
         trait.setX("valueX");
         trait.setY(234567);
 
@@ -67,7 +67,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And
-        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        CustomAppTraits trait = new CustomAppTraits();
         trait.setX("valueX");
         trait.setY(234567);
 
@@ -90,7 +90,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         //and
-        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        CustomAppTraits trait = new CustomAppTraits();
         trait.setX("valueX");
         trait.setY(234567);
 

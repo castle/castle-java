@@ -52,8 +52,7 @@ public interface CastleApi {
      * @param properties TODO!!!!!!!!!!
      * @return
      */
-    Verdict authenticate(String event, String userId, @Nullable Object properties);
-    //todo: what about the traits parameter?
+    Verdict authenticate(String event, String userId, @Nullable Object properties, @Nullable Object traits);
 
     /**
      *
@@ -62,7 +61,7 @@ public interface CastleApi {
      * @param properties
      * @param asyncCallbackHandler
      */
-    void authenticateAsync(String event, String userId, @Nullable Object properties, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
+    void authenticateAsync(String event, String userId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      *

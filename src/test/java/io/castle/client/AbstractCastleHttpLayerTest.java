@@ -100,7 +100,7 @@ public abstract class AbstractCastleHttpLayerTest {
         }
     }
 
-    public static class CustomAppIdentifyTrait {
+    public static class CustomAppTraits {
         private String x;
         private int y;
 

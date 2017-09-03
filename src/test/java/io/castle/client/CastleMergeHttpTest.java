@@ -31,7 +31,7 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         customExtraContext.setCondition(true);
         customExtraContext.setValue(10L);
         // and trait object
-        CustomAppIdentifyTrait trait = new CustomAppIdentifyTrait();
+        CustomAppTraits trait = new CustomAppTraits();
         trait.setX("valueX");
         trait.setY(234567);
 

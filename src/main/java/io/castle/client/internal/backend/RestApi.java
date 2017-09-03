@@ -29,7 +29,7 @@ public interface RestApi {
      * @param propertiesPayload properties json
      * @return AuthenticateAction enum value to be used on login logic.
      */
-    Verdict sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload);
+    Verdict sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload);
 
     /**
      * Async version of the authentication endpoint. This method will return immediately and the response will be passed to the asyncCallbackHandler in the future.
@@ -40,7 +40,7 @@ public interface RestApi {
      * @param propertiesPayload    properties json
      * @param asyncCallbackHandler callback to pass the AuthenticateAction enum value to be used on login logic.
      */
-    void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
+    void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      * Async call to the identify endpoint. This method will return immediately.

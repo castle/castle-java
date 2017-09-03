@@ -345,14 +345,13 @@ There are two required parameters that need to be specified in order to make a r
 * **Event**: a string with the name of an event (TODO: What kinds of events can there be besides "$login.succeeded").
 * **User ID**: a string representing a user ID.
 
-Moreover, there is an additional optional parameter that can be specified:
+Moreover, there are an additional optional parameters that can be specified:
 
 * **Properties**: object for recording additional information connected to the event.
+* **Traits**: object for recording additional information connected to the user (e.g. email, username, etc).
 
-TODO: What about traits???
-
-The properties parameter takes any POJO class.
-It gets sent in JSON format.
+The properties and traits parameters take any POJO class.
+They get sent in JSON format.
 
 The return value of an authenticate call is a `io.castle.client.model.Verdict` instance.
 An instance of `Verdict` contains the following fields:
@@ -440,7 +439,7 @@ The only required parameter is **User ID**, a string representing the id of a us
 
 Optional parameters are:
 
-* **Traits**: Optional object for recording additional information connected to the user (e.g. email, username, etc).
+* **Traits**: object for recording additional information connected to the user (e.g. email, username, etc).
 * **Active**: boolean specifying that the identify call is associated with an active user session.
 
 The traits parameter takes any POJO class and sends it in JSON format.
