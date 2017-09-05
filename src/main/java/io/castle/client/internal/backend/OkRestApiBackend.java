@@ -190,8 +190,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractReview(response);
         } catch (IOException e) {
-            //TODO how to handle error on review loading??
-            return null;
+            throw new CastleRuntimeException(e);
         }
     }
 
@@ -217,8 +216,7 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, Review.class);
         }
-        //TODO what to return on a failing response like 404 or 403
-        return null;
+        throw new IOException("HTTP request failure");
     }
 
     private Request createReviewRequest(String reviewId) {

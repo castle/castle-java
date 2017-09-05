@@ -24,7 +24,6 @@ public class CastleReviewHttpTest extends AbstractCastleHttpLayerTest {
         String reviewId = " 123jkfg45f";
 
         // when sync review call is made
-        //TODO should we somehow check that the request is a webhook call from castle???
         Review loaded = sdk.onRequest(request).review(reviewId);
 
         // then the correct GET request is send
