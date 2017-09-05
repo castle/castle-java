@@ -13,6 +13,7 @@ public class CastleGsonModel {
     public CastleGsonModel() {
         GsonBuilder builder = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersSerializer());
+        builder.registerTypeAdapter(String.class, new StringJsonSerializer());
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersDeserializer());
         builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         this.gson = builder.create();
