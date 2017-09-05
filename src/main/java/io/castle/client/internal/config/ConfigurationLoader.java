@@ -158,10 +158,7 @@ class ConfigurationLoader {
                 );
             }
         } else {
-            //TODO What is the default failover strategy?? for now ALLOW
-            builder.withAuthenticateFailoverStrategy(
-                    new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW)
-            );
+            builder.withDefaultAuthenticateFailoverStrategy();
         }
         if (backendProviderValue != null) {
             builder.withBackendProvider(

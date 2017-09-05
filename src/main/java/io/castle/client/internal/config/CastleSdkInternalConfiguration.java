@@ -1,9 +1,15 @@
 package io.castle.client.internal.config;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import io.castle.client.internal.backend.OkHttpFactory;
 import io.castle.client.internal.backend.RestApiFactory;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.model.CastleSdkConfigurationException;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class CastleSdkInternalConfiguration {
 
@@ -11,10 +17,13 @@ public class CastleSdkInternalConfiguration {
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
 
+    private final SecretKey sha256Key;
+
     private CastleSdkInternalConfiguration(RestApiFactory restApiFactory, CastleGsonModel model, CastleConfiguration configuration) {
         this.restApiFactory = restApiFactory;
         this.model = model;
         this.configuration = configuration;
+        this.sha256Key = new SecretKeySpec(configuration.getApiSecret().getBytes(Charsets.UTF_8), "HmacSHA256");
     }
 
     public static CastleSdkInternalConfiguration getInternalConfiguration() throws CastleSdkConfigurationException {
@@ -46,5 +55,9 @@ public class CastleSdkInternalConfiguration {
 
     public CastleConfiguration getConfiguration() {
         return configuration;
+    }
+
+    public HashFunction getSecureHashFunction() {
+        return Hashing.hmacSha256(sha256Key);
     }
 }
