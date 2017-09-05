@@ -27,7 +27,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
 ```
 
 Go to the settings page of your Castle account and find your **API Secret** and your **APP ID**.
-Then create the a new file named `castle_sdk.properties` with the following content:
+Then create a new file named `castle_sdk.properties` with the following content:
 
 ```properties
 app_id=<API_Secret>
@@ -46,9 +46,6 @@ Make sure this line of code is executed once during the initialization of the ap
 Castle.verifySdkConfigurationAndInitialize();
 ```
 
-Todo: maybe write about ServletContextListener for servlets
-
-
 Once the SDK has been initialized, it suffices to get an instance of the `io.castle.client.api.CastleApi` interface
 in the following manner:
 
@@ -57,9 +54,6 @@ CastleApi newAPIRef = Castle.sdk().onRequest(req)
 ```
 
 Here `req` is an instance of `HttpServletRequest`.
-
-
-
 
 TODO: secure mode
 
@@ -103,7 +97,9 @@ that can be optionally configured:
  * **Backend Provider**: The HTTP layer that will be used to make requests to the Castle API.
  Currently there is only one available and it uses [OkHttp](https://square.github.io/okhttp/).
  * **Base URL**: The base endpoint of the Castle API without any relative path.
- 
+
+Whitelist and Blacklist are case-insensitive. 
+
 If the value of any of these keys is left unspecified, the client will be configured with their default values.
 See *[Where to Configure Settings](#where-to-configure-settings)* for a list of the default values. 
 

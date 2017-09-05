@@ -299,7 +299,6 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         verifyFailoverResponse(verdict, expected, true);
     }
 
-
     /**
      * Verify that the async Verdict value match the expected values.
      * The Failover reason depend from the JVM implementation, so we only check that is not null.
@@ -328,5 +327,4 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
             Assertions.assertThat(extractedVerdict.getFailoverReason()).isNotEmpty();
         }
     }
-
 }

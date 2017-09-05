@@ -1,6 +1,7 @@
 package io.castle.client;
 
 import io.castle.client.api.CastleApi;
+import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.Verdict;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
 
@@ -25,11 +27,26 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         //And a CastleApi is created with doNotTrack option
         CastleApi castleApi = sdk.onRequest(request).doNotTrack(true);
+        // And a custom handler for the async authenticate call
+        final AtomicReference<Verdict> authenticateAsyncResult = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                authenticateAsyncResult.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
 
         //When all API call are executed
         castleApi.track("testEvent");
         castleApi.identify("userId", true);
         Verdict verdict = castleApi.authenticate("testEvent", "userId");
+        castleApi.authenticateAsync("testEvent", "userId", handler);
+
         //and we await the timeout period to avoid concurrency races
         Thread.sleep(120);
 
@@ -38,7 +55,10 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
         //And the Verdict is the default ALLOW value
         Assert.assertEquals(AuthenticateAction.ALLOW, verdict.getAction());
         Assert.assertEquals("userId", verdict.getUserId());
+        Assert.assertEquals(AuthenticateAction.ALLOW, authenticateAsyncResult.get().getAction());
+        Assertions.assertThat(authenticateAsyncResult.get().isFailover()).isTrue();
     }
+
 
     @Test
     public void trackOptionAllowRequests() throws InterruptedException {
@@ -53,8 +73,27 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
                         "  \"action\": \"deny\",\n" +
                         "  \"user_id\": \"12345\"\n" +
                         "}"));
+        server.enqueue(new MockResponse().setBody(
+                "{\n" +
+                        "  \"action\": \"deny\",\n" +
+                        "  \"user_id\": \"12345\"\n" +
+                        "}"));
         //And a CastleApi is created with doNotTrack option
         CastleApi castleApi = sdk.onRequest(request).doNotTrack(false);
+        // And a custom handler for the async authenticate call
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+
         //When all API call are executed
         castleApi.track("testEvent");
         server.takeRequest();
@@ -62,8 +101,13 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
         server.takeRequest();
         castleApi.authenticate("testEvent", "userId");
         server.takeRequest();
+        castleApi.authenticateAsync("testEvent", "userId", handler);
+        server.takeRequest();
 
         //Then all the calls are executed
-        Assertions.assertThat(server.getRequestCount()).isEqualTo(3);
+        waitForValue(result);
+        Assertions.assertThat(server.getRequestCount()).isEqualTo(4);
+        Assert.assertEquals(AuthenticateAction.DENY, result.get().getAction());
     }
+
 }
