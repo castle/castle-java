@@ -1,10 +1,28 @@
 package io.castle.client.model;
 
+/**
+ * Model of the outcome of an authenticate call to the Castle API.
+ */
 public class Verdict {
 
+    /**
+     * AuthenticateAction returned by a call to the CastleAPI, or configured by a failover strategy.
+     */
     private AuthenticateAction action;
+
+    /**
+     * String representing a user ID associated with an authenticate call.
+     */
     private String userId;
+
+    /**
+     * True if the SDK resorted the {@code AuthenticateFailoverStrategy} configured.
+     */
     private boolean failover;
+
+    /**
+     * Explains the reason why the {@code AuthenticateFailoverStrategy} was used.
+     */
     private String failoverReason;
 
     public AuthenticateAction getAction() {

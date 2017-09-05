@@ -1,7 +1,7 @@
 package io.castle.client;
 
 import io.castle.client.api.CastleApi;
-import io.castle.client.api.CastleApiImpl;
+import io.castle.client.internal.CastleApiImpl;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.model.CastleSdkConfigurationException;
@@ -11,9 +11,15 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Through static methods, creates a singleton instance of this class which keeps in its internal configuration
- * application the application level settings loaded from
+ * Through static methods, creates a singleton instance of this class, which provides instances of {@code CastleAPI}
+ * and keeps in its internal configuration all application level settings.
  *
+ * This also provides methods for initialization of the SDK.
+ * {@code this#verifySdkConfigurationAndInitialize()} must be called once in the lifetime of an application using the SDK
+ * during its initialization process.
+ *
+ * After initialization, {@code this#sdk()} will return the singleton instance of this class, which grants access to
+ * its non-static methods.
  */
 public class Castle {
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
@@ -21,9 +27,11 @@ public class Castle {
     private final CastleSdkInternalConfiguration internalConfiguration;
 
     /**
-     * Public constructor for test proposes only. Please use the static sdk() method to get the SDK instance.
+     * Public constructor for test proposes only.
+     * <p>
+     * Please use the static sdk() method to get the SDK instance.
      *
-     * @param internalConfiguration
+     * @param internalConfiguration a test internal configuration for the SDK
      */
     public Castle(CastleSdkInternalConfiguration internalConfiguration) {
         this.internalConfiguration = internalConfiguration;
@@ -34,8 +42,8 @@ public class Castle {
     /**
      * Gets the SDK singleton instance.
      *
-     * @return
-     * @throws IllegalStateException
+     * @return the singleton instance of {@code this}
+     * @throws IllegalStateException when the SDK has not been properly initialized
      */
     public static Castle sdk() throws IllegalStateException {
         if (instance == null) {
@@ -45,7 +53,9 @@ public class Castle {
     }
 
     /**
-     * Verify SDK internalConfiguration and initialize the internal Configuration.
+     * Verifies the SDK's internalConfiguration and initializes its internal Configuration.
+     *
+     * @throws CastleSdkConfigurationException if the provided settings in the environment of classpath have invalid values
      */
     public static void verifySdkConfigurationAndInitialize() throws CastleSdkConfigurationException {
         initializeSDK();
@@ -80,7 +90,9 @@ public class Castle {
     }
 
     /**
-     * @return
+     * Gets the SDK's configuration stored in an instance of {@code CastleConfiguration}.
+     *
+     * @return the SDK's configuration
      */
     public CastleConfiguration getSdkConfiguration() {
         return internalConfiguration.getConfiguration();

@@ -8,22 +8,49 @@ import java.util.List;
 /**
  * Application level settings used by the SDK singleton.
  * <p>
- * TODO: should we add support for overwriting some settings on a request basis???
- * Configuration values will be loaded from the environment or from the class path by a call to {@link ConfigurationLoader#loadConfiguration()}.
+ * Configuration values will be loaded from the environment or from the class path by a call to
+ * {@link ConfigurationLoader#loadConfiguration()}.
  */
 public class CastleConfiguration {
 
+    /**
+     * Endpoint of the Castle API.
+     */
     private final String apiBaseUrl;
+
+    /**
+     * Timeout after which a request fails.
+     */
     private final int timeout;
 
+    /**
+     * Strategy for returning a {@code verdict} when an authenticate call fails.
+     */
     private final AuthenticateFailoverStrategy authenticateFailoverStrategy;
 
+    /**
+     * List of headers that will get passed to the {@code CastleContext} unless they are blacklisted.
+     */
     private final List<String> whiteListHeaders;
 
+    /**
+     * List of headers that will nevr get passed to the {@code CastleContext} when built from an HTTP request.
+     */
     private final List<String> blackListHeaders;
 
+    /**
+     * Secret associated to a Castle account.
+     */
     private final String apiSecret;
+
+    /**
+     * Identifier used for authentication purposes for requests to the Castle API.
+     */
     private final String castleAppId;
+
+    /**
+     * HTTP layer that will be used for calls to the Castle API
+     */
     private final CastleBackendProvider backendProvider;
 
     public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider) {

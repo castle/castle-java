@@ -75,7 +75,7 @@ class ConfigurationLoader {
     }
 
     /**
-     * Loads the application level configuration for the Castle.io SDK with values taken from environmental variables,
+     * Loads the application level configuration for the Castle SDK with values taken from environmental variables,
      * a properties file or default values in that order of precedence.
      * <p>
      * When wrong failover strategy or backend, null is returned instead.

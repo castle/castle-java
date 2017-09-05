@@ -43,7 +43,7 @@ public class CastleConfigurationBuilder {
     private int timeout = 500;
 
     /**
-     * Strategy used when an authenitcate call to the Castle.io API fails.
+     * Strategy used when an authenticate call to the Castle API fails.
      */
     private AuthenticateFailoverStrategy failoverStrategy;
 
@@ -58,17 +58,17 @@ public class CastleConfigurationBuilder {
     private List<String> blackListHeaders;
 
     /**
-     * String represented the API secret associated with a Castle.io account.
+     * String represented the API secret associated with a Castle account.
      */
     private String apiSecret;
 
     /**
-     * String representing an AppID associated with a Castle.io account.
+     * String representing an AppID associated with a Castle account.
      */
     private String castleAppId;
 
     /**
-     *
+     * The HTTP layer chosen to make requests.
      */
     private CastleBackendProvider backendProvider = CastleBackendProvider.OKHTTP; //Unique available backend on the current version
     private String apiBaseUrl;
@@ -182,7 +182,7 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Sets the failover strategy for the authenticate Castle.io API call to allow.
+     * Sets the failover strategy for the authenticate Castle API call to allow.
      * <p>
      * The authenticate failover strategy for the default configuration is to return {@link AuthenticateAction#ALLOW}.
      *
@@ -193,9 +193,10 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * TODO doc
-     *
-     * @return
+     * Sets the endpoint of the Castle API to its default value.
+     * <p>
+     * The default value is {@code https://api.castle.io/}.
+     * @return a castleConfigurationBuilder with the default value for the Castle API endpoint
      */
     public CastleConfigurationBuilder withDefaultApiBaseUrl() {
         return this.withApiBaseUrl("https://api.castle.io/");
@@ -259,9 +260,9 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * A string with the API secret associated with a valid Castle.io account.
+     * A string with the API secret associated with a valid Castle account.
      *
-     * @param apiSecret the API secret of the account calling the Castle.io API
+     * @param apiSecret the API secret of the account calling the Castle API
      * @return a castleConfigurationBuilder with the API secret set
      */
     public CastleConfigurationBuilder withApiSecret(String apiSecret) {
@@ -329,9 +330,9 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Sets a String representing an AppID associated with a Castle.io account.
+     * Sets a String representing an AppID associated with a Castle account.
      *
-     * @param castleAppId the AppID for that will be used to make calls to the Castle.io API
+     * @param castleAppId the AppID for that will be used to make calls to the Castle API
      * @return a castleConfigurationBuilder with the AppID set
      */
     public CastleConfigurationBuilder withCastleAppId(String castleAppId) {
@@ -340,7 +341,7 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Sets the HTTP layer that will be used for making calls to the Castle.io REST API.
+     * Sets the HTTP layer that will be used for making calls to the Castle REST API.
      *
      * @param backendProvider an available backend provider
      * @return a castleConfigurationBuilder with the chosen backend provider set
@@ -351,9 +352,10 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * TODO
-     * @param apiBaseUrl
-     * @return
+     * Sets the endpoint of the Castle API.
+     *
+     * @param apiBaseUrl astring representing the URL of the Castle API endpoint without any relative path
+     * @return a castleConfigurationBuilder with the default value for the Castle API endpoint
      */
     public CastleConfigurationBuilder withApiBaseUrl(String apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;

@@ -2,7 +2,9 @@ package io.castle.client.model;
 
 import com.google.gson.annotations.SerializedName;
 
-
+/**
+ * Complete model of a context object with all the fields the Castle API understands.
+ */
 public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
@@ -142,6 +144,11 @@ public class CastleContext {
         this.userAgent = userAgent;
     }
 
+    /**
+     * Produces a string representation of the context object.
+     *
+     * @return the string representation of this {@code castleContext}
+     */
     @Override
     public String toString() {
         return "CastleContext{" +

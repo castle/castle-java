@@ -179,7 +179,7 @@ public class CastleContextBuilderTest {
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
     }
 
-    private String valueContolCache = "max-age=0";
+    private String valueControlCache = "max-age=0";
     private String keyControlCache = "Cache-Control";
     private String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";
     private String ip = "8.8.8.8";
@@ -202,7 +202,7 @@ public class CastleContextBuilderTest {
     public MockHttpServletRequest getStandardRequestMock() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setRemoteAddr(ip);
-        request.addHeader(keyControlCache, valueContolCache);
+        request.addHeader(keyControlCache, valueControlCache);
         request.addHeader(userAgentHeader, userAgent);
 //        request.addHeader(customClientIdHeader, clientId);
         request.addHeader(acceptHeader, accept);
@@ -221,7 +221,7 @@ public class CastleContextBuilderTest {
         listOfHeaders.add(new CastleHeader(acceptLanguageHeader, acceptLanguage));
         listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
         listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
-//        listOfHeaders.add(new CastleHeader(keyControlCache, valueContolCache));
+//        listOfHeaders.add(new CastleHeader(keyControlCache, valueControlCache));
 //        listOfHeaders.add(new CastleHeader(customClientIdHeader, clientId));
 //        listOfHeaders.add(new CastleHeader(headerHost, hostValue));
 //        listOfHeaders.add(new CastleHeader(refererHeader, referer));

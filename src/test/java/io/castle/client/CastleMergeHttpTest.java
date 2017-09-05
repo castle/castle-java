@@ -45,6 +45,25 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
                 recordedRequest.getBody().readUtf8());
     }
 
+    @Test
+    public void mergeContextIsNull() throws InterruptedException {
+        //Given
+        server.enqueue(new MockResponse().setResponseCode(200));
+        String id = "12345";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // and an identify request is made with a null context
+        sdk.onRequest(request).mergeContext(null).identify(id);
+
+        //Then the json send contains a extended context object
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{}}",
+                recordedRequest.getBody().readUtf8());
+
+    }
+
     private static class CustomExtraContext {
         private String addString;
         private Boolean condition;

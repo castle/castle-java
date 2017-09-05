@@ -1,8 +1,9 @@
-package io.castle.client.api;
+package io.castle.client.internal;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.castle.client.api.CastleApi;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.utils.CastleContextBuilder;
@@ -45,7 +46,10 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public CastleApi mergeContext(Object additionalContext) {
-        JsonObject contextToMerge = configuration.getModel().getGson().toJsonTree(additionalContext).getAsJsonObject();
+        JsonObject contextToMerge=null;
+        if(additionalContext != null) {
+            contextToMerge = configuration.getModel().getGson().toJsonTree(additionalContext).getAsJsonObject();
+        }
         JsonObject mergedContext = new ContextMerge().merge(this.contextJson, contextToMerge);
         return new CastleApiImpl(request, doNotTrack, configuration, mergedContext);
     }
@@ -160,14 +164,14 @@ public class CastleApiImpl implements CastleApi {
     public Review review(String reviewId) {
         Preconditions.checkNotNull(reviewId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.sendReviewRequest(reviewId);
+        return restApi.sendReviewRequestSync(reviewId);
     }
 
     @Override
-    public void reviewAsync(String reviewId, AsyncCallbackHandler<Review> callbackHandler) {
+    public void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler) {
         Preconditions.checkNotNull(reviewId);
-        Preconditions.checkNotNull(callbackHandler);
+        Preconditions.checkNotNull(asyncCallbackHandler);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendReviewRequest(reviewId, callbackHandler);
+        restApi.sendReviewRequestAsync(reviewId, asyncCallbackHandler);
     }
 }

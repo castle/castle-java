@@ -3,9 +3,11 @@ package io.castle.client.model;
 import io.castle.client.api.CastleApi;
 
 /**
- * Stores settings for either using an AuthenticationAction or throwing a TimeoutException, if a Castle.io API authenticate call fails.
+ * Stores settings for either using an AuthenticationAction or throwing a TimeoutException,
+ * if a Castle API authenticate call fails.
  * <p>
- * If a {@link CastleApi#authenticate} call fails during an authentication attempt, the failover strategy specifies which {@link AuthenticateAction} should be used.
+ * If a {@link CastleApi#authenticate} call fails during an authentication attempt, the failover strategy specifies
+ * which {@link AuthenticateAction} should be used.
  * Alternatively, a TimeoutException instance could be configured.
  */
 public class AuthenticateFailoverStrategy {

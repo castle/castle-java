@@ -146,7 +146,6 @@ failover_strategy=ALLOW
 base_url=https://api.castle.io/
 ```
 
-
 ## Initializing the SDK
 
 The Castle Java SDK must be initialized once in the life cycle of an application using it.
@@ -154,6 +153,9 @@ There is a static method in the `io.castle.client.Castle` class to do so.
 Before trying to call any API method, the `io.castle.client.Castle#verifySdkConfigurationAndInitialize`
 should be called, preferably during the initialization process of the application using the SDK.
 This method will discover the the most basic configuration errors as early as possible.
+
+For more information on the logic of settings validation, see the section of the javadoc for the
+`io.castle.client.internal.config` package.
 
 ## Secure Mode
 
@@ -273,7 +275,7 @@ Below is a full list of all keys Castle understands:
           "density": 2
         },
         "timezone": "Europe/WarsaW",
-        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1" //will default to request.headers.user_agent
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
       }
 ```
 
@@ -296,7 +298,7 @@ The following is a sample default context created in such a manner:
           "name": "Castle",
           "version": "0.6.0-SNAPSHOT"
         },
-        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1" //will default to headers.user_agent
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
       }
 ```
 The following remarks explain how the values of the fields are set:
@@ -320,6 +322,7 @@ Its value specifies the version of the SDK used.
 
 The strategy for merging contexts is a recursive one.
 More specifically, when the optional context is provided, the merging strategy works as follows:
+* If the optional context is `null`, the context returned is an empty JSON.
 * If the optional context contains a key and a non-null value, then:
     - if there was no such key in the original context, the client appends the key and value;
     - otherwise, the client merges the value of the key in the default context with the value of the
@@ -342,7 +345,7 @@ This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-b
 
 There are two required parameters that need to be specified in order to make a request to the authenticate endpoint:
 
-* **Event**: a string with the name of an event (TODO: What kinds of events can there be besides "$login.succeeded").
+* **Event**: a string with the name of an event understood by the Castle API.
 * **User ID**: a string representing a user ID.
 
 Moreover, there are an additional optional parameters that can be specified:
@@ -387,16 +390,15 @@ Then `io.castle.client.api.CastleApi#authenticateAsync` must be called specifyin
 The following snippet provides an example of an async call to the authenticate endpoint:
 ```java
         ...
-        final AtomicReference<Verdict> result = new AtomicReference<>();
         AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
             @Override
             public void onResponse(Verdict response) {
-                result.set(response);
+                // handle success
             }
 
             @Override
             public void onException(Exception exception) {
-                ...
+                // handle failure
             }
         };
         sdk.onRequest(request).authenticateAsync(event, id, handler);

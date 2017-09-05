@@ -184,7 +184,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public Review sendReviewRequest(String reviewId) {
+    public Review sendReviewRequestSync(String reviewId) {
         Request request = createReviewRequest(reviewId);
         try {
             Response response = client.newCall(request).execute();
@@ -196,7 +196,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendReviewRequest(String reviewId, final AsyncCallbackHandler<Review> callbackHandler) {
+    public void sendReviewRequestAsync(String reviewId, final AsyncCallbackHandler<Review> callbackHandler) {
         Request request = createReviewRequest(reviewId);
         client.newCall(request).enqueue(new Callback() {
             @Override
