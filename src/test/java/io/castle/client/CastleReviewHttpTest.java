@@ -9,7 +9,10 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static okhttp3.mockwebserver.SocketPolicy.NO_RESPONSE;
 
 public class CastleReviewHttpTest extends AbstractCastleHttpLayerTest {
     public CastleReviewHttpTest() {
@@ -66,6 +69,58 @@ public class CastleReviewHttpTest extends AbstractCastleHttpLayerTest {
         Review expected = createExpectedReview();
         Review loaded = waitForValue(result);
         Assertions.assertThat(loaded).isEqualToComparingFieldByFieldRecursively(expected);
+    }
+
+    @Test(expected = CastleRuntimeException.class)
+    public void reviewTimeoutTest() {
+
+        // given backend request timeouts
+        server.enqueue(new MockResponse().setSocketPolicy(NO_RESPONSE));
+        HttpServletRequest request = new MockHttpServletRequest();
+        String reviewId = "mmnnsbkkkshhhs";
+
+        //when a review request is made
+        sdk.onRequest(request).review(reviewId);
+    }
+
+    @Test
+    public void reviewAsyncTimeoutTest() throws Exception {
+
+        // given backend request timeouts
+        server.enqueue(new MockResponse().setSocketPolicy(NO_RESPONSE));
+        HttpServletRequest request = new MockHttpServletRequest();
+        String reviewId = "mmnnsbkkkshhhs";
+
+        // when async review call is made
+        final AtomicReference<Boolean> result = new AtomicReference<>();
+        AsyncCallbackHandler<Review> callback = new AsyncCallbackHandler<Review>() {
+            @Override
+            public void onResponse(Review response) {
+                Assertions.fail("should not pass");
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                result.set(true);
+            }
+        };
+        sdk.onRequest(request).reviewAsync(reviewId, callback);
+
+        waitForValueAndVerify(result,true);
+    }
+
+    @Test(expected = CastleRuntimeException.class)
+    public void testExceptionWithServerError () {
+
+        // given a server failure
+        server.enqueue(new MockResponse().setResponseCode(500));
+        // And a request
+        HttpServletRequest request = new MockHttpServletRequest();
+        String reviewId = "mmnnsbkkkshhhs";
+
+        //when a review request is made
+        sdk.onRequest(request).review(reviewId);
+
     }
 
     String testReviewJson = "{\n" +
