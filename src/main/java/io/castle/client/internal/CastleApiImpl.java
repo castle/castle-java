@@ -1,6 +1,8 @@
 package io.castle.client.internal;
 
 import com.google.common.base.Preconditions;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.api.CastleApi;
@@ -12,6 +14,8 @@ import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
 
 import javax.annotation.Nullable;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
 public class CastleApiImpl implements CastleApi {
@@ -181,4 +185,5 @@ public class CastleApiImpl implements CastleApi {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         restApi.sendReviewRequestAsync(reviewId, asyncCallbackHandler);
     }
+
 }

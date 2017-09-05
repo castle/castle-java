@@ -1,5 +1,6 @@
 package io.castle.client;
 
+import com.google.common.hash.HashFunction;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.CastleApiImpl;
 import io.castle.client.internal.config.CastleConfiguration;
@@ -105,5 +106,16 @@ public class Castle {
      */
     CastleSdkInternalConfiguration getInternalConfiguration() {
         return internalConfiguration;
+    }
+
+
+    /**
+     * Calculate the secure userId HMAC using the internal API Secret.
+     * @param userId raw user Id
+     * @return the HMAC of the userId
+     */
+    public String secureUserID(String userId) {
+        HashFunction hashFunction = internalConfiguration.getSecureHashFunction();
+        return hashFunction.hashString(userId,com.google.common.base.Charsets.UTF_8).toString();
     }
 }
