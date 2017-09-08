@@ -39,6 +39,7 @@ public abstract class AbstractCastleHttpLayerTest {
         CastleConfiguration mockedApiConfiguration = CastleConfigurationBuilder.aConfigBuilder()
                 .withApiSecret(configuration.getApiSecret())
                 .withApiBaseUrl(testServerBaseUrl.toString())
+                .withLogHttpRequests(true)
                 .withBlackListHeaders(configuration.getBlackListHeaders())
                 .withWhiteListHeaders(configuration.getWhiteListHeaders())
                 .withCastleAppId(configuration.getCastleAppId())

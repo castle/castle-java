@@ -127,6 +127,11 @@ class ConfigurationLoader {
                 "base_url",
                 "CASTLE_SDK_BASE_URL"
         );
+        String logHttpRequests = loadConfigurationValue(
+                castleConfigurationProperties,
+                "log_http",
+                "CASTLE_SDK_LOG_HTTP"
+        );
         CastleConfigurationBuilder builder = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret(envApiSecret)
@@ -164,6 +169,9 @@ class ConfigurationLoader {
             builder.withBackendProvider(
                     CastleBackendProvider.valueOf(backendProviderValue)
             );
+        }
+        if (logHttpRequests != null) {
+            builder.withLogHttpRequests(Boolean.valueOf(logHttpRequests));
         }
         return builder.build();
     }

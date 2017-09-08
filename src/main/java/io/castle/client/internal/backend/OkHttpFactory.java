@@ -25,17 +25,21 @@ public class OkHttpFactory implements RestApiFactory {
     }
 
     private OkHttpClient createOkHttpClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         final String authString = ":" + configuration.getApiSecret();
         final String authStringBase64 = "Basic " + BaseEncoding.base64().encode(authString.getBytes());
 
-        return new OkHttpClient()
+        OkHttpClient.Builder builder = new OkHttpClient()
                 .newBuilder()
                 .connectTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS)
                 .readTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS)
-                .writeTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS)
-                .addInterceptor(logging)
+                .writeTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS);
+        if (configuration.isLogHttpRequests()) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            builder = builder.addInterceptor(logging);
+        }
+
+        OkHttpClient client = builder
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
@@ -46,6 +50,7 @@ public class OkHttpFactory implements RestApiFactory {
                     }
                 })
                 .build();
+        return client;
     }
 
     @Override

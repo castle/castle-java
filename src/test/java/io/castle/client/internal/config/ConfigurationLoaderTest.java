@@ -70,7 +70,7 @@ public class ConfigurationLoaderTest {
                 .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE))
                 .build();
 
-        //Then the value of the timeout should be the one in the properties file
+        //Then the value of the timeout should be the one in the properties file castle_sdk.properties
         testLoad(expectedConfiguration);
     }
 
@@ -100,10 +100,13 @@ public class ConfigurationLoaderTest {
                 "CASTLE_SDK_APP_ID",
                 "test_app_id_env"
         );
-
         setEnvAndTestCorrectness(
                 "CASTLE_SDK_BASE_URL",
                 "https://api.dev.castle.io/v1/"
+        );
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_LOG_HTTP",
+                "true"
         );
 
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
@@ -120,6 +123,7 @@ public class ConfigurationLoaderTest {
                 )
                 .withApiBaseUrl("https://api.dev.castle.io/v1/")
                 .withTimeout(700)
+                .withLogHttpRequests(true)
                 .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.DENY))
                 .build();
 
@@ -180,6 +184,23 @@ public class ConfigurationLoaderTest {
 
     }
 
+    @Test
+    public void loadLogHttpConfigFromTrueString() throws CastleSdkConfigurationException {
+        //given
+        Properties properties = new Properties();
+        properties.setProperty("api_secret", "212312");
+        properties.setProperty("app_id", "F");
+        properties.setProperty("log_http", "true");
+        ConfigurationLoader loader = new ConfigurationLoader(properties);
+
+        //then
+        CastleConfiguration castleConfiguration = loader.loadConfiguration();
+
+        //then log http flag is true
+        Assertions.assertThat(castleConfiguration.isLogHttpRequests()).isTrue();
+    }
+
+
     @Test(expected = NumberFormatException.class)
     public void testTimeoutWithNonParsableInt() throws CastleSdkConfigurationException {
         //given
@@ -217,5 +238,7 @@ public class ConfigurationLoaderTest {
         Assertions.assertThat(loader.loadConfiguration())
                 .isEqualToComparingFieldByFieldRecursively(expected);
     }
+
+
 
 }

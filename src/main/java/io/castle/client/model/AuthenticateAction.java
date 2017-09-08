@@ -21,6 +21,11 @@ public enum AuthenticateAction {
         if (action == null) {
             return null;
         }
+        try {
+            return AuthenticateAction.valueOf(action);
+        } catch (IllegalArgumentException e) {
+            // no op, use string compare functions.
+        }
         if (action.compareToIgnoreCase(ALLOW.name()) == 0) {
             return ALLOW;
         }

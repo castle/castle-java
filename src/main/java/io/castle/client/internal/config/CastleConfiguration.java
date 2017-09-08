@@ -53,7 +53,12 @@ public class CastleConfiguration {
      */
     private final CastleBackendProvider backendProvider;
 
-    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider) {
+    /**
+     * Flag to add logging information on HTTP backend.
+     */
+    private final boolean logHttpRequests;
+
+    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests) {
         this.apiBaseUrl = apiBaseUrl;
         this.timeout = timeout;
         this.authenticateFailoverStrategy = authenticateFailoverStrategy;
@@ -62,6 +67,7 @@ public class CastleConfiguration {
         this.apiSecret = apiSecret;
         this.castleAppId = castleAppId;
         this.backendProvider = backendProvider;
+        this.logHttpRequests = logHttpRequests;
     }
 
     public String getApiBaseUrl() {
@@ -96,4 +102,7 @@ public class CastleConfiguration {
         return backendProvider;
     }
 
+    public boolean isLogHttpRequests() {
+        return logHttpRequests;
+    }
 }

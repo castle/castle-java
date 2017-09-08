@@ -128,6 +128,7 @@ Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
 Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
 Backend Provider | `OKHTTP` | `backend_provide` | `CASTLE_SDK_BACKEND_PROVIDER` |
 Base URL | `https://api.castle.io/` | `base_url` | `CASTLE_SDK_BASE_URL` |
+Log HTTP | false | `log_http` | `CASTLE_SDK_LOG_HTTP` |
 
 By default, the SDK will look in the classpath for the Java Properties file named `castle_sdk.properties`.
 An alternative file can be chosen by setting the `CASTLE_PROPERTIES_FILE` environment variable to a different value.
@@ -144,6 +145,7 @@ timeout=500
 backend_provider=OKHTTP
 failover_strategy=ALLOW
 base_url=https://api.castle.io/
+log_http=false
 ```
 
 ## Initializing the SDK

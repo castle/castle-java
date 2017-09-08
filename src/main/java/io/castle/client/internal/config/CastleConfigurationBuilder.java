@@ -71,8 +71,16 @@ public class CastleConfigurationBuilder {
      * The HTTP layer chosen to make requests.
      */
     private CastleBackendProvider backendProvider = CastleBackendProvider.OKHTTP; //Unique available backend on the current version
+
+    /**
+     * Base URL of the API calls. Used for tests, on productions use the default value.
+     */
     private String apiBaseUrl;
 
+    /**
+     * Flag to enable logging of backend HTTP requests.
+     */
+    private boolean logHttpRequests = false;
 
     private CastleConfigurationBuilder() {
     }
@@ -326,7 +334,8 @@ public class CastleConfigurationBuilder {
                 normalizer.normalizeList(blackListHeaders),
                 apiSecret,
                 castleAppId,
-                backendProvider);
+                backendProvider,
+                logHttpRequests);
     }
 
     /**
@@ -354,11 +363,22 @@ public class CastleConfigurationBuilder {
     /**
      * Sets the endpoint of the Castle API.
      *
-     * @param apiBaseUrl astring representing the URL of the Castle API endpoint without any relative path
+     * @param apiBaseUrl a string representing the URL of the Castle API endpoint without any relative path
      * @return a castleConfigurationBuilder with the default value for the Castle API endpoint
      */
     public CastleConfigurationBuilder withApiBaseUrl(String apiBaseUrl) {
         this.apiBaseUrl = apiBaseUrl;
+        return this;
+    }
+
+    /**
+     * Flag to enable logging on backend HTTP requests.
+     *
+     * @param logHttpRequests boolean to switch logging on or off.
+     * @return a castleConfigurationBuilder with logging setup set
+     */
+    public CastleConfigurationBuilder withLogHttpRequests(Boolean logHttpRequests) {
+        this.logHttpRequests = logHttpRequests;
         return this;
     }
 
