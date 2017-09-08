@@ -160,7 +160,8 @@ public class OkRestApiBackend implements RestApi {
     public void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson) {
         JsonObject json = new JsonObject();
         json.add("user_id", new JsonPrimitive(userId));
-        json.add("active", new JsonPrimitive(active));
+//        json.add("active", new JsonPrimitive(active));
+        contextJson.add("active",new JsonPrimitive(active));
         json.add("context", contextJson);
         if (traitsJson != null) {
             json.add("traits", traitsJson);

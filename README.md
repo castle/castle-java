@@ -55,8 +55,12 @@ CastleApi newAPIRef = Castle.sdk().onRequest(req)
 
 Here `req` is an instance of `HttpServletRequest`.
 
-TODO: secure mode
+When using Castle.js, calculate a SHA-256 HMAC in hex format using the following javascript code when calling identify:
 
+```
+                _castle('secure',
+                    '<%= Castle.sdk().secureUserID(someUserID) %>');
+```
 
 # Where to Find Documentation
 
@@ -155,7 +159,20 @@ For more information on the logic of settings validation, see the section of the
 
 ## Secure Mode
 
-TODO
+See the documentation on [secure mode](https://castle.io/docs/secure_mode) in order to learn more.
+
+In order to enable secure mode using Castle.js, use the 
+`io.castle.client.Castle#secureUserID` method whenever there is a need to make an identify call
+from a jsp:
+
+```jsp
+            <script type="text/javascript">
+                ...
+                _castle('secure',
+                    '<%= Castle.sdk().secureUserID(someUserID) %>');
+                ...
+            </script>
+```
 
 # API calls
 

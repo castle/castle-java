@@ -41,7 +41,7 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
 
         //Then the json send contains a extended context object
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"},\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"0.6.0-SNAPSHOT\"},\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -57,9 +57,9 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         // and an identify request is made with a null context
         sdk.onRequest(request).mergeContext(null).identify(id);
 
-        //Then the json send contains a extended context object
+        //Then the json send contains a context object with active key only
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"active\":true,\"context\":{}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true}}",
                 recordedRequest.getBody().readUtf8());
 
     }
