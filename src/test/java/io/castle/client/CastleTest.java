@@ -82,15 +82,5 @@ public class CastleTest {
         Assertions.assertThat(sdk.getInternalConfiguration().getRestApiFactory()).isSameAs(mockFactory);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void sdkWithoutInitializationThrowAIllegalStateException() {
-
-        //Given
-
-        //When the sdk is called without initialization
-        Castle.sdk();
-
-        //Then exception is throw
-    }
 
 }
