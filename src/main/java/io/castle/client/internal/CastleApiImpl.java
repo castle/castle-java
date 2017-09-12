@@ -86,7 +86,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     private Verdict buildVerdictForDoNotTrack(String userId) {
-        return VerdictBuilder.failover("no track option enabled")
+        return VerdictBuilder.failover("Castle set to do not track.")
                 .withAction(AuthenticateAction.ALLOW)
                 .withUserId(userId)
                 .build();

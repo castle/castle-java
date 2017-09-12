@@ -59,6 +59,28 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(authenticateAsyncResult.get().isFailover()).isTrue();
     }
 
+    @Test
+    public void noTrackOptionCreateAllowFailoverVerdict() {
+
+        //Given a mock HTTP request is provided
+        HttpServletRequest request = new MockHttpServletRequest();
+        //And a CastleApi is created with doNotTrack option
+        CastleApi castleApi = sdk.onRequest(request).doNotTrack(true);
+        //When authenticate is called
+
+        Verdict verdict = castleApi.authenticate("testEvent", "userId");
+
+        //Then no calls are made to the backend
+        Assertions.assertThat(server.getRequestCount()).isEqualTo(0);
+        //And the Verdict is the correct failover value
+        Assert.assertEquals(AuthenticateAction.ALLOW, verdict.getAction());
+
+        Assertions.assertThat(verdict.getUserId()).isEqualTo("userId");
+        Assertions.assertThat(verdict.getAction()).isEqualTo(AuthenticateAction.ALLOW);
+        Assertions.assertThat(verdict.getFailoverReason()).isEqualTo("Castle set to do not track.");
+        Assertions.assertThat(verdict.isFailover()).isTrue();
+    }
+
 
     @Test
     public void trackOptionAllowRequests() throws InterruptedException {

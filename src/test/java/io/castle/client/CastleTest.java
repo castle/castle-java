@@ -19,6 +19,12 @@ public class CastleTest {
         // No exception is throw, because the tests classpath contains the file castle_sdk.properties
     }
 
+    /**
+     *
+     * Properties are loaded from the default configuration file in test/resources/castle_sdk.properties
+     *
+     * @throws CastleSdkConfigurationException
+     */
     @Test
     public void sdkOnTestLoadTheCorrectConfiguration() throws CastleSdkConfigurationException {
         //Given

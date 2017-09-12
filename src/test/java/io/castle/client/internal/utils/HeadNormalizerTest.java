@@ -1,5 +1,6 @@
 package io.castle.client.internal.utils;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,5 +28,16 @@ public class HeadNormalizerTest {
         List<String> normalized = normalizer.normalizeList(header);
         //then
         Assert.assertNull(normalized);
+    }
+
+    @Test
+    public void normalizationContractTest(){
+        //given
+        HeaderNormalizer normalizer = new HeaderNormalizer();
+        //when
+        //then
+        Assertions.assertThat(normalizer.normalize("UPPER_TO_LOWER")).isEqualTo("upper-to-lower");
+        Assertions.assertThat(normalizer.normalize("header-name_with_underscores")).isEqualTo("header-name-with-underscores");
+
     }
 }
