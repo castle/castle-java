@@ -149,6 +149,10 @@ public class OkRestApiBackend implements RestApi {
                 errorReason = "Illegal json format";
             }
         }
+        if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
+            //No timeout, but response is not correct
+            throw new IOException("Illegal castle authenticate response.");
+        }
         Verdict verdict = VerdictBuilder.failover(errorReason)
                 .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
                 .withUserId(userId)
@@ -161,7 +165,7 @@ public class OkRestApiBackend implements RestApi {
         JsonObject json = new JsonObject();
         json.add("user_id", new JsonPrimitive(userId));
 //        json.add("active", new JsonPrimitive(active));
-        contextJson.add("active",new JsonPrimitive(active));
+        contextJson.add("active", new JsonPrimitive(active));
         json.add("context", contextJson);
         if (traitsJson != null) {
             json.add("traits", traitsJson);
