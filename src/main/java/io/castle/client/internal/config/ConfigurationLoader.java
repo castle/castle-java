@@ -21,8 +21,8 @@ import java.util.Properties;
  * <li> If neither an environment variable nor a value in a properties file is provided, default values are set for some
  * fields in the resulting {@link CastleConfiguration}.
  * </ol><p>
- * It is necessary to at least provide values for the API Secret and the APP ID settings, since they don't have
- * defaults.
+ * It is necessary to at least provide values for the API Secret, since it does not have a
+ * default value.
  * <p>
  * Properties are loaded from file {@code castle_sdk.properties} by default.
  * In order to specify a different file, set the {@code CASTLE_PROPERTIES_FILE} environmental variable.

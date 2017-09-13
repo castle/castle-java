@@ -2,6 +2,7 @@ package io.castle.client.internal.config;
 
 import io.castle.client.internal.backend.CastleBackendProvider;
 import io.castle.client.model.AuthenticateFailoverStrategy;
+import io.castle.client.model.CastleRuntimeException;
 
 import java.util.List;
 
@@ -94,8 +95,18 @@ public class CastleConfiguration {
         return apiSecret;
     }
 
-    public String getCastleAppId() {
-        return castleAppId;
+    /**
+     * Gets the App Id, when it exists
+     *
+     * @return A string representing the AppID
+     * @throws CastleRuntimeException when there is no App Id
+     */
+    public String getCastleAppId() throws CastleRuntimeException {
+        if (castleAppId == null || castleAppId.isEmpty()) {
+            throw new CastleRuntimeException("AppId was not specified");
+        } else {
+            return castleAppId;
+        }
     }
 
     public CastleBackendProvider getBackendProvider() {

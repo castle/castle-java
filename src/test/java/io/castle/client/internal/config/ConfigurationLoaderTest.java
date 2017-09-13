@@ -2,6 +2,7 @@ package io.castle.client.internal.config;
 
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
+import io.castle.client.model.CastleRuntimeException;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
@@ -223,6 +224,37 @@ public class ConfigurationLoaderTest {
         ConfigurationLoader loader = new ConfigurationLoader();
         //when
         loader.loadConfiguration();
+    }
+
+    @Test(expected = CastleRuntimeException.class)
+    public void loadConfigurationWithNullAppID() throws CastleSdkConfigurationException {
+        //given
+        Properties properties = new Properties();
+        properties.setProperty("api_secret", "212312");
+        ConfigurationLoader loader = new ConfigurationLoader(properties);
+
+        //then
+        CastleConfiguration castleConfiguration = loader.loadConfiguration();
+
+        //then an exception should be thrown
+        castleConfiguration.getCastleAppId();
+
+    }
+
+    @Test(expected = CastleRuntimeException.class)
+    public void loadConfigurationWithEmptyAppID() throws CastleSdkConfigurationException {
+        //given
+        Properties properties = new Properties();
+        properties.setProperty("api_secret", "212312");
+        properties.setProperty("app_id", "");
+        ConfigurationLoader loader = new ConfigurationLoader(properties);
+
+        //then
+        CastleConfiguration castleConfiguration = loader.loadConfiguration();
+
+        //then an exception should be thrown
+        castleConfiguration.getCastleAppId();
+
     }
 
     private void setEnvAndTestCorrectness(String variable, String value) throws CastleSdkConfigurationException {

@@ -26,7 +26,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         </dependency>
 ```
 
-Go to the settings page of your Castle account and find your **API Secret** and your **APP ID**.
+Go to the settings page of your Castle account and find your **API Secret** and (optionally) your **APP ID**.
 Then create a new file named `castle_sdk.properties` with the following content:
 
 ```properties
@@ -78,14 +78,18 @@ using Java Servlets and this SDK.
 ## Settings
 
 Before running an application that uses the Castle Java SDK,
-there are two settings that must be configured.
-These are:
+there is one that must be configured.
+This is:
 
- * **App ID**: an application identifier associated with a valid Castle account; 
  * **API Secret**: a secret that will be used for authentication purposes.
+
+If the API Secret is not provided, the client's initialization process will fail.
+
+Similar to that, there is also another setting associated to a Castle account.
+
+ * **App ID**: an application identifier associated with a valid Castle account.
  
 Both of them can be found in the settings page of a Castle account.
-If they are are not provided, the client's initialization process will fail.
 
 Besides the aforementioned settings, the following are other application-level setting
 that can be optionally configured:

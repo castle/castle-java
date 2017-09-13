@@ -28,8 +28,8 @@ import java.util.List;
  * </ul>
  * The {@code build} method provides a layer of validation.
  * It will throw a {@link CastleSdkConfigurationException} if one of the fields is left unset.
- * {@code apiSecret} and {@code castleAppId} do not have defaults and values for them should be provided
- * before calling {@code  build}.
+ * {@code apiSecret} and {@code castleAppId} do not have defaults.
+ * A value for the Api Secret should be provided before calling {@code  build}.
  * <h2>How to use Whitelist and Blacklist</h2>
  * When {@link io.castle.client.Castle#onRequest} is called, whitelisted headers and blacklisted headers are checked.
  * Headers are only passed to the context if they are in the whitelist, but not in the blacklist.
@@ -283,7 +283,7 @@ public class CastleConfigurationBuilder {
      * otherwise.
      * <p>
      * Validation consists in checking that no field in the configuration is set tu null.
-     * Furthermore, the build method also makes sure that the App ID and API secret are not empty strings.
+     * Furthermore, the build method also makes sure that the API secret is not an empty string.
      * An additional layer of validation is given further along the line by {@link HeaderNormalizer}, which will ensure
      * that the provided list of strings can contain both, upper and lower case letters.
      * This method will not detect wrong headers, API secrets or APP ID's.
@@ -296,10 +296,6 @@ public class CastleConfigurationBuilder {
      */
     public CastleConfiguration build() throws CastleSdkConfigurationException {
         ImmutableList.Builder<String> builder = ImmutableList.builder();
-        if (castleAppId == null || castleAppId.isEmpty()) {
-            builder.add("The castleAppId for the castleSDK must be provided in the configuration. Read documentation " +
-                    "for further details.");
-        }
         if (apiSecret == null || apiSecret.isEmpty()) {
             builder.add("The apiSecret for the castleSDK must be provided in the configuration. Read documentation " +
                     "for further details.");
