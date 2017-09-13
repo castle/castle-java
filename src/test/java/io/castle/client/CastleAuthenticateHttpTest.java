@@ -1,10 +1,7 @@
 package io.castle.client;
 
 import io.castle.client.internal.utils.VerdictBuilder;
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
@@ -240,10 +237,29 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 recordedRequest.getBody().readUtf8());
     }
 
+    @Test(expected = CastleRuntimeException.class)
+    public void authenticationThrowExceptionWhenBackendReturnErrors() throws InterruptedException {
+        //given a 403 response from backend
+        server.enqueue(new MockResponse().setResponseCode(403));
+        String id = "12345";
+        String event = "$login.succeeded";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        CustomAppProperties properties = new CustomAppProperties();
+        properties.setA("valueA");
+        properties.setB(123456);
+
+        // and an authenticate request is made
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, null);
+
+        // then a exception is send to the client code because of bad response from the castle backend
+    }
+
     @Test
     public void authenticationUseDefaultOnBackendErrorTest() throws InterruptedException {
         //given a 403 response from backend
-        server.enqueue(new MockResponse().setResponseCode(403));
+        server.enqueue(new MockResponse().setResponseCode(500));
         String id = "12345";
         String event = "$login.succeeded";
 
@@ -269,10 +285,15 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 recordedRequest.getBody().readUtf8());
     }
 
-    @Test
-    public void authenticationUseDefaultOnBadResponseFormatTest() throws InterruptedException {
+    @Test(expected = CastleRuntimeException.class)
+    public void authenticationUseDefaultOnBadResponseFormatTestEmptyCase() throws InterruptedException {
         //given a response do not match the transport contract
         testIlegalJsonForAuthenticate("{}");
+
+    }
+    @Test(expected = CastleRuntimeException.class)
+    public void authenticationUseDefaultOnBadResponseFormatTestMissingUseCase() throws InterruptedException {
+        //given a response do not match the transport contract
         testIlegalJsonForAuthenticate("{\"action\":\"deny\"}");
 
     }

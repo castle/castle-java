@@ -39,10 +39,10 @@ public class CastleThrowStrategyTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test(expected = CastleRuntimeException.class)
-    public void onThrowStrategyAuthenticateThrowCastleRuntimeExceptionWhenResponseIsNot200() {
+    public void onThrowStrategyAuthenticateThrowCastleRuntimeExceptionWhenResponseIs500() {
         // given the throw strategy is setup (see constructor)
         // and backend request timeouts
-        server.enqueue(new MockResponse().setResponseCode(404));
+        server.enqueue(new MockResponse().setResponseCode(500));
         // and
         String id = "12345";
         String event = "$login.succeeded";

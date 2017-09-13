@@ -9,4 +9,8 @@ public class CastleRuntimeException extends RuntimeException {
     public CastleRuntimeException(Throwable throwable) {
         super(throwable);
     }
+
+    public CastleRuntimeException(String message) {
+        super(message);
+    }
 }

@@ -149,15 +149,20 @@ public class OkRestApiBackend implements RestApi {
                 errorReason = "Illegal json format";
             }
         }
-        if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
-            //No timeout, but response is not correct
-            throw new IOException("Illegal castle authenticate response.");
+        if(response.code() >= 500) {
+            //Use failover for error backends calls.
+            if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
+                //No timeout, but response is not correct
+                throw new IOException("Illegal castle authenticate response.");
+            }
+            Verdict verdict = VerdictBuilder.failover(errorReason)
+                    .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
+                    .withUserId(userId)
+                    .build();
+            return verdict;
         }
-        Verdict verdict = VerdictBuilder.failover(errorReason)
-                .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
-                .withUserId(userId)
-                .build();
-        return verdict;
+        // Could not extract Verdict, so fail for client logic space.
+        throw new CastleRuntimeException("Verdict extraction failed. Backend response error");
     }
 
     @Override
