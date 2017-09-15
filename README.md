@@ -15,6 +15,15 @@ To check test coverage run:
 
 The coverage report will be on the page `target/jacoco-ut/index.html`
 
+# Development branch
+
+Branch for development process. The castle-java-example application have a parallel dev branch for test proposes.
+
+To use on example application dev branch, first install locally:
+
+    mvn clean install
+
+
 # Quickstart
 
 When using Maven, add the following dependency to your `pom.xml` file:
