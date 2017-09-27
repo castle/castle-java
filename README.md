@@ -277,7 +277,7 @@ Below is a full list of all keys Castle understands:
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
-          "version": "0.6.0-SNAPSHOT"
+          "version": "1.0.1-SNAPSHOT"
         },
         "locale": "pl-PL",
         "location": {
@@ -324,7 +324,7 @@ The following is a sample default context created in such a manner:
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
-          "version": "0.6.0-SNAPSHOT"
+          "version": "1.0.1-SNAPSHOT"
         },
         "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
       }
