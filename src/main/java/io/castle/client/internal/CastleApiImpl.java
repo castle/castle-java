@@ -20,30 +20,27 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CastleApiImpl implements CastleApi {
 
-    private final HttpServletRequest request;
     private final boolean doNotTrack;
     private final CastleSdkInternalConfiguration configuration;
     private final JsonObject contextJson;
 
     public CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration) {
-        this.request = request;
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
-        CastleContext castleContext = buildContext();
+        CastleContext castleContext = buildContext(request);
         this.contextJson = configuration.getModel().getGson().toJsonTree(castleContext).getAsJsonObject();
     }
 
-    private CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
-        this.request = request;
+    private CastleApiImpl(boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
         this.contextJson = contextJson;
     }
 
-    private CastleContext buildContext() {
+    private CastleContext buildContext(HttpServletRequest request) {
         CastleContextBuilder builder = new CastleContextBuilder(configuration.getConfiguration());
         CastleContext context = builder
-                .fromHttpServletRequest(this.request)
+                .fromHttpServletRequest(request)
                 .build();
         return context;
     }
@@ -55,12 +52,12 @@ public class CastleApiImpl implements CastleApi {
             contextToMerge = configuration.getModel().getGson().toJsonTree(additionalContext).getAsJsonObject();
         }
         JsonObject mergedContext = new ContextMerge().merge(this.contextJson, contextToMerge);
-        return new CastleApiImpl(request, doNotTrack, configuration, mergedContext);
+        return new CastleApiImpl(doNotTrack, configuration, mergedContext);
     }
 
     @Override
     public CastleApi doNotTrack(boolean doNotTrack) {
-        return new CastleApiImpl(request, doNotTrack, configuration);
+        return new CastleApiImpl(doNotTrack, configuration,contextJson);
     }
 
     @Override
