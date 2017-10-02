@@ -35,7 +35,27 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"review_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
+                recordedRequest.getBody().readUtf8());
+    }
+
+    @Test
+    public void trackEndpointWithUserIDAndReviewIdTest() throws InterruptedException {
+        //given
+        server.enqueue(new MockResponse());
+        String userId = "12345";
+        String reviewId = "r45677";
+        String event = "$login.succeeded";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // and an track request is made
+        sdk.onRequest(request).track(event, userId,reviewId);
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"review_id\":\"r45677\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -43,7 +63,8 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
     public void trackEndpointWithUserIDAndPropertiesTest() throws InterruptedException {
         //given
         server.enqueue(new MockResponse());
-        String id = "12345";
+        String userId = "12345";
+        String reviewId = "r987";
         String event = "$login.succeeded";
 
         // And a mock Request
@@ -55,11 +76,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         properties.setB(123456);
 
         // and an track request is made
-        sdk.onRequest(request).track(event, id, properties);
+        sdk.onRequest(request).track(event, userId, reviewId, properties);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"review_id\":\"r987\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -67,7 +88,8 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
     public void trackEndpointWithUserIDAndPropertiesAndTraitTest() throws InterruptedException {
         //given
         server.enqueue(new MockResponse());
-        String id = "23456";
+        String userId = "23456";
+        String reviewId = "r987";
         String event = "$login.succeeded";
 
         // And a mock Request
@@ -83,11 +105,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         trait.setY(2342);
 
         // and an track request is made
-        sdk.onRequest(request).track(event, id, properties, trait);
+        sdk.onRequest(request).track(event, userId, reviewId,properties, trait);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"23456\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"trait\":{\"x\":\"x value\",\"y\":2342}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"23456\",\"review_id\":\"r987\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"trait\":{\"x\":\"x value\",\"y\":2342}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -104,7 +126,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
+        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"review_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -129,7 +151,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
                 Assertions.fail("No exception expected here");
             }
         };
-        sdk.onRequest(request).track(event, null, null, null,callback);
+        sdk.onRequest(request).track(event, null, null, null,null,callback);
 
         // then the callback response is called with true
         Boolean extracted = waitForValue(result);
@@ -158,11 +180,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
             }
         };
         // when an track request is made
-        sdk.onRequest(request).track(event, null, null, null,callback);
+        sdk.onRequest(request).track(event, null, null, null,null,callback);
 
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
+        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"review_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
                 recordedRequest.getBody().readUtf8());
 
         // and the onException method must be called
@@ -182,7 +204,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
+        Assert.assertEquals("{\"name\":\"any.valid.event\",\"user_id\":null,\"review_id\":null,\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
                 recordedRequest.getBody().readUtf8());
 
         // and no exceptions are thrown in any thread

@@ -118,33 +118,44 @@ public interface CastleApi {
     /**
      * Makes an async POST request to the track endpoint containing all required parameters and a user ID.
      *
-     * @param event  a String representing an event understood by the Castle API
-     * @param userId a String representing a user ID
+     * @param event    a String representing an event understood by the Castle API
+     * @param userId   a String representing a user ID
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
     void track(String event, @Nullable String userId);
 
     /**
-     * Makes an async POST request to the track endpoint containing required and optional parameters.
+     * Makes an async POST request to the track endpoint containing all required parameters and a user ID.
      *
-     * @param event      a String representing an event understood by the Castle API
-     * @param userId     a String representing a user ID
-     * @param properties object for recording additional information connected to the event, takes null
-     * @param trait      object for recording additional information about the user like email or name., takes null
+     * @param event    a String representing an event understood by the Castle API
+     * @param userId   a String representing a user ID
+     * @param reviewId a String representing a reference to review ID
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
-    void track(String event, @Nullable String userId, @Nullable Object properties);
+    void track(String event, @Nullable String userId, @Nullable String reviewId);
 
     /**
      * Makes an async POST request to the track endpoint containing required and optional parameters.
      *
      * @param event      a String representing an event understood by the Castle API
      * @param userId     a String representing a user ID
+     * @param reviewId   a String representing a reference to review ID
+     * @param properties object for recording additional information connected to the event, takes null
+     * @see <a href="https://api.castle.io/docs#track">The docs</a>
+     */
+    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties);
+
+    /**
+     * Makes an async POST request to the track endpoint containing required and optional parameters.
+     *
+     * @param event      a String representing an event understood by the Castle API
+     * @param userId     a String representing a user ID
+     * @param reviewId   a String representing a reference to review ID
      * @param properties object for recording additional information connected to the event, takes null
      * @param trait      object for recording additional information about the user like email or name, takes null
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
-    void track(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object trait);
+    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait);
 
     /**
      * Makes an async POST request to the track endpoint containing required and optional parameters and a custom handler
@@ -152,13 +163,14 @@ public interface CastleApi {
      *
      * @param event      a String representing an event understood by the Castle API
      * @param userId     a String representing a user ID
+     * @param reviewId   a String representing a reference to review ID
      * @param properties object for recording additional information connected to the event, takes null
      * @param trait      object for recording additional information about the user like email or name, takes null
      * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
      *                             how to handle success of failure of authenticate API calls
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
-    void track(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Makes an async POST request to the identify endpoint with all required parameters.

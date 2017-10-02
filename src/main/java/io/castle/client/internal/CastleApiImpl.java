@@ -115,26 +115,31 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void track(String event) {
-        track(event, null, null, null);
+        track(event, null, null, null, null);
     }
 
     @Override
     public void track(String event, String userId) {
-        track(event, userId, null, null);
+        track(event, userId, null, null, null);
     }
 
     @Override
-    public void track(String event, String userId, Object properties) {
-        track(event, userId, properties, null, null);
+    public void track(String event, @Nullable String userId, @Nullable String reviewId) {
+        track(event, userId, reviewId, null, null, null);
     }
 
     @Override
-    public void track(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object trait) {
-        track(event, userId, properties, trait, null);
+    public void track(String event, String userId, String reviewId, Object properties) {
+        track(event, userId, reviewId, properties, null, null);
     }
 
     @Override
-    public void track(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+    public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait) {
+        track(event, userId, reviewId, properties, trait, null);
+    }
+
+    @Override
+    public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         Preconditions.checkNotNull(event);
         if (doNotTrack) {
             return;
@@ -148,7 +153,7 @@ public class CastleApiImpl implements CastleApi {
         if (trait != null) {
             traitJson = configuration.getModel().getGson().toJsonTree(trait);
         }
-        restApi.sendTrackRequest(event, userId, contextJson, propertiesJson, traitJson, asyncCallbackHandler);
+        restApi.sendTrackRequest(event, userId, reviewId, contextJson, propertiesJson, traitJson, asyncCallbackHandler);
     }
 
     @Override

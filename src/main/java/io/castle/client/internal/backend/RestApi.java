@@ -17,7 +17,7 @@ public interface RestApi {
      * @param propertiesPayload    properties json
      * @param asyncCallbackHandler callback to inform if request is correctly send
      */
-    void sendTrackRequest(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitPayload, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+    void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitPayload, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Sync call to the authenticate endpoint.
@@ -61,7 +61,7 @@ public interface RestApi {
      * Sync call to the review endpoint.
      *
      * @param reviewId string representing the id to be reviewed
-     * @return         a {@code review} with metadata contained in the body of the response
+     * @return a {@code review} with metadata contained in the body of the response
      */
     Review sendReviewRequestSync(String reviewId);
 

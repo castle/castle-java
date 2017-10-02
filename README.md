@@ -64,7 +64,7 @@ CastleApi newAPIRef = Castle.sdk().onRequest(req)
 
 Here `req` is an instance of `HttpServletRequest`. 
 
-Note that the `req` instance should be bind to the underlaing request in order to extract the necessary information. 
+Note that the `req` instance should be bound to the underlying request in order to extract the necessary information. 
 It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the 
 `CastleApi` instance can be passed to any thread independently of the original thread life cycle.
 
