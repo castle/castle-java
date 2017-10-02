@@ -240,7 +240,7 @@ public class CastleContextBuilderTest {
         expectedContext.setHeaders(getStandardCastleHeaders());
         expectedContext.setUserAgent(userAgent);
         expectedContext.setIp(ip);
-//        expectedContext.setClientId(clientId);
+        expectedContext.setClientId("");
         return expectedContext;
     }
 

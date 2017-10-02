@@ -5,7 +5,7 @@ package io.castle.client.model;
  */
 public class CastleSdkRef {
     private String name = "Castle";
-    private String version = "1.0.1-SNAPSHOT";
+    private String version = "1.0.1";
 
     public String getName() {
         return name;

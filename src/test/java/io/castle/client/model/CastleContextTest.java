@@ -25,7 +25,7 @@ public class CastleContextTest {
         String contextJson = model.getGson().toJson(aContext);
 
         //Then
-        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true,\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1-SNAPSHOT\"}}");
+        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true,\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}");
 
     }
 
@@ -107,7 +107,7 @@ public class CastleContextTest {
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
                 "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
                 "\"ip\":\"ip\"," +
-                "\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1-SNAPSHOT\"}," +
+                "\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}," +
                 "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
@@ -135,7 +135,7 @@ public class CastleContextTest {
                 "\"badKey1\":[\"v1\",\"v2\"],\"badKey2\":{\"nested\":\"value\"}" + // Invalid headers fields
                 "}," +
                 "\"ip\":\"ip\"," +
-                "\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1-SNAPSHOT\"}," +
+                "\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}," +
                 "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
@@ -187,7 +187,7 @@ public class CastleContextTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyContextInstance() {
 
         // given
-        String expected = "CastleContext{active=true, device=null, clientId='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='Castle', version='1.0.1-SNAPSHOT'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
+        String expected = "CastleContext{active=true, device=null, clientId='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='Castle', version='1.0.1'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
         CastleContext context = new CastleContext();
 
         //when
@@ -281,7 +281,7 @@ public class CastleContextTest {
                 "page=CastlePage{path='p_path', referrer='p_referrer', search='p_search', title='p_title', url='p_url'}, " +
                 "referrer=CastleReferrer{id='r_id', type='r_type'}, " +
                 "headers=CastleHeaders{headers=[CastleHeader{key='key1', value='value1'}, CastleHeader{key='key2', value='value2'}]}, " +
-                "library=CastleSdkRef{name='Castle', version='1.0.1-SNAPSHOT'}, " +
+                "library=CastleSdkRef{name='Castle', version='1.0.1'}, " +
                 "location=CastleLocation{city='l_city', country='l_country', latitude=10, longitude=10, speed=0}, " +
                 "network=CastleNetwork{bluetooth=true, cellular=true, carrier='n_carrier', wifi=true}, " +
                 "os=CastleOS{name='o_name', version='0_version'}, " +

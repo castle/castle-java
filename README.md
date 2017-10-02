@@ -62,7 +62,11 @@ in the following manner:
 CastleApi newAPIRef = Castle.sdk().onRequest(req)
 ```
 
-Here `req` is an instance of `HttpServletRequest`.
+Here `req` is an instance of `HttpServletRequest`. 
+
+Note that the `req` instance should be bind to the underlaing request in order to extract the necessary information. 
+It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the 
+`CastleApi` instance can be passed to any thread independently of the original thread life cycle.
 
 When using Castle.js, calculate a SHA-256 HMAC in hex format using the following javascript code when calling identify:
 
@@ -277,7 +281,7 @@ Below is a full list of all keys Castle understands:
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
-          "version": "1.0.1-SNAPSHOT"
+          "version": "1.0.1"
         },
         "locale": "pl-PL",
         "location": {
@@ -324,7 +328,7 @@ The following is a sample default context created in such a manner:
         "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
-          "version": "1.0.1-SNAPSHOT"
+          "version": "1.0.1"
         },
         "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
       }

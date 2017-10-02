@@ -17,7 +17,7 @@ public interface RestApi {
      * @param propertiesPayload    properties json
      * @param asyncCallbackHandler callback to inform if request is correctly send
      */
-    void sendTrackRequest(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+    void sendTrackRequest(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitPayload, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Sync call to the authenticate endpoint.

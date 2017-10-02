@@ -125,11 +125,16 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void track(String event, String userId, Object properties) {
-        track(event, userId, properties, null);
+        track(event, userId, properties, null, null);
     }
 
     @Override
-    public void track(String event, @Nullable String userId, @Nullable Object properties,  @Nullable AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+    public void track(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object trait) {
+        track(event, userId, properties, trait, null);
+    }
+
+    @Override
+    public void track(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         Preconditions.checkNotNull(event);
         if (doNotTrack) {
             return;
@@ -139,7 +144,11 @@ public class CastleApiImpl implements CastleApi {
         if (properties != null) {
             propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
         }
-        restApi.sendTrackRequest(event, userId, contextJson, propertiesJson, asyncCallbackHandler);
+        JsonElement traitJson = null;
+        if (trait != null) {
+            traitJson = configuration.getModel().getGson().toJsonTree(trait);
+        }
+        restApi.sendTrackRequest(event, userId, contextJson, propertiesJson, traitJson, asyncCallbackHandler);
     }
 
     @Override

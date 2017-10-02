@@ -65,8 +65,18 @@ public class CastleContextBuilder {
         }
     }
 
+    /**
+     * Extract the clientId from the request.
+     * If __cid cookie setup the use that value, if not use header 'X-Castle-Client-Id', if not use empty string ''
+     * @param request
+     * @return
+     */
     private String setClientIdFromHttpServletRequest(HttpServletRequest request) {
         String cid = request.getHeader("X-Castle-Client-Id");
+        if( cid == null) {
+            //Default value is empty string, so client_id always will be send.
+            cid = "";
+        }
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
