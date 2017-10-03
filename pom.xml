@@ -33,7 +33,7 @@
     <scm>
         <connection>scm:git:git://github.com/castle/castle-java.git</connection>
         <developerConnection>scm:git:ssh://github.com:castle/castle-java.git</developerConnection>
-        <url>https://github.com/castle/castle-java/tree/dev</url>
+        <url>https://github.com/castle/castle-java/</url>
     </scm>
 
     <distributionManagement>
