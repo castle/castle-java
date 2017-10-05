@@ -4,6 +4,7 @@ import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.Review;
 import io.castle.client.model.Verdict;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
