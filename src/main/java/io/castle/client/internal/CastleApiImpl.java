@@ -11,6 +11,7 @@ import io.castle.client.internal.utils.ContextMerge;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
