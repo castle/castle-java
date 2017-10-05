@@ -132,14 +132,16 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait) {
-        track(event, userId, reviewId, properties, trait, new DefaultTrackAsyncCallbackHandler());
+        track(event, userId, reviewId, properties, trait, null);
     }
 
     @Override
     public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         Preconditions.checkNotNull(event);
         if (doNotTrack) {
-            asyncCallbackHandler.onResponse(true);
+            if (asyncCallbackHandler != null) {
+                asyncCallbackHandler.onResponse(true);
+            }
             return;
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
