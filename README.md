@@ -82,7 +82,6 @@ It also contains information on support for other platforms.
 
 This file contains a guide that should get you started as quickly as possible with the Java SDK.
 There is also available a Javadoc.
-TODO: point to the right URL with the javadoc
 Furthermore, there is a [sample application](https://github.com/castle/castle-java-example)
 using Java Servlets and this SDK.
 
@@ -494,13 +493,15 @@ An instance of `Review` contains data parsed from the review JSON object sent by
 
 The `io.castle.client.api.CastleApi` instance obtained from a call to `io.castle.client.Castle#onRequest`
 contains a boolean in a private field named `doNotTrack`.
-The its default value is `false`, but it can be set to true by specifying so using the `doNotTrack` parameter
+Its default value is `false`, but it can be set to true by using the `doNotTrack` parameter
 of the `onRequestMethod`.
 
 The following list specifies the behaviour of each API call when this field is set to `true`:
 
 * **Authenticate**: the method returns a `Veredict` with `authenticateAction` set to `Allow` and `failover` set to
 `true`.
-* **Track**: the method  returns immediately and no request is made.
+* **Track**: the method returns immediately and no request is made.
+The track call enables users to specify a custom instance of `io.castle.client.model.AsyncCallbackHandler<Boolean>`.
+In such case, the behaviour is to call the handler's `onResponse` method with `true` as value and then return without making any request to the Castle API.
 * **Identify**: the method returns immediately and no request is made.
 * **Review**: not applicable. 
