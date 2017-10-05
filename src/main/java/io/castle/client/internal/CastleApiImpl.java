@@ -43,8 +43,8 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public CastleApi mergeContext(Object additionalContext) {
-        JsonObject contextToMerge=null;
-        if(additionalContext != null) {
+        JsonObject contextToMerge = null;
+        if (additionalContext != null) {
             contextToMerge = configuration.getModel().getGson().toJsonTree(additionalContext).getAsJsonObject();
         }
         JsonObject mergedContext = new ContextMerge().merge(this.contextJson, contextToMerge);
@@ -53,7 +53,7 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public CastleApi doNotTrack(boolean doNotTrack) {
-        return new CastleApiImpl(doNotTrack, configuration,contextJson);
+        return new CastleApiImpl(doNotTrack, configuration, contextJson);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CastleApiImpl implements CastleApi {
             propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
         }
         JsonElement traitsJson = null;
-        if (traits != null){
+        if (traits != null) {
             traitsJson = configuration.getModel().getGson().toJsonTree(traits);
         }
         return restApi.sendAuthenticateSync(event, userId, contextJson, propertiesJson, traitsJson);
@@ -138,6 +138,7 @@ public class CastleApiImpl implements CastleApi {
     public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         Preconditions.checkNotNull(event);
         if (doNotTrack) {
+            asyncCallbackHandler.onResponse(true);
             return;
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
