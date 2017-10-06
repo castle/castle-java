@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class PropertiesReader {
 
-    Properties loadPropertiesFromStream(Properties loaded, @Nonnull InputStream resourceAsStream) {
+    public Properties loadPropertiesFromStream(Properties loaded, @Nonnull InputStream resourceAsStream) {
 
         try (final InputStream streamFromFile = resourceAsStream) {
             loaded.load(streamFromFile);

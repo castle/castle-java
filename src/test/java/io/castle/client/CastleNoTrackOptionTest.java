@@ -60,6 +60,45 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
+    public void useCustomTrackHandlerWithNoTrackOptionToDisableRequests() {
+        //Given a mock HTTP request is provided
+        HttpServletRequest request = new MockHttpServletRequest();
+        //And a CastleApi is created with doNotTrack option
+        CastleApi castleApi = sdk.onRequest(request).doNotTrack(true);
+        // And a custom handler for the async track call
+        final AtomicReference<Boolean> trackAsyncResult = new AtomicReference<>();
+
+        AsyncCallbackHandler<Boolean> trackHandler = new AsyncCallbackHandler<Boolean>() {
+            @Override
+            public void onResponse(Boolean response) {
+                trackAsyncResult.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+
+            }
+        };
+
+        //When an API call is executed
+        castleApi.track(
+                "testEvent",
+                null,
+                null,
+                null,
+                null,
+                trackHandler
+        );
+
+        //Then no calls are made to the backend
+        Assertions.assertThat(server.getRequestCount()).isEqualTo(0);
+
+        //And the track call returns and the resulting boolean is true
+        Assert.assertTrue(trackAsyncResult.get());
+    }
+
+    @Test
     public void noTrackOptionCreateAllowFailoverVerdict() {
 
         //Given a mock HTTP request is provided
