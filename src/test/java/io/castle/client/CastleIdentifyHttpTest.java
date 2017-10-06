@@ -30,7 +30,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"castle-java\",\"version\":\"1.0.1\"}}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -53,7 +53,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"castle-java\",\"version\":\"1.0.1\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -76,7 +76,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":false,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":false,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"castle-java\",\"version\":\"1.0.1\"}},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
                 recordedRequest.getBody().readUtf8());
     }
 

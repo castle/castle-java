@@ -4,7 +4,7 @@ package io.castle.client.model;
  * The reference to the current version of the SDK.
  */
 public class CastleSdkRef {
-    private String name = "Castle";
+    private String name = "castle-java";
     private String version = "1.0.1";
 
     public String getName() {

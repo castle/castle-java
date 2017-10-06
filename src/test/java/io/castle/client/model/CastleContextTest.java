@@ -25,7 +25,7 @@ public class CastleContextTest {
         String contextJson = model.getGson().toJson(aContext);
 
         //Then
-        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true,\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}}");
+        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true,\"library\":{\"name\":\"castle-java\",\"version\":\"1.0.1\"}}");
 
     }
 
@@ -107,7 +107,7 @@ public class CastleContextTest {
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
                 "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
                 "\"ip\":\"ip\"," +
-                "\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}," +
+                "\"library\":{\"name\":\"castle-java\",\"version\":\"1.0.1\"}," +
                 "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
@@ -135,7 +135,7 @@ public class CastleContextTest {
                 "\"badKey1\":[\"v1\",\"v2\"],\"badKey2\":{\"nested\":\"value\"}" + // Invalid headers fields
                 "}," +
                 "\"ip\":\"ip\"," +
-                "\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}," +
+                "\"library\":{\"name\":\"castle-java\",\"version\":\"1.0.1\"}," +
                 "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
