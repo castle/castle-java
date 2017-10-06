@@ -100,16 +100,16 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         properties.setA("valueA");
         properties.setB(123456);
 
-        CustomAppTraits trait = new CustomAppTraits();
-        trait.setX("x value");
-        trait.setY(2342);
+        CustomAppTraits traits = new CustomAppTraits();
+        traits.setX("x value");
+        traits.setY(2342);
 
         // and an track request is made
-        sdk.onRequest(request).track(event, userId, reviewId,properties, trait);
+        sdk.onRequest(request).track(event, userId, reviewId,properties, traits);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"23456\",\"review_id\":\"r987\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"trait\":{\"x\":\"x value\",\"y\":2342}}",
+        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"23456\",\"review_id\":\"r987\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"},\"library\":{\"name\":\"Castle\",\"version\":\"1.0.1\"}},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"traits\":{\"x\":\"x value\",\"y\":2342}}",
                 recordedRequest.getBody().readUtf8());
     }
 

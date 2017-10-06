@@ -53,7 +53,7 @@ public interface RestApi {
      * @param userId      unique userId
      * @param contextJson context json
      * @param active      is this call realized as part of a active session of the user
-     * @param traitsJson  additional trait json
+     * @param traitsJson  additional traits json
      */
     void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson);
 

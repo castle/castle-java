@@ -134,12 +134,12 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait) {
-        track(event, userId, reviewId, properties, trait, null);
+    public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits) {
+        track(event, userId, reviewId, properties, traits, null);
     }
 
     @Override
-    public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+    public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         Preconditions.checkNotNull(event);
         if (doNotTrack) {
             return;
@@ -149,11 +149,11 @@ public class CastleApiImpl implements CastleApi {
         if (properties != null) {
             propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
         }
-        JsonElement traitJson = null;
-        if (trait != null) {
-            traitJson = configuration.getModel().getGson().toJsonTree(trait);
+        JsonElement traitsJson = null;
+        if (traits != null) {
+            traitsJson = configuration.getModel().getGson().toJsonTree(traits);
         }
-        restApi.sendTrackRequest(event, userId, reviewId, contextJson, propertiesJson, traitJson, asyncCallbackHandler);
+        restApi.sendTrackRequest(event, userId, reviewId, contextJson, propertiesJson, traitsJson, asyncCallbackHandler);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitPayload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+    public void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         JsonObject json = new JsonObject();
         json.add("name", new JsonPrimitive(event));
         if (userId == null) {
@@ -56,7 +56,7 @@ public class OkRestApiBackend implements RestApi {
             json.add("properties", propertiesPayload);
         }
         if (traitPayload != null) {
-            json.add("trait", traitPayload);
+            json.add("traits", traitsPayload);
         }
         String content = json.toString();
         RequestBody body = RequestBody.create(JSON, content);

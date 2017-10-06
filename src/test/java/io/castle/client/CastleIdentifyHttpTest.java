@@ -44,12 +44,12 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and
-        CustomAppTraits trait = new CustomAppTraits();
-        trait.setX("valueX");
-        trait.setY(234567);
+        CustomAppTraits traits = new CustomAppTraits();
+        traits.setX("valueX");
+        traits.setY(234567);
 
-        // when an identify request is made with a trait object
-        sdk.onRequest(request).identify(id, trait);
+        // when an identify request is made with a traits object
+        sdk.onRequest(request).identify(id, traits);
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
@@ -67,12 +67,12 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And
-        CustomAppTraits trait = new CustomAppTraits();
-        trait.setX("valueX");
-        trait.setY(234567);
+        CustomAppTraits traits = new CustomAppTraits();
+        traits.setX("valueX");
+        traits.setY(234567);
 
-        // when an identify request is made with a trait object and active option
-        sdk.onRequest(request).identify(id, trait, false);
+        // when an identify request is made with a traits object and active option
+        sdk.onRequest(request).identify(id, traits, false);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
@@ -90,12 +90,12 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         //and
-        CustomAppTraits trait = new CustomAppTraits();
-        trait.setX("valueX");
-        trait.setY(234567);
+        CustomAppTraits traits = new CustomAppTraits();
+        traits.setX("valueX");
+        traits.setY(234567);
 
-        // when an identify request is made with a trait object
-        sdk.onRequest(request).identify(id, trait);
+        // when an identify request is made with a traits object
+        sdk.onRequest(request).identify(id, traits);
 
         // then no exceptions are throw
     }
