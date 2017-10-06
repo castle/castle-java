@@ -110,7 +110,6 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-
         Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"23456\",\"review_id\":\"r987\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"traits\":{\"x\":\"x value\",\"y\":2342}}",
                 recordedRequest.getBody().readUtf8());
     }

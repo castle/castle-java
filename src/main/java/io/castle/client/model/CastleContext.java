@@ -84,10 +84,6 @@ public class CastleContext {
         return library;
     }
 
-    public void setLibrary(CastleSdkRef library) {
-        this.library = library;
-    }
-
     public String getLocale() {
         return locale;
     }

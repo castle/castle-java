@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class SDKVersion {
 
-    static String libraryString = "\"library\":{\"name\":\"Castle\",\"version\":\"" + getSDKVersion() + "\"}";
+    static String libraryString = "\"library\":{\"name\":\"castle-java\",\"version\":\"" + getSDKVersion() + "\"}";
 
     static String version = getSDKVersion();
 
