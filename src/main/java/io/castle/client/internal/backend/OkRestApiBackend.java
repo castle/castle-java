@@ -55,7 +55,7 @@ public class OkRestApiBackend implements RestApi {
         if (propertiesPayload != null) {
             json.add("properties", propertiesPayload);
         }
-        if (traitPayload != null) {
+        if (traitsPayload != null) {
             json.add("traits", traitsPayload);
         }
         String content = json.toString();
