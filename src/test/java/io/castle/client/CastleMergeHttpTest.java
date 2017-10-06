@@ -30,13 +30,13 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         customExtraContext.setAddString("String value");
         customExtraContext.setCondition(true);
         customExtraContext.setValue(10L);
-        // and trait object
-        CustomAppTraits trait = new CustomAppTraits();
-        trait.setX("valueX");
-        trait.setY(234567);
+        // and traits object
+        CustomAppTraits traits = new CustomAppTraits();
+        traits.setX("valueX");
+        traits.setY(234567);
 
         // and an authenticate request is made
-        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, trait);
+        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, traits);
         //When
 
         //Then the json send contains a extended context object

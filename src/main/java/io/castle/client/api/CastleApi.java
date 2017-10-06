@@ -152,10 +152,10 @@ public interface CastleApi {
      * @param userId     a String representing a user ID
      * @param reviewId   a String representing a reference to review ID
      * @param properties object for recording additional information connected to the event, takes null
-     * @param trait      object for recording additional information about the user like email or name, takes null
+     * @param traits      object for recording additional information about the user like email or name, takes null
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
-    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait);
+    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits);
 
     /**
      * Makes an async POST request to the track endpoint containing required and optional parameters and a custom handler
@@ -165,12 +165,12 @@ public interface CastleApi {
      * @param userId     a String representing a user ID
      * @param reviewId   a String representing a reference to review ID
      * @param properties object for recording additional information connected to the event, takes null
-     * @param trait      object for recording additional information about the user like email or name, takes null
+     * @param traits      object for recording additional information about the user like email or name, takes null
      * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
      *                             how to handle success of failure of authenticate API calls
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
-    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object trait, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+    void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Makes an async POST request to the identify endpoint with all required parameters.
