@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.google.common.collect.ImmutableMap;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
@@ -43,14 +45,13 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // and a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-
-        // and
-        CustomAppTraits traits = new CustomAppTraits();
-        traits.setX("valueX");
-        traits.setY(234567);
+                
 
         // when an identify request is made with a traits object
-        sdk.onRequest(request).identify(id, traits);
+        sdk.onRequest(request).identify(id, ImmutableMap.builder()
+                .put("x", "valueX")
+                .put("y", 234567)
+                .build());
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
@@ -67,13 +68,11 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        // And
-        CustomAppTraits traits = new CustomAppTraits();
-        traits.setX("valueX");
-        traits.setY(234567);
-
         // when an identify request is made with a traits object and active option
-        sdk.onRequest(request).identify(id, traits, false);
+        sdk.onRequest(request).identify(id,  ImmutableMap.builder()
+                .put("x", "valueX")
+                .put("y", 234567)
+                .build(), false);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
@@ -90,13 +89,11 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
         // and a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        //and
-        CustomAppTraits traits = new CustomAppTraits();
-        traits.setX("valueX");
-        traits.setY(234567);
-
         // when an identify request is made with a traits object
-        sdk.onRequest(request).identify(id, traits);
+        sdk.onRequest(request).identify(id,  ImmutableMap.builder()
+                .put("x", "valueX")
+                .put("y", 234567)
+                .build());
 
         // then no exceptions are throw
     }
