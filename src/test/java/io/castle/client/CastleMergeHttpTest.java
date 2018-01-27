@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.google.common.collect.ImmutableMap;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
@@ -31,13 +33,12 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         customExtraContext.setAddString("String value");
         customExtraContext.setCondition(true);
         customExtraContext.setValue(10L);
-        // and traits object
-        CustomAppTraits traits = new CustomAppTraits();
-        traits.setX("valueX");
-        traits.setY(234567);
 
         // and an authenticate request is made
-        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, traits);
+        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, ImmutableMap.builder()
+                .put("x", "valueX")
+                .put("y", 234567)
+                .build());
         //When
 
         //Then the json send contains a extended context object

@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractCastleHttpLayerTest {
@@ -31,7 +32,7 @@ public abstract class AbstractCastleHttpLayerTest {
     public void prepare() throws NoSuchFieldException, IllegalAccessException, CastleSdkConfigurationException, IOException {
         //Given a mocked API server
         server = new MockWebServer();
-        server.start();
+        server.start(InetAddress.getByName("127.0.0.1"),0);
         //Given a SDK instance
         sdk = new Castle(CastleSdkInternalConfiguration.getInternalConfiguration());
         CastleConfiguration configuration = sdk.getInternalConfiguration().getConfiguration();
@@ -78,49 +79,4 @@ public abstract class AbstractCastleHttpLayerTest {
         Assertions.assertThat(value).isNotNull();
         return value;
     }
-
-
-    public static class CustomAppProperties {
-        private String a;
-        private int b;
-
-        public String getA() {
-            return a;
-        }
-
-        public void setA(String a) {
-            this.a = a;
-        }
-
-        public int getB() {
-            return b;
-        }
-
-        public void setB(int b) {
-            this.b = b;
-        }
-    }
-
-    public static class CustomAppTraits {
-        private String x;
-        private int y;
-
-        public String getX() {
-            return x;
-        }
-
-        public void setX(String x) {
-            this.x = x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
-    }
-
-
 }
