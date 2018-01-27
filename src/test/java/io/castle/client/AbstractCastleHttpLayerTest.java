@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractCastleHttpLayerTest {
@@ -31,7 +32,7 @@ public abstract class AbstractCastleHttpLayerTest {
     public void prepare() throws NoSuchFieldException, IllegalAccessException, CastleSdkConfigurationException, IOException {
         //Given a mocked API server
         server = new MockWebServer();
-        server.start();
+        server.start(InetAddress.getByName("127.0.0.1"),0);
         //Given a SDK instance
         sdk = new Castle(CastleSdkInternalConfiguration.getInternalConfiguration());
         CastleConfiguration configuration = sdk.getInternalConfiguration().getConfiguration();
