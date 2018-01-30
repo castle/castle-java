@@ -31,7 +31,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 ```
 
@@ -82,7 +82,7 @@ To use the library on a java 7 environment, switch the guava library to the foll
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
