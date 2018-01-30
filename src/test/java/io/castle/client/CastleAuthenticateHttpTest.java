@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.google.common.collect.ImmutableMap;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -87,10 +89,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 Assertions.fail("error on request", exception);
             }
         };
-        CustomAppProperties properties = new CustomAppProperties();
-        CustomAppTraits traits = new CustomAppTraits();
         // and an authenticate request is made
-        sdk.onRequest(request).authenticateAsync(event, id, properties, traits, handler);
+        sdk.onRequest(request).authenticateAsync(event, id, ImmutableMap.builder()
+                .put("b",0)
+                .build(), ImmutableMap.builder()
+                .put("y",0)
+                .build(), handler);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
@@ -214,16 +218,15 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
-
-        CustomAppTraits traits = new CustomAppTraits();
-        traits.setX("valueX");
-        traits.setY(654321);
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, traits);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), ImmutableMap.builder()
+                .put("x","valueX")
+                .put("y",654321)
+                .build());
 
         // then
         Verdict expected = VerdictBuilder.success()
@@ -247,12 +250,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, null);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), null);
 
         // then a exception is send to the client code because of bad response from the castle backend
     }
@@ -266,12 +269,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, null);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), null);
 
         // then
         Verdict expected = VerdictBuilder.failover("Client Error")
@@ -306,12 +309,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, id, properties, null);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, id, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), null);
 
         // then a illegal json failover is provided
         Verdict expected = VerdictBuilder.failover("Illegal json format")

@@ -12,6 +12,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import com.google.common.collect.ImmutableMap;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -71,13 +73,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        // And
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
-
         // and an track request is made
-        sdk.onRequest(request).track(event, userId, reviewId, properties);
+        sdk.onRequest(request).track(event, userId, reviewId, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build());
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
@@ -96,17 +96,14 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        // And
-        CustomAppProperties properties = new CustomAppProperties();
-        properties.setA("valueA");
-        properties.setB(123456);
-
-        CustomAppTraits traits = new CustomAppTraits();
-        traits.setX("x value");
-        traits.setY(2342);
-
         // and an track request is made
-        sdk.onRequest(request).track(event, userId, reviewId,properties, traits);
+        sdk.onRequest(request).track(event, userId, reviewId, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), ImmutableMap.builder()
+                .put("x", "x value")
+                .put("y", 2342)
+                .build());
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
