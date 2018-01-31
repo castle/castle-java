@@ -31,7 +31,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
 ```
 
@@ -74,6 +74,29 @@ When using Castle.js, calculate a SHA-256 HMAC in hex format using the following
                 _castle('secure',
                     '<%= Castle.sdk().secureUserID(someUserID) %>');
 ```
+
+## Java 7 configuration
+
+To use the library on a java 7 environment, switch the guava library to the following version:
+```xml
+        <dependency>
+            <groupId>io.castle</groupId>
+            <artifactId>castle-java</artifactId>
+            <version>1.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0-android</version>
+        </dependency>
+```
+
 
 # Where to Find Documentation
 
