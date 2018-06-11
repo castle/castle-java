@@ -21,8 +21,7 @@ Go to the settings page of your Castle account and find your **API Secret** and 
 
 **Alt 1. Initialize using ENV variables**
 
-On initialization the Castle SDK will look for the secret in `CASTLE_SDK_API_SECRET`.
-If that is set, no options needs to be passed to the initialization.
+On initialization the Castle SDK will look for the secret in the `CASTLE_SDK_API_SECRET` environment variable. If it is set, no options needs to be passed to the initializer.
 
 ```java
 Castle.initialize();
