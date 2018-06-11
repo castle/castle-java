@@ -1,5 +1,7 @@
 # Java SDK for Castle
 
+[![CircleCI](https://circleci.com/gh/castle/castle-java.svg?style=svg)](https://circleci.com/gh/castle/castle-java)
+
 **[Castle](https://castle.io) adds real-time monitoring of your authentication stack,
 instantly notifying you and your users on potential account hijacks.**
 
