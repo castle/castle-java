@@ -1,5 +1,7 @@
 # Java SDK for Castle
 
+[![CircleCI](https://circleci.com/gh/castle/castle-java.svg?style=svg)](https://circleci.com/gh/castle/castle-java)
+
 **[Castle](https://castle.io) analyzes device, location, and interaction patterns in your web and mobile apps and lets you stop account takeover attacks in real-time.**
 
 # Quickstart
