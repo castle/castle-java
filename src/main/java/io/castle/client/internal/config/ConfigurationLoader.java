@@ -87,6 +87,11 @@ class ConfigurationLoader {
      *                                         parsable into an int
      */
     public CastleConfiguration loadConfiguration() throws CastleSdkConfigurationException, NumberFormatException {
+        CastleConfigurationBuilder builder = loadConfigurationBuilder();
+        return builder.build();
+    }
+
+    public CastleConfigurationBuilder loadConfigurationBuilder() {
         String envApiSecret = loadConfigurationValue(
                 castleConfigurationProperties,
                 "api_secret",
@@ -173,7 +178,8 @@ class ConfigurationLoader {
         if (logHttpRequests != null) {
             builder.withLogHttpRequests(Boolean.valueOf(logHttpRequests));
         }
-        return builder.build();
+
+        return builder;
     }
 
     private String loadConfigurationValue(Properties properties, String propertyName, String environmentName) {

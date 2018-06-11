@@ -82,11 +82,45 @@ public class CastleTest {
         Castle.verifySdkConfigurationAndInitialize();
         RestApiFactory mockFactory = Mockito.mock(RestApiFactory.class);
         Castle sdk = Castle.sdk();
-        //When the utils are used to override the internal backend factory  
+        //When the utils are used to override the internal backend factory
         SdkMockUtil.modifyInternalBackendFactory(sdk, mockFactory);
         //Then the internal rest factory is mocked
         Assertions.assertThat(sdk.getInternalConfiguration().getRestApiFactory()).isSameAs(mockFactory);
     }
 
+    @Test
+    public void sdkOnConfigureLoadsDefault() throws CastleSdkConfigurationException {
 
+        // Given
+        Castle.initialize();
+
+        //When the sdk is initiated
+        Castle sdk = Castle.sdk();
+
+        //Then the configuration match the expected values from the class path properties
+        CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
+        Assertions.assertThat(sdkConfiguration)
+                .extracting("apiSecret", "castleAppId")
+                .containsExactly("test_api_secret", "test_app_id");
+    }
+
+    @Test
+    public void sdkOnConfigureWithBuilder() throws CastleSdkConfigurationException {
+
+        // Given
+        Castle.initialize(
+            Castle.configurationBuilder()
+                .apiSecret("abcd")
+                .appId("1234")
+        );
+
+        //When the sdk is initiated
+        Castle sdk = Castle.sdk();
+
+        //Then the configuration match the expected values from the class path properties
+        CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
+        Assertions.assertThat(sdkConfiguration)
+                .extracting("apiSecret", "castleAppId")
+                .containsExactly("abcd", "1234");
+    }
 }
