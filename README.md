@@ -37,6 +37,7 @@ configuration builder initialized with default settings.
 Castle.initialize(
   Castle.configurationBuilder()
     .apiSecret("abcd")
+    .build()
 );
 ```
 

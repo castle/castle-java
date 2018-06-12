@@ -112,6 +112,7 @@ public class CastleTest {
             Castle.configurationBuilder()
                 .apiSecret("abcd")
                 .appId("1234")
+                .build()
         );
 
         //When the sdk is initiated

@@ -71,13 +71,13 @@ public class Castle {
     /**
      * Initialize and configure the Castle SDK using a configuration builder object
      *
-     * @param builder CastleConfigurationBuilder object
+     * @param config CastleConfiguration object
      * @throws CastleSdkConfigurationException Configuration options missing or
      *   invalid
      */
-    public static synchronized void initialize(CastleConfigurationBuilder builder) throws CastleSdkConfigurationException {
+    public static synchronized void initialize(CastleConfiguration config) throws CastleSdkConfigurationException {
         instance = new Castle(
-            CastleSdkInternalConfiguration.buildFromConfiguration(builder.build())
+            CastleSdkInternalConfiguration.buildFromConfiguration(config)
         );
     }
 
@@ -88,7 +88,7 @@ public class Castle {
      *   invalid
      */
     public static void initialize() throws CastleSdkConfigurationException {
-        initialize(configurationBuilder());
+        initialize(configurationBuilder().build());
     }
 
     public static CastleConfigurationBuilder configurationBuilder() {
