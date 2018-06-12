@@ -49,7 +49,7 @@ public class Castle {
      */
     public static Castle sdk() throws IllegalStateException {
         if (instance == null) {
-            throw new IllegalStateException("Castle SDK must be initialized via a call to verifySdkConfigurationAndInitialize");
+            throw new IllegalStateException("Castle SDK must be initialized. Call `Castle.initialize()` first");
         }
         return instance;
     }
@@ -69,7 +69,7 @@ public class Castle {
     }
 
     /**
-     * Initialize and configure the Castle SDK using a configuration builder object
+     * Initialize and configure the Castle SDK using a configuration object
      *
      * @param config CastleConfiguration object
      * @throws CastleSdkConfigurationException Configuration options missing or
