@@ -17,11 +17,11 @@ When using Maven, add the following dependency to your `pom.xml` file:
 
 ## Initialize the SDK
 
-Go to the settings page of your Castle account and find your **API Secret** and (optionally) your **APP ID**.
+Go to the settings page of your Castle account and find your **API Secret**
 
 **Alt 1. Initialize using ENV variables**
 
-On initialization the Castle SDK will look for the secret in the `CASTLE_SDK_API_SECRET` environment variable. If it is set, no options needs to be passed to the initializer.
+On initialization the Castle SDK will look for the secret in the `CASTLE_API_SECRET` environment variable. If it is set, no options needs to be passed to the initializer.
 
 ```java
 Castle.initialize();
@@ -94,18 +94,11 @@ To use the library on a java 7 environment, switch the guava library to the foll
 ## Settings
 
 Before running an application that uses the Castle Java SDK,
-there is one that must be configured.
-This is:
+there is one that must be configured:
 
  * **API Secret**: a secret that will be used for authentication purposes.
 
-If the API Secret is not provided, the client's initialization process will fail.
-
-Similar to that, there is also another setting associated to a Castle account.
-
- * **App ID**: an application identifier associated with a valid Castle account.
-
-Both of them can be found in the settings page of a Castle account.
+If the API Secret is not provided, the client's initialization process will fail. It can be found in the settings page of the Castle dashboard.
 
 Besides the aforementioned settings, the following are other application-level setting
 that can be optionally configured:
@@ -140,8 +133,7 @@ Finally, it also contains the environmental variable that can be used instead of
 
 Setting | Default values, when they exist | Properties file key | Environmental variable |
 --- | --- | --- | --- |
-App ID |   | `app_id` | `CASTLE_SDK_APP_ID` |
-API Secret |   | `api_secret` | `CASTLE_SDK_API_SECRET` |
+API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
 Whitelisted Headers | `User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR` | `white_list` | `CASTLE_SDK_WHITELIST_HEADERS` |
 Blacklisted Headers | `Cookie` | `black_list` | `CASTLE_SDK_BLACKLIST_HEADERS` |
 Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
@@ -157,7 +149,6 @@ The following is a sample Java Properties file containing all of the settings th
 modified:
 
 ```properties
-app_id=
 api_secret=
 white_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
 black_list=Cookie

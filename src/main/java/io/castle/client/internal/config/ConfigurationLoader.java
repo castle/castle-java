@@ -95,8 +95,16 @@ class ConfigurationLoader {
         String envApiSecret = loadConfigurationValue(
                 castleConfigurationProperties,
                 "api_secret",
-                "CASTLE_SDK_API_SECRET"
+                "CASTLE_API_SECRET"
         );
+        // Legacy env name for secret
+        if (envApiSecret == null) {
+            envApiSecret = loadConfigurationValue(
+                    castleConfigurationProperties,
+                    "api_secret",
+                    "CASTLE_SDK_API_SECRET"
+            );
+        }
         String castleAppId = loadConfigurationValue(
                 castleConfigurationProperties,
                 "app_id",
