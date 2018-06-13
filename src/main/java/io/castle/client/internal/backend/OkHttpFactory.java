@@ -2,7 +2,11 @@ package io.castle.client.internal.backend;
 
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
-import okhttp3.*;
+import okhttp3.Credentials;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
