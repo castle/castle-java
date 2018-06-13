@@ -24,6 +24,24 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
+    public void trackEndpointHttpAuthorize() throws Exception {
+        // Given
+        Castle.verifySdkConfigurationAndInitialize();
+
+        server.enqueue(new MockResponse());
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // And an track request is made
+        sdk.onRequest(request).track("$login.successful", "1234");
+
+        // Then
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("Basic OnRlc3RfYXBpX3NlY3JldA==", recordedRequest.getHeader("Authorization"));
+    }
+
+    @Test
     public void trackEndpointWithUserIDTest() throws InterruptedException {
         //given
         server.enqueue(new MockResponse());
