@@ -33,7 +33,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
 ```
 
