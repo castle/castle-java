@@ -8,13 +8,14 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
-      
+
     working_directory: ~/repo
 
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
-    
+      CC_TEST_REPORTER_ID: b1d7ccf1b8782f77571a0a7a505032042cbd97c7a83de41a6c517a6e2d1b9ce6
+
     steps:
       - checkout
 
@@ -31,7 +32,20 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-        
-      # run tests!
-      - run: mvn test
+
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
+      - run:
+          name: Run tests
+          command: |
+            mvn test
+            ./cc-test-reporter format-coverage -d -t jacoco ./target/jacoco-ut/jacoco.xml
+            ./cc-test-reporter upload-coverage -d
+
+      - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
+          path: target/surefire-reports
 
