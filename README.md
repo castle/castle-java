@@ -1,6 +1,6 @@
 # Java SDK for Castle
 
-[![CircleCI](https://circleci.com/gh/castle/castle-java.svg?style=svg)](https://circleci.com/gh/castle/castle-java)
+[![CircleCI](https://circleci.com/gh/castle/castle-java.svg?style=svg)](https://circleci.com/gh/castle/castle-java) [![Maintainability](https://api.codeclimate.com/v1/badges/ef9e24a1fb8ebf7b4218/maintainability)](https://codeclimate.com/github/castle/castle-java/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/ef9e24a1fb8ebf7b4218/test_coverage)](https://codeclimate.com/github/castle/castle-java/test_coverage)
 
 **[Castle](https://castle.io) analyzes device, location, and interaction patterns in your web and mobile apps and lets you stop account takeover attacks in real-time.**
 
