@@ -45,7 +45,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // and a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
-                
+
 
         // when an identify request is made with a traits object
         sdk.onRequest(request).identify(id, ImmutableMap.builder()

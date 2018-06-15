@@ -4,6 +4,7 @@ import com.google.common.hash.HashFunction;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.CastleApiImpl;
 import io.castle.client.internal.config.CastleConfiguration;
+import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
@@ -48,7 +49,7 @@ public class Castle {
      */
     public static Castle sdk() throws IllegalStateException {
         if (instance == null) {
-            throw new IllegalStateException("Castle SDK must be initialized via a call to verifySdkConfigurationAndInitialize");
+            throw new IllegalStateException("Castle SDK must be initialized. Call `Castle.initialize()` first");
         }
         return instance;
     }
@@ -67,6 +68,32 @@ public class Castle {
         instance = new Castle(loadedConfig);
     }
 
+    /**
+     * Initialize and configure the Castle SDK using a configuration object
+     *
+     * @param config CastleConfiguration object
+     * @throws CastleSdkConfigurationException Configuration options missing or
+     *   invalid
+     */
+    public static synchronized void initialize(CastleConfiguration config) throws CastleSdkConfigurationException {
+        instance = new Castle(
+            CastleSdkInternalConfiguration.buildFromConfiguration(config)
+        );
+    }
+
+    /**
+     * Initialize the Castle SDK using default settings and variables from ENV
+     *
+     * @throws CastleSdkConfigurationException Configuration options missing or
+     *   invalid
+     */
+    public static void initialize() throws CastleSdkConfigurationException {
+        initialize(configurationBuilder().build());
+    }
+
+    public static CastleConfigurationBuilder configurationBuilder() {
+        return CastleSdkInternalConfiguration.builderFromConfigurationLoader();
+    }
 
     /**
      * Create a API context for the given request.
@@ -107,7 +134,6 @@ public class Castle {
     CastleSdkInternalConfiguration getInternalConfiguration() {
         return internalConfiguration;
     }
-
 
     /**
      * Calculate the secure userId HMAC using the internal API Secret.

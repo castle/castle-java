@@ -2,29 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/castle/castle-java.svg?style=svg)](https://circleci.com/gh/castle/castle-java)
 
-**[Castle](https://castle.io) adds real-time monitoring of your authentication stack,
-instantly notifying you and your users on potential account hijacks.**
-
-To generate the javadoc documentation run:
-
-    mvn clean compile javadoc:javadoc
-
-The javadoc will be located inside the `target/site` directory.
-
-To check test coverage run:
-
-    mvn clean test jacoco:report
-
-The coverage report will be on the page `target/jacoco-ut/index.html`
-
-# Development branch
-
-Branch for development process. The castle-java-example application have a parallel dev branch for test proposes.
-
-To use on example application dev branch, first install locally:
-
-    mvn clean install
-
+**[Castle](https://castle.io) analyzes device, location, and interaction patterns in your web and mobile apps and lets you stop account takeover attacks in real-time.**
 
 # Quickstart
 
@@ -37,44 +15,56 @@ When using Maven, add the following dependency to your `pom.xml` file:
         </dependency>
 ```
 
-Go to the settings page of your Castle account and find your **API Secret** and (optionally) your **APP ID**.
-Then create a new file named `castle_sdk.properties` with the following content:
+## Initialize the SDK
 
-```properties
-app_id=<API_Secret>
-api_secret=<APP_ID>
+Go to the settings page of your Castle account and find your **API Secret**
 
+**Alt 1. Initialize using ENV variables**
+
+On initialization the Castle SDK will look for the secret in the `CASTLE_API_SECRET` environment variable. If it is set, no options needs to be passed to the initializer.
+
+```java
+Castle.initialize();
+```
+
+**Alt 2. Initialize using configuration builder**
+
+If you don't use ENV variables, you can set the secret programatically by using
+a `CastleConfigurationBuilder`. `Castle.configurationBuilder()` returns a
+configuration builder initialized with default settings.
+
+```java
+Castle.initialize(
+  Castle.configurationBuilder()
+    .apiSecret("abcd")
+    .build()
+);
 ```
 
 All other settings will be set to their default values.
 
-Place the file in your classpath (for instance in `src/main/resources`).
+## Tracking events
 
-Next, the SDK must be properly initialized, so that some configuration errors are discovered early.
-Make sure this line of code is executed once during the initialization of the application using the SDK:
-
-```java
-Castle.verifySdkConfigurationAndInitialize();
-```
-
-Once the SDK has been initialized, it suffices to get an instance of the `io.castle.client.api.CastleApi` interface
-in the following manner:
+Once the SDK has been initialized, tracking requests are sent through the SDK
+instance.
 
 ```java
-CastleApi newAPIRef = Castle.sdk().onRequest(req)
-```
+// `req` is an instance of `HttpServletRequest`.
+CastleApi castle = Castle.sdk().onRequest(req);
 
-Here `req` is an instance of `HttpServletRequest`.
+castle.track("$login.succeeded", "<user_id>");
+```
 
 Note that the `req` instance should be bound to the underlying request in order to extract the necessary information.
 It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the
 `CastleApi` instance can be passed to any thread independently of the original thread life cycle.
 
-When using Castle.js, calculate a SHA-256 HMAC in hex format using the following javascript code when calling identify:
+## Castle Javascript secure mode
 
+When using Castle.js, secure mode can be enabled with the following helper:
 ```
-                _castle('secure',
-                    '<%= Castle.sdk().secureUserID(someUserID) %>');
+_castle('secure',
+    '<%= Castle.sdk().secureUserID(someUserID) %>');
 ```
 
 ## Java 7 configuration
@@ -99,34 +89,16 @@ To use the library on a java 7 environment, switch the guava library to the foll
         </dependency>
 ```
 
-
-# Where to Find Documentation
-
-The official Castle [documentation](https://castle.io/docs) documents all possible use cases of the API.
-It also contains information on support for other platforms.
-
-This file contains a guide that should get you started as quickly as possible with the Java SDK.
-There is also available a Javadoc.
-Furthermore, there is a [sample application](https://github.com/castle/castle-java-example)
-using Java Servlets and this SDK.
-
 # Configuring the SDK
 
 ## Settings
 
 Before running an application that uses the Castle Java SDK,
-there is one that must be configured.
-This is:
+there is one that must be configured:
 
  * **API Secret**: a secret that will be used for authentication purposes.
 
-If the API Secret is not provided, the client's initialization process will fail.
-
-Similar to that, there is also another setting associated to a Castle account.
-
- * **App ID**: an application identifier associated with a valid Castle account.
-
-Both of them can be found in the settings page of a Castle account.
+If the API Secret is not provided, the client's initialization process will fail. It can be found in the settings page of the Castle dashboard.
 
 Besides the aforementioned settings, the following are other application-level setting
 that can be optionally configured:
@@ -161,8 +133,7 @@ Finally, it also contains the environmental variable that can be used instead of
 
 Setting | Default values, when they exist | Properties file key | Environmental variable |
 --- | --- | --- | --- |
-App ID |   | `app_id` | `CASTLE_SDK_APP_ID` |
-API Secret |   | `api_secret` | `CASTLE_SDK_API_SECRET` |
+API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
 Whitelisted Headers | `User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR` | `white_list` | `CASTLE_SDK_WHITELIST_HEADERS` |
 Blacklisted Headers | `Cookie` | `black_list` | `CASTLE_SDK_BLACKLIST_HEADERS` |
 Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
@@ -178,7 +149,6 @@ The following is a sample Java Properties file containing all of the settings th
 modified:
 
 ```properties
-app_id=
 api_secret=
 white_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
 black_list=Cookie
@@ -526,3 +496,35 @@ The track call enables users to specify a custom instance of `io.castle.client.m
 In such case, the behaviour is to call the handler's `onResponse` method with `true` as value and then return without making any request to the Castle API.
 * **Identify**: the method returns immediately and no request is made.
 * **Review**: not applicable.
+
+# Documentation
+
+The official Castle [documentation](https://castle.io/docs) documents all possible use cases of the API.
+It also contains information on support for other platforms.
+
+This file contains a guide that should get you started as quickly as possible with the Java SDK.
+There is also available a Javadoc.
+Furthermore, there is a [sample application](https://github.com/castle/castle-java-example)
+using Java Servlets and this SDK.
+
+To generate the javadoc documentation run:
+
+    mvn clean compile javadoc:javadoc
+
+The javadoc will be located inside the `target/site` directory.
+
+To check test coverage run:
+
+    mvn clean test jacoco:report
+
+The coverage report will be on the page `target/jacoco-ut/index.html`
+
+# Development branch
+
+Branch for development process. The castle-java-example application have a parallel dev branch for test proposes.
+
+To use on example application dev branch, first install locally:
+
+    mvn clean install
+
+

@@ -87,11 +87,24 @@ class ConfigurationLoader {
      *                                         parsable into an int
      */
     public CastleConfiguration loadConfiguration() throws CastleSdkConfigurationException, NumberFormatException {
+        CastleConfigurationBuilder builder = loadConfigurationBuilder();
+        return builder.build();
+    }
+
+    public CastleConfigurationBuilder loadConfigurationBuilder() {
         String envApiSecret = loadConfigurationValue(
                 castleConfigurationProperties,
                 "api_secret",
-                "CASTLE_SDK_API_SECRET"
+                "CASTLE_API_SECRET"
         );
+        // Legacy env name for secret
+        if (envApiSecret == null) {
+            envApiSecret = loadConfigurationValue(
+                    castleConfigurationProperties,
+                    "api_secret",
+                    "CASTLE_SDK_API_SECRET"
+            );
+        }
         String castleAppId = loadConfigurationValue(
                 castleConfigurationProperties,
                 "app_id",
@@ -173,7 +186,8 @@ class ConfigurationLoader {
         if (logHttpRequests != null) {
             builder.withLogHttpRequests(Boolean.valueOf(logHttpRequests));
         }
-        return builder.build();
+
+        return builder;
     }
 
     private String loadConfigurationValue(Properties properties, String propertyName, String environmentName) {

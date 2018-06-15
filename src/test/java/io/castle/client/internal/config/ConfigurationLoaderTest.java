@@ -78,7 +78,7 @@ public class ConfigurationLoaderTest {
     @Test
     public void loadFromEnv() throws CastleSdkConfigurationException {
         setEnvAndTestCorrectness(
-                "CASTLE_SDK_API_SECRET",
+                "CASTLE_API_SECRET",
                 "1234"
         );
         setEnvAndTestCorrectness(
@@ -128,6 +128,25 @@ public class ConfigurationLoaderTest {
                 .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.DENY))
                 .build();
 
+        testLoad(expectedConfiguration);
+    }
+
+    @Test
+    public void loadLegacyApiSecretEnv() throws CastleSdkConfigurationException {
+        //given a property file not existing is provided
+        setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
+        // and a minimal sdk configuration is provided in environment
+        setEnvAndTestCorrectness(
+                "CASTLE_SDK_API_SECRET",
+                "1234"
+        );
+        // and a expected config is the default configuration with the throw strategy
+        CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("1234")
+                .build();
+
+        // when then
         testLoad(expectedConfiguration);
     }
 

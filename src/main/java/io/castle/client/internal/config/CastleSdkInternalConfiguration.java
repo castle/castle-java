@@ -33,6 +33,16 @@ public class CastleSdkInternalConfiguration {
         return new CastleSdkInternalConfiguration(apiFactory, modelInstance, configuration);
     }
 
+    public static CastleSdkInternalConfiguration buildFromConfiguration(CastleConfiguration config) {
+        CastleGsonModel modelInstance = new CastleGsonModel();
+        RestApiFactory apiFactory = loadRestApiFactory(modelInstance, config);
+        return new CastleSdkInternalConfiguration(apiFactory, modelInstance, config);
+    }
+
+    public static CastleConfigurationBuilder builderFromConfigurationLoader() {
+        return new ConfigurationLoader().loadConfigurationBuilder();
+    }
+
     /**
      * Currently only the okHttp backend is available.
      *

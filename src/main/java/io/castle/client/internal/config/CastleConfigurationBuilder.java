@@ -278,6 +278,11 @@ public class CastleConfigurationBuilder {
         return this;
     }
 
+    /* alias for withApiSecret  */
+    public CastleConfigurationBuilder apiSecret(String apiSecret) {
+        return withApiSecret(apiSecret);
+    }
+
     /**
      * Validates and returns a configuration object, if all required fields have the required values, or an exception
      * otherwise.
@@ -345,6 +350,10 @@ public class CastleConfigurationBuilder {
         return this;
     }
 
+    public CastleConfigurationBuilder appId(String appId) {
+        return withCastleAppId(appId);
+    }
+
     /**
      * Sets the HTTP layer that will be used for making calls to the Castle REST API.
      *
@@ -378,4 +387,8 @@ public class CastleConfigurationBuilder {
         return this;
     }
 
+    /* alias for logHttpRequests */
+    public CastleConfigurationBuilder enableHttpLogging(Boolean logHttpRequests) {
+        return withLogHttpRequests(logHttpRequests);
+    }
 }
