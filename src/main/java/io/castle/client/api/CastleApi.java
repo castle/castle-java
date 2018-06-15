@@ -193,6 +193,14 @@ public interface CastleApi {
     void track(CastleMessage message);
 
     /**
+     * Makes an async POST request to the track endpoint containing required and optional parameters.
+     * @param message Event parameters
+     * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
+     *                             how to handle success of failure of authenticate API calls
+     */
+    void track(CastleMessage message, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+
+    /**
      * Makes an async POST request to the identify endpoint with all required parameters.
      * <p>
      * traits parameter is null by default.
