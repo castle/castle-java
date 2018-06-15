@@ -47,6 +47,10 @@ jobs:
             ./cc-test-reporter format-coverage -t jacoco ./target/jacoco-ut/jacoco.xml
             ./cc-test-reporter upload-coverage
 
+      - store_artifacts:
+          path: target/surefire-reports
+          destination: tr1
+
       - store_test_results:
           path: target/surefire-reports
 
