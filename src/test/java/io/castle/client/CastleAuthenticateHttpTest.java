@@ -19,18 +19,50 @@ import static okhttp3.mockwebserver.SocketPolicy.NO_RESPONSE;
 
 public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
+    private static final String DENY_RESPONSE = "{\n" +
+                                                "  \"action\": \"deny\",\n" +
+                                                "  \"user_id\": \"12345\"\n" +
+                                                "}";
+
     public CastleAuthenticateHttpTest() {
         super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
     }
 
     @Test
+    public void authenticateAsyncEndpontWithPayload() throws InterruptedException {
+        // Given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticateAsync(
+            CastleMessage.builder("$login.succeeded").userId("12345").build(),
+            handler
+        );
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8());
+    }
+
+    @Test
     public void authenticationAsyncEndpointTest() throws InterruptedException {
         //given
-        server.enqueue(new MockResponse().setBody(
-                "{\n" +
-                        "  \"action\": \"deny\",\n" +
-                        "  \"user_id\": \"12345\"\n" +
-                        "}"));
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
 
@@ -53,7 +85,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
 
         // and
@@ -67,11 +99,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     @Test
     public void authenticationAsyncEndpointWithPropertiesAndTraitsTest() throws InterruptedException {
         //given
-        server.enqueue(new MockResponse().setBody(
-                "{\n" +
-                        "  \"action\": \"deny\",\n" +
-                        "  \"user_id\": \"12345\"\n" +
-                        "}"));
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
 
@@ -98,7 +126,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"properties\":{\"b\":0},\"traits\":{\"y\":0}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
 
         // and
@@ -136,7 +164,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
 
         // and
@@ -171,18 +199,33 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8());
+    }
+
+    @Test
+    public void authenticationEndpointWithPayload() throws InterruptedException {
+        // Given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // And an authenticate request is made
+        Verdict verdict = sdk.onRequest(request).authenticate(
+            CastleMessage.builder("$login.succeeded").userId("12345").build()
+        );
+
+        // Then
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
     }
 
     @Test
     public void authenticationEndpointTest() throws InterruptedException {
         //given
-        server.enqueue(new MockResponse().setBody("\n" +
-                "{\n" +
-                "  \"action\": \"deny\",\n" +
-                "  \"user_id\": \"12345\"\n" +
-                "}"));
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
 
@@ -201,18 +244,14 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
     }
 
     @Test
     public void authenticationEndpointWithPropertiesAndTraitsTest() throws InterruptedException {
         //given
-        server.enqueue(new MockResponse().setBody(
-                "{\n" +
-                        "  \"action\": \"deny\",\n" +
-                        "  \"user_id\": \"12345\"\n" +
-                        "}"));
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
 
@@ -237,7 +276,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"properties\":{\"a\":\"valueA\",\"b\":123456},\"traits\":{\"x\":\"valueX\",\"y\":654321}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -285,7 +324,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"name\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"properties\":{\"a\":\"valueA\",\"b\":123456}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
     }
 
