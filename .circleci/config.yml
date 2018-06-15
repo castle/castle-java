@@ -15,6 +15,7 @@ jobs:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
       CC_TEST_REPORTER_ID: b1d7ccf1b8782f77571a0a7a505032042cbd97c7a83de41a6c517a6e2d1b9ce6
+      JACOCO_SOURCE_PATH: /home/circleci/repo/src/main/java/
 
     steps:
       - checkout
@@ -43,9 +44,9 @@ jobs:
           name: Run tests
           command: |
             mvn test
-            ./cc-test-reporter format-coverage -d -t jacoco ./target/jacoco-ut/jacoco.xml
-            ./cc-test-reporter upload-coverage -d
+            ./cc-test-reporter format-coverage -t jacoco ./target/jacoco-ut/jacoco.xml
+            ./cc-test-reporter upload-coverage
 
-      - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
+      - store_test_results:
           path: target/surefire-reports
 
