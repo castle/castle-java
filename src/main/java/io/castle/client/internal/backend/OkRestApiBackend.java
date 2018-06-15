@@ -40,7 +40,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         JsonObject json = new JsonObject();
-        json.add("name", new JsonPrimitive(event));
+        json.add("event", new JsonPrimitive(event));
         if (userId == null) {
             json.add("user_id", JsonNull.INSTANCE);
         } else {
@@ -51,15 +51,18 @@ public class OkRestApiBackend implements RestApi {
         } else {
             json.add("review_id", new JsonPrimitive(reviewId));
         }
-        json.add("context", contextPayload);
         if (propertiesPayload != null) {
             json.add("properties", propertiesPayload);
         }
         if (traitsPayload != null) {
             json.add("traits", traitsPayload);
         }
-        String content = json.toString();
-        RequestBody body = RequestBody.create(JSON, content);
+        sendTrackRequest(contextPayload, json, asyncCallbackHandler);
+    }
+
+    @Override
+    public void sendTrackRequest(JsonElement context, JsonElement payload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+        RequestBody body = buildRequestBody(context, payload);
         Request request = new Request.Builder()
                 .url(track)
                 .post(body)
@@ -82,27 +85,34 @@ public class OkRestApiBackend implements RestApi {
         });
     }
 
-    private Request buildAuthenticateRequest(String event, String userId, JsonElement contextPayload, JsonElement traitsPayload, JsonElement propertiesPayload) {
+    private JsonElement buildAuthenticatePayload(String event, String userId, JsonElement traitsPayload, JsonElement propertiesPayload) {
         JsonObject json = new JsonObject();
-        json.add("name", new JsonPrimitive(event));
+        json.add("event", new JsonPrimitive(event));
         json.add("user_id", new JsonPrimitive(userId));
-        json.add("context", contextPayload);
         if (propertiesPayload != null) {
             json.add("properties", propertiesPayload);
         }
         if (traitsPayload != null) {
             json.add("traits", traitsPayload);
         }
-        RequestBody body = RequestBody.create(JSON, json.toString());
-        return new Request.Builder()
-                .url(authenticate)
-                .post(body)
-                .build();
+        return json;
     }
 
     @Override
     public Verdict sendAuthenticateSync(String event, final String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload) {
-        Request request = buildAuthenticateRequest(event, userId, contextPayload, traitsPayload, propertiesPayload);
+        JsonElement payloadJson = buildAuthenticatePayload(event, userId, traitsPayload, propertiesPayload);
+
+        return sendAuthenticateSync(contextPayload, payloadJson);
+    }
+
+    @Override
+    public Verdict sendAuthenticateSync(JsonElement contextJson, JsonElement payloadJson) {
+        final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
+        RequestBody body = buildRequestBody(contextJson, payloadJson);
+        Request request = new Request.Builder()
+                .url(authenticate)
+                .post(body)
+                .build();
         try {
             Response response = client.newCall(request).execute();
             return extractAuthenticationAction(response, userId);
@@ -121,7 +131,20 @@ public class OkRestApiBackend implements RestApi {
 
     @Override
     public void sendAuthenticateAsync(String event, final String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
-        Request request = buildAuthenticateRequest(event, userId, contextPayload, traitsPayload, propertiesPayload);
+        JsonElement payloadJson = buildAuthenticatePayload(event, userId, traitsPayload, propertiesPayload);
+
+        sendAuthenticateAsync(contextPayload, payloadJson, asyncCallbackHandler);
+    }
+
+    @Override
+    public void sendAuthenticateAsync(JsonElement contextJson, JsonElement payloadJson, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+
+        final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
+        RequestBody body = buildRequestBody(contextJson, payloadJson);
+        Request request = new Request.Builder()
+                .url(authenticate)
+                .post(body)
+                .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -142,7 +165,12 @@ public class OkRestApiBackend implements RestApi {
                 asyncCallbackHandler.onResponse(extractAuthenticationAction(response, userId));
             }
         });
+    }
 
+    private RequestBody buildRequestBody(JsonElement contextJson, JsonElement payloadJson) {
+        JsonObject json = payloadJson.getAsJsonObject();
+        json.add("context", contextJson);
+        return RequestBody.create(JSON, json.toString());
     }
 
     private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
