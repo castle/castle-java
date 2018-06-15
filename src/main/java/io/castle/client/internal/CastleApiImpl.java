@@ -78,6 +78,16 @@ public class CastleApiImpl implements CastleApi {
         return restApi.sendAuthenticateSync(event, userId, contextJson, propertiesJson, traitsJson);
     }
 
+    @Override
+    public Verdict authenticate(CastleMessage message) {
+        if (doNotTrack) {
+            return buildVerdictForDoNotTrack(message.userId);
+        }
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
+        return restApi.sendAuthenticateSync(contextJson, messageJson);
+    }
+
     private Verdict buildVerdictForDoNotTrack(String userId) {
         return VerdictBuilder.failover("Castle set to do not track.")
                 .withAction(AuthenticateAction.ALLOW)
@@ -86,27 +96,43 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void authenticateAsync(String event, @Nullable String userId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
-        if (doNotTrack) {
-            asyncCallbackHandler.onResponse(buildVerdictForDoNotTrack(userId));
-        } else {
-            Preconditions.checkNotNull(asyncCallbackHandler, "The async handler can not be null");
-            RestApi restApi = configuration.getRestApiFactory().buildBackend();
-            JsonElement propertiesJson = null;
-            if (properties != null) {
-                propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
-            }
-            JsonElement traitsJson = null;
-            if (traits != null) {
-                traitsJson = configuration.getModel().getGson().toJsonTree(traits);
-            }
-            restApi.sendAuthenticateAsync(event, userId, contextJson, propertiesJson, traitsJson, asyncCallbackHandler);
+    public void authenticateAsync(String event, String userId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        CastleMessage.Builder builder = CastleMessage.builder(event).userId(userId);
+        if (properties != null) {
+            JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
+            builder.properties(propertiesJson);
         }
+
+        if (traits != null) {
+            JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
+            builder.userTraits(traits);
+        }
+
+        authenticateAsync(builder.build(), asyncCallbackHandler);
     }
 
     @Override
     public void authenticateAsync(String event, String userId, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
-        authenticateAsync(event, userId, null, null, asyncCallbackHandler);
+        authenticateAsync(
+            CastleMessage.builder(event).userId(userId).build(),
+            asyncCallbackHandler
+        );
+    }
+
+    @Override
+    public void authenticateAsync(CastleMessage message, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        if (doNotTrack) {
+            asyncCallbackHandler.onResponse(buildVerdictForDoNotTrack(message.userId));
+        } else {
+            Preconditions.checkNotNull(asyncCallbackHandler, "The async handler can not be null");
+            RestApi restApi = configuration.getRestApiFactory().buildBackend();
+            JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
+            restApi.sendAuthenticateAsync(contextJson, messageJson, asyncCallbackHandler);
+        }
+    }
+
+    public JsonObject getContextJson() {
+        return contextJson;
     }
 
     @Override
@@ -153,6 +179,13 @@ public class CastleApiImpl implements CastleApi {
             traitsJson = configuration.getModel().getGson().toJsonTree(traits);
         }
         restApi.sendTrackRequest(event, userId, reviewId, contextJson, propertiesJson, traitsJson, asyncCallbackHandler);
+    }
+
+    @Override
+    public void track(CastleMessage message) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
+        restApi.sendTrackRequest(contextJson, messageJson, null);
     }
 
     @Override
