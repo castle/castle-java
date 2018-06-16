@@ -81,7 +81,7 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public Verdict authenticate(CastleMessage message) {
         if (doNotTrack) {
-            return buildVerdictForDoNotTrack(message.userId);
+            return buildVerdictForDoNotTrack(message.getUserId());
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
@@ -122,7 +122,7 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public void authenticateAsync(CastleMessage message, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
         if (doNotTrack) {
-            asyncCallbackHandler.onResponse(buildVerdictForDoNotTrack(message.userId));
+            asyncCallbackHandler.onResponse(buildVerdictForDoNotTrack(message.getUserId()));
         } else {
             Preconditions.checkNotNull(asyncCallbackHandler, "The async handler can not be null");
             RestApi restApi = configuration.getRestApiFactory().buildBackend();
@@ -189,7 +189,7 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void track(CastleMessage message, @Nullable AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
-        Preconditions.checkNotNull(message.event);
+        Preconditions.checkNotNull(message.getEvent());
         if (doNotTrack) {
             if (asyncCallbackHandler != null) {
                 asyncCallbackHandler.onResponse(true);
