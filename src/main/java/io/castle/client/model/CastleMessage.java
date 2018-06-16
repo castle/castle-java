@@ -1,5 +1,7 @@
 package io.castle.client.model;
 
+import com.google.common.collect.ImmutableMap;
+
 import javax.annotation.Nonnull;
 
 
@@ -7,6 +9,11 @@ public class CastleMessage {
     private String createdAt;
     private String deviceToken;
     @Nonnull private String event;
+    /**
+     * Collect other attributes that haven't not explicit setters to accommodate for
+     * future parameters
+     */
+    private transient ImmutableMap other;
     private Object properties;
     private String reviewId;
     private String userId;
@@ -43,6 +50,14 @@ public class CastleMessage {
 
     public void setEvent(@Nonnull String event) {
         this.event = event;
+    }
+
+    public ImmutableMap getOther() {
+        return other;
+    }
+
+    public void setOther(ImmutableMap other) {
+        this.other = other;
     }
 
     public Object getProperties() {
@@ -112,6 +127,11 @@ public class CastleMessage {
                 throw new NullPointerException("Null properties");
             }
             payload.setProperties(properties);
+            return self();
+        }
+
+        public Builder other(ImmutableMap other) {
+            payload.setOther(other);
             return self();
         }
 
