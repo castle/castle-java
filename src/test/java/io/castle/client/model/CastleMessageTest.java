@@ -47,10 +47,8 @@ public class CastleMessageTest {
     @Test
     public void otherProperties() {
         CastleMessage message = CastleMessage.builder("event")
-                .other(ImmutableMap.builder()
-                        .put("key", "value")
-                        .build()
-                ).build();
+                .put("key", "value")
+                .build();
 
         String payloadJson = model.getGson().toJson(message);
 

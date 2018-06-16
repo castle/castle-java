@@ -1,9 +1,8 @@
 package io.castle.client.model;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
 
 import javax.annotation.Nonnull;
-
 
 public class CastleMessage {
     private String createdAt;
@@ -13,7 +12,7 @@ public class CastleMessage {
      * Collect other attributes that haven't not explicit setters to accommodate for
      * future parameters
      */
-    private transient ImmutableMap other;
+    private transient HashMap other;
     private Object properties;
     private String reviewId;
     private String userId;
@@ -52,11 +51,14 @@ public class CastleMessage {
         this.event = event;
     }
 
-    public ImmutableMap getOther() {
+    public HashMap getOther() {
+        if (other == null) {
+            this.other = new HashMap();
+        }
         return other;
     }
 
-    public void setOther(ImmutableMap other) {
+    public void setOther(HashMap other) {
         this.other = other;
     }
 
@@ -130,8 +132,13 @@ public class CastleMessage {
             return self();
         }
 
-        public Builder other(ImmutableMap other) {
+        public Builder other(HashMap other) {
             payload.setOther(other);
+            return self();
+        }
+
+        public Builder put(String key, Object value) {
+            payload.getOther().put(key, value);
             return self();
         }
 
