@@ -68,6 +68,27 @@ castle.track(CastleMessage.builder("$login.succeeded")
 );
 ```
 
+## Authenticating events
+
+The method signature for the authenticate call is identical to track. The difference
+is that a Verdict will be returned, indicating which action to take based on the risk.
+
+**Example**
+
+```java
+// `req` is an instance of `HttpServletRequest`.
+CastleApi castle = Castle.sdk().onRequest(req);
+
+Verdict verdict = castle.authenticate(CastleMessage.builder("$login.succeeded")
+  .userId("1234")
+  .build()
+);
+
+if (verdict.getAction() == AuthenticateAction.DENY) {
+  // IMPLEMENT: Deny user
+}
+```
+
 Note that the `req` instance should be bound to the underlying request in order to extract the necessary information.
 It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the
 `CastleApi` instance can be passed to any thread independently of the original thread life cycle.
