@@ -48,11 +48,45 @@ All other settings will be set to their default values.
 Once the SDK has been initialized, tracking requests are sent through the SDK
 instance.
 
+**Example**
+
 ```java
 // `req` is an instance of `HttpServletRequest`.
 CastleApi castle = Castle.sdk().onRequest(req);
 
-castle.track("$login.succeeded", "<user_id>");
+castle.track(CastleMessage.builder("$login.succeeded")
+  .userId("1234")
+  .userTraits(ImmutableMap.builder()
+    .put("name", "Winston Smith")
+    .put("email", "wsmith@theparty.com")
+    .put("created_at", "1984-01-01T11:22:33Z")
+    .build())
+  .properties(ImmutableMap.builder()
+    .put("quota", "12")
+    .build())
+  .build()
+);
+```
+
+## Authenticating events
+
+The method signature for the authenticate call is identical to track. The difference
+is that a Verdict will be returned, indicating which action to take based on the risk.
+
+**Example**
+
+```java
+// `req` is an instance of `HttpServletRequest`.
+CastleApi castle = Castle.sdk().onRequest(req);
+
+Verdict verdict = castle.authenticate(CastleMessage.builder("$login.succeeded")
+  .userId("1234")
+  .build()
+);
+
+if (verdict.getAction() == AuthenticateAction.DENY) {
+  // IMPLEMENT: Deny user
+}
 ```
 
 Note that the `req` instance should be bound to the underlying request in order to extract the necessary information.

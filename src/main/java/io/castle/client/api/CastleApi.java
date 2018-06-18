@@ -1,6 +1,7 @@
 package io.castle.client.api;
 
 import io.castle.client.model.AsyncCallbackHandler;
+import io.castle.client.model.CastleMessage;
 import io.castle.client.model.Review;
 import io.castle.client.model.Verdict;
 
@@ -74,6 +75,12 @@ public interface CastleApi {
     Verdict authenticate(String event, String userId, @Nullable Object properties, @Nullable Object traits);
 
     /**
+     * Makes a sync POST request to the authenticate endpoint containing required and optional parameters.
+     * @param message Event parameters
+     */
+    Verdict authenticate(CastleMessage message);
+
+    /**
      * Makes an async POST request to the authenticate endpoint containing required and optional parameters.
      *
      * @param event                a String representing an event understood by the Castle API
@@ -98,6 +105,12 @@ public interface CastleApi {
      * @see <a href="https://api.castle.io/docs#authenticate">The docs</a>
      */
     void authenticateAsync(String event, String userId, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
+
+    /**
+     * Makes an async POST request to the authenticate endpoint containing required and optional parameters.
+     * @param message Event parameters
+     */
+    void authenticateAsync(CastleMessage message, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      * Sets the doNotTrack boolean of a new instance of {@code CastleApi}
@@ -172,6 +185,20 @@ public interface CastleApi {
      * @see <a href="https://api.castle.io/docs#track">The docs</a>
      */
     void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+
+    /**
+     * Makes an async POST request to the track endpoint containing required and optional parameters.
+     * @param message Event parameters
+     */
+    void track(CastleMessage message);
+
+    /**
+     * Makes an async POST request to the track endpoint containing required and optional parameters.
+     * @param message Event parameters
+     * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
+     *                             how to handle success of failure of authenticate API calls
+     */
+    void track(CastleMessage message, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Makes an async POST request to the identify endpoint with all required parameters.

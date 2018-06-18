@@ -15,9 +15,17 @@ public interface RestApi {
      * @param userId               unique userId
      * @param contextPayload       context json
      * @param propertiesPayload    properties json
-     * @param asyncCallbackHandler callback to inform if request is correctly send
+     * @param asyncCallbackHandler callback to inform if request was correctly sent
      */
     void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitPayload, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+
+    /**
+     *
+     * @param contextJson          JSON object containing the request context
+     * @param payloadJson          JSON object containing the event properties
+     * @param asyncCallbackHandler callback to inform if request was correctly sent
+     */
+    void sendTrackRequest(JsonElement contextJson, JsonElement payloadJson, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Sync call to the authenticate endpoint.
@@ -34,6 +42,14 @@ public interface RestApi {
     Verdict sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload);
 
     /**
+     *
+     * @param contextJson JSON object containing the request context
+     * @param payloadJson JSON object containing the event properties
+     * @return Verdict to be used in login logic
+     */
+    Verdict sendAuthenticateSync(JsonElement contextJson, JsonElement payloadJson);
+
+    /**
      * Async version of the authentication endpoint.
      * <p>
      * This method will return immediately and the response will be passed to the asyncCallbackHandler in the future.
@@ -46,6 +62,14 @@ public interface RestApi {
      * @param asyncCallbackHandler callback to pass the AuthenticateAction enum value to be used on login logic
      */
     void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
+
+    /**
+     *
+     * @param contextJson          JSON object containing the request context
+     * @param payloadJson          JSON object containing the event properties
+     * @param asyncCallbackHandler callback to inform if request was correctly sent
+     */
+    void sendAuthenticateAsync(JsonElement contextJson, JsonElement payloadJson, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      * Async call to the identify endpoint, returning immediately.
