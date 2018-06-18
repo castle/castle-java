@@ -133,7 +133,7 @@ public class CastleTest {
         // When the SDK is initiated
         Castle sdk = Castle.sdk();
 
-        //Then the configuration match the expected values from the class path properties
+        //Then the configuration match the expected values from the initialization
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
         Assertions.assertThat(sdkConfiguration)
                 .extracting("apiSecret")
