@@ -27,16 +27,24 @@ On initialization the Castle SDK will look for the secret in the `CASTLE_API_SEC
 Castle.initialize();
 ```
 
-**Alt 2. Initialize using configuration builder**
+**Alt 2. Initialize using API secret only**
 
-If you don't use ENV variables, you can set the secret programatically by using
-a `CastleConfigurationBuilder`. `Castle.configurationBuilder()` returns a
-configuration builder initialized with default settings.
+```java
+Castle.initialize("abcd");
+```
+
+
+**Alt 3. Initialize using configuration builder**
+
+If you don't use ENV variables, you can set the secret programatically together
+with other options by using `CastleConfigurationBuilder`. `Castle.configurationBuilder()`
+returns a configuration builder initialized with default settings.
 
 ```java
 Castle.initialize(
   Castle.configurationBuilder()
     .apiSecret("abcd")
+    .enableHttpLogging() // Log all outgoing requests to Castle
     .build()
 );
 ```
