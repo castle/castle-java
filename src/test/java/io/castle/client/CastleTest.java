@@ -124,4 +124,19 @@ public class CastleTest {
                 .extracting("apiSecret", "castleAppId")
                 .containsExactly("abcd", "1234");
     }
+
+    @Test
+    public void sdkOnConfigureWithSecretOnly() throws CastleSdkConfigurationException {
+        // Given
+        Castle.initialize("abcd");
+
+        // When the SDK is initiated
+        Castle sdk = Castle.sdk();
+
+        //Then the configuration match the expected values from the class path properties
+        CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
+        Assertions.assertThat(sdkConfiguration)
+                .extracting("apiSecret")
+                .containsExactly("abcd");
+    }
 }

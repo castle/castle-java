@@ -91,6 +91,16 @@ public class Castle {
         initialize(configurationBuilder().build());
     }
 
+    /**
+     * Initialize the Castle SDK using only the API secret key
+     * @param  secret                          API Secret
+     * @throws CastleSdkConfigurationException Configuration options missing or
+     *   invalid
+     */
+    public static void initialize(String secret) throws CastleSdkConfigurationException {
+        initialize(configurationBuilder().apiSecret(secret).build());
+    }
+
     public static CastleConfigurationBuilder configurationBuilder() {
         return CastleSdkInternalConfiguration.builderFromConfigurationLoader();
     }
