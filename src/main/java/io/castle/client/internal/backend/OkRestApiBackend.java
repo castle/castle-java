@@ -125,30 +125,33 @@ public class OkRestApiBackend implements RestApi {
 
     private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
         String errorReason = response.message();
+        String jsonResponse = response.body().string();
+
         if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
             Gson gson = model.getGson();
             VerdictTransportModel transport = gson.fromJson(jsonResponse, VerdictTransportModel.class);
-            if (transport.getAction() != null && transport.getUserId() != null) {
+            if (transport != null && transport.getAction() != null && transport.getUserId() != null) {
                 return VerdictBuilder.fromTransport(transport);
             } else {
-                errorReason = "Illegal json format";
+                errorReason = "Invalid JSON in response";
             }
         }
-        if(response.code() >= 500) {
+
+        if (response.code() >= 500) {
             //Use failover for error backends calls.
-            if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
-                //No timeout, but response is not correct
-                throw new IOException("Illegal castle authenticate response.");
+            if (!configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
+                Verdict verdict = VerdictBuilder.failover(errorReason)
+                        .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
+                        .withUserId(userId)
+                        .build();
+                return verdict;
             }
-            Verdict verdict = VerdictBuilder.failover(errorReason)
-                    .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
-                    .withUserId(userId)
-                    .build();
-            return verdict;
         }
+
         // Could not extract Verdict, so fail for client logic space.
-        throw new CastleRuntimeException("Verdict extraction failed. Backend response error");
+        throw new CastleRuntimeException(
+            responseErrorMessage(response.code(), errorReason, jsonResponse)
+        );
     }
 
     @Override
@@ -234,5 +237,13 @@ public class OkRestApiBackend implements RestApi {
             return gson.fromJson(jsonResponse, Review.class);
         }
         throw new IOException("HTTP request failure");
+    }
+
+    private String responseErrorMessage(Integer code, String message, String response) {
+        String errorMessage =
+            "Request error: server responded with code " + code.toString() + ". " +
+            message + ": `" + response + "`";
+
+        return errorMessage;
     }
 }
