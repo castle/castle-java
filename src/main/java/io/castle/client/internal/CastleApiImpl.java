@@ -63,19 +63,19 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public Verdict authenticate(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
-        if (doNotTrack) {
-            return buildVerdictForDoNotTrack(userId);
-        }
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        JsonElement propertiesJson = null;
+        CastleMessage.Builder builder = CastleMessage.builder(event).userId(userId);
+
         if (properties != null) {
-            propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
+            JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
+            builder.properties(propertiesJson);
         }
-        JsonElement traitsJson = null;
+
         if (traits != null) {
-            traitsJson = configuration.getModel().getGson().toJsonTree(traits);
+            JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
+            builder.userTraits(traits);
         }
-        return restApi.sendAuthenticateSync(event, userId, contextJson, propertiesJson, traitsJson);
+
+        return authenticate(builder.build());
     }
 
     @Override
@@ -129,10 +129,6 @@ public class CastleApiImpl implements CastleApi {
             JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
             restApi.sendAuthenticateAsync(contextJson, messageJson, asyncCallbackHandler);
         }
-    }
-
-    public JsonObject getContextJson() {
-        return contextJson;
     }
 
     @Override

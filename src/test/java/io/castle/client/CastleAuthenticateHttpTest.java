@@ -276,7 +276,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
     }
 
@@ -324,7 +324,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8());
     }
 
