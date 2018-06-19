@@ -179,6 +179,28 @@ public class CastleContextBuilderTest {
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
     }
 
+    @Test
+    public void builderMethods() throws CastleSdkConfigurationException {
+        // Given
+        CastleConfiguration configuration = CastleConfigurationBuilder
+            .defaultConfigBuilder()
+            .withApiSecret("abcd")
+            .build();
+
+        // When
+        CastleContext context = new CastleContextBuilder(configuration)
+            .clientId("")
+            .userAgent(userAgent)
+            .headers(getStandardCastleHeaders())
+            .ip(ip)
+            .build();
+        // And
+        CastleContext standardContext = getStandardContext();
+
+        //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
     private String valueControlCache = "max-age=0";
     private String keyControlCache = "Cache-Control";
     private String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";

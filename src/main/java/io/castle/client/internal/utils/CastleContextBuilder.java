@@ -2,6 +2,7 @@ package io.castle.client.internal.utils;
 
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.model.CastleContext;
+import io.castle.client.model.CastleDevice;
 import io.castle.client.model.CastleHeader;
 import io.castle.client.model.CastleHeaders;
 
@@ -25,6 +26,36 @@ public class CastleContextBuilder {
     public CastleContext build() {
         context.setHeaders(headers);
         return context;
+    }
+
+    public CastleContextBuilder active(boolean active) {
+        context.setActive(active);
+        return this;
+    }
+
+    public CastleContextBuilder clientId(String clientId) {
+        context.setClientId(clientId);
+        return this;
+    }
+
+    public CastleContextBuilder device(CastleDevice device) {
+        context.setDevice(device);
+        return this;
+    }
+
+    public CastleContextBuilder ip(String ip) {
+        context.setIp(ip);
+        return this;
+    }
+
+    public CastleContextBuilder headers(CastleHeaders headers) {
+        this.headers = headers;
+        return this;
+    }
+
+    public CastleContextBuilder userAgent(String userAgent) {
+        context.setUserAgent(userAgent);
+        return this;
     }
 
     public CastleContextBuilder fromHttpServletRequest(HttpServletRequest request) {
