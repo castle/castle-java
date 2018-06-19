@@ -40,7 +40,6 @@ public class CastleContextTest {
         CastleDevice device = new CastleDevice();
         device.setId("d_id");
         device.setName("d_name");
-        device.setToken("d_token");
         device.setType("d_type");
         device.setManufacturer("d_manufacturer");
         device.setModel("d_model");
@@ -102,7 +101,7 @@ public class CastleContextTest {
 
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
-                "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\",\"token\":\"d_token\"}," +
+                "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}," +
                 "\"client_id\":\"clientIDX\"," +
                 "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
@@ -128,7 +127,7 @@ public class CastleContextTest {
 
         //Given a json with headers not matching the api contract
         String notMatchingJson = "{\"active\":true," +
-                "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\",\"token\":\"d_token\"}," +
+                "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}," +
                 "\"client_id\":\"clientIDX\"," +
                 "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
@@ -196,7 +195,6 @@ public class CastleContextTest {
         CastleDevice device = new CastleDevice();
         device.setId("d_id");
         device.setName("d_name");
-        device.setToken("d_token");
         device.setType("d_type");
         device.setManufacturer("d_manufacturer");
         device.setModel("d_model");
@@ -259,7 +257,7 @@ public class CastleContextTest {
         aContext.setUserAgent("userAgent");
 
         String expected = "CastleContext{active=false, " +
-                "device=CastleDevice{id='d_id', manufacturer='d_manufacturer', model='d_model', name='d_name', type='d_type', token='d_token'}, " +
+                "device=CastleDevice{id='d_id', manufacturer='d_manufacturer', model='d_model', name='d_name', type='d_type'}, " +
                 "clientId='clientIDX', " +
                 "ip='ip', " +
                 "locale='locale', " +
