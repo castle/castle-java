@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.annotation.Nonnull;
 
 public class CastleMessage {
+    private CastleContext context;
     private String createdAt;
     private String deviceToken;
     @Nonnull private String event;
@@ -24,6 +25,14 @@ public class CastleMessage {
     */
     public CastleMessage(String event) {
         this.event = event;
+    }
+
+    public CastleContext getContext() {
+        return context;
+    }
+
+    public void setContext(CastleContext context) {
+        this.context = context;
     }
 
     public String getCreatedAt() {

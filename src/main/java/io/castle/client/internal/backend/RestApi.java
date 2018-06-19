@@ -9,27 +9,24 @@ import io.castle.client.model.Verdict;
 public interface RestApi {
     /**
      *
-     * @param contextJson          JSON object containing the request context
      * @param payloadJson          JSON object containing the event properties
      * @param asyncCallbackHandler callback to inform if request was correctly sent
      */
-    void sendTrackRequest(JsonElement contextJson, JsonElement payloadJson, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
+    void sendTrackRequest(JsonElement payloadJson, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      *
-     * @param contextJson JSON object containing the request context
      * @param payloadJson JSON object containing the event properties
      * @return Verdict to be used in login logic
      */
-    Verdict sendAuthenticateSync(JsonElement contextJson, JsonElement payloadJson);
+    Verdict sendAuthenticateSync(JsonElement payloadJson);
 
     /**
      *
-     * @param contextJson          JSON object containing the request context
      * @param payloadJson          JSON object containing the event properties
      * @param asyncCallbackHandler callback to inform if request was correctly sent
      */
-    void sendAuthenticateAsync(JsonElement contextJson, JsonElement payloadJson, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
+    void sendAuthenticateAsync(JsonElement payloadJson, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      * Async call to the identify endpoint, returning immediately.

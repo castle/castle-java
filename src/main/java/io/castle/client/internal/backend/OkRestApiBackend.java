@@ -38,8 +38,8 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendTrackRequest(JsonElement context, JsonElement payload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
-        RequestBody body = buildRequestBody(context, payload);
+    public void sendTrackRequest(JsonElement payload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+        RequestBody body = buildRequestBody(payload);
         Request request = new Request.Builder()
                 .url(track)
                 .post(body)
@@ -63,9 +63,9 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public Verdict sendAuthenticateSync(JsonElement contextJson, JsonElement payloadJson) {
+    public Verdict sendAuthenticateSync(JsonElement payloadJson) {
         final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
-        RequestBody body = buildRequestBody(contextJson, payloadJson);
+        RequestBody body = buildRequestBody(payloadJson);
         Request request = new Request.Builder()
                 .url(authenticate)
                 .post(body)
@@ -87,10 +87,10 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendAuthenticateAsync(JsonElement contextJson, JsonElement payloadJson, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+    public void sendAuthenticateAsync(JsonElement payloadJson, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
 
         final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
-        RequestBody body = buildRequestBody(contextJson, payloadJson);
+        RequestBody body = buildRequestBody(payloadJson);
         Request request = new Request.Builder()
                 .url(authenticate)
                 .post(body)
@@ -117,9 +117,8 @@ public class OkRestApiBackend implements RestApi {
         });
     }
 
-    private RequestBody buildRequestBody(JsonElement contextJson, JsonElement payloadJson) {
+    private RequestBody buildRequestBody(JsonElement payloadJson) {
         JsonObject json = payloadJson.getAsJsonObject();
-        json.add("context", contextJson);
         return RequestBody.create(JSON, json.toString());
     }
 

@@ -27,6 +27,12 @@ public class CastleApiImpl implements CastleApi {
         this.contextJson = configuration.getModel().getGson().toJsonTree(castleContext).getAsJsonObject();
     }
 
+    public CastleApiImpl(CastleSdkInternalConfiguration configuration, boolean doNotTrack) {
+        this.doNotTrack = doNotTrack;
+        this.configuration = configuration;
+        this.contextJson = null;
+    }
+
     private CastleApiImpl(boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
@@ -34,7 +40,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     private CastleContext buildContext(HttpServletRequest request) {
-        CastleContextBuilder builder = new CastleContextBuilder(configuration.getConfiguration());
+        CastleContextBuilder builder = new CastleContextBuilder(configuration.getConfiguration(), configuration.getModel());
         CastleContext context = builder
                 .fromHttpServletRequest(request)
                 .build();
@@ -72,8 +78,8 @@ public class CastleApiImpl implements CastleApi {
             return buildVerdictForDoNotTrack(message.getUserId());
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
-        return restApi.sendAuthenticateSync(contextJson, messageJson);
+        JsonElement messageJson = buildJson(message);
+        return restApi.sendAuthenticateSync(messageJson);
     }
 
     private Verdict buildVerdictForDoNotTrack(String userId) {
@@ -106,8 +112,8 @@ public class CastleApiImpl implements CastleApi {
         } else {
             Preconditions.checkNotNull(asyncCallbackHandler, "The async handler can not be null");
             RestApi restApi = configuration.getRestApiFactory().buildBackend();
-            JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
-            restApi.sendAuthenticateAsync(contextJson, messageJson, asyncCallbackHandler);
+            JsonElement messageJson = buildJson(message);
+            restApi.sendAuthenticateAsync(messageJson, asyncCallbackHandler);
         }
     }
 
@@ -163,8 +169,8 @@ public class CastleApiImpl implements CastleApi {
             return;
         }
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
-        restApi.sendTrackRequest(contextJson, messageJson, asyncCallbackHandler);
+        JsonElement messageJson = buildJson(message);
+        restApi.sendTrackRequest(messageJson, asyncCallbackHandler);
     }
 
     @Override
@@ -226,4 +232,15 @@ public class CastleApiImpl implements CastleApi {
         return message;
     }
 
+    private JsonElement buildJson(CastleMessage message) throws CastleRuntimeException {
+        // Context can be either from the message or from the instance of this
+        // class. Make sure we have one
+        JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
+        JsonObject messageObj = messageJson.getAsJsonObject();
+        JsonElement context = messageObj.get("context");
+        if (context == null) {
+            messageObj.add("context", contextJson);
+        }
+        return messageObj;
+    }
 }

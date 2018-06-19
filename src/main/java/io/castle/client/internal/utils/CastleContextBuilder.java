@@ -1,6 +1,7 @@
 package io.castle.client.internal.utils;
 
 import io.castle.client.internal.config.CastleConfiguration;
+import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.model.CastleContext;
 import io.castle.client.model.CastleDevice;
 import io.castle.client.model.CastleHeader;
@@ -15,11 +16,13 @@ public class CastleContextBuilder {
 
     private CastleContext context;
     private CastleHeaders headers;
+    private final CastleGsonModel model;
     private final CastleConfiguration configuration;
     private final HeaderNormalizer headerNormalizer = new HeaderNormalizer();
 
-    public CastleContextBuilder(CastleConfiguration configuration) {
+    public CastleContextBuilder(CastleConfiguration configuration, CastleGsonModel model) {
         this.configuration = configuration;
+        this.model = model;
         context = new CastleContext();
     }
 
@@ -64,6 +67,16 @@ public class CastleContextBuilder {
         context.setUserAgent(request.getHeader("User-Agent"));
         context.setIp(request.getRemoteAddr());
         return this;
+    }
+
+    public CastleContextBuilder fromJson(String contextString) {
+        this.context = model.getGson().fromJson(contextString, CastleContext.class);
+        this.headers = context.getHeaders();
+        return this;
+    }
+
+    public String toJson() {
+        return model.getGson().toJson(build());
     }
 
     /**

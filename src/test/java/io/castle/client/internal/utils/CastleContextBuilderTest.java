@@ -2,6 +2,7 @@ package io.castle.client.internal.utils;
 
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
+import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.model.CastleContext;
 import io.castle.client.model.CastleHeader;
 import io.castle.client.model.CastleHeaders;
@@ -18,6 +19,8 @@ import java.util.List;
 
 public class CastleContextBuilderTest {
 
+    private final CastleGsonModel model = new CastleGsonModel();
+
     @Test
     public void buildContextWithDefaultSetup() throws CastleSdkConfigurationException {
 
@@ -27,7 +30,7 @@ public class CastleContextBuilderTest {
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
         CastleContext standardContext = getStandardContext();
 
@@ -48,7 +51,7 @@ public class CastleContextBuilderTest {
                 .withCastleAppId("anyValidAppId")
                 .withBlackListHeaders("Cookie", acceptLanguageHeader)
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context without the accept-language header
@@ -78,7 +81,7 @@ public class CastleContextBuilderTest {
                 .withBlackListHeaders(connectionHeader)
                 .withWhiteListHeaders(connectionHeader)
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context without any header
@@ -104,7 +107,7 @@ public class CastleContextBuilderTest {
                 .withDefaultBlacklist()
                 .withWhiteListHeaders(connectionHeader)
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context with a single whitelisted header
@@ -129,7 +132,7 @@ public class CastleContextBuilderTest {
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
 
         //And a http request with __cid cookie
         MockHttpServletRequest standardRequest = getStandardRequestMock();
@@ -160,7 +163,7 @@ public class CastleContextBuilderTest {
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
 
         //And a http request without __cid cookie
         MockHttpServletRequest standardRequest = getStandardRequestMock();
@@ -188,7 +191,7 @@ public class CastleContextBuilderTest {
             .build();
 
         // When
-        CastleContext context = new CastleContextBuilder(configuration)
+        CastleContext context = new CastleContextBuilder(configuration, model)
             .clientId("")
             .userAgent(userAgent)
             .headers(getStandardCastleHeaders())
@@ -198,6 +201,29 @@ public class CastleContextBuilderTest {
         CastleContext standardContext = getStandardContext();
 
         //Then
+        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    @Test
+    public void toAndFromJson() throws CastleSdkConfigurationException {
+        // Given
+        MockHttpServletRequest standardRequest = getStandardRequestMock();
+        CastleContext standardContext = getStandardContext();
+        CastleConfiguration configuration = CastleConfigurationBuilder
+            .defaultConfigBuilder()
+            .withApiSecret("abcd")
+            .build();
+
+        // When
+        String json = new CastleContextBuilder(configuration, model)
+            .fromHttpServletRequest(standardRequest)
+            .toJson();
+
+        CastleContext context = new CastleContextBuilder(configuration, model)
+            .fromJson(json)
+            .build();
+
+        // Then
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
     }
 
