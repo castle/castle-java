@@ -63,19 +63,7 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public Verdict authenticate(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
-        CastleMessage.Builder builder = CastleMessage.builder(event).userId(userId);
-
-        if (properties != null) {
-            JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
-            builder.properties(propertiesJson);
-        }
-
-        if (traits != null) {
-            JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
-            builder.userTraits(traits);
-        }
-
-        return authenticate(builder.build());
+        return authenticate(buildMessage(event, userId, properties, traits));
     }
 
     @Override
@@ -97,18 +85,10 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void authenticateAsync(String event, String userId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
-        CastleMessage.Builder builder = CastleMessage.builder(event).userId(userId);
-        if (properties != null) {
-            JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
-            builder.properties(propertiesJson);
-        }
-
-        if (traits != null) {
-            JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
-            builder.userTraits(traits);
-        }
-
-        authenticateAsync(builder.build(), asyncCallbackHandler);
+        authenticateAsync(
+            buildMessage(event, userId, properties, traits),
+            asyncCallbackHandler
+        );
     }
 
     @Override
@@ -159,23 +139,13 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public void track(String event, @Nullable String userId, @Nullable String reviewId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
 
-        CastleMessage.Builder builder = CastleMessage.builder(event).userId(userId);
+        CastleMessage message = buildMessage(event, userId, properties, traits);
 
         if (reviewId != null) {
-            builder.reviewId(reviewId);
+            message.setReviewId(reviewId);
         }
 
-        if (properties != null) {
-            JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
-            builder.properties(propertiesJson);
-        }
-
-        if (traits != null) {
-            JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
-            builder.userTraits(traits);
-        }
-
-        track(builder.build(), asyncCallbackHandler);
+        track(message, asyncCallbackHandler);
     }
 
     @Override
@@ -236,6 +206,24 @@ public class CastleApiImpl implements CastleApi {
         Preconditions.checkNotNull(asyncCallbackHandler);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         restApi.sendReviewRequestAsync(reviewId, asyncCallbackHandler);
+    }
+
+    private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
+        CastleMessage message = new CastleMessage(event);
+
+        message.setUserId(userId);
+
+        if (properties != null) {
+            JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
+            message.setProperties(propertiesJson);
+        }
+
+        if (traits != null) {
+            JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
+            message.setUserTraits(traits);
+        }
+
+        return message;
     }
 
 }
