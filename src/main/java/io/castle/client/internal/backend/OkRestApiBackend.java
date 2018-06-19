@@ -38,29 +38,6 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
-        JsonObject json = new JsonObject();
-        json.add("event", new JsonPrimitive(event));
-        if (userId == null) {
-            json.add("user_id", JsonNull.INSTANCE);
-        } else {
-            json.add("user_id", new JsonPrimitive(userId));
-        }
-        if (reviewId == null) {
-            json.add("review_id", JsonNull.INSTANCE);
-        } else {
-            json.add("review_id", new JsonPrimitive(reviewId));
-        }
-        if (propertiesPayload != null) {
-            json.add("properties", propertiesPayload);
-        }
-        if (traitsPayload != null) {
-            json.add("traits", traitsPayload);
-        }
-        sendTrackRequest(contextPayload, json, asyncCallbackHandler);
-    }
-
-    @Override
     public void sendTrackRequest(JsonElement context, JsonElement payload, final AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
         RequestBody body = buildRequestBody(context, payload);
         Request request = new Request.Builder()
@@ -85,26 +62,6 @@ public class OkRestApiBackend implements RestApi {
         });
     }
 
-    private JsonElement buildAuthenticatePayload(String event, String userId, JsonElement traitsPayload, JsonElement propertiesPayload) {
-        JsonObject json = new JsonObject();
-        json.add("event", new JsonPrimitive(event));
-        json.add("user_id", new JsonPrimitive(userId));
-        if (propertiesPayload != null) {
-            json.add("properties", propertiesPayload);
-        }
-        if (traitsPayload != null) {
-            json.add("traits", traitsPayload);
-        }
-        return json;
-    }
-
-    @Override
-    public Verdict sendAuthenticateSync(String event, final String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload) {
-        JsonElement payloadJson = buildAuthenticatePayload(event, userId, traitsPayload, propertiesPayload);
-
-        return sendAuthenticateSync(contextPayload, payloadJson);
-    }
-
     @Override
     public Verdict sendAuthenticateSync(JsonElement contextJson, JsonElement payloadJson) {
         final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
@@ -127,13 +84,6 @@ public class OkRestApiBackend implements RestApi {
                         .build();
             }
         }
-    }
-
-    @Override
-    public void sendAuthenticateAsync(String event, final String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
-        JsonElement payloadJson = buildAuthenticatePayload(event, userId, traitsPayload, propertiesPayload);
-
-        sendAuthenticateAsync(contextPayload, payloadJson, asyncCallbackHandler);
     }
 
     @Override
@@ -175,30 +125,33 @@ public class OkRestApiBackend implements RestApi {
 
     private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
         String errorReason = response.message();
+        String jsonResponse = response.body().string();
+
         if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
             Gson gson = model.getGson();
             VerdictTransportModel transport = gson.fromJson(jsonResponse, VerdictTransportModel.class);
-            if (transport.getAction() != null && transport.getUserId() != null) {
+            if (transport != null && transport.getAction() != null && transport.getUserId() != null) {
                 return VerdictBuilder.fromTransport(transport);
             } else {
-                errorReason = "Illegal json format";
+                errorReason = "Invalid JSON in response";
             }
         }
-        if(response.code() >= 500) {
+
+        if (response.code() >= 500) {
             //Use failover for error backends calls.
-            if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
-                //No timeout, but response is not correct
-                throw new IOException("Illegal castle authenticate response.");
+            if (!configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
+                Verdict verdict = VerdictBuilder.failover(errorReason)
+                        .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
+                        .withUserId(userId)
+                        .build();
+                return verdict;
             }
-            Verdict verdict = VerdictBuilder.failover(errorReason)
-                    .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
-                    .withUserId(userId)
-                    .build();
-            return verdict;
         }
+
         // Could not extract Verdict, so fail for client logic space.
-        throw new CastleRuntimeException("Verdict extraction failed. Backend response error");
+        throw new CastleRuntimeException(
+            responseErrorMessage(response.code(), errorReason, jsonResponse)
+        );
     }
 
     @Override
@@ -256,6 +209,27 @@ public class OkRestApiBackend implements RestApi {
         });
     }
 
+    private JsonElement buildAuthenticatePayload(String event, String userId, JsonElement traitsPayload, JsonElement propertiesPayload) {
+        JsonObject json = new JsonObject();
+        json.add("event", new JsonPrimitive(event));
+        json.add("user_id", new JsonPrimitive(userId));
+        if (propertiesPayload != null) {
+            json.add("properties", propertiesPayload);
+        }
+        if (traitsPayload != null) {
+            json.add("traits", traitsPayload);
+        }
+        return json;
+    }
+
+    private Request createReviewRequest(String reviewId) {
+        HttpUrl reviewUrl = reviewsBase.resolve(reviewId);
+        return new Request.Builder()
+                .url(reviewUrl)
+                .get()
+                .build();
+    }
+
     private Review extractReview(Response response) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
@@ -265,11 +239,11 @@ public class OkRestApiBackend implements RestApi {
         throw new IOException("HTTP request failure");
     }
 
-    private Request createReviewRequest(String reviewId) {
-        HttpUrl reviewUrl = reviewsBase.resolve(reviewId);
-        return new Request.Builder()
-                .url(reviewUrl)
-                .get()
-                .build();
+    private String responseErrorMessage(Integer code, String message, String response) {
+        String errorMessage =
+            "Request error: server responded with code " + code.toString() + ". " +
+            message + ": `" + response + "`";
+
+        return errorMessage;
     }
 }

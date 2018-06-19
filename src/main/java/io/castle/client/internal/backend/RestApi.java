@@ -7,18 +7,6 @@ import io.castle.client.model.Review;
 import io.castle.client.model.Verdict;
 
 public interface RestApi {
-
-    /**
-     * Send a async track request and provide a callback that inform if the request success or fail.
-     *
-     * @param event                event name
-     * @param userId               unique userId
-     * @param contextPayload       context json
-     * @param propertiesPayload    properties json
-     * @param asyncCallbackHandler callback to inform if request was correctly sent
-     */
-    void sendTrackRequest(String event, String userId, String reviewId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitPayload, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
-
     /**
      *
      * @param contextJson          JSON object containing the request context
@@ -28,40 +16,12 @@ public interface RestApi {
     void sendTrackRequest(JsonElement contextJson, JsonElement payloadJson, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
-     * Sync call to the authenticate endpoint.
-     * <p>
-     * This method will block the current thread until the response is obtained.
-     *
-     * @param event             event name
-     * @param userId            unique userId
-     * @param contextPayload    context json
-     * @param propertiesPayload properties json
-     * @param traitsPayload     traits json
-     * @return AuthenticateAction enum value to be used on login logic
-     */
-    Verdict sendAuthenticateSync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload);
-
-    /**
      *
      * @param contextJson JSON object containing the request context
      * @param payloadJson JSON object containing the event properties
      * @return Verdict to be used in login logic
      */
     Verdict sendAuthenticateSync(JsonElement contextJson, JsonElement payloadJson);
-
-    /**
-     * Async version of the authentication endpoint.
-     * <p>
-     * This method will return immediately and the response will be passed to the asyncCallbackHandler in the future.
-     *
-     * @param event                event name
-     * @param userId               unique userId
-     * @param contextPayload       context json
-     * @param propertiesPayload    properties json
-     * @param traitsPayload        traits json
-     * @param asyncCallbackHandler callback to pass the AuthenticateAction enum value to be used on login logic
-     */
-    void sendAuthenticateAsync(String event, String userId, JsonElement contextPayload, JsonElement propertiesPayload, JsonElement traitsPayload, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      *
