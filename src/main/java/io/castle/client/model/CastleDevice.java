@@ -6,7 +6,6 @@ public class CastleDevice {
     private String model;
     private String name;
     private String type;
-    private String token;
 
     public String getId() {
         return id;
@@ -48,12 +47,45 @@ public class CastleDevice {
         this.type = type;
     }
 
-    public String getToken() {
-        return token;
+    public static Builder builder() {
+        return new Builder(new CastleDevice());
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public static class Builder {
+        private CastleDevice device;
+
+        public Builder(CastleDevice device) {
+            this.device = device;
+        }
+
+        public Builder id(String id) {
+            device.setId(id);
+            return self();
+        }
+
+        public Builder manufacturer(String manufacturer) {
+            device.setManufacturer(manufacturer);
+            return self();
+        }
+
+        public Builder model(String model) {
+            device.setModel(model);
+            return self();
+        }
+
+        public Builder name(String name) {
+            device.setName(name);
+            return self();
+        }
+
+        public Builder type(String type) {
+            device.setType(type);
+            return self();
+        }
+
+        Builder self() {
+            return this;
+        }
     }
 
     @Override
@@ -64,7 +96,6 @@ public class CastleDevice {
                 ", model='" + model + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
-                ", token='" + token + '\'' +
                 '}';
     }
 }
