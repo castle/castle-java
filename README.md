@@ -44,7 +44,7 @@ returns a configuration builder initialized with default settings.
 Castle.initialize(
   Castle.configurationBuilder()
     .apiSecret("abcd")
-    .enableHttpLogging() // Log all outgoing requests to Castle
+    .enableHttpLogging(true) // Log all outgoing requests sent to Castle
     .build()
 );
 ```
@@ -59,37 +59,45 @@ instance.
 **Example**
 
 ```java
+// Extract the request context, containing eg. the IP and UserAgent of the end-user
 // `req` is an instance of `HttpServletRequest`.
-CastleApi castle = Castle.sdk().onRequest(req);
+CastleContext context = Castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .build();
 
-castle.track(CastleMessage.builder("$login.succeeded")
-  .userId("1234")
-  .userTraits(ImmutableMap.builder()
-    .put("name", "Winston Smith")
-    .put("email", "wsmith@theparty.com")
-    .put("created_at", "1984-01-01T11:22:33Z")
-    .build())
-  .properties(ImmutableMap.builder()
-    .put("quota", "12")
-    .build())
-  .build()
+Castle.client().track(CastleMessage.builder("$login.succeeded")
+    .context(context)
+    .userId("1234")
+    .userTraits(ImmutableMap.builder()
+        .put("name", "Winston Smith")
+        .put("email", "wsmith@theparty.com")
+        .put("created_at", "1984-01-01T11:22:33Z")
+        .build())
+    .properties(ImmutableMap.builder()
+        .put("quota", "12")
+        .build())
+    .build()
 );
 ```
 
 ## Authenticating events
 
 The method signature for the authenticate call is identical to track. The difference
-is that a Verdict will be returned, indicating which action to take based on the risk.
+is that a `Verdict` will be returned, indicating which action to take based on the risk.
 
 **Example**
 
 ```java
+// Extract the request context, containing eg. the IP and UserAgent of the end-user
 // `req` is an instance of `HttpServletRequest`.
-CastleApi castle = Castle.sdk().onRequest(req);
+CastleContext context = Castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .build();
 
 Verdict verdict = castle.authenticate(CastleMessage.builder("$login.succeeded")
-  .userId("1234")
-  .build()
+    .context(context)
+    .userId("1234")
+    .build()
 );
 
 if (verdict.getAction() == AuthenticateAction.DENY) {
@@ -101,12 +109,85 @@ Note that the `req` instance should be bound to the underlying request in order 
 It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the
 `CastleApi` instance can be passed to any thread independently of the original thread life cycle.
 
-## Castle Javascript secure mode
+## The Context Object
 
-When using Castle.js, secure mode can be enabled with the following helper:
+The context object contains information about the request sent by the end-user,
+such as IP and UserAgent
+
+```java
+
+// Quick way of building context through the incoming HttpServletRequest
+CastleContext context = Castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .build()
+
+// or build context manually
+CastleContext context = Castle.contextBuilder()
+    .ip("1.1.1.1")
+    .userAgent("Mozilla/5.0")
+    .headers(CastleHeaders.builder()
+        .add("User-Agent", "Mozilla/5.0")
+        .add("Accept-Language", "sv-se")
+        .build())
+    .build();
+
+// Get singleton instance and track request
+Castle.client().track(CastleMessage.builder("$login.failed")
+    .context(context)
+    .userId("1234")
+    .build()
+);
+
 ```
-_castle('secure',
-    '<%= Castle.sdk().secureUserID(someUserID) %>');
+
+### Default Context
+
+When the context gets constructed from a `HttpServletRequest` the following parts
+gets extracted and set automatically:
+
+```JSON
+    {
+        "active": true,
+        "client_id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
+        "headers": {
+            "Accept-Language": "en-US,en;q=0.8"
+          },
+        "ip": "8.8.8.8",
+        "library": {
+          "name": "Castle",
+          "version": "1.0.1"
+        },
+        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
+      }
+```
+
+### Tracking in an async environment
+
+When tracking data to Castle in an async environment the original request data
+first needs to be extracted and serialized so it can be restored later when the
+tracking request is sent.
+
+**Example**
+
+```java
+
+// Serialize the incoming request before sending off the data to a worker
+String jsonContext = Castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .toJson();
+
+// Convert json back to a CastleContext
+CastleContext context = Castle.contextBuilder()
+    .fromJson(jsonContext)
+    .build()
+
+// Send the tracking request
+Castle.client().track(CastleMessage.builder("$login.failed")
+    .context(context)
+    .userId("1234")
+    .build()
+);
+
 ```
 
 ## Java 7 configuration
@@ -164,9 +245,9 @@ See *[Where to Configure Settings](#where-to-configure-settings)* for a list of 
 
 ## Where to Configure Settings
 
-Settings can be provided as a Java Properties file in the classpath, or through
-environmental variables.
-When both of these options are used, environmental variables take precedence over the Java
+Settings can be provided as a Java Properties file in the classpath, through
+environmental variables or through methods calls on `CastleConfigurationBuilder`
+When two of these options are used, environmental variables take precedence over the Java
 Properties file.
 
 The following table shows the default value for each setting.
@@ -201,17 +282,6 @@ base_url=https://api.castle.io/
 log_http=false
 ```
 
-## Initializing the SDK
-
-The Castle Java SDK must be initialized once in the life cycle of an application using it.
-There is a static method in the `io.castle.client.Castle` class to do so.
-Before trying to call any API method, the `io.castle.client.Castle#verifySdkConfigurationAndInitialize`
-should be called, preferably during the initialization process of the application using the SDK.
-This method will discover the the most basic configuration errors as early as possible.
-
-For more information on the logic of settings validation, see the section of the javadoc for the
-`io.castle.client.internal.config` package.
-
 ## Secure Mode
 
 See the documentation on [secure mode](https://castle.io/docs/secure_mode) in order to learn more.
@@ -229,206 +299,6 @@ from a jsp:
             </script>
 ```
 
-# API calls
-
-The `io.castle.client.api.CastleApi` interface has all methods needed to perform requests to the Castle API.
-Once the SDK has been properly initialized, as described above, getting an instance of `CastleApi` is a matter of
-calling the `io.castle.client.Castle#onRequest` method in the context of a Java Servlet.
-
-The following is an example of such a use case:
-```java
-import io.castle.client.Castle;
-import io.castle.client.api.CastleApi;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-@WebServlet("/endpoint")
-public class SomeServlet extends HttpServlet {
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CastleApi castleApi = Castle.sdk().onRequest(req);
-        ...
-    }
-}
-```
-
-Notice that the `io.castle.client.Castle#sdk` method is called first in order to get the singleton
-instance of the `io.castle.client.Castle` class.
-With this instance it is possible to use the non-static methods of `io.castle.client.Castle`.
-
-## The Context Object
-
-Read more about the [request context](https://castle.io/docs/context) in the official documentation.
-
-An `io.castle.client.api.CastleApi` instance obtained from a call to `io.castle.client.Castle#onRequest`
-contains a context object in JSON format in a private field.
-Its data consists of metadata taken from the `HttpServletRequest` passed to `onRequest`.
-
-It is possible to provide additional metadata to the context using the fluent api on `io.castle.client.api.CastleApi`
-as follows:
-```java
-CastleApi newAPIRef = Castle.sdk().onRequest(req).mergeContext(additionalContextObject);
-
-```
-
-Any POJO class can be used as an argument of the mergeContext class.
-
-Notice that the signature of the `mergeContext` method is `CastleApi`, which means that
-the merge operation results in a new reference to a `CastleApi` instance whose context object is set to the merged
-context object.
-Also, notice that, because of this, the `io.castle.client.api.CastleApi#mergeContext` can be used multiple times.
-
-### Context Keys
-
-Below is a full list of all keys Castle understands:
-
-```JSON
-    {
-        "active": true,
-        "device": {
-          "id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
-          "manufacturer": "Apple",
-          "model": "iPhone7,2",
-          "name": "umami",
-          "type": "ios",
-          "token": "aa45bb0d80d4bb6cd60854ff165dd548c838g5605bbfb9571066395b8c9da449"
-        },
-        "client_id": "AAAAAAAA-CCCC-DDD4-FFFF-DD00AACDAFB",
-        "page": {
-          "path": "/example/",
-          "referrer": "",
-          "search": "",
-          "title": "Example INC ",
-          "url": "https://example.com/sample/"
-        },
-        "referrer": {
-          "id": "ABCD582CDEFFFF01919",
-          "type": "dataxu"
-        },
-        "headers": {
-            "Accept-Language": "en-US,en;q=0.8"
-          },
-        "ip": "8.8.8.8",
-        "locale": "pl-PL",
-        "location": {
-          "city": "San Francisco",
-          "country": "United States",
-          "latitude": 40.3194747,
-          "longitude": -79.0388367,
-          "speed": 0
-        },
-        "network": {
-          "bluetooth": false,
-          "carrier": "T-Mobile PL",
-          "cellular": true,
-          "wifi": false
-        },
-        "os": {
-          "name": "iPhone OS",
-          "version": "8.1.3"
-        },
-        "screen": {
-          "width": 320,
-          "height": 568,
-          "density": 2
-        },
-        "timezone": "Europe/WarsaW",
-        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
-      }
-```
-
-To get a complete override of the default context, use a instance of `io.castle.client.model.CastleContext`.
-
-### Default Context
-
-As seen above, the default context gets constructed from a `HttpServletRequest`.
-The following is a sample default context created in such a manner:
-
-```JSON
-    {
-        "active": true,
-        "client_id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
-        "headers": {
-            "Accept-Language": "en-US,en;q=0.8"
-          },
-        "ip": "8.8.8.8",
-        "library": {
-          "name": "Castle",
-          "version": "1.0.1"
-        },
-        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
-      }
-```
-The following remarks explain how the values of the fields are set:
-* The default value for the `active` key is `true`.
-* The `client_id` key is derived from the cookie `__cid`.
-* If the key `__cid` in the cookie header does not exist, the `client_id` key takes its value from the header
-`X-Castle-Client-Id`.
-* A JSON Object is created and set as value for the `headers` key in the context JSON.
-All HTTP headers, along with the `REMOTE_ADDR` CGI header, are taken from the `HttpServletRequest` and
-are used as key-values of the JSON object.
-This is done in such a way that each header's name is taken as a key and its contents are used as the value.
-* After it is created, the `headers` object gets filtered according to the blacklist and whitelist specified in the
-[configuration](#configuring-the-sdk);
-that is, headers in the blacklist are never passed to the context, while those headers that are whitelisted,
-but not blacklisted, get passed to the context.
-* The library key is added by default.
-Its value specifies the version of the SDK used.
-* The the value of the `User-Agent` HTTP header is used as the value for the `userAgent` key in the context.
-
-### Merging Strategy
-
-The strategy for merging contexts is a recursive one.
-More specifically, when the optional context is provided, the merging strategy works as follows:
-* If the optional context is `null`, the context returned is an empty JSON.
-* If the optional context contains a key and a non-null value, then:
-    - if there was no such key in the original context, the client appends the key and value;
-    - otherwise, the client merges the value of the key in the default context with the value of the
-    additional context's key in the following manner:
-        + JSON objects get recursively merged using the same strategy;
-        + JSON arrays get combined in such a way that elements in the additional context get appended to
-        elements in the original context;
-        + JSON primitives in the original context get overwritten by JSON primitives in the additional context.
-* If the optional context contains a key and a null value, and if the key is present in the original context,
-the key is removed from the context.
-
-## Authenticate
-
-Information on when to use this method can be found in the section
-on [adaptive authentication](https://castle.io/docs/authentication) of the official documentation.
-
-The `io.castle.client.api.CastleApi#authenticate` method makes a synchronous POST request to the
-`/v1/authenticate` endpoint of the Castle API.
-This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-boolean).
-
-There are two required parameters that need to be specified in order to make a request to the authenticate endpoint:
-
-* **Event**: a string with the name of an event understood by the Castle API.
-* **User ID**: a string representing a user ID.
-
-Moreover, there are an additional optional parameters that can be specified:
-
-* **Properties**: object for recording additional information connected to the event.
-* **Traits**: object for recording additional information connected to the user (e.g. email, username, etc).
-
-The properties and traits parameters take any POJO class.
-They get sent in JSON format.
-
-The return value of an authenticate call is a `io.castle.client.model.Verdict` instance.
-An instance of `Verdict` contains the following fields:
-
-* **Authenticate action**: Can be one of `ALLOW`, `DENY` or `CHALLENGE`.
-The semantics of each action is described in the documentation referred at the beginning of this section.
-* **User ID**: a string representing a user id associated to an authentication attempt.
-* **Failover boolean**: `true` if the authenticate failover strategy was used, `false` otherwise.
-* **Failover reason**: A string with information on the reason why the authenticate failover strategy was used.
-
 ### The Authenticate Failover Strategy
 
 It is the strategy that will be used when a request to the `/v1/authenticate` endpoint
@@ -441,7 +311,6 @@ It can be one of the following options:
 
 See [configuration](#configuring-the-sdk) to find out how to enable a failover strategy and to
 learn about its default value.
-
 
 
 ### Asynchronous requests to authenticate
@@ -465,69 +334,19 @@ The following snippet provides an example of an async call to the authenticate e
                 // handle failure
             }
         };
-        sdk.onRequest(request).authenticateAsync(event, id, handler);
+        sdk.onRequest(request).authenticateAsync(CastleMessage.builder(event)
+            .userId(userId)
+            .build()
+        , handler);
         ...
 ```
-
-## Track
-
-For information on the use cases of this method, go to the sections on
-[adaptive authentication](https://castle.io/docs/authentication) and
-[security events](https://castle.io/docs/events) of the official documentation.
-
-The `io.castle.client.api.CastleApi#track` method makes an asynchronous POST request to the
-`/v1/track` endpoint of the Castle API.
-This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-boolean).
-
-The only required parameter for a call to the track endpoint is **Event**.
-This is a string, whose semantics is specified in the documentation featured at the beginning of this section.
-
-Optional parameters are:
-
-* **User ID**: a string representing the id of a user.
-* **Properties**: object for recording additional information connected to the event.
-
-Again, the properties parameter takes any POJO class and it gets sent in JSON format.
-
-The signature of this method if `void`.
-
-## Identify
-
-Go to [Tracking user activity with Castle.js](https://castle.io/docs/tracking), the
-[Castle.js reference](https://castle.io/docs/castlejs) and
-[identify subsection of Integrating through Segment](https://castle.io/docs/segment#identify) for information on identify.
-
-The `io.castle.client.api.CastleApi#identify` method makes an asynchronous POST request to the
-`/v1/identify` endpoint of the Castle API.
-This behaviour can be disabled using the [`doNotTrack` boolean](the-donottrack-boolean).
-
-The only required parameter is **User ID**, a string representing the id of a user.
-
-Optional parameters are:
-
-* **Traits**: object for recording additional information connected to the user (e.g. email, username, etc).
-* **Active**: boolean specifying that the identify call is associated with an active user session.
-
-The traits parameter takes any POJO class and sends it in JSON format.
-
-## Review
-
-Go to the section on [webhooks](https://castle.io/docs/webhooks) of the official documentation in order
-to learn how to use the review method. TODO: find out more references to the official docs.
-
-The `io.castle.client.api.CastleApi#review` method makes a GET request to the
-`/v1/reviews/{reviewId}` of the Castle API.
-The `reviewId` parameter of the method specifies the endpoint of the request.
-
-The signature of the method is `io.castle.client.model.Review`.
-An instance of `Review` contains data parsed from the review JSON object sent by Castle in the body of the response.
 
 ## The `doNotTrack` Boolean
 
 The `io.castle.client.api.CastleApi` instance obtained from a call to `io.castle.client.Castle#onRequest`
 contains a boolean in a private field named `doNotTrack`.
 Its default value is `false`, but it can be set to true by using the `doNotTrack` parameter
-of the `onRequestMethod`.
+of the `onRequest`.
 
 The following list specifies the behaviour of each API call when this field is set to `true`:
 
