@@ -7,6 +7,7 @@ import io.castle.client.model.CastleContext;
 import io.castle.client.model.CastleHeader;
 import io.castle.client.model.CastleHeaders;
 import io.castle.client.model.CastleSdkConfigurationException;
+import io.castle.client.utils.SDKVersion;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -225,6 +226,24 @@ public class CastleContextBuilderTest {
 
         // Then
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+    }
+
+    @Test
+    public void withManualHeaders() throws CastleSdkConfigurationException {
+        // Given
+        CastleConfiguration configuration = CastleConfigurationBuilder
+            .defaultConfigBuilder()
+            .withApiSecret("abcd")
+            .build();
+        String contextJson = new CastleContextBuilder(configuration, model)
+            .headers(CastleHeaders.builder()
+                .add("User-Agent", "ua")
+                .build()
+            )
+            .toJson();
+
+        // Then
+        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true,\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}");
     }
 
     private String valueControlCache = "max-age=0";
