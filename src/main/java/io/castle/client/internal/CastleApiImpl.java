@@ -233,14 +233,19 @@ public class CastleApiImpl implements CastleApi {
     }
 
     private JsonElement buildJson(CastleMessage message) throws CastleRuntimeException {
+        JsonObject contextJson;
         // Context can be either from the message or from the instance of this
         // class. Make sure we have one
+        CastleContext context = message.getContext();
+        if (context == null) {
+            contextJson = this.contextJson;
+        } else {
+            contextJson = configuration.getModel().getGson().toJsonTree(context).getAsJsonObject();
+        }
+
         JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
         JsonObject messageObj = messageJson.getAsJsonObject();
-        JsonElement context = messageObj.get("context");
-        if (context == null) {
-            messageObj.add("context", contextJson);
-        }
+        messageObj.add("context", contextJson);
         return messageObj;
     }
 }

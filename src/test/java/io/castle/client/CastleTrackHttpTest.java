@@ -3,6 +3,8 @@ package io.castle.client;
 import io.castle.client.model.AsyncCallbackHandler;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
+import io.castle.client.model.CastleContext;
+import io.castle.client.model.CastleHeaders;
 import io.castle.client.utils.SDKVersion;
 import io.castle.client.model.CastleMessage;
 import okhttp3.mockwebserver.MockResponse;
@@ -22,6 +24,34 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
     public CastleTrackHttpTest() {
         super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
+    }
+
+    @Test public void trackWithManualContext() throws Exception {
+        server.enqueue(new MockResponse());
+
+        // When
+        CastleContext context = Castle.contextBuilder()
+            .ip("1.1.1.1")
+            .userAgent("Mozilla/5.0")
+            .clientId("")
+            .headers(CastleHeaders.builder()
+                .add("User-Agent", "Mozilla/5.0")
+                .add("Accept-Language", "sv-se")
+                .build()
+            )
+            .build();
+
+        // And an track request is made
+        sdk.buildApiClient().track(CastleMessage.builder("$login.succeeded")
+            .userId("12345")
+            .context(context)
+            .build()
+        );
+
+        // Then
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
+                recordedRequest.getBody().readUtf8());
     }
 
     @Test
