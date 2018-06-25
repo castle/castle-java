@@ -254,7 +254,7 @@ The following table shows the default value for each setting.
 It also shows the key that can be used to set its value in a Properties file.
 Finally, it also contains the environmental variable that can be used instead of the key in the Java Properties file:
 
-Setting | Default values, when they exist | Properties file key | Environmental variable |
+Setting | Default values, when they exist | Properties file key | Environment variable |
 --- | --- | --- | --- |
 API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
 Whitelisted Headers | `User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR` | `white_list` | `CASTLE_SDK_WHITELIST_HEADERS` |
