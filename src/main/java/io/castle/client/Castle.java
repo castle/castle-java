@@ -6,6 +6,8 @@ import io.castle.client.internal.CastleApiImpl;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
+import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,25 @@ public class Castle {
             throw new IllegalStateException("Castle SDK must be initialized. Call `Castle.initialize()` first");
         }
         return instance;
+    }
+
+    /**
+     * Creates a API client instance for sending a request
+     * @return A new instance of the API client {@code CastleApiImpl}
+     * @throws IllegalStateException when the SDK has not been properly initialized
+     */
+    public static CastleApi client() throws IllegalStateException {
+        return sdk().buildApiClient(false);
+    }
+
+    /**
+     * Creates a API client instance for sending a request
+     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
+     * @return A new instance of the API client {@code CastleApiImpl}
+     * @throws IllegalStateException when the SDK has not been properly initialized
+     */
+    public static CastleApi client(boolean doNotTrack) throws IllegalStateException {
+        return sdk().buildApiClient(doNotTrack);
     }
 
     /**
@@ -106,6 +127,33 @@ public class Castle {
     }
 
     /**
+     * Returns a new builder object for constructing a CastleContext
+     * @return Return CatleContextBuilder object
+     */
+    public static CastleContextBuilder contextBuilder() {
+        return instance.buildContextBuilder();
+    }
+
+    /**
+     * Create a new instance of a request context builder
+     * @return a new instance of {@code CastleContextBuilder}
+     */
+    public CastleContextBuilder buildContextBuilder() {
+        return new CastleContextBuilder(
+            getSdkConfiguration(),
+            getGsonModel()
+        );
+    }
+
+    public CastleApi buildApiClient() {
+        return buildApiClient(false);
+    }
+
+    public CastleApi buildApiClient(boolean doNotTrack) {
+        return new CastleApiImpl(internalConfiguration, doNotTrack);
+    }
+
+    /**
      * Create a API context for the given request.
      * Tracking is ON by default.
      *
@@ -134,6 +182,14 @@ public class Castle {
      */
     public CastleConfiguration getSdkConfiguration() {
         return internalConfiguration.getConfiguration();
+    }
+
+    /**
+     * Get Gson model for serialization and deserialization
+     * @return the Gson model
+     */
+    public CastleGsonModel getGsonModel() {
+        return internalConfiguration.getModel();
     }
 
     /**

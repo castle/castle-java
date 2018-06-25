@@ -21,7 +21,7 @@ public class CastleContext {
     private CastleOS os;
     private CastleScreen screen;
 
-    @SerializedName("userAgent")
+    @SerializedName("user_agent")
     private String userAgent;
 
     public boolean isActive() {

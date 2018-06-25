@@ -5,7 +5,7 @@ import java.util.HashMap;
 import javax.annotation.Nonnull;
 
 public class CastleMessage {
-    private CastleContext context;
+    private transient CastleContext context;
     private String createdAt;
     private String deviceToken;
     @Nonnull private String event;
@@ -116,6 +116,11 @@ public class CastleMessage {
 
         public CastleMessage build() {
             return payload;
+        }
+
+        public Builder context(CastleContext context) {
+            payload.setContext(context);
+            return self();
         }
 
         public Builder createdAt(String createdAt) {

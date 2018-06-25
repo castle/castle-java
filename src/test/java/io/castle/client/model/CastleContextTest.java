@@ -114,7 +114,7 @@ public class CastleContextTest {
                 "\"os\":{\"name\":\"o_name\",\"version\":\"0_version\"}," +
                 "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
                 "\"timezone\":\"timezone\"," +
-                "\"userAgent\":\"userAgent\"}";
+                "\"user_agent\":\"userAgent\"}";
         JSONAssert.assertEquals(expectedJson, contextJson, true);
 
         // And json to object create the same structure
