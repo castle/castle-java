@@ -42,10 +42,6 @@ public class CastleHeaders {
 
         public Builder add(String key, String value) {
             this.headerList.add(new CastleHeader(key, value));
-            return self();
-        }
-
-        private Builder self() {
             return this;
         }
     }

@@ -60,30 +60,26 @@ public class CastleDevice {
 
         public Builder id(String id) {
             device.setId(id);
-            return self();
+            return this;
         }
 
         public Builder manufacturer(String manufacturer) {
             device.setManufacturer(manufacturer);
-            return self();
+            return this;
         }
 
         public Builder model(String model) {
             device.setModel(model);
-            return self();
+            return this;
         }
 
         public Builder name(String name) {
             device.setName(name);
-            return self();
+            return this;
         }
 
         public Builder type(String type) {
             device.setType(type);
-            return self();
-        }
-
-        Builder self() {
             return this;
         }
     }

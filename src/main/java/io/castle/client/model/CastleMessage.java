@@ -120,22 +120,22 @@ public class CastleMessage {
 
         public Builder context(CastleContext context) {
             payload.setContext(context);
-            return self();
+            return this;
         }
 
         public Builder createdAt(String createdAt) {
             payload.setCreatedAt(createdAt);
-            return self();
+            return this;
         }
 
         public Builder deviceToken(String deviceToken) {
             payload.setDeviceToken(deviceToken);
-            return self();
+            return this;
         }
 
         public Builder reviewId(String reviewId) {
             payload.setReviewId(reviewId);
-            return self();
+            return this;
         }
 
         public Builder properties(Object properties) {
@@ -143,22 +143,22 @@ public class CastleMessage {
                 throw new NullPointerException("Null properties");
             }
             payload.setProperties(properties);
-            return self();
+            return this;
         }
 
         public Builder other(HashMap other) {
             payload.setOther(other);
-            return self();
+            return this;
         }
 
         public Builder put(String key, Object value) {
             payload.getOther().put(key, value);
-            return self();
+            return this;
         }
 
         public Builder userId(String userId) {
             payload.setUserId(userId);
-            return self();
+            return this;
         }
 
         public Builder userTraits(Object userTraits) {
@@ -166,10 +166,6 @@ public class CastleMessage {
                 throw new NullPointerException("Null userTraits");
             }
             payload.setUserTraits(userTraits);
-            return self();
-        }
-
-        Builder self() {
             return this;
         }
     }
