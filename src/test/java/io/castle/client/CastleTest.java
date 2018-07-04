@@ -66,8 +66,8 @@ public class CastleTest {
         Castle.setSingletonInstance(sdk);
 
         //When the sdk is loaded two times
-        Castle sdk1 = Castle.sdk();
-        Castle sdk2 = Castle.sdk();
+        Castle sdk1 = Castle.instance();
+        Castle sdk2 = Castle.instance();
 
         //Then the same singleton instance is returned
         Assertions.assertThat(sdk1).isSameAs(sdk2);

@@ -49,7 +49,7 @@ public class Castle {
      * @return the singleton instance of {@code this}
      * @throws IllegalStateException when the SDK has not been properly initialized
      */
-    public static Castle sdk() throws IllegalStateException {
+    public static Castle instance() throws IllegalStateException {
         if (instance == null) {
             throw new IllegalStateException("Castle SDK must be initialized. Call `Castle.initialize()` first");
         }
