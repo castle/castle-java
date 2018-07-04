@@ -27,11 +27,8 @@ public class CastleTest {
      */
     @Test
     public void sdkOnTestLoadTheCorrectConfiguration() throws CastleSdkConfigurationException {
-        //Given
-        Castle.verifySdkConfigurationAndInitialize();
-
         //When the sdk is initiated
-        Castle sdk = Castle.sdk();
+        Castle sdk = Castle.verifySdkConfigurationAndInitialize();
 
         //Then the configuration match the expected values from the class path properties
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
@@ -65,7 +62,8 @@ public class CastleTest {
     public void sdkProvideASingleton() throws CastleSdkConfigurationException {
 
         //Given
-        Castle.verifySdkConfigurationAndInitialize();
+        Castle sdk = Castle.verifySdkConfigurationAndInitialize();
+        Castle.setSingletonInstance(sdk);
 
         //When the sdk is loaded two times
         Castle sdk1 = Castle.sdk();
@@ -79,9 +77,8 @@ public class CastleTest {
     @Test
     public void sdkInstanceCanBeModifiedForTestProposes() throws CastleSdkConfigurationException, NoSuchFieldException, IllegalAccessException {
         //Given a SDK instance
-        Castle.verifySdkConfigurationAndInitialize();
+        Castle sdk = Castle.verifySdkConfigurationAndInitialize();
         RestApiFactory mockFactory = Mockito.mock(RestApiFactory.class);
-        Castle sdk = Castle.sdk();
         //When the utils are used to override the internal backend factory
         SdkMockUtil.modifyInternalBackendFactory(sdk, mockFactory);
         //Then the internal rest factory is mocked
@@ -91,11 +88,8 @@ public class CastleTest {
     @Test
     public void sdkOnConfigureLoadsDefault() throws CastleSdkConfigurationException {
 
-        // Given
-        Castle.initialize();
-
         //When the sdk is initiated
-        Castle sdk = Castle.sdk();
+        Castle sdk = Castle.initialize();
 
         //Then the configuration match the expected values from the class path properties
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
@@ -107,16 +101,13 @@ public class CastleTest {
     @Test
     public void sdkOnConfigureWithBuilder() throws CastleSdkConfigurationException {
 
-        // Given
-        Castle.initialize(
+        // Initialize sdk
+        Castle sdk = Castle.initialize(
             Castle.configurationBuilder()
                 .apiSecret("abcd")
                 .appId("1234")
                 .build()
         );
-
-        //When the sdk is initiated
-        Castle sdk = Castle.sdk();
 
         //Then the configuration match the expected values from the class path properties
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
@@ -127,11 +118,8 @@ public class CastleTest {
 
     @Test
     public void sdkOnConfigureWithSecretOnly() throws CastleSdkConfigurationException {
-        // Given
-        Castle.initialize("abcd");
-
         // When the SDK is initiated
-        Castle sdk = Castle.sdk();
+        Castle sdk =Castle.initialize("abcd");
 
         //Then the configuration match the expected values from the initialization
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();

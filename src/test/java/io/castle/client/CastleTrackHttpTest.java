@@ -30,7 +30,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         server.enqueue(new MockResponse());
 
         // When
-        CastleContext context = Castle.contextBuilder()
+        CastleContext context = Castle.sdk().contextBuilder()
             .ip("1.1.1.1")
             .userAgent("Mozilla/5.0")
             .clientId("")

@@ -57,12 +57,23 @@ public class Castle {
     }
 
     /**
+     * Sets the SDK singleton instance.
+     *
+     * @param sdk configured instance of the sdk
+     */
+    public static void setSingletonInstance(Castle sdk) {
+        if (instance == null) {
+            instance = sdk;
+        }
+    }
+
+    /**
      * Creates a API client instance for sending a request
      * @return A new instance of the API client {@code CastleApiImpl}
      * @throws IllegalStateException when the SDK has not been properly initialized
      */
-    public static CastleApi client() throws IllegalStateException {
-        return sdk().buildApiClient(false);
+    public CastleApi client() throws IllegalStateException {
+        return buildApiClient(false);
     }
 
     /**
@@ -71,55 +82,57 @@ public class Castle {
      * @return A new instance of the API client {@code CastleApiImpl}
      * @throws IllegalStateException when the SDK has not been properly initialized
      */
-    public static CastleApi client(boolean doNotTrack) throws IllegalStateException {
-        return sdk().buildApiClient(doNotTrack);
+    public CastleApi client(boolean doNotTrack) throws IllegalStateException {
+        return buildApiClient(doNotTrack);
     }
 
     /**
      * Verifies the SDK's internalConfiguration and initializes its internal Configuration.
-     *
+     * @return A new instance of the sdk {@code Castle}
      * @throws CastleSdkConfigurationException if the provided settings in the environment of classpath have invalid values
      */
-    public static void verifySdkConfigurationAndInitialize() throws CastleSdkConfigurationException {
-        initializeSDK();
+    public static Castle verifySdkConfigurationAndInitialize() throws CastleSdkConfigurationException {
+        return initializeSDK();
     }
 
-    private static synchronized void initializeSDK() throws CastleSdkConfigurationException {
+
+    private static synchronized Castle initializeSDK() throws CastleSdkConfigurationException {
         CastleSdkInternalConfiguration loadedConfig = CastleSdkInternalConfiguration.getInternalConfiguration();
-        instance = new Castle(loadedConfig);
+        return new Castle(loadedConfig);
     }
 
     /**
      * Initialize and configure the Castle SDK using a configuration object
      *
      * @param config CastleConfiguration object
+     * @return A new instance of the sdk {@code Castle}
      * @throws CastleSdkConfigurationException Configuration options missing or
      *   invalid
      */
-    public static synchronized void initialize(CastleConfiguration config) throws CastleSdkConfigurationException {
-        instance = new Castle(
-            CastleSdkInternalConfiguration.buildFromConfiguration(config)
-        );
+    public static synchronized Castle initialize(CastleConfiguration config) throws CastleSdkConfigurationException {
+        return new Castle(CastleSdkInternalConfiguration.buildFromConfiguration(config));
     }
 
     /**
      * Initialize the Castle SDK using default settings and variables from ENV
      *
+     * @return A new instance of the sdk {@code Castle}
      * @throws CastleSdkConfigurationException Configuration options missing or
      *   invalid
      */
-    public static void initialize() throws CastleSdkConfigurationException {
-        initialize(configurationBuilder().build());
+    public static Castle initialize() throws CastleSdkConfigurationException {
+        return initialize(configurationBuilder().build());
     }
 
     /**
      * Initialize the Castle SDK using only the API secret key
      * @param  secret                          API Secret
+     * @return A new instance of the sdk {@code Castle}
      * @throws CastleSdkConfigurationException Configuration options missing or
      *   invalid
      */
-    public static void initialize(String secret) throws CastleSdkConfigurationException {
-        initialize(configurationBuilder().apiSecret(secret).build());
+    public static Castle initialize(String secret) throws CastleSdkConfigurationException {
+        return initialize(configurationBuilder().apiSecret(secret).build());
     }
 
     public static CastleConfigurationBuilder configurationBuilder() {
@@ -130,8 +143,8 @@ public class Castle {
      * Returns a new builder object for constructing a CastleContext
      * @return Return CatleContextBuilder object
      */
-    public static CastleContextBuilder contextBuilder() {
-        return instance.buildContextBuilder();
+    public CastleContextBuilder contextBuilder() {
+        return buildContextBuilder();
     }
 
     /**
@@ -188,7 +201,7 @@ public class Castle {
      * Get Gson model for serialization and deserialization
      * @return the Gson model
      */
-    public CastleGsonModel getGsonModel() {
+    private CastleGsonModel getGsonModel() {
         return internalConfiguration.getModel();
     }
 

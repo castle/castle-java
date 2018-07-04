@@ -24,13 +24,13 @@ Go to the settings page of your Castle account and find your **API Secret**
 On initialization the Castle SDK will look for the secret in the `CASTLE_API_SECRET` environment variable. If it is set, no options needs to be passed to the initializer.
 
 ```java
-Castle.initialize();
+Castle sdk = Castle.initialize();
 ```
 
 **Alt 2. Initialize using API secret only**
 
 ```java
-Castle.initialize("abcd");
+Castle sdk = Castle.initialize("abcd");
 ```
 
 
@@ -41,15 +41,24 @@ with other options by using `CastleConfigurationBuilder`. `Castle.configurationB
 returns a configuration builder initialized with default settings.
 
 ```java
-Castle.initialize(
+Castle sdk = Castle.initialize(
   Castle.configurationBuilder()
     .apiSecret("abcd")
     .enableHttpLogging(true) // Log all outgoing requests sent to Castle
     .build()
 );
 ```
-
 All other settings will be set to their default values.
+
+We can also maintain a global instance wich can be set the following way
+
+```java
+Castle.setSingletonInstance(sdk);
+
+// Use the singleton
+Castle.sdk().track(...);
+);
+```
 
 ## Tracking events
 
@@ -61,11 +70,11 @@ instance.
 ```java
 // Extract the request context, containing eg. the IP and UserAgent of the end-user
 // `req` is an instance of `HttpServletRequest`.
-CastleContext context = Castle.contextBuilder()
+CastleContext context = Castle.sdk().contextBuilder()
     .fromHttpServletRequest(req)
     .build();
 
-Castle.client().track(CastleMessage.builder("$login.succeeded")
+Castle.sdk().client().track(CastleMessage.builder("$login.succeeded")
     .context(context)
     .userId("1234")
     .userTraits(ImmutableMap.builder()
@@ -90,11 +99,11 @@ is that a `Verdict` will be returned, indicating which action to take based on t
 ```java
 // Extract the request context, containing eg. the IP and UserAgent of the end-user
 // `req` is an instance of `HttpServletRequest`.
-CastleContext context = Castle.contextBuilder()
+CastleContext context = Castle.sdk().contextBuilder()
     .fromHttpServletRequest(req)
     .build();
 
-Verdict verdict = castle.authenticate(CastleMessage.builder("$login.succeeded")
+Verdict verdict = Castle.sdk().client().authenticate(CastleMessage.builder("$login.succeeded")
     .context(context)
     .userId("1234")
     .build()
@@ -117,12 +126,12 @@ such as IP and UserAgent
 ```java
 
 // Quick way of building context through the incoming HttpServletRequest
-CastleContext context = Castle.contextBuilder()
+CastleContext context = Castle.sdk().contextBuilder()
     .fromHttpServletRequest(request)
     .build()
 
 // or build context manually
-CastleContext context = Castle.contextBuilder()
+CastleContext context = Castle.sdk().contextBuilder()
     .ip("1.1.1.1")
     .userAgent("Mozilla/5.0")
     .headers(CastleHeaders.builder()
@@ -132,7 +141,7 @@ CastleContext context = Castle.contextBuilder()
     .build();
 
 // Get singleton instance and track request
-Castle.client().track(CastleMessage.builder("$login.failed")
+Castle.sdk().client().track(CastleMessage.builder("$login.failed")
     .context(context)
     .userId("1234")
     .build()
@@ -172,17 +181,17 @@ tracking request is sent.
 ```java
 
 // Serialize the incoming request before sending off the data to a worker
-String jsonContext = Castle.contextBuilder()
+String jsonContext = Castle.sdk().contextBuilder()
     .fromHttpServletRequest(request)
     .toJson();
 
 // Convert json back to a CastleContext
-CastleContext context = Castle.contextBuilder()
+CastleContext context = Castle.sdk().contextBuilder()
     .fromJson(jsonContext)
     .build()
 
 // Send the tracking request
-Castle.client().track(CastleMessage.builder("$login.failed")
+Castle.sdk().client().track(CastleMessage.builder("$login.failed")
     .context(context)
     .userId("1234")
     .build()
