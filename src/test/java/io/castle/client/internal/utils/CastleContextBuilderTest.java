@@ -125,7 +125,7 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void clientIdIsInFirstPlaceTakenFromCookie() throws CastleSdkConfigurationException {
+    public void clientIdIsInFirstPlaceTakenFromHeader() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
@@ -146,7 +146,7 @@ public class CastleContextBuilderTest {
 
         //And a expected context value with matching clientId
         CastleContext standardContext = getStandardContext();
-        standardContext.setClientId("valueFromCookie");
+        standardContext.setClientId("valueFromHeaders");
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
