@@ -1,15 +1,13 @@
 package io.castle.client.internal.backend;
 
+import com.google.common.collect.ImmutableList;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpFactory implements RestApiFactory {
@@ -39,6 +37,13 @@ public class OkHttpFactory implements RestApiFactory {
             builder = builder.addInterceptor(logging);
         }
 
+        ConnectionSpec sslSpec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                .tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
+                .build();
+
+        ConnectionSpec cleartextSpec = new ConnectionSpec.Builder(ConnectionSpec.CLEARTEXT)
+                .build();
+
         OkHttpClient client = builder
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -49,7 +54,9 @@ public class OkHttpFactory implements RestApiFactory {
                         return chain.proceed(authenticatedRequest);
                     }
                 })
+                .connectionSpecs(ImmutableList.of(sslSpec, cleartextSpec))
                 .build();
+
         return client;
     }
 
