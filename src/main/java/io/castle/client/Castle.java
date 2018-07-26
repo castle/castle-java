@@ -15,15 +15,13 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Through static methods, creates a singleton instance of this class, which provides instances of {@code CastleAPI}
- * and keeps in its internal configuration all application level settings.
+ * Creates an instance of the Castle SDK
  *
  * This also provides methods for initialization of the SDK.
- * {@code this#verifySdkConfigurationAndInitialize()} must be called once in the lifetime of an application using the SDK
- * during its initialization process.
+ * {@code this#initialize()} must be called once per instance of the SDK
  *
- * After initialization, {@code this#sdk()} will return the singleton instance of this class, which grants access to
- * its non-static methods.
+ * Static method {@code this#setSingletonInstance()} can be called to set a global instance of the SDK.
+ * Once set the {@code this#instance()} method will return that instance
  */
 public class Castle {
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
@@ -31,9 +29,9 @@ public class Castle {
     private final CastleSdkInternalConfiguration internalConfiguration;
 
     /**
-     * Public constructor for test proposes only.
+     * Public constructor for creating an instance of the SDK
      * <p>
-     * Please use the static sdk() method to get the SDK instance.
+     * Please use the static setSingletonInstance() and instance() methods to set and get an SDK instance.
      *
      * @param internalConfiguration a test internal configuration for the SDK
      */

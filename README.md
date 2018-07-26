@@ -56,8 +56,7 @@ We can also maintain a global instance wich can be set the following way
 Castle.setSingletonInstance(castle);
 
 // Use the singleton
-Castle.instance().track(...);
-);
+Castle.instance().client().track(...);
 ```
 
 ## Tracking events
@@ -70,11 +69,12 @@ instance.
 ```java
 // Extract the request context, containing eg. the IP and UserAgent of the end-user
 // `req` is an instance of `HttpServletRequest`.
-CastleContext context = Castle.instance().contextBuilder()
+Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(req)
     .build();
 
-Castle.instance().client().track(CastleMessage.builder("$login.succeeded")
+castle.client().track(CastleMessage.builder("$login.succeeded")
     .context(context)
     .userId("1234")
     .userTraits(ImmutableMap.builder()
@@ -99,11 +99,12 @@ is that a `Verdict` will be returned, indicating which action to take based on t
 ```java
 // Extract the request context, containing eg. the IP and UserAgent of the end-user
 // `req` is an instance of `HttpServletRequest`.
-CastleContext context = Castle.instance().contextBuilder()
+Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(req)
     .build();
 
-Verdict verdict = Castle.instance().client().authenticate(CastleMessage.builder("$login.succeeded")
+Verdict verdict = castle.client().authenticate(CastleMessage.builder("$login.succeeded")
     .context(context)
     .userId("1234")
     .build()
@@ -126,12 +127,12 @@ such as IP and UserAgent
 ```java
 
 // Quick way of building context through the incoming HttpServletRequest
-CastleContext context = Castle.instance().contextBuilder()
+CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(request)
     .build()
 
 // or build context manually
-CastleContext context = Castle.instance().contextBuilder()
+CastleContext context = castle.contextBuilder()
     .ip("1.1.1.1")
     .userAgent("Mozilla/5.0")
     .headers(CastleHeaders.builder()
@@ -140,8 +141,9 @@ CastleContext context = Castle.instance().contextBuilder()
         .build())
     .build();
 
-// Get singleton instance and track request
-Castle.instance().client().track(CastleMessage.builder("$login.failed")
+// Use Castle insteance and track request
+Castle castle = Castle.initialize();
+castle.client().track(CastleMessage.builder("$login.failed")
     .context(context)
     .userId("1234")
     .build()
@@ -179,19 +181,20 @@ tracking request is sent.
 **Example**
 
 ```java
+Castle castle = Castle.initialize();
 
 // Serialize the incoming request before sending off the data to a worker
-String jsonContext = Castle.instance().contextBuilder()
+String jsonContext = castle.contextBuilder()
     .fromHttpServletRequest(request)
     .toJson();
 
 // Convert json back to a CastleContext
-CastleContext context = Castle.instance().contextBuilder()
+CastleContext context = castle.contextBuilder()
     .fromJson(jsonContext)
     .build()
 
 // Send the tracking request
-Castle.instance().client().track(CastleMessage.builder("$login.failed")
+castle.client().track(CastleMessage.builder("$login.failed")
     .context(context)
     .userId("1234")
     .build()
@@ -343,8 +346,9 @@ The following snippet provides an example of an async call to the authenticate e
                 // handle failure
             }
         };
-        sdk.onRequest(request).authenticateAsync(CastleMessage.builder(event)
+        castle.client().authenticateAsync(CastleMessage.builder(event)
             .userId(userId)
+            .context(context)
             .build()
         , handler);
         ...
