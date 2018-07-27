@@ -29,8 +29,10 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
     @Test public void trackWithManualContext() throws Exception {
         server.enqueue(new MockResponse());
 
+        Castle.setSingletonInstance(sdk);
+
         // When
-        CastleContext context = Castle.contextBuilder()
+        CastleContext context = Castle.instance().contextBuilder()
             .ip("1.1.1.1")
             .userAgent("Mozilla/5.0")
             .clientId("")
@@ -42,7 +44,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
             .build();
 
         // And an track request is made
-        sdk.buildApiClient().track(CastleMessage.builder("$login.succeeded")
+        Castle.instance().client().track(CastleMessage.builder("$login.succeeded")
             .userId("12345")
             .context(context)
             .build()

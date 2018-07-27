@@ -10,8 +10,7 @@ public class CastleHMACTest {
     public void calculateHMACSecureValue() throws CastleSdkConfigurationException {
 
         //Given
-        Castle.verifySdkConfigurationAndInitialize();
-        Castle sdk = Castle.sdk();
+        Castle sdk = Castle.verifySdkConfigurationAndInitialize();
         String userId = "TestUserID";
 
         //When the sdk is loaded two times
