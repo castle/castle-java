@@ -64,7 +64,8 @@ public class OkRestApiBackend implements RestApi {
 
     @Override
     public Verdict sendAuthenticateSync(JsonElement payloadJson) {
-        final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
+        final String userId = getUserIdFromPayload(payloadJson);
+
         RequestBody body = buildRequestBody(payloadJson);
         Request request = new Request.Builder()
                 .url(authenticate)
@@ -88,8 +89,8 @@ public class OkRestApiBackend implements RestApi {
 
     @Override
     public void sendAuthenticateAsync(JsonElement payloadJson, final AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        final String userId = getUserIdFromPayload(payloadJson);
 
-        final String userId = ((JsonObject) payloadJson).get("user_id").getAsString();
         RequestBody body = buildRequestBody(payloadJson);
         Request request = new Request.Builder()
                 .url(authenticate)
@@ -115,6 +116,14 @@ public class OkRestApiBackend implements RestApi {
                 asyncCallbackHandler.onResponse(extractAuthenticationAction(response, userId));
             }
         });
+    }
+
+    private String getUserIdFromPayload(JsonElement payloadJson) {
+        final String userId = ((JsonObject) payloadJson).has("user_id") ? ((JsonObject) payloadJson).get("user_id").getAsString() : null;
+        if (userId == null) {
+            Castle.logger.warn("Authenticate called with user_id null. Is this correct?");
+        }
+        return userId;
     }
 
     private RequestBody buildRequestBody(JsonElement payloadJson) {
