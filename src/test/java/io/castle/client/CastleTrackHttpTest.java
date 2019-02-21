@@ -43,8 +43,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
             )
             .build();
 
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
         // And an track request is made
-        Castle.instance().client().track(CastleMessage.builder("$login.succeeded")
+        sdk.onRequest(request).track(CastleMessage.builder("$login.succeeded")
             .userId("12345")
             .context(context)
             .build()
