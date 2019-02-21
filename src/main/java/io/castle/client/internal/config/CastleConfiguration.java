@@ -35,7 +35,7 @@ public class CastleConfiguration {
     private final List<String> whiteListHeaders;
 
     /**
-     * List of headers that will nevr get passed to the {@code CastleContext} when built from an HTTP request.
+     * List of headers that will never get passed to the {@code CastleContext} when built from an HTTP request.
      */
     private final List<String> blackListHeaders;
 
