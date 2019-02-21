@@ -193,7 +193,6 @@ public class CastleContextBuilderTest {
 
         // When
         CastleContext context = new CastleContextBuilder(configuration, model)
-            .clientId("")
             .userAgent(userAgent)
             .headers(getStandardCastleHeaders())
             .ip(ip)
@@ -307,7 +306,6 @@ public class CastleContextBuilderTest {
         expectedContext.setHeaders(getStandardCastleHeaders());
         expectedContext.setUserAgent(userAgent);
         expectedContext.setIp(ip);
-        expectedContext.setClientId("");
         return expectedContext;
     }
 

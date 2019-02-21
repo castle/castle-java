@@ -130,11 +130,6 @@ public class CastleContextBuilder {
             }
         }
 
-        if (cid == null) {
-            //Default value is empty string, so client_id always will be sent.
-            cid = "";
-        }
-
         return cid;
     }
 
