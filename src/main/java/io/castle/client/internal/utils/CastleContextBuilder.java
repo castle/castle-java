@@ -41,6 +41,11 @@ public class CastleContextBuilder {
         return this;
     }
 
+    public CastleContextBuilder clientId(boolean clientId) {
+        context.setClientId(clientId);
+        return this;
+    }
+
     public CastleContextBuilder device(CastleDevice device) {
         context.setDevice(device);
         return this;
@@ -57,6 +62,11 @@ public class CastleContextBuilder {
     }
 
     public CastleContextBuilder userAgent(String userAgent) {
+        context.setUserAgent(userAgent);
+        return this;
+    }
+
+    public CastleContextBuilder userAgent(boolean userAgent) {
         context.setUserAgent(userAgent);
         return this;
     }
