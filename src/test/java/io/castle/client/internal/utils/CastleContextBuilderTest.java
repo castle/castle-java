@@ -9,7 +9,9 @@ import io.castle.client.model.CastleHeaders;
 import io.castle.client.model.CastleSdkConfigurationException;
 import io.castle.client.utils.SDKVersion;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.Cookie;
@@ -229,7 +231,7 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void withManualHeaders() throws CastleSdkConfigurationException {
+    public void withManualHeaders() throws CastleSdkConfigurationException, JSONException {
         // Given
         CastleConfiguration configuration = CastleConfigurationBuilder
             .defaultConfigBuilder()
@@ -243,7 +245,7 @@ public class CastleContextBuilderTest {
             .toJson();
 
         // Then
-        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true,\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}");
+        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
     }
 
     private String valueControlCache = "max-age=0";

@@ -5,8 +5,9 @@ import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Assert;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
@@ -20,7 +21,7 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void mergeContextIsSendOnHttp() throws InterruptedException {
+    public void mergeContextIsSendOnHttp() throws InterruptedException, JSONException {
 
         //Given
         server.enqueue(new MockResponse().setResponseCode(200));
@@ -43,12 +44,12 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
 
         //Then the json send contains a extended context object
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +",\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +",\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void mergeContextIsNull() throws InterruptedException {
+    public void mergeContextIsNull() throws InterruptedException, JSONException {
         //Given
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
@@ -61,8 +62,8 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
 
         //Then the json send contains a context object with active key only
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true}}",
+                recordedRequest.getBody().readUtf8(), false);
 
     }
 

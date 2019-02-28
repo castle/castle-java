@@ -11,8 +11,10 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import org.assertj.core.api.Assertions;
+import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
@@ -43,8 +45,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
             )
             .build();
 
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
         // And an track request is made
-        Castle.instance().client().track(CastleMessage.builder("$login.succeeded")
+        sdk.onRequest(request).track(CastleMessage.builder("$login.succeeded")
             .userId("12345")
             .context(context)
             .build()
@@ -52,8 +57,8 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
@@ -75,7 +80,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void trackEndpointWithPaylod() throws InterruptedException {
+    public void trackEndpointWithPaylod() throws InterruptedException, JSONException {
         // Given
         server.enqueue(new MockResponse());
         CastleMessage payload = CastleMessage.builder("$login.succeeded")
@@ -88,12 +93,12 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void trackEndpointWithUserIDTest() throws InterruptedException {
+    public void trackEndpointWithUserIDTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse());
         String id = "12345";
@@ -107,12 +112,12 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void trackEndpointWithUserIDAndReviewIdTest() throws InterruptedException {
+    public void trackEndpointWithUserIDAndReviewIdTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse());
         String userId = "12345";
@@ -127,12 +132,12 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"review_id\":\"r45677\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"review_id\":\"r45677\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void trackEndpointWithUserIDAndPropertiesTest() throws InterruptedException {
+    public void trackEndpointWithUserIDAndPropertiesTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse());
         String userId = "12345";
@@ -150,12 +155,12 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void trackEndpointWithUserIDAndPropertiesAndTraitTest() throws InterruptedException {
+    public void trackEndpointWithUserIDAndPropertiesAndTraitTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse());
         String userId = "23456";
@@ -176,12 +181,12 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"23456\",\"user_traits\":{\"x\":\"x value\",\"y\":2342},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"23456\",\"user_traits\":{\"x\":\"x value\",\"y\":2342},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void trackEndpointWithMinimalInformationTest() throws InterruptedException {
+    public void trackEndpointWithMinimalInformationTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse());
         String event = "any.valid.event";
@@ -193,8 +198,8 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
@@ -226,7 +231,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void trackEndpointTimeoutTest() throws InterruptedException {
+    public void trackEndpointTimeoutTest() throws InterruptedException, JSONException {
         // given the backend will timeout
         server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE));
         String event = "any.valid.event";
@@ -251,15 +256,15 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
 
         // and the onException method must be called
         waitForValueAndVerify(result, Boolean.FALSE);
     }
 
     @Test
-    public void trackEndpointTimeoutAreIgnoreWhenNoCallbackIsProvidedTest() throws InterruptedException {
+    public void trackEndpointTimeoutAreIgnoreWhenNoCallbackIsProvidedTest() throws InterruptedException, JSONException {
         // given the backend will timeout
         server.enqueue(new MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE));
         String event = "any.valid.event";
@@ -271,8 +276,8 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
 
         // and no exceptions are thrown in any thread
     }
