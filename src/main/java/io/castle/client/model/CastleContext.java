@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
-    private String clientId;
+    private Object clientId;
     private String ip;
     private String locale;
     private String timezone;
@@ -22,7 +22,7 @@ public class CastleContext {
     private CastleScreen screen;
 
     @SerializedName("user_agent")
-    private String userAgent;
+    private Object userAgent;
 
     public boolean isActive() {
         return active;
@@ -40,11 +40,15 @@ public class CastleContext {
         this.device = device;
     }
 
-    public String getClientId() {
+    public Object getClientId() {
         return clientId;
     }
 
     public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setClientId(boolean clientId) {
         this.clientId = clientId;
     }
 
@@ -132,11 +136,15 @@ public class CastleContext {
         this.timezone = timezone;
     }
 
-    public String getUserAgent() {
+    public Object getUserAgent() {
         return userAgent;
     }
 
     public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public void setUserAgent(boolean userAgent) {
         this.userAgent = userAgent;
     }
 

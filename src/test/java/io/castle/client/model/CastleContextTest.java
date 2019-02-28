@@ -184,7 +184,7 @@ public class CastleContextTest {
     }
 
     @Test
-    public void toStringMethodCreatesAWellFormedStringFromAFullExample() {
+    public void toStringMethodCreatesAWellFormedStringFromAFullExample() throws JSONException {
 
 
         //given

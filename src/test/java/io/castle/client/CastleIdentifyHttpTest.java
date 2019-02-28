@@ -5,8 +5,9 @@ import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Assert;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
@@ -20,7 +21,7 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void identifyEndpointTest() throws InterruptedException {
+    public void identifyEndpointTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
@@ -33,12 +34,12 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void identifyEndpointWithTraitObjectTest() throws InterruptedException {
+    public void identifyEndpointWithTraitObjectTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
@@ -55,12 +56,12 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void identifyEndpointFullOptionsTest() throws InterruptedException {
+    public void identifyEndpointFullOptionsTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
@@ -76,8 +77,8 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":false,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":false,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test

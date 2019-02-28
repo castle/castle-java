@@ -6,8 +6,9 @@ import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
+import org.json.JSONException;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
@@ -29,7 +30,37 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void authenticateAsyncEndpontWithPayload() throws InterruptedException {
+    public void authenticateAsyncEndpointWithNullUserIdPayload() throws InterruptedException, JSONException {
+        // Given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticateAsync(
+                CastleMessage.builder("$login.succeeded").build(),
+                handler
+        );
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
+    }
+
+    public void authenticateAsyncEndpontWithPayload() throws InterruptedException, JSONException {
         // Given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
 
@@ -55,12 +86,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void authenticationAsyncEndpointTest() throws InterruptedException {
+    public void authenticationAsyncEndpointTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
@@ -85,8 +116,8 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
 
         // and
         Verdict expected = VerdictBuilder.success()
@@ -97,7 +128,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void authenticationAsyncEndpointWithPropertiesAndTraitsTest() throws InterruptedException {
+    public void authenticationAsyncEndpointWithPropertiesAndTraitsTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
@@ -126,8 +157,8 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
 
         // and
         Verdict expected = VerdictBuilder.success()
@@ -139,7 +170,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
 
     @Test
-    public void authenticationAsyncEndpointProvideDefaultValueOnTimeoutErrorTest() throws InterruptedException {
+    public void authenticationAsyncEndpointProvideDefaultValueOnTimeoutErrorTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setSocketPolicy(NO_RESPONSE));
         String id = "12345";
@@ -164,8 +195,8 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
 
         // and
         Verdict expected = VerdictBuilder.failover("timeout")
@@ -178,7 +209,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
 
     @Test
-    public void authenticationEndpointDefaultValueOnTimeoutErrorTest() throws InterruptedException {
+    public void authenticationEndpointDefaultValueOnTimeoutErrorTest() throws InterruptedException, JSONException {
         //given the backed will timeout
         server.enqueue(new MockResponse().setSocketPolicy(NO_RESPONSE));
         String id = "12345";
@@ -199,12 +230,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void authenticationEndpointWithPayload() throws InterruptedException {
+    public void authenticationEndpointWithPayload() throws InterruptedException, JSONException {
         // Given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
 
@@ -218,12 +249,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void authenticationEndpointTest() throws InterruptedException {
+    public void authenticationEndpointTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
@@ -244,12 +275,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test
-    public void authenticationEndpointWithPropertiesAndTraitsTest() throws InterruptedException {
+    public void authenticationEndpointWithPropertiesAndTraitsTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
@@ -276,8 +307,8 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test(expected = CastleRuntimeException.class)
@@ -300,7 +331,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
-    public void authenticationUseDefaultOnBackendErrorTest() throws InterruptedException {
+    public void authenticationUseDefaultOnBackendErrorTest() throws InterruptedException, JSONException {
         //given a 403 response from backend
         server.enqueue(new MockResponse().setResponseCode(500));
         String id = "12345";
@@ -324,8 +355,8 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        Assert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8());
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
     }
 
     @Test(expected = CastleRuntimeException.class)
