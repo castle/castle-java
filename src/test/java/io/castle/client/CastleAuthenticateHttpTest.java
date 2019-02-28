@@ -30,6 +30,36 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
+    public void authenticateAsyncEndpointWithNullUserIdPayload() throws InterruptedException, JSONException {
+        // Given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticateAsync(
+                CastleMessage.builder("$login.succeeded").build(),
+                handler
+        );
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+                recordedRequest.getBody().readUtf8(), false);
+    }
+
     public void authenticateAsyncEndpontWithPayload() throws InterruptedException, JSONException {
         // Given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
