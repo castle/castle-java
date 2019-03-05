@@ -56,7 +56,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
@@ -86,7 +86,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
@@ -116,7 +116,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
 
         // and
@@ -157,7 +157,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
 
         // and
@@ -195,7 +195,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
 
         // and
@@ -230,7 +230,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
@@ -249,7 +249,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
@@ -275,7 +275,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
@@ -307,7 +307,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
@@ -355,7 +355,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
                 recordedRequest.getBody().readUtf8(), false);
     }
 
