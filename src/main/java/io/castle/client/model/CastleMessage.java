@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 public class CastleMessage {
     private transient CastleContext context;
+    private String createdAt;
     private String timestamp;
     private String deviceToken;
     @Nonnull private String event;
@@ -40,7 +41,7 @@ public class CastleMessage {
      */
     @Deprecated
     public String getCreatedAt() {
-        return timestamp;
+        return createdAt;
     }
 
     /**
@@ -48,7 +49,7 @@ public class CastleMessage {
      */
     @Deprecated
     public void setCreatedAt(String createdAt) {
-        this.timestamp = createdAt;
+        this.createdAt = createdAt;
     }
 
     public String getTimestamp() {
