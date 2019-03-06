@@ -25,6 +25,11 @@ public class Verdict {
      */
     private String failoverReason;
 
+    /**
+     * String representing a device ID associated with an authenticate call.
+     */
+    private String deviceToken;
+
     public AuthenticateAction getAction() {
         return action;
     }
@@ -55,5 +60,13 @@ public class Verdict {
 
     public void setFailoverReason(String failoverReason) {
         this.failoverReason = failoverReason;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 }
