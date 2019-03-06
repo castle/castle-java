@@ -139,8 +139,17 @@ public class CastleMessage {
             return this;
         }
 
+        /**
+         * @deprecated use {@link #timestamp(String)} instead.
+         */
+        @Deprecated
         public Builder createdAt(String createdAt) {
             payload.setCreatedAt(createdAt);
+            return this;
+        }
+
+        public Builder timestamp(String timestamp) {
+            payload.setTimestamp(timestamp);
             return this;
         }
 
