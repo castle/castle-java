@@ -25,7 +25,7 @@ public class CastleMessageTest {
     public void fullBuilderJson() {
         // Given
         CastleMessage message = CastleMessage.builder("event")
-            .createdAt("2018-01-01")
+            .timestamp("2018-01-01")
             .deviceToken("1234")
             .reviewId("2345")
             .properties(ImmutableMap.builder()
