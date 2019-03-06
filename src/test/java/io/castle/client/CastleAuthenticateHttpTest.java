@@ -22,7 +22,8 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
     private static final String DENY_RESPONSE = "{\n" +
                                                 "  \"action\": \"deny\",\n" +
-                                                "  \"user_id\": \"12345\"\n" +
+                                                "  \"user_id\": \"12345\",\n" +
+                                                "  \"device_token\": \"abcdefg1234\"\n" +
                                                 "}";
 
     public CastleAuthenticateHttpTest() {
@@ -96,6 +97,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
+        String deviceToken = "abcdefg1234";
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
@@ -123,6 +125,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId("12345")
+                .withDeviceToken(deviceToken)
                 .build();
         waitForValueAndVerify(result, expected);
     }
@@ -133,6 +136,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
+        String deviceToken = "abcdefg1234";
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
@@ -164,6 +168,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId("12345")
+                .withDeviceToken(deviceToken)
                 .build();
         waitForValueAndVerify(result, expected);
     }
@@ -259,6 +264,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
+        String deviceToken = "abcdefg1234";
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
@@ -270,6 +276,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId(id)
+                .withDeviceToken(deviceToken)
                 .build();
         Assertions.assertThat(verdict).isEqualToComparingFieldByField(expected);
 
@@ -285,6 +292,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
         String id = "12345";
         String event = "$login.succeeded";
+        String deviceToken = "abcdefg1234";
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
@@ -302,6 +310,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId(id)
+                .withDeviceToken(deviceToken)
                 .build();
         Assertions.assertThat(verdict).isEqualToComparingFieldByField(expected);
 
