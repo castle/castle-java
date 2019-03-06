@@ -60,10 +60,11 @@ public class CastleContextBuilderTest {
         //And a expected castle context without the accept-language header
         CastleContext standardContext = getStandardContext();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
-        listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
-        listOfHeaders.add(new CastleHeader(acceptHeader, accept));
-        listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
-        listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
+        for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
+            if (!header.getKey().equals("Cookie") && !header.getKey().equals(acceptLanguageHeader)) {
+                listOfHeaders.add(header);
+            }
+        }
         standardContext.getHeaders().setHeaders(listOfHeaders);
 
         //When
@@ -145,10 +146,8 @@ public class CastleContextBuilderTest {
         //And a custom castle header
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
-
         //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContext();
-        standardContext.setClientId("valueFromHeaders");
+        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
@@ -173,10 +172,8 @@ public class CastleContextBuilderTest {
         //And a custom castle header
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
-
         //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContext();
-        standardContext.setClientId("valueFromHeaders");
+        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
@@ -284,16 +281,15 @@ public class CastleContextBuilderTest {
 
     private List<CastleHeader> getStandardHeaders() {
         List<CastleHeader> listOfHeaders = new ArrayList<>();
+        listOfHeaders.add(new CastleHeader(keyControlCache, valueControlCache));
         listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
         listOfHeaders.add(new CastleHeader(acceptHeader, accept));
         listOfHeaders.add(new CastleHeader(acceptLanguageHeader, acceptLanguage));
         listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
+        listOfHeaders.add(new CastleHeader(headerHost, hostValue));
+        listOfHeaders.add(new CastleHeader(refererHeader, referer));
+        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
         listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
-//        listOfHeaders.add(new CastleHeader(keyControlCache, valueControlCache));
-//        listOfHeaders.add(new CastleHeader(customClientIdHeader, clientId));
-//        listOfHeaders.add(new CastleHeader(headerHost, hostValue));
-//        listOfHeaders.add(new CastleHeader(refererHeader, referer));
-//        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
         return listOfHeaders;
     }
 
@@ -311,4 +307,13 @@ public class CastleContextBuilderTest {
         return expectedContext;
     }
 
+    public CastleContext getStandardContextWithClientId(String clientId) {
+        CastleContext expectedContext = getStandardContext();
+        expectedContext.setClientId(clientId);
+        List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
+        listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, clientId));
+        expectedContext.getHeaders().setHeaders(listOfHeaders);
+
+        return expectedContext;
+    }
 }
