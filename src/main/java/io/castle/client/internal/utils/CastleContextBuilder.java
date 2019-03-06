@@ -123,6 +123,9 @@ public class CastleContextBuilder {
             castleHeadersList.add(new CastleHeader(key, headerValue));
         } else if (configuration.getWhiteListHeaders().contains(keyNormalized)) {
             castleHeadersList.add(new CastleHeader(key, headerValue));
+        } else {
+            // Add scrubbed header
+            castleHeadersList.add(new CastleHeader(key, "true"));
         }
     }
 

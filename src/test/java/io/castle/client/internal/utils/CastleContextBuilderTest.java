@@ -88,9 +88,14 @@ public class CastleContextBuilderTest {
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
-        //And a expected castle context without any header
-        CastleContext standardContext = getStandardContext();
+        //And a expected castle context
+        CastleContext standardContext = getStandardScrubbedContext();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
+        for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
+            if (!header.getKey().equals(connectionHeader)) {
+                listOfHeaders.add(header);
+            }
+        }
         standardContext.getHeaders().setHeaders(listOfHeaders);
 
         //When
@@ -115,10 +120,12 @@ public class CastleContextBuilderTest {
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context with a single whitelisted header
-        CastleContext standardContext = getStandardContext();
-        List<CastleHeader> listOfHeaders = new ArrayList<>();
-        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
-        standardContext.getHeaders().setHeaders(listOfHeaders);
+        CastleContext standardContext = getStandardScrubbedContext();
+        for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
+            if (header.getKey().equals(connectionHeader)) {
+                header.setValue(connection);
+            }
+        }
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
@@ -312,6 +319,18 @@ public class CastleContextBuilderTest {
         expectedContext.setClientId(clientId);
         List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
         listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, clientId));
+        expectedContext.getHeaders().setHeaders(listOfHeaders);
+
+        return expectedContext;
+    }
+
+    public CastleContext getStandardScrubbedContext() {
+        CastleContext expectedContext = getStandardContext();
+
+        List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
+        for (CastleHeader header : listOfHeaders) {
+            header.setValue("true");
+        }
         expectedContext.getHeaders().setHeaders(listOfHeaders);
 
         return expectedContext;
