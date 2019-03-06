@@ -173,7 +173,6 @@ public class CastleContextBuilderTest {
         //And a custom castle header
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
-
         //And a expected context value with matching clientId
         CastleContext standardContext = getStandardContext();
         standardContext.setClientId("valueFromHeaders");
