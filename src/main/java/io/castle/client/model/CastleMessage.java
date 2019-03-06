@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 public class CastleMessage {
     private transient CastleContext context;
     private String timestamp;
-    private String sentAt;
     private String deviceToken;
     @Nonnull private String event;
     /**
