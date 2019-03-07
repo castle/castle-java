@@ -88,6 +88,17 @@ castle.client().track(CastleMessage.builder("$login.succeeded")
     .build()
 );
 ```
+By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastleContextBuilder` method `ip`.
+
+**Example**
+
+```java
+Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .ip(req.getHeader("X-Forwarded-For"))
+    .build();
+```
 
 ## Authenticating events
 
