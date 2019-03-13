@@ -119,7 +119,7 @@ public class CastleTest {
     @Test
     public void sdkOnConfigureWithSecretOnly() throws CastleSdkConfigurationException {
         // When the SDK is initiated
-        Castle sdk =Castle.initialize("abcd");
+        Castle sdk = Castle.initialize("abcd");
 
         //Then the configuration match the expected values from the initialization
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();

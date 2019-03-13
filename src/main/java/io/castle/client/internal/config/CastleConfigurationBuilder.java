@@ -82,6 +82,11 @@ public class CastleConfigurationBuilder {
      */
     private boolean logHttpRequests = false;
 
+    /**
+     * Sorted list of headers to use for IP value in context
+     */
+    private List<String> ipHeaders;
+
     private CastleConfigurationBuilder() {
     }
 
@@ -329,14 +334,16 @@ public class CastleConfigurationBuilder {
             throw new CastleSdkConfigurationException(Joiner.on(System.lineSeparator()).join(errorMessages));
         }
         HeaderNormalizer normalizer = new HeaderNormalizer();
-        return new CastleConfiguration(apiBaseUrl, timeout,
+        return new CastleConfiguration(apiBaseUrl,
+                timeout,
                 failoverStrategy,
                 normalizer.normalizeList(whiteListHeaders),
                 normalizer.normalizeList(blackListHeaders),
                 apiSecret,
                 castleAppId,
                 backendProvider,
-                logHttpRequests);
+                logHttpRequests,
+                ipHeaders);
     }
 
     /**
@@ -390,5 +397,21 @@ public class CastleConfigurationBuilder {
     /* alias for logHttpRequests */
     public CastleConfigurationBuilder enableHttpLogging(Boolean logHttpRequests) {
         return withLogHttpRequests(logHttpRequests);
+    }
+
+    /**
+     * Sorted list of headers to use when extracting IP from headers.
+     *
+     * @param ipHeaders sorted list of headers.
+     * @return a castleConfigurationBuilder with IP headers set
+     */
+    public CastleConfigurationBuilder withIPHeaders(List<String> ipHeaders) {
+        this.ipHeaders = ipHeaders;
+        return this;
+    }
+
+    /* alias for withIPHeaders */
+    public CastleConfigurationBuilder ipHeaders(List<String> ipHeaders) {
+        return withIPHeaders(ipHeaders);
     }
 }
