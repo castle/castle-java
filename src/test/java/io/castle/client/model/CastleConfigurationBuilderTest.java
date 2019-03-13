@@ -21,18 +21,7 @@ public class CastleConfigurationBuilderTest {
         Assertions.assertThat(config.getApiSecret()).isEqualTo(apiSecret);
         Assertions.assertThat(config.getCastleAppId()).isEqualTo(castleAppId);
         Assertions.assertThat(config.getBlackListHeaders()).contains("cookie");
-        Assertions.assertThat(config.getWhiteListHeaders()).contains(
-                "user-agent",
-                "accept-language",
-                "accept-encoding",
-                "accept-charset",
-                "accept",
-                "accept-datetime",
-                "x-forwarded-for",
-                "forwarded",
-                "x-forwarded",
-                "x-real-ip",
-                "remote-addr");
+        Assertions.assertThat(config.getWhiteListHeaders()).isEmpty();
         Assertions.assertThat(config.getAuthenticateFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
         Assertions.assertThat(config.getTimeout()).isEqualTo(500);
 

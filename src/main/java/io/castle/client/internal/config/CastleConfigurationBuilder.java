@@ -119,37 +119,11 @@ public class CastleConfigurationBuilder {
 
     /**
      * Sets the default list of whitelisted headers.
-     * <p>
-     * The following are the default values:
-     * <ul>
-     * <li> {@code User-Agent}
-     * <li> {@code Accept-Language}
-     * <li> {@code Accept-Encoding}
-     * <li> {@code Accept-Charset}
-     * <li> {@code Accept}
-     * <li> {@code Accept-Datetime}
-     * <li> {@code X-Forwarded-For}
-     * <li> {@code Forwarded}
-     * <li> {@code X-Forwarded}
-     * <li> {@code X-Real-IP}
-     * <li> {@code REMOTE_ADDR}
-     * </ul>
      *
      * @return a castleConfigurationBuilder instance with the default list of whitelisted headers.
      */
     public CastleConfigurationBuilder withDefaultWhitelist() {
         this.whiteListHeaders = new LinkedList<>();
-        whiteListHeaders.add("User-Agent");
-        whiteListHeaders.add("Accept-Language");
-        whiteListHeaders.add("Accept-Encoding");
-        whiteListHeaders.add("Accept-Charset");
-        whiteListHeaders.add("Accept");
-        whiteListHeaders.add("Accept-Datetime");
-        whiteListHeaders.add("X-Forwarded-For");
-        whiteListHeaders.add("Forwarded");
-        whiteListHeaders.add("X-Forwarded");
-        whiteListHeaders.add("X-Real-IP");
-        whiteListHeaders.add("REMOTE_ADDR");
         return this;
     }
 
