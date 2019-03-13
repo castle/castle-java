@@ -11,7 +11,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.0</version>
         </dependency>
 ```
 
@@ -87,6 +87,17 @@ castle.client().track(CastleMessage.builder("$login.succeeded")
         .build())
     .build()
 );
+```
+By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastleContextBuilder` method `ip`.
+
+**Example**
+
+```java
+Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .ip(req.getHeader("X-Forwarded-For"))
+    .build();
 ```
 
 ## Authenticating events
