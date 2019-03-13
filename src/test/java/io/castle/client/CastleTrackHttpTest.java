@@ -12,6 +12,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -55,10 +56,14 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
             .build()
         );
 
+
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -93,8 +98,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -112,8 +120,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -132,9 +143,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"review_id\":\"r45677\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
 
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -156,8 +169,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -182,8 +198,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"23456\",\"user_traits\":{\"x\":\"x value\",\"y\":2342},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -199,8 +218,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
     @Test
@@ -257,8 +279,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
 
         // and the onException method must be called
         waitForValueAndVerify(result, Boolean.FALSE);
@@ -277,8 +302,11 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
 
         // and no exceptions are thrown in any thread
     }

@@ -6,6 +6,8 @@ import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -34,8 +36,9 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
     }
 
     @Test
@@ -56,8 +59,9 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then the json match specification
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
     }
 
     @Test
@@ -77,8 +81,9 @@ public class CastleIdentifyHttpTest extends AbstractCastleHttpLayerTest {
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":false,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
-                recordedRequest.getBody().readUtf8(), false);
+                body, false);
     }
 
     @Test

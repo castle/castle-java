@@ -8,6 +8,7 @@ import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.ContextMerge;
+import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
 
@@ -246,6 +247,10 @@ public class CastleApiImpl implements CastleApi {
         JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);
         JsonObject messageObj = messageJson.getAsJsonObject();
         messageObj.add("context", contextJson);
+
+        // Add sent_at to json
+        messageObj.addProperty("sent_at", Timestamp.timestamp());
+
         return messageObj;
     }
 }
