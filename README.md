@@ -307,7 +307,7 @@ log_http=false
 
 ## Secure Mode
 
-See the documentation on [secure mode](https://castle.io/docs/secure_mode) in order to learn more.
+See the documentation on [secure mode](https://castle.io/docs/securing_requests) in order to learn more.
 
 In order to enable secure mode using Castle.js, use the
 `io.castle.client.Castle#secureUserID` method whenever there is a need to make an identify call
