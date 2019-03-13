@@ -114,7 +114,8 @@ public class CastleContextBuilder {
     private void addHeaderValue(ArrayList<CastleHeader> castleHeadersList, String key, String headerValue) {
         String keyNormalized = headerNormalizer.normalize(key);
         if (configuration.getBlackListHeaders().contains(keyNormalized)) {
-            // Do not add header since it is blacklisted
+            // Scrub header since it is blacklisted
+            castleHeadersList.add(new CastleHeader(key, "true"));
             return;
         }
 
