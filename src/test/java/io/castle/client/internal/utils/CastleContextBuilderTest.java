@@ -63,6 +63,8 @@ public class CastleContextBuilderTest {
         for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
             if (!header.getKey().equals("Cookie") && !header.getKey().equals(acceptLanguageHeader)) {
                 listOfHeaders.add(header);
+            } else {
+                listOfHeaders.add(new CastleHeader(header.getKey(), "true"));
             }
         }
         standardContext.getHeaders().setHeaders(listOfHeaders);
@@ -94,6 +96,8 @@ public class CastleContextBuilderTest {
         for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
             if (!header.getKey().equals(connectionHeader)) {
                 listOfHeaders.add(header);
+            } else {
+                listOfHeaders.add(new CastleHeader(header.getKey(), "true"));
             }
         }
         standardContext.getHeaders().setHeaders(listOfHeaders);
