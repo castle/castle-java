@@ -1,9 +1,6 @@
 package io.castle.client.api;
 
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.CastleMessage;
-import io.castle.client.model.Review;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -250,4 +247,20 @@ public interface CastleApi {
      * @see <a href="https://api.castle.io/docs#review">The docs</a>
      */
     void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler);
+
+    CastleUserDevice approve(String deviceToken);
+
+    void approveAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler);
+
+    CastleUserDevice report(String deviceToken);
+
+    void reportAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler);
+
+    CastleUserDevices userDevices(String userId);
+
+    void userDevicesAsync(String userId, AsyncCallbackHandler<CastleUserDevices> asyncCallbackHandler);
+
+    CastleUserDevice device(String deviceToken);
+
+    void deviceAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler);
 }

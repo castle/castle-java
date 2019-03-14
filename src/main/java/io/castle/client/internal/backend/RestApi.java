@@ -2,9 +2,7 @@ package io.castle.client.internal.backend;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.Review;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 
 public interface RestApi {
     /**
@@ -53,4 +51,20 @@ public interface RestApi {
      * @param callbackHandler callback to handle the Review value returned by the API
      */
     void sendReviewRequestAsync(String reviewId, AsyncCallbackHandler<Review> callbackHandler);
+
+    CastleUserDevice sendApproveDeviceRequestSync(String deviceToken);
+
+    void sendApproveDeviceRequestAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> callbackHandler);
+
+    CastleUserDevice sendReportDeviceRequestSync(String deviceToken);
+
+    void sendReportDeviceRequestAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> callbackHandler);
+
+    CastleUserDevices sendGetUserDevicesRequestSync(String userId);
+
+    void sendGetUserDevicesRequestAsync(String userId, AsyncCallbackHandler<CastleUserDevices> callbackHandler);
+
+    CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken);
+
+    void sendGetUserDeviceRequestAsync(String userId, AsyncCallbackHandler<CastleUserDevice> callbackHandler);
 }
