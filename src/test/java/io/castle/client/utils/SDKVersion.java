@@ -8,9 +8,9 @@ import java.util.Properties;
 
 public class SDKVersion {
 
-    static String libraryString = "\"library\":{\"name\":\"castle-java\",\"version\":\"" + getSDKVersion() + "\"}";
+    private static String libraryString = "\"library\":{\"name\":\"castle-java\",\"version\":\"" + getSDKVersion() + "\",\"platform\":\"" + getJavaPlatform() + "\",\"platform_version\":\"" + getJavaVersion() + "\"}";
 
-    static String version = getSDKVersion();
+    private static String version = getSDKVersion();
 
     public static String getLibraryString() {
         return libraryString;
@@ -26,5 +26,13 @@ public class SDKVersion {
         InputStream resourceAsStream = Castle.class.getClassLoader().getResourceAsStream("version.properties");
         reader.loadPropertiesFromStream(versionProperties, resourceAsStream);
         return versionProperties.getProperty("sdk.version");
+    }
+
+    public static String getJavaVersion() {
+        return System.getProperty("java.vm.version");
+    }
+
+    public static String getJavaPlatform() {
+        return System.getProperty("java.vm.name");
     }
 }
