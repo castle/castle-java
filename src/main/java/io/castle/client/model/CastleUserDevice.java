@@ -2,6 +2,7 @@ package io.castle.client.model;
 
 public class CastleUserDevice {
     private String token;
+    private double risk;
     private String createdAt;
     private String lastSeenAt;
     private String approvedAt;
@@ -17,6 +18,14 @@ public class CastleUserDevice {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public double getRisk() {
+        return risk;
+    }
+
+    public void setRisk(double risk) {
+        this.risk = risk;
     }
 
     public String getCreatedAt() {
