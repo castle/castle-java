@@ -5,16 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class CastleUserDevices {
-    int totalCount;
+    private int totalCount;
     @SerializedName("data")
-    List<CastleUserDevice> devices;
+    private List<CastleUserDevice> devices;
 
     public int getTotalCount() {
         return totalCount;
-    }
-
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
     }
 
     public List<CastleUserDevice> getDevices() {
@@ -23,5 +19,6 @@ public class CastleUserDevices {
 
     public void setDevices(List<CastleUserDevice> devices) {
         this.devices = devices;
+        this.totalCount = devices != null ? devices.size() : 0;
     }
 }
