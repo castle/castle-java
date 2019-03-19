@@ -287,7 +287,7 @@ public class CastleApiImpl implements CastleApi {
 
         if (traits != null) {
             JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
-            message.setUserTraits(traits);
+            message.setUserTraits(traitsJson);
         }
 
         return message;
