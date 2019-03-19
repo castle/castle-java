@@ -223,26 +223,10 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void approveAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler) {
-        Preconditions.checkNotNull(deviceToken);
-        Preconditions.checkNotNull(asyncCallbackHandler);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendApproveDeviceRequestAsync(deviceToken, asyncCallbackHandler);
-    }
-
-    @Override
     public CastleUserDevice report(String deviceToken) {
         Preconditions.checkNotNull(deviceToken);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.sendReportDeviceRequestSync(deviceToken);
-    }
-
-    @Override
-    public void reportAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler) {
-        Preconditions.checkNotNull(deviceToken);
-        Preconditions.checkNotNull(asyncCallbackHandler);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendReportDeviceRequestAsync(deviceToken, asyncCallbackHandler);
     }
 
     @Override
@@ -253,26 +237,10 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void userDevicesAsync(String userId, AsyncCallbackHandler<CastleUserDevices> asyncCallbackHandler) {
-        Preconditions.checkNotNull(userId);
-        Preconditions.checkNotNull(asyncCallbackHandler);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendGetUserDevicesRequestAsync(userId, asyncCallbackHandler);
-    }
-
-    @Override
     public CastleUserDevice device(String deviceToken) {
         Preconditions.checkNotNull(deviceToken);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.sendGetUserDeviceRequestSync(deviceToken);
-    }
-
-    @Override
-    public void deviceAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler) {
-        Preconditions.checkNotNull(deviceToken);
-        Preconditions.checkNotNull(asyncCallbackHandler);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendGetUserDeviceRequestAsync(deviceToken, asyncCallbackHandler);
     }
 
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {

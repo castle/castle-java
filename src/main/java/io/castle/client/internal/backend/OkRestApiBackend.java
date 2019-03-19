@@ -230,22 +230,6 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendApproveDeviceRequestAsync(String deviceToken, final AsyncCallbackHandler<CastleUserDevice> callbackHandler) {
-        Request request = createApproveDeviceRequest(deviceToken);
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callbackHandler.onException(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                callbackHandler.onResponse(extractDevice(response));
-            }
-        });
-    }
-
-    @Override
     public CastleUserDevice sendReportDeviceRequestSync(String deviceToken) {
         Request request = createReportDeviceRequest(deviceToken);
         try {
@@ -254,22 +238,6 @@ public class OkRestApiBackend implements RestApi {
         } catch (IOException e) {
             throw new CastleRuntimeException(e);
         }
-    }
-
-    @Override
-    public void sendReportDeviceRequestAsync(String deviceToken, final AsyncCallbackHandler<CastleUserDevice> callbackHandler) {
-        Request request = createReportDeviceRequest(deviceToken);
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callbackHandler.onException(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                callbackHandler.onResponse(extractDevice(response));
-            }
-        });
     }
 
     @Override
@@ -284,22 +252,6 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendGetUserDevicesRequestAsync(String userId, final AsyncCallbackHandler<CastleUserDevices> callbackHandler) {
-        Request request = createGetUserDevicesRequest(userId);
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callbackHandler.onException(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                callbackHandler.onResponse(extractDevices(response));
-            }
-        });
-    }
-
-    @Override
     public CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken) {
         Request request = createGetUserDeviceRequest(deviceToken);
         try {
@@ -308,35 +260,6 @@ public class OkRestApiBackend implements RestApi {
         } catch (IOException e) {
             throw new CastleRuntimeException(e);
         }
-    }
-
-    @Override
-    public void sendGetUserDeviceRequestAsync(String deviceToken, final AsyncCallbackHandler<CastleUserDevice> callbackHandler) {
-        Request request = createGetUserDeviceRequest(deviceToken);
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callbackHandler.onException(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                callbackHandler.onResponse(extractDevice(response));
-            }
-        });
-    }
-
-    private JsonElement buildAuthenticatePayload(String event, String userId, JsonElement traitsPayload, JsonElement propertiesPayload) {
-        JsonObject json = new JsonObject();
-        json.add("event", new JsonPrimitive(event));
-        json.add("user_id", new JsonPrimitive(userId));
-        if (propertiesPayload != null) {
-            json.add("properties", propertiesPayload);
-        }
-        if (traitsPayload != null) {
-            json.add("traits", traitsPayload);
-        }
-        return json;
     }
 
     private Request createReviewRequest(String reviewId) {

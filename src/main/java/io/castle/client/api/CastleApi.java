@@ -250,17 +250,9 @@ public interface CastleApi {
 
     CastleUserDevice approve(String deviceToken);
 
-    void approveAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler);
-
     CastleUserDevice report(String deviceToken);
-
-    void reportAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler);
 
     CastleUserDevices userDevices(String userId);
 
-    void userDevicesAsync(String userId, AsyncCallbackHandler<CastleUserDevices> asyncCallbackHandler);
-
     CastleUserDevice device(String deviceToken);
-
-    void deviceAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> asyncCallbackHandler);
 }

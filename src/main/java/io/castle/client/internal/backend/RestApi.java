@@ -54,17 +54,9 @@ public interface RestApi {
 
     CastleUserDevice sendApproveDeviceRequestSync(String deviceToken);
 
-    void sendApproveDeviceRequestAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> callbackHandler);
-
     CastleUserDevice sendReportDeviceRequestSync(String deviceToken);
-
-    void sendReportDeviceRequestAsync(String deviceToken, AsyncCallbackHandler<CastleUserDevice> callbackHandler);
 
     CastleUserDevices sendGetUserDevicesRequestSync(String userId);
 
-    void sendGetUserDevicesRequestAsync(String userId, AsyncCallbackHandler<CastleUserDevices> callbackHandler);
-
     CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken);
-
-    void sendGetUserDeviceRequestAsync(String userId, AsyncCallbackHandler<CastleUserDevice> callbackHandler);
 }
