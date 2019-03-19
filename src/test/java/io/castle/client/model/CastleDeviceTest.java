@@ -1,7 +1,6 @@
-package io.castle.client;
+package io.castle.client.model;
 
 import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.model.CastleDevice;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
