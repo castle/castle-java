@@ -1,9 +1,13 @@
 package io.castle.client.internal.backend;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.model.ImpersonatePayload;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.internal.utils.VerdictTransportModel;
 import io.castle.client.model.*;
@@ -24,6 +28,7 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl reviewsBase;
     private final HttpUrl deviceBase;
     private final HttpUrl userBase;
+    private final HttpUrl impersonateBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
         HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
@@ -36,6 +41,7 @@ public class OkRestApiBackend implements RestApi {
         this.identify = baseUrl.resolve("/v1/identify");
         this.deviceBase = baseUrl.resolve("/v1/devices/");
         this.userBase = baseUrl.resolve("/v1/users/");
+        this.impersonateBase = baseUrl.resolve("/v1/impersonate");
     }
 
     @Override
@@ -262,6 +268,28 @@ public class OkRestApiBackend implements RestApi {
         }
     }
 
+    @Override
+    public String sendImpersonateStartRequestSync(String userId) {
+        Request request = createImpersonateStartRequest(userId);
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
+    }
+
+    @Override
+    public String sendImpersonateEndRequestSync(String userId) {
+        Request request = createImpersonateEndRequest(userId);
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
+    }
+
     private Request createReviewRequest(String reviewId) {
         HttpUrl reviewUrl = reviewsBase.resolve(reviewId);
         return new Request.Builder()
@@ -326,6 +354,32 @@ public class OkRestApiBackend implements RestApi {
         return new Request.Builder()
                 .url(getUserDeviceUrl)
                 .get()
+                .build();
+    }
+
+    private Request createImpersonateStartRequest(String userId) {
+        HttpUrl impersonateUrl = impersonateBase;
+
+        ImpersonatePayload payload = new ImpersonatePayload(userId, configuration, model);
+
+        RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
+
+        return new Request.Builder()
+                .url(impersonateUrl)
+                .post(body)
+                .build();
+    }
+
+    private Request createImpersonateEndRequest(String userId) {
+        HttpUrl impersonateUrl = impersonateBase;
+
+        ImpersonatePayload payload = new ImpersonatePayload(userId, configuration, model);
+
+        RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
+
+        return new Request.Builder()
+                .url(impersonateUrl)
+                .delete(body)
                 .build();
     }
 

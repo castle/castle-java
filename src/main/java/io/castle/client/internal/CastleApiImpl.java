@@ -243,6 +243,20 @@ public class CastleApiImpl implements CastleApi {
         return restApi.sendGetUserDeviceRequestSync(deviceToken);
     }
 
+    @Override
+    public String impersonateStart(String userId) {
+        Preconditions.checkNotNull(userId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendImpersonateStartRequestSync(userId);
+    }
+
+    @Override
+    public String impersonateEnd(String userId) {
+        Preconditions.checkNotNull(userId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendImpersonateEndRequestSync(userId);
+    }
+
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
         CastleMessage message = new CastleMessage(event);
 

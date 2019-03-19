@@ -255,4 +255,8 @@ public interface CastleApi {
     CastleUserDevices userDevices(String userId);
 
     CastleUserDevice device(String deviceToken);
+
+    String impersonateStart(String userId);
+
+    String impersonateEnd(String userId);
 }
