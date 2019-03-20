@@ -133,8 +133,8 @@ public class CastleContextBuilder {
     /**
      * Extract the clientId from the request.
      * If header 'X-Castle-Client-Id' is set use that value, if not use __cid cookie, if not use empty string ''
-     * @param request
-     * @return
+     * @param request HttpServletRequest to extract clientId from
+     * @return a string clientId
      */
     private String setClientIdFromHttpServletRequest(HttpServletRequest request) {
         String cid = request.getHeader("X-Castle-Client-Id");

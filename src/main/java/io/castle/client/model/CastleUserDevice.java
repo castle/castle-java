@@ -1,5 +1,8 @@
 package io.castle.client.model;
 
+/**
+ * Model of the device object returned in the body of the response of a device call to the Castle Api.
+ */
 public class CastleUserDevice {
     private String token;
     private double risk;

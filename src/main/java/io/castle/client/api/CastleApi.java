@@ -74,6 +74,7 @@ public interface CastleApi {
     /**
      * Makes a sync POST request to the authenticate endpoint containing required and optional parameters.
      * @param message Event parameters
+     * @return a verdict that might result from a successful call to the Castle API or from the client's
      */
     Verdict authenticate(CastleMessage message);
 
@@ -106,6 +107,8 @@ public interface CastleApi {
     /**
      * Makes an async POST request to the authenticate endpoint containing required and optional parameters.
      * @param message Event parameters
+     * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
+     *                             how to handle success of failure of authenticate API calls
      */
     void authenticateAsync(CastleMessage message, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
@@ -248,19 +251,63 @@ public interface CastleApi {
      */
     void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler);
 
+    /**
+     * Makes a sync POST request to the approve device endpoint.
+     *
+     * @param deviceToken string representing the device to approve
+     * @return device model object
+     */
     CastleUserDevice approve(String deviceToken);
 
+    /**
+     * Makes a sync POST request to the report device endpoint.
+     *
+     * @param deviceToken string representing the device to report
+     * @return device model object
+     */
     CastleUserDevice report(String deviceToken);
 
+    /**
+     *
+     * @param userId user unique ID
+     * @return devices model object
+     */
     CastleUserDevices userDevices(String userId);
 
+    /**
+     *
+     * @param deviceToken string representing the device to report
+     * @return device model object
+     */
     CastleUserDevice device(String deviceToken);
 
+    /**
+     *
+     * @param userId user unique ID
+     * @return
+     */
     String impersonateStart(String userId);
 
+    /**
+     *
+     * @param userId user unique ID
+     * @param impersonator user unique ID
+     * @return
+     */
     String impersonateStart(String userId, String impersonator);
 
+    /**
+     *
+     * @param userId user unique ID
+     * @return
+     */
     String impersonateEnd(String userId);
 
+    /**
+     *
+     * @param userId user unique ID
+     * @param impersonator user unique ID
+     * @return
+     */
     String impersonateEnd(String userId, String impersonator);
 }
