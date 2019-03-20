@@ -11,7 +11,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.1-SNAPSHOT</version>
         </dependency>
 ```
 
@@ -87,6 +87,17 @@ castle.client().track(CastleMessage.builder("$login.succeeded")
         .build())
     .build()
 );
+```
+By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastleContextBuilder` method `ip`.
+
+**Example**
+
+```java
+Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .ip(req.getHeader("X-Forwarded-For"))
+    .build();
 ```
 
 ## Authenticating events
@@ -296,7 +307,7 @@ log_http=false
 
 ## Secure Mode
 
-See the documentation on [secure mode](https://castle.io/docs/secure_mode) in order to learn more.
+See the documentation on [secure mode](https://castle.io/docs/securing_requests) in order to learn more.
 
 In order to enable secure mode using Castle.js, use the
 `io.castle.client.Castle#secureUserID` method whenever there is a need to make an identify call

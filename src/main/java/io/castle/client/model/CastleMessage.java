@@ -25,7 +25,7 @@ public class CastleMessage {
     * @param  event Name of the event to send
     */
     public CastleMessage(String event) {
-        this.event = event;
+        setEvent(event);
     }
 
     public CastleContext getContext() {

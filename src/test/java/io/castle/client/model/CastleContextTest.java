@@ -31,6 +31,25 @@ public class CastleContextTest {
     }
 
     @Test
+    public void booleanContextValues() throws JSONException {
+        //given
+        CastleContext aContext = new CastleContext();
+        aContext.setClientId(true);
+        aContext.setUserAgent(true);
+
+        //when
+        String contextJson = model.getGson().toJson(aContext);
+
+        //Then generated json match the api contract
+        String expectedJson = "{\"active\":true," +
+                "\"client_id\":true," +
+                "" + SDKVersion.getLibraryString() +"," +
+                "\"user_agent\":true}";
+
+        JSONAssert.assertEquals(expectedJson, contextJson, true);
+    }
+
+    @Test
     public void completeContextJsonSpec() throws JSONException {
 
         //given
@@ -172,7 +191,7 @@ public class CastleContextTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyContextInstance() {
 
         // given
-        String expected = "CastleContext{active=true, device=null, clientId='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() +"'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
+        String expected = "CastleContext{active=true, device=null, clientId='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
         CastleContext context = new CastleContext();
 
         //when
@@ -185,8 +204,6 @@ public class CastleContextTest {
 
     @Test
     public void toStringMethodCreatesAWellFormedStringFromAFullExample() throws JSONException {
-
-
         //given
         CastleContext aContext = new CastleContext();
 
@@ -265,7 +282,7 @@ public class CastleContextTest {
                 "page=CastlePage{path='p_path', referrer='p_referrer', search='p_search', title='p_title', url='p_url'}, " +
                 "referrer=CastleReferrer{id='r_id', type='r_type'}, " +
                 "headers=CastleHeaders{headers=[CastleHeader{key='key1', value='value1'}, CastleHeader{key='key2', value='value2'}]}, " +
-                "library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() +"'}, " +
+                "library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, " +
                 "location=CastleLocation{city='l_city', country='l_country', latitude=10, longitude=10, speed=0}, " +
                 "network=CastleNetwork{bluetooth=true, cellular=true, carrier='n_carrier', wifi=true}, " +
                 "os=CastleOS{name='o_name', version='0_version'}, " +

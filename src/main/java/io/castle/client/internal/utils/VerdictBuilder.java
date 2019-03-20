@@ -8,6 +8,7 @@ public class VerdictBuilder {
     private String userId;
     private boolean failover;
     private String failoverReason;
+    private String deviceToken;
 
     private VerdictBuilder() {
     }
@@ -33,12 +34,18 @@ public class VerdictBuilder {
         return this;
     }
 
+    public VerdictBuilder withDeviceToken(final String deviceToken) {
+        this.deviceToken = deviceToken;
+        return this;
+    }
+
     public Verdict build() {
         Verdict verdict = new Verdict();
         verdict.setAction(action);
         verdict.setUserId(userId);
         verdict.setFailover(failover);
         verdict.setFailoverReason(failoverReason);
+        verdict.setDeviceToken(deviceToken);
         return verdict;
     }
 
@@ -55,8 +62,9 @@ public class VerdictBuilder {
 
     public static Verdict fromTransport(VerdictTransportModel transport) {
         return success()
-                .withAction(transport.getAction())
-                .withUserId(transport.getUserId())
-                .build();
+            .withAction(transport.getAction())
+            .withUserId(transport.getUserId())
+            .withDeviceToken(transport.getDeviceToken())
+            .build();
     }
 }

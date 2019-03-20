@@ -6,6 +6,7 @@ public class VerdictTransportModel {
 
     private AuthenticateAction action;
     private String userId;
+    private String deviceToken;
 
     public AuthenticateAction getAction() {
         return action;
@@ -21,5 +22,9 @@ public class VerdictTransportModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
     }
 }
