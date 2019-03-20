@@ -2,9 +2,7 @@ package io.castle.client.internal.backend;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.Review;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 
 public interface RestApi {
     /**
@@ -53,4 +51,56 @@ public interface RestApi {
      * @param callbackHandler callback to handle the Review value returned by the API
      */
     void sendReviewRequestAsync(String reviewId, AsyncCallbackHandler<Review> callbackHandler);
+
+    /**
+     * Sync call to the approve device endpoint.
+     *
+     * @param deviceToken string representing the token for the device to get
+     * @return a {@code device} with metadata contained in the body of the response
+     */
+    CastleUserDevice sendApproveDeviceRequestSync(String deviceToken);
+
+    /**
+     * Sync call to the report device endpoint.
+     *
+     * @param deviceToken string representing the token for the device to get
+     * @return a {@code device} with metadata contained in the body of the response
+     */
+    CastleUserDevice sendReportDeviceRequestSync(String deviceToken);
+
+    /**
+     * Sync call to the devices endpoint.
+     *
+     * @param userId string representing the user to get devices for
+     * @return a {@code devices} with metadata contained in the body of the response
+     */
+    CastleUserDevices sendGetUserDevicesRequestSync(String userId);
+
+    /**
+     * Sync call to the device endpoint.
+     *
+     * @param deviceToken string representing the token for the device to get
+     * @return a {@code device} with metadata contained in the body of the response
+     */
+    CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken);
+
+    /**
+     * Sync call to the impersonate endpoint.
+     *
+     * @param userId id of the user to impersonate
+     * @param impersonator id of the user doing the impersonation
+     * @param contextJson context json
+     * @return a success message
+     */
+    String sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson);
+
+    /**
+     * Sync call to the impersonate endpoint.
+     *
+     * @param userId id of the user to stop impersonating
+     * @param impersonator id of the user doing the impersonation
+     * @param contextJson context json
+     * @return a success message
+     */
+    String sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson);
 }

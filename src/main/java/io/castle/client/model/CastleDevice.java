@@ -82,6 +82,10 @@ public class CastleDevice {
             device.setType(type);
             return this;
         }
+
+        public CastleDevice build() {
+            return device;
+        }
     }
 
     @Override

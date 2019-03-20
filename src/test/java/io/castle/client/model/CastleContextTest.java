@@ -31,6 +31,25 @@ public class CastleContextTest {
     }
 
     @Test
+    public void booleanContextValues() throws JSONException {
+        //given
+        CastleContext aContext = new CastleContext();
+        aContext.setClientId(true);
+        aContext.setUserAgent(true);
+
+        //when
+        String contextJson = model.getGson().toJson(aContext);
+
+        //Then generated json match the api contract
+        String expectedJson = "{\"active\":true," +
+                "\"client_id\":true," +
+                "" + SDKVersion.getLibraryString() +"," +
+                "\"user_agent\":true}";
+
+        JSONAssert.assertEquals(expectedJson, contextJson, true);
+    }
+
+    @Test
     public void completeContextJsonSpec() throws JSONException {
 
         //given
@@ -185,8 +204,6 @@ public class CastleContextTest {
 
     @Test
     public void toStringMethodCreatesAWellFormedStringFromAFullExample() throws JSONException {
-
-
         //given
         CastleContext aContext = new CastleContext();
 

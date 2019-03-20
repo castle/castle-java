@@ -1,15 +1,16 @@
 package io.castle.client.internal.backend;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.model.ImpersonatePayload;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.internal.utils.VerdictTransportModel;
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.Review;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl authenticate;
     private final HttpUrl identify;
     private final HttpUrl reviewsBase;
+    private final HttpUrl deviceBase;
+    private final HttpUrl userBase;
+    private final HttpUrl impersonateBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
         HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
@@ -35,6 +39,9 @@ public class OkRestApiBackend implements RestApi {
         this.authenticate = baseUrl.resolve("/v1/authenticate");
         this.reviewsBase = baseUrl.resolve("/v1/reviews/");
         this.identify = baseUrl.resolve("/v1/identify");
+        this.deviceBase = baseUrl.resolve("/v1/devices/");
+        this.userBase = baseUrl.resolve("/v1/users/");
+        this.impersonateBase = baseUrl.resolve("/v1/impersonate");
     }
 
     @Override
@@ -217,17 +224,70 @@ public class OkRestApiBackend implements RestApi {
         });
     }
 
-    private JsonElement buildAuthenticatePayload(String event, String userId, JsonElement traitsPayload, JsonElement propertiesPayload) {
-        JsonObject json = new JsonObject();
-        json.add("event", new JsonPrimitive(event));
-        json.add("user_id", new JsonPrimitive(userId));
-        if (propertiesPayload != null) {
-            json.add("properties", propertiesPayload);
+    @Override
+    public CastleUserDevice sendApproveDeviceRequestSync(String deviceToken) {
+        Request request = createApproveDeviceRequest(deviceToken);
+        try {
+            Response response = client.newCall(request).execute();
+            return extractDevice(response);
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
         }
-        if (traitsPayload != null) {
-            json.add("traits", traitsPayload);
+    }
+
+    @Override
+    public CastleUserDevice sendReportDeviceRequestSync(String deviceToken) {
+        Request request = createReportDeviceRequest(deviceToken);
+        try {
+            Response response = client.newCall(request).execute();
+            return extractDevice(response);
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
         }
-        return json;
+    }
+
+    @Override
+    public CastleUserDevices sendGetUserDevicesRequestSync(String userId) {
+        Request request = createGetUserDevicesRequest(userId);
+        try {
+            Response response = client.newCall(request).execute();
+            return extractDevices(response);
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
+    }
+
+    @Override
+    public CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken) {
+        Request request = createGetUserDeviceRequest(deviceToken);
+        try {
+            Response response = client.newCall(request).execute();
+            return extractDevice(response);
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
+    }
+
+    @Override
+    public String sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson) {
+        Request request = createImpersonateStartRequest(userId, impersonator, contextJson);
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
+    }
+
+    @Override
+    public String sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson) {
+        Request request = createImpersonateEndRequest(userId, impersonator, contextJson);
+        try {
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
     }
 
     private Request createReviewRequest(String reviewId) {
@@ -245,6 +305,86 @@ public class OkRestApiBackend implements RestApi {
             return gson.fromJson(jsonResponse, Review.class);
         }
         throw new IOException("HTTP request failure");
+    }
+
+    private CastleUserDevice extractDevice(Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String jsonResponse = response.body().string();
+            Gson gson = model.getGson();
+            return gson.fromJson(jsonResponse, CastleUserDevice.class);
+        }
+        throw new IOException("HTTP request failure");
+    }
+
+    private CastleUserDevices extractDevices(Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String jsonResponse = response.body().string();
+            Gson gson = model.getGson();
+            return gson.fromJson(jsonResponse, CastleUserDevices.class);
+        }
+        throw new IOException("HTTP request failure");
+    }
+
+    private Request createApproveDeviceRequest(String deviceToken) {
+        HttpUrl approveDeviceUrl = deviceBase.resolve(deviceToken + "/approve");
+        return new Request.Builder()
+                .url(approveDeviceUrl)
+                .put(createEmptyRequestBody())
+                .build();
+    }
+
+    private Request createReportDeviceRequest(String deviceToken) {
+        HttpUrl reportDeviceUrl = deviceBase.resolve(deviceToken + "/report");
+        return new Request.Builder()
+                .url(reportDeviceUrl)
+                .put(createEmptyRequestBody())
+                .build();
+    }
+
+    private Request createGetUserDevicesRequest(String userId) {
+        HttpUrl getUserDevicesUrl = userBase.resolve(userId + "/devices");
+        return new Request.Builder()
+                .url(getUserDevicesUrl)
+                .get()
+                .build();
+    }
+
+    private Request createGetUserDeviceRequest(String deviceToken) {
+        HttpUrl getUserDeviceUrl = deviceBase.resolve(deviceToken);
+        return new Request.Builder()
+                .url(getUserDeviceUrl)
+                .get()
+                .build();
+    }
+
+    private Request createImpersonateStartRequest(String userId, String impersonator, JsonObject contextJson) {
+        HttpUrl impersonateUrl = impersonateBase;
+
+        ImpersonatePayload payload = new ImpersonatePayload(userId, impersonator, contextJson);
+
+        RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
+
+        return new Request.Builder()
+                .url(impersonateUrl)
+                .post(body)
+                .build();
+    }
+
+    private Request createImpersonateEndRequest(String userId, String impersonator, JsonObject contextJson) {
+        HttpUrl impersonateUrl = impersonateBase;
+
+        ImpersonatePayload payload = new ImpersonatePayload(userId, impersonator, contextJson);
+
+        RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
+
+        return new Request.Builder()
+                .url(impersonateUrl)
+                .delete(body)
+                .build();
+    }
+
+    private RequestBody createEmptyRequestBody() {
+        return RequestBody.create(null, new byte[0]);
     }
 
     private String responseErrorMessage(Integer code, String message, String response) {
