@@ -66,7 +66,7 @@ public class CastleDeviceHttpTest extends AbstractCastleHttpLayerTest {
         String deviceToken = "deviceToken";
 
         //when a review request is made
-        sdk.onRequest(request).review(deviceToken);
+        sdk.onRequest(request).device(deviceToken);
 
     }
 }
