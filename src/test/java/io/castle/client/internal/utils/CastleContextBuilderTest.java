@@ -3,10 +3,7 @@ package io.castle.client.internal.utils;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.model.CastleContext;
-import io.castle.client.model.CastleHeader;
-import io.castle.client.model.CastleHeaders;
-import io.castle.client.model.CastleSdkConfigurationException;
+import io.castle.client.model.*;
 import io.castle.client.utils.SDKVersion;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
@@ -39,7 +36,9 @@ public class CastleContextBuilderTest {
         CastleContext standardContext = getStandardContext();
 
         //When
-        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+        CastleContext context = builder.fromHttpServletRequest(standardRequest)
+                .device(getStandardDevice())
+                .build();
 
         //Then
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
@@ -55,16 +54,20 @@ public class CastleContextBuilderTest {
                 .withCastleAppId("anyValidAppId")
                 .withBlackListHeaders("Cookie", acceptLanguageHeader)
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model)
+                .device(getStandardDevice());
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context without the accept-language header
         CastleContext standardContext = getStandardContext();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
-        listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
-        listOfHeaders.add(new CastleHeader(acceptHeader, accept));
-        listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
-        listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
+        for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
+            if (!header.getKey().equals("Cookie") && !header.getKey().equals(acceptLanguageHeader)) {
+                listOfHeaders.add(header);
+            } else {
+                listOfHeaders.add(new CastleHeader(header.getKey(), "true"));
+            }
+        }
         standardContext.getHeaders().setHeaders(listOfHeaders);
 
         //When
@@ -88,13 +91,22 @@ public class CastleContextBuilderTest {
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
-        //And a expected castle context without any header
-        CastleContext standardContext = getStandardContext();
+        //And a expected castle context
+        CastleContext standardContext = getStandardScrubbedContext();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
+        for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
+            if (!header.getKey().equals(connectionHeader)) {
+                listOfHeaders.add(header);
+            } else {
+                listOfHeaders.add(new CastleHeader(header.getKey(), "true"));
+            }
+        }
         standardContext.getHeaders().setHeaders(listOfHeaders);
 
         //When
-        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+        CastleContext context = builder.fromHttpServletRequest(standardRequest)
+                .device(getStandardDevice())
+                .build();
 
         //Then
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
@@ -111,14 +123,17 @@ public class CastleContextBuilderTest {
                 .withDefaultBlacklist()
                 .withWhiteListHeaders(connectionHeader)
                 .build();
-        CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
+        CastleContextBuilder builder = new CastleContextBuilder(configuration, model)
+                .device(getStandardDevice());
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context with a single whitelisted header
-        CastleContext standardContext = getStandardContext();
-        List<CastleHeader> listOfHeaders = new ArrayList<>();
-        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
-        standardContext.getHeaders().setHeaders(listOfHeaders);
+        CastleContext standardContext = getStandardScrubbedContext();
+        for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
+            if (header.getKey().equals(connectionHeader)) {
+                header.setValue(connection);
+            }
+        }
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
@@ -146,13 +161,13 @@ public class CastleContextBuilderTest {
         //And a custom castle header
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
-
         //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContext();
-        standardContext.setClientId("valueFromHeaders");
+        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
 
         //When
-        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+        CastleContext context = builder.fromHttpServletRequest(standardRequest)
+                .device(getStandardDevice())
+                .build();
 
         //Then
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
@@ -174,13 +189,13 @@ public class CastleContextBuilderTest {
         //And a custom castle header
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
-
         //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContext();
-        standardContext.setClientId("valueFromHeaders");
+        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
 
         //When
-        CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
+        CastleContext context = builder.fromHttpServletRequest(standardRequest)
+                .device(getStandardDevice())
+                .build();
 
         //Then
         Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
@@ -199,6 +214,7 @@ public class CastleContextBuilderTest {
             .userAgent(userAgent)
             .headers(getStandardCastleHeaders())
             .ip(ip)
+            .device(getStandardDevice())
             .build();
         // And
         CastleContext standardContext = getStandardContext();
@@ -220,6 +236,7 @@ public class CastleContextBuilderTest {
         // When
         String json = new CastleContextBuilder(configuration, model)
             .fromHttpServletRequest(standardRequest)
+            .device(getStandardDevice())
             .toJson();
 
         CastleContext context = new CastleContextBuilder(configuration, model)
@@ -242,10 +259,28 @@ public class CastleContextBuilderTest {
                 .add("User-Agent", "ua")
                 .build()
             )
+            .device(getStandardDevice())
             .toJson();
 
         // Then
-        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
+        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"},\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
+    }
+
+    @Test
+    public void booleanContextValues() throws JSONException, CastleSdkConfigurationException {
+        //given
+        CastleConfiguration configuration = CastleConfigurationBuilder
+                .defaultConfigBuilder()
+                .withApiSecret("abcd")
+                .build();
+        String contextJson = new CastleContextBuilder(configuration, model)
+                .clientId(true)
+                .userAgent(true)
+                .active(false)
+                .toJson();
+
+        // Then
+        JSONAssert.assertEquals(contextJson, "{\"active\":false,\"client_id\":true,\"user_agent\":true," + SDKVersion.getLibraryString() + "}", false);
     }
 
     @Test
@@ -308,16 +343,15 @@ public class CastleContextBuilderTest {
 
     private List<CastleHeader> getStandardHeaders() {
         List<CastleHeader> listOfHeaders = new ArrayList<>();
+        listOfHeaders.add(new CastleHeader(keyControlCache, valueControlCache));
         listOfHeaders.add(new CastleHeader(userAgentHeader, userAgent));
         listOfHeaders.add(new CastleHeader(acceptHeader, accept));
         listOfHeaders.add(new CastleHeader(acceptLanguageHeader, acceptLanguage));
         listOfHeaders.add(new CastleHeader(acceptEncodingHeader, acceptEncoding));
+        listOfHeaders.add(new CastleHeader(headerHost, hostValue));
+        listOfHeaders.add(new CastleHeader(refererHeader, referer));
+        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
         listOfHeaders.add(new CastleHeader(cgiSpecHeaderName, ip));
-//        listOfHeaders.add(new CastleHeader(keyControlCache, valueControlCache));
-//        listOfHeaders.add(new CastleHeader(customClientIdHeader, clientId));
-//        listOfHeaders.add(new CastleHeader(headerHost, hostValue));
-//        listOfHeaders.add(new CastleHeader(refererHeader, referer));
-//        listOfHeaders.add(new CastleHeader(connectionHeader, connection));
         return listOfHeaders;
     }
 
@@ -331,8 +365,42 @@ public class CastleContextBuilderTest {
         CastleContext expectedContext = new CastleContext();
         expectedContext.setHeaders(getStandardCastleHeaders());
         expectedContext.setUserAgent(userAgent);
+        expectedContext.setDevice(getStandardDevice());
         expectedContext.setIp(ip);
+
         return expectedContext;
     }
 
+    private CastleDevice getStandardDevice() {
+        CastleDevice device = new CastleDevice();
+        device.setId("d_id");
+        device.setName("d_name");
+        device.setType("d_type");
+        device.setManufacturer("d_manufacturer");
+        device.setModel("d_model");
+
+        return device;
+    }
+
+    public CastleContext getStandardContextWithClientId(String clientId) {
+        CastleContext expectedContext = getStandardContext();
+        expectedContext.setClientId(clientId);
+        List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
+        listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, clientId));
+        expectedContext.getHeaders().setHeaders(listOfHeaders);
+
+        return expectedContext;
+    }
+
+    public CastleContext getStandardScrubbedContext() {
+        CastleContext expectedContext = getStandardContext();
+
+        List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
+        for (CastleHeader header : listOfHeaders) {
+            header.setValue("true");
+        }
+        expectedContext.getHeaders().setHeaders(listOfHeaders);
+
+        return expectedContext;
+    }
 }
