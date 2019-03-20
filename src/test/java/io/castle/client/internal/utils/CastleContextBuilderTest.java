@@ -292,11 +292,11 @@ public class CastleContextBuilderTest {
                 .build();
 
         MockHttpServletRequest standardRequest = getStandardRequestMock();
-        standardRequest.addHeader("X-Forwarded-For", "1.1.1.1");
-        standardRequest.addHeader("CF-Connecting-IP", "2.2.2.2");
+        standardRequest.addHeader("X-Forwarded-For", "1.1.1.1,2.2.2.2,3.3.3.3");
+        standardRequest.addHeader("CF-Connecting-IP", "4.4.4.4");
 
         CastleContext standardContext = getStandardContext();
-        standardContext.setIp("1.1.1.1");
+        standardContext.setIp("1.1.1.1,2.2.2.2,3.3.3.3");
 
         CastleContext context = new CastleContextBuilder(configuration, model)
                 .fromHttpServletRequest(standardRequest)
