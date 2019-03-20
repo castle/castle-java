@@ -60,7 +60,7 @@ public interface RestApi {
 
     CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken);
 
-    String sendImpersonateStartRequestSync(String userId);
+    String sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson);
 
-    String sendImpersonateEndRequestSync(String userId);
+    String sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson);
 }

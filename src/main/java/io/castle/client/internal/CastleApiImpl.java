@@ -247,14 +247,30 @@ public class CastleApiImpl implements CastleApi {
     public String impersonateStart(String userId) {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.sendImpersonateStartRequestSync(userId);
+        return restApi.sendImpersonateStartRequestSync(userId, null, contextJson);
+    }
+
+    @Override
+    public String impersonateStart(String userId, String impersonator) {
+        Preconditions.checkNotNull(userId);
+        Preconditions.checkNotNull(impersonator);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendImpersonateStartRequestSync(userId, impersonator, contextJson);
     }
 
     @Override
     public String impersonateEnd(String userId) {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.sendImpersonateEndRequestSync(userId);
+        return restApi.sendImpersonateEndRequestSync(userId, "", contextJson);
+    }
+
+    @Override
+    public String impersonateEnd(String userId, String impersonator) {
+        Preconditions.checkNotNull(userId);
+        Preconditions.checkNotNull(impersonator);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendImpersonateEndRequestSync(userId, impersonator, contextJson);
     }
 
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {

@@ -269,8 +269,8 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public String sendImpersonateStartRequestSync(String userId) {
-        Request request = createImpersonateStartRequest(userId);
+    public String sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson) {
+        Request request = createImpersonateStartRequest(userId, impersonator, contextJson);
         try {
             Response response = client.newCall(request).execute();
             return response.body().string();
@@ -280,8 +280,8 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public String sendImpersonateEndRequestSync(String userId) {
-        Request request = createImpersonateEndRequest(userId);
+    public String sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson) {
+        Request request = createImpersonateEndRequest(userId, impersonator, contextJson);
         try {
             Response response = client.newCall(request).execute();
             return response.body().string();
@@ -357,10 +357,10 @@ public class OkRestApiBackend implements RestApi {
                 .build();
     }
 
-    private Request createImpersonateStartRequest(String userId) {
+    private Request createImpersonateStartRequest(String userId, String impersonator, JsonObject contextJson) {
         HttpUrl impersonateUrl = impersonateBase;
 
-        ImpersonatePayload payload = new ImpersonatePayload(userId, configuration, model);
+        ImpersonatePayload payload = new ImpersonatePayload(userId, impersonator, contextJson);
 
         RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
 
@@ -370,10 +370,10 @@ public class OkRestApiBackend implements RestApi {
                 .build();
     }
 
-    private Request createImpersonateEndRequest(String userId) {
+    private Request createImpersonateEndRequest(String userId, String impersonator, JsonObject contextJson) {
         HttpUrl impersonateUrl = impersonateBase;
 
-        ImpersonatePayload payload = new ImpersonatePayload(userId, configuration, model);
+        ImpersonatePayload payload = new ImpersonatePayload(userId, impersonator, contextJson);
 
         RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
 

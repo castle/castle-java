@@ -1,15 +1,21 @@
 package io.castle.client.model;
 
-import io.castle.client.internal.config.CastleConfiguration;
-import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.internal.utils.CastleContextBuilder;
+import com.google.gson.JsonObject;
 
 public class ImpersonatePayload {
     private final String userId;
-    private final CastleContext context;
+    private final String impersonator;
+    private final JsonObject context;
 
-    public ImpersonatePayload(String userId, CastleConfiguration configuration, CastleGsonModel model) {
+    public ImpersonatePayload(String userId, String impersonator, JsonObject contextJson) {
         this.userId = userId;
-        this.context = new CastleContextBuilder(configuration, model).build();
+        this.impersonator = impersonator;
+        this.context = contextJson;
+    }
+
+    public ImpersonatePayload(String userId, JsonObject contextJson) {
+        this.userId = userId;
+        this.impersonator = null;
+        this.context = contextJson;
     }
 }

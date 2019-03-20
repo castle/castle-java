@@ -258,5 +258,9 @@ public interface CastleApi {
 
     String impersonateStart(String userId);
 
+    String impersonateStart(String userId, String impersonator);
+
     String impersonateEnd(String userId);
+
+    String impersonateEnd(String userId, String impersonator);
 }
