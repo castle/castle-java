@@ -17,12 +17,23 @@ public class CastleMessageTest {
     public void jsonSerialized() {
         // Given
         CastleMessage message = new CastleMessage("event");
+        message.setCreatedAt("2018-01-01");
+        message.setTimestamp("2018-01-01");
+        message.setDeviceToken("1234");
+        message.setReviewId("2345");
+        message.setProperties(ImmutableMap.builder()
+                .put("key", "val")
+                .build());
+        message.setUserId("3456");
+        message.setUserTraits(ImmutableMap.builder()
+                .put("key", "val")
+                .build());
 
         // When
         String payloadJson = model.getGson().toJson(message);
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"event\":\"event\"}");
+        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
     }
 
     @Test
@@ -30,6 +41,7 @@ public class CastleMessageTest {
         // Given
         CastleMessage message = CastleMessage.builder("event")
             .createdAt("2018-01-01")
+            .timestamp("2018-01-01")
             .deviceToken("1234")
             .reviewId("2345")
             .properties(ImmutableMap.builder()
@@ -57,7 +69,7 @@ public class CastleMessageTest {
         String payloadJson = model.getGson().toJson(message);
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
+        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
     }
 
     @Test

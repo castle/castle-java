@@ -1,5 +1,6 @@
 package io.castle.client.model;
 
+import com.google.common.collect.ImmutableMap;
 import io.castle.client.internal.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

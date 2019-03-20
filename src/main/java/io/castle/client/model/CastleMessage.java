@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 public class CastleMessage {
     private transient CastleContext context;
     private String createdAt;
+    private String timestamp;
     private String deviceToken;
     @Nonnull private String event;
     /**
@@ -35,12 +36,28 @@ public class CastleMessage {
         this.context = context;
     }
 
+    /**
+     * @deprecated use {@link #getTimestamp()} instead.
+     */
+    @Deprecated
     public String getCreatedAt() {
         return createdAt;
     }
 
+    /**
+     * @deprecated use {@link #setTimestamp(String)} instead.
+     */
+    @Deprecated
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getDeviceToken() {
@@ -123,8 +140,17 @@ public class CastleMessage {
             return this;
         }
 
+        /**
+         * @deprecated use {@link #timestamp(String)} instead.
+         */
+        @Deprecated
         public Builder createdAt(String createdAt) {
             payload.setCreatedAt(createdAt);
+            return this;
+        }
+
+        public Builder timestamp(String timestamp) {
+            payload.setTimestamp(timestamp);
             return this;
         }
 
