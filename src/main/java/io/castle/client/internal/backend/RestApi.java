@@ -77,6 +77,14 @@ public interface RestApi {
     CastleUserDevices sendGetUserDevicesRequestSync(String userId);
 
     /**
+     * Sync call to archive devices endpoint
+     *
+     * @param userId  string representing the user to archive devices for
+     * @return a {@code user} with metadata contained in the body of the response
+     */
+    CastleUser sendArchiveUserDevicesRequestSync(String userId);
+
+    /**
      * Sync call to the device endpoint.
      *
      * @param deviceToken string representing the token for the device to get
