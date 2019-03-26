@@ -75,7 +75,16 @@ public class CastleContextBuilder {
         context.setClientId(setClientIdFromHttpServletRequest(request));
         this.headers = setCastleHeadersFromHttpServletRequest(request);
         context.setUserAgent(request.getHeader("User-Agent"));
+
         context.setIp(request.getRemoteAddr());
+        if (configuration.getIpHeaders() != null) {
+            for (String header : configuration.getIpHeaders()) {
+                if (request.getHeader(header) != null) {
+                    context.setIp(request.getHeader(header));
+                    break;
+                }
+            }
+        }
         return this;
     }
 

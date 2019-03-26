@@ -14,6 +14,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -280,6 +281,29 @@ public class CastleContextBuilderTest {
 
         // Then
         JSONAssert.assertEquals(contextJson, "{\"active\":false,\"client_id\":true,\"user_agent\":true," + SDKVersion.getLibraryString() + "}", false);
+    }
+
+    @Test
+    public void withCustomIPHeaders() throws CastleSdkConfigurationException, JSONException {
+        // Given
+        CastleConfiguration configuration = CastleConfigurationBuilder.defaultConfigBuilder()
+                .apiSecret("abcd")
+                .ipHeaders(Arrays.asList("X-Forwarded-For", "CF-Connecting-IP"))
+                .build();
+
+        MockHttpServletRequest standardRequest = getStandardRequestMock();
+        standardRequest.addHeader("X-Forwarded-For", "1.1.1.1,2.2.2.2,3.3.3.3");
+        standardRequest.addHeader("CF-Connecting-IP", "4.4.4.4");
+
+        CastleContext standardContext = getStandardContext();
+        standardContext.setIp("1.1.1.1,2.2.2.2,3.3.3.3");
+
+        CastleContext context = new CastleContextBuilder(configuration, model)
+                .fromHttpServletRequest(standardRequest)
+                .build();
+
+        //Then
+        Assertions.assertThat(context.getIp()).isEqualTo(standardContext.getIp());
     }
 
     private String valueControlCache = "max-age=0";
