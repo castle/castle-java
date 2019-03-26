@@ -268,6 +268,7 @@ public interface CastleApi {
     CastleUserDevice report(String deviceToken);
 
     /**
+     * Makes a sync GET request to the user devices endpoint.
      *
      * @param userId user unique ID
      * @return devices model object
@@ -275,6 +276,7 @@ public interface CastleApi {
     CastleUserDevices userDevices(String userId);
 
     /**
+     * Makes a sync GET request to the device endpoint.
      *
      * @param deviceToken string representing the device to report
      * @return device model object
@@ -282,6 +284,7 @@ public interface CastleApi {
     CastleUserDevice device(String deviceToken);
 
     /**
+     * Makes a sync POST request to the impersonate endpoint.
      *
      * @param userId user unique ID
      * @return
@@ -289,6 +292,7 @@ public interface CastleApi {
     String impersonateStart(String userId);
 
     /**
+     * Makes a sync POST request to the impersonate endpoint.
      *
      * @param userId user unique ID
      * @param impersonator user unique ID
@@ -297,6 +301,7 @@ public interface CastleApi {
     String impersonateStart(String userId, String impersonator);
 
     /**
+     * Makes a sync DELETE request to the impersonate endpoint.
      *
      * @param userId user unique ID
      * @return
@@ -304,6 +309,7 @@ public interface CastleApi {
     String impersonateEnd(String userId);
 
     /**
+     * Makes a sync DELETE request to the impersonate endpoint.
      *
      * @param userId user unique ID
      * @param impersonator user unique ID
