@@ -269,22 +269,22 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public String sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson) {
+    public CastleSuccess sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson) {
         Request request = createImpersonateStartRequest(userId, impersonator, contextJson);
         try {
             Response response = client.newCall(request).execute();
-            return response.body().string();
+            return extractSuccess(response);
         } catch (IOException e) {
             throw new CastleRuntimeException(e);
         }
     }
 
     @Override
-    public String sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson) {
+    public CastleSuccess sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson) {
         Request request = createImpersonateEndRequest(userId, impersonator, contextJson);
         try {
             Response response = client.newCall(request).execute();
-            return response.body().string();
+            return extractSuccess(response);
         } catch (IOException e) {
             throw new CastleRuntimeException(e);
         }
@@ -321,6 +321,15 @@ public class OkRestApiBackend implements RestApi {
             String jsonResponse = response.body().string();
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleUserDevices.class);
+        }
+        throw new IOException("HTTP request failure");
+    }
+
+    private CastleSuccess extractSuccess(Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String jsonResponse = response.body().string();
+            Gson gson = model.getGson();
+            return gson.fromJson(jsonResponse, CastleSuccess.class);
         }
         throw new IOException("HTTP request failure");
     }

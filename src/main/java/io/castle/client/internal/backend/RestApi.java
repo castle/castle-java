@@ -92,7 +92,7 @@ public interface RestApi {
      * @param contextJson context json
      * @return a success message
      */
-    String sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson);
+    CastleSuccess sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson);
 
     /**
      * Sync call to the impersonate endpoint.
@@ -102,5 +102,5 @@ public interface RestApi {
      * @param contextJson context json
      * @return a success message
      */
-    String sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson);
+    CastleSuccess sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson);
 }
