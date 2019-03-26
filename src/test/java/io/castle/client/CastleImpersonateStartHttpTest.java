@@ -1,9 +1,6 @@
 package io.castle.client;
 
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.CastleUserDevice;
+import io.castle.client.model.*;
 import io.castle.client.utils.DeviceUtils;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -31,17 +28,18 @@ public class CastleImpersonateStartHttpTest extends AbstractCastleHttpLayerTest 
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And an devices request is made
-        String result = sdk.onRequest(request).impersonateStart("userId");
+        CastleSuccess result = sdk.onRequest(request).impersonateStart("userId");
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals(testServerBaseUrl.resolve("v1/impersonate"), recordedRequest.getRequestUrl());
         Assert.assertEquals("POST", recordedRequest.getMethod());
 
-        // and the correct Review model object is extracted
-        //CastleUserDevice expected = DeviceUtils.createExpectedDevice();
+        // and the correct Success model object is extracted
+        CastleSuccess expected = new CastleSuccess();
+        expected.setSuccess(true);
 
-        //Assertions.assertThat(result).isEqualToComparingFieldByFieldRecursively(expected);
+        Assertions.assertThat(result).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
     @Test(expected = CastleRuntimeException.class)
