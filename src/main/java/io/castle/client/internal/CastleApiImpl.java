@@ -237,6 +237,13 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public CastleUser archiveUserDevices(String userId) {
+        Preconditions.checkNotNull(userId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendArchiveUserDevicesRequestSync(userId);
+    }
+
+    @Override
     public CastleUserDevice device(String deviceToken) {
         Preconditions.checkNotNull(deviceToken);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();

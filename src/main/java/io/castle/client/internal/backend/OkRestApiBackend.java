@@ -258,6 +258,17 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
+    public CastleUser sendArchiveUserDevicesRequestSync(String userId) {
+        Request request = createArchiveUserDevicesRequest(userId);
+        try {
+            Response response = client.newCall(request).execute();
+            return extractUser(response);
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
+    }
+
+    @Override
     public CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken) {
         Request request = createGetUserDeviceRequest(deviceToken);
         try {
@@ -334,6 +345,15 @@ public class OkRestApiBackend implements RestApi {
         throw new IOException("HTTP request failure");
     }
 
+    private CastleUser extractUser(Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String jsonResponse = response.body().string();
+            Gson gson = model.getGson();
+            return gson.fromJson(jsonResponse, CastleUser.class);
+        }
+        throw new IOException("HTTP request failure");
+    }
+
     private Request createApproveDeviceRequest(String deviceToken) {
         HttpUrl approveDeviceUrl = deviceBase.resolve(deviceToken + "/approve");
         return new Request.Builder()
@@ -363,6 +383,14 @@ public class OkRestApiBackend implements RestApi {
         return new Request.Builder()
                 .url(getUserDeviceUrl)
                 .get()
+                .build();
+    }
+
+    private Request createArchiveUserDevicesRequest(String userId) {
+        HttpUrl archiveUserDevicesUrl = userBase.resolve(userId + "/archive_devices");
+        return new Request.Builder()
+                .url(archiveUserDevicesUrl)
+                .put(createEmptyRequestBody())
                 .build();
     }
 
