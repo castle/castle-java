@@ -11,7 +11,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>1.3.1-SNAPSHOT</version>
+            <version>1.4.0</version>
         </dependency>
 ```
 
