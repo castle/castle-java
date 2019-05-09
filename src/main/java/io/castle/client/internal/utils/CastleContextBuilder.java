@@ -74,7 +74,7 @@ public class CastleContextBuilder {
     public CastleContextBuilder fromHttpServletRequest(HttpServletRequest request) {
         context.setClientId(setClientIdFromHttpServletRequest(request));
         this.headers = setCastleHeadersFromHttpServletRequest(request);
-        context.setUserAgent(request.getHeader("User-Agent"));
+        context.setUserAgent(setUserAgentFromHttpServletRequest(request));
 
         context.setIp(request.getRemoteAddr());
         if (configuration.getIpHeaders() != null) {
@@ -141,11 +141,11 @@ public class CastleContextBuilder {
 
     /**
      * Extract the clientId from the request.
-     * If header 'X-Castle-Client-Id' is set use that value, if not use __cid cookie, if not use empty string ''
+     * If header 'X-Castle-Client-Id' is set use that value, if not use __cid cookie, if none is set default to false
      * @param request HttpServletRequest to extract clientId from
-     * @return a string clientId
+     * @return a string clientId or false
      */
-    private String setClientIdFromHttpServletRequest(HttpServletRequest request) {
+    private Object setClientIdFromHttpServletRequest(HttpServletRequest request) {
         String cid = request.getHeader("X-Castle-Client-Id");
 
         // If client id header is not included, check cookie
@@ -160,7 +160,29 @@ public class CastleContextBuilder {
             }
         }
 
+        // If cid could not be extracted, default to false
+        if (cid == null) {
+            return false;
+        }
+
         return cid;
+    }
+
+    /**
+     * Extract the User Agent from the request.
+     * If header 'User-Agent' is set use that value, if not default to false
+     * @param request HttpServletRequest to extract User Agent from
+     * @return a string User Agent or false
+     */
+    private Object setUserAgentFromHttpServletRequest(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+
+        // If User Agent header is not present, default to false
+        if (userAgent == null) {
+            return false;
+        }
+
+        return userAgent;
     }
 
 }

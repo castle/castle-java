@@ -48,6 +48,14 @@ public class CastleContext {
         this.clientId = clientId;
     }
 
+    public void setClientId(Object clientId) {
+        if (clientId instanceof Boolean || clientId instanceof String) {
+            this.clientId = clientId;
+        } else {
+            throw new IllegalArgumentException("ClientId must be a string or boolean value");
+        }
+    }
+
     public void setClientId(boolean clientId) {
         this.clientId = clientId;
     }
@@ -138,6 +146,14 @@ public class CastleContext {
 
     public Object getUserAgent() {
         return userAgent;
+    }
+
+    public void setUserAgent(Object userAgent) {
+        if (userAgent instanceof Boolean || userAgent instanceof String) {
+            this.userAgent = userAgent;
+        } else {
+            throw new IllegalArgumentException("User Agent must be a string or boolean value");
+        }
     }
 
     public void setUserAgent(String userAgent) {

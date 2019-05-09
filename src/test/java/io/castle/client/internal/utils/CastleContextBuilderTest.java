@@ -33,7 +33,7 @@ public class CastleContextBuilderTest {
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
-        CastleContext standardContext = getStandardContext();
+        CastleContext standardContext = getStandardContextFromServletRequest();
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest)
@@ -59,7 +59,7 @@ public class CastleContextBuilderTest {
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And a expected castle context without the accept-language header
-        CastleContext standardContext = getStandardContext();
+        CastleContext standardContext = getStandardContextFromServletRequest();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
         for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
             if (!header.getKey().equals("Cookie") && !header.getKey().equals(acceptLanguageHeader)) {
@@ -216,6 +216,7 @@ public class CastleContextBuilderTest {
             .ip(ip)
             .device(getStandardDevice())
             .build();
+
         // And
         CastleContext standardContext = getStandardContext();
 
@@ -227,7 +228,7 @@ public class CastleContextBuilderTest {
     public void toAndFromJson() throws CastleSdkConfigurationException {
         // Given
         MockHttpServletRequest standardRequest = getStandardRequestMock();
-        CastleContext standardContext = getStandardContext();
+        CastleContext standardContext = getStandardContextFromServletRequest();
         CastleConfiguration configuration = CastleConfigurationBuilder
             .defaultConfigBuilder()
             .withApiSecret("abcd")
@@ -263,7 +264,7 @@ public class CastleContextBuilderTest {
             .toJson();
 
         // Then
-        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"},\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
+        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"client_id\":false,\"user_agent\":\"ua\",\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"},\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
     }
 
     @Test
@@ -382,6 +383,13 @@ public class CastleContextBuilderTest {
         return device;
     }
 
+    public CastleContext getStandardContextFromServletRequest() {
+        CastleContext expectedContext = getStandardContext();
+        expectedContext.setClientId(false);
+
+        return expectedContext;
+    }
+
     public CastleContext getStandardContextWithClientId(String clientId) {
         CastleContext expectedContext = getStandardContext();
         expectedContext.setClientId(clientId);
@@ -393,7 +401,7 @@ public class CastleContextBuilderTest {
     }
 
     public CastleContext getStandardScrubbedContext() {
-        CastleContext expectedContext = getStandardContext();
+        CastleContext expectedContext = getStandardContextFromServletRequest();
 
         List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
         for (CastleHeader header : listOfHeaders) {
