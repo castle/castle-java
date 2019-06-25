@@ -161,6 +161,10 @@ public class OkRestApiBackend implements RestApi {
                         .withUserId(userId)
                         .build();
                 return verdict;
+            } else {
+                throw new CastleApiInternalServerErrorException(
+                        responseErrorMessage(response.code(), errorReason, jsonResponse)
+                );
             }
         }
 
