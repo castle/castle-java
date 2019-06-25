@@ -7,6 +7,7 @@ import com.google.gson.JsonPrimitive;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
+import io.castle.client.internal.utils.OkHttpExceptionUtil;
 import io.castle.client.model.ImpersonatePayload;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.internal.utils.VerdictTransportModel;
@@ -84,7 +85,7 @@ public class OkRestApiBackend implements RestApi {
         } catch (IOException e) {
             Castle.logger.error("HTTP layer. Error sending request.", e);
             if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
-                throw new CastleRuntimeException(e);
+                throw OkHttpExceptionUtil.handle(e);
             } else {
                 return VerdictBuilder.failover(e.getMessage())
                         .withAction(configuration.getAuthenticateFailoverStrategy().getDefaultAction())
@@ -107,7 +108,7 @@ public class OkRestApiBackend implements RestApi {
             @Override
             public void onFailure(Call call, IOException e) {
                 if (configuration.getAuthenticateFailoverStrategy().isThrowTimeoutException()) {
-                    asyncCallbackHandler.onException(new CastleRuntimeException(e));
+                    asyncCallbackHandler.onException(OkHttpExceptionUtil.handle(e));
                 } else {
                     asyncCallbackHandler.onResponse(
                             VerdictBuilder.failover(e.getMessage())
@@ -160,6 +161,10 @@ public class OkRestApiBackend implements RestApi {
                         .withUserId(userId)
                         .build();
                 return verdict;
+            } else {
+                throw new CastleApiInternalServerErrorException(
+                        responseErrorMessage(response.code(), errorReason, jsonResponse)
+                );
             }
         }
 
@@ -204,7 +209,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractReview(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -231,7 +236,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractDevice(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -242,7 +247,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractDevice(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -253,7 +258,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractDevices(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -264,7 +269,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractUser(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -275,7 +280,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractDevice(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -286,7 +291,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractSuccess(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -297,7 +302,7 @@ public class OkRestApiBackend implements RestApi {
             Response response = client.newCall(request).execute();
             return extractSuccess(response);
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 

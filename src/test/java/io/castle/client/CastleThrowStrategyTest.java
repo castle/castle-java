@@ -1,9 +1,6 @@
 package io.castle.client;
 
-import io.castle.client.model.AsyncCallbackHandler;
-import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.Verdict;
+import io.castle.client.model.*;
 import okhttp3.mockwebserver.MockResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -20,7 +17,7 @@ public class CastleThrowStrategyTest extends AbstractCastleHttpLayerTest {
         super(new AuthenticateFailoverStrategy());
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void onThrowStrategyAuthenticateThrowCastleRuntimeExceptionWhenNoResponse() {
         // given the throw strategy is setup (see constructor)
         // and backend request timeouts
@@ -38,7 +35,7 @@ public class CastleThrowStrategyTest extends AbstractCastleHttpLayerTest {
         // then the exception is throw
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiInternalServerErrorException.class)
     public void onThrowStrategyAuthenticateThrowCastleRuntimeExceptionWhenResponseIs500() {
         // given the throw strategy is setup (see constructor)
         // and backend request timeouts
