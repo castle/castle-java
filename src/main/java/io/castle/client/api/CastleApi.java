@@ -1,5 +1,7 @@
 package io.castle.client.api;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.castle.client.model.*;
 
 import javax.annotation.Nonnull;
@@ -77,6 +79,12 @@ public interface CastleApi {
      * @return a verdict that might result from a successful call to the Castle API or from the client's
      */
     Verdict authenticate(CastleMessage message);
+
+    JsonElement buildAuthenticateRequest(CastleMessage request);
+
+    Verdict sendAuthenticateRequest(JsonElement request);
+
+    void sendAuthenticateRequest(JsonElement request, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
      * Makes an async POST request to the authenticate endpoint containing required and optional parameters.
@@ -191,6 +199,12 @@ public interface CastleApi {
      * @param message Event parameters
      */
     void track(CastleMessage message);
+
+    JsonElement buildTrackRequest(CastleMessage request);
+
+    void sendTrackRequest(JsonElement request);
+
+    void sendTrackRequest(JsonElement request, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
 
     /**
      * Makes an async POST request to the track endpoint containing required and optional parameters.
