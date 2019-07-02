@@ -1,5 +1,7 @@
 package io.castle.client.model;
 
+import com.google.gson.JsonElement;
+
 /**
  * Model of the outcome of an authenticate call to the Castle API.
  */
@@ -29,6 +31,11 @@ public class Verdict {
      * String representing a device ID associated with an authenticate call.
      */
     private String deviceToken;
+
+    /**
+     * JsonElement representing the full response of the server request
+     */
+    private JsonElement internal;
 
     public AuthenticateAction getAction() {
         return action;
@@ -68,5 +75,9 @@ public class Verdict {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public void setInternal(JsonElement internal) {
+        this.internal = internal;
     }
 }

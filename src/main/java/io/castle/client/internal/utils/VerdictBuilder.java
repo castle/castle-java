@@ -1,5 +1,6 @@
 package io.castle.client.internal.utils;
 
+import com.google.gson.JsonElement;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.Verdict;
 
@@ -9,6 +10,7 @@ public class VerdictBuilder {
     private boolean failover;
     private String failoverReason;
     private String deviceToken;
+    private JsonElement internal;
 
     private VerdictBuilder() {
     }
@@ -46,6 +48,7 @@ public class VerdictBuilder {
         verdict.setFailover(failover);
         verdict.setFailoverReason(failoverReason);
         verdict.setDeviceToken(deviceToken);
+        verdict.setInternal(internal);
         return verdict;
     }
 
@@ -60,11 +63,18 @@ public class VerdictBuilder {
         return this;
     }
 
-    public static Verdict fromTransport(VerdictTransportModel transport) {
+    public VerdictBuilder withInternal(JsonElement internal) {
+        this.internal = internal;
+        return this;
+    }
+
+    public static Verdict fromTransport(VerdictTransportModel transport, JsonElement internal) {
+        internal.getAsJsonObject().get("action").getAsString();
         return success()
-            .withAction(transport.getAction())
-            .withUserId(transport.getUserId())
-            .withDeviceToken(transport.getDeviceToken())
-            .build();
+                .withAction(transport.getAction())
+                .withUserId(transport.getUserId())
+                .withDeviceToken(transport.getDeviceToken())
+                .withInternal(internal)
+                .build();
     }
 }
