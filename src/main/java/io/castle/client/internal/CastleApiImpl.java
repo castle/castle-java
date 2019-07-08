@@ -86,6 +86,10 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public Verdict sendAuthenticateRequest(JsonElement request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request json can not be null");
+        }
+
         if (doNotTrack) {
             return buildVerdictForDoNotTrack(request.getAsJsonObject().get("user_id").getAsString());
         }
@@ -96,6 +100,10 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void sendAuthenticateRequest(JsonElement request, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request json can not be null");
+        }
+
         if (doNotTrack) {
             asyncCallbackHandler.onResponse(buildVerdictForDoNotTrack(request.getAsJsonObject().get("user_id").getAsString()));
         } else {
@@ -189,6 +197,10 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public void sendTrackRequest(JsonElement request, AsyncCallbackHandler<Boolean> asyncCallbackHandler) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request json can not be null");
+        }
+
         if (doNotTrack) {
             if (asyncCallbackHandler != null) {
                 asyncCallbackHandler.onResponse(true);
