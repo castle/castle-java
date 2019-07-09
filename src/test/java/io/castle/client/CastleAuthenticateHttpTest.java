@@ -1,5 +1,6 @@
 package io.castle.client;
 
+import com.google.gson.JsonParser;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
 import io.castle.client.utils.SDKVersion;
@@ -127,16 +128,20 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
-                body, false);
+        String json = "{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}";
+
+        JSONAssert.assertEquals(json, body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
+
+        JsonParser parser = new JsonParser();
 
         // and
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId("12345")
                 .withDeviceToken(deviceToken)
+                .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
                 .build();
         waitForValueAndVerify(result, expected);
     }
@@ -183,6 +188,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .withAction(AuthenticateAction.DENY)
                 .withUserId("12345")
                 .withDeviceToken(deviceToken)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
                 .build();
         waitForValueAndVerify(result, expected);
     }
@@ -300,6 +306,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .withAction(AuthenticateAction.DENY)
                 .withUserId(id)
                 .withDeviceToken(deviceToken)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
                 .build();
         Assertions.assertThat(verdict).isEqualToComparingFieldByField(expected);
 
@@ -337,6 +344,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .withAction(AuthenticateAction.DENY)
                 .withUserId(id)
                 .withDeviceToken(deviceToken)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
                 .build();
         Assertions.assertThat(verdict).isEqualToComparingFieldByField(expected);
 

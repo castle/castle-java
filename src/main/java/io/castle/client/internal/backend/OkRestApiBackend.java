@@ -1,9 +1,6 @@
 package io.castle.client.internal.backend;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
@@ -145,9 +142,10 @@ public class OkRestApiBackend implements RestApi {
 
         if (response.isSuccessful()) {
             Gson gson = model.getGson();
+            JsonParser jsonParser = model.getJsonParser();
             VerdictTransportModel transport = gson.fromJson(jsonResponse, VerdictTransportModel.class);
             if (transport != null && transport.getAction() != null && transport.getUserId() != null) {
-                return VerdictBuilder.fromTransport(transport);
+                return VerdictBuilder.fromTransport(transport, jsonParser.parse(jsonResponse));
             } else {
                 errorReason = "Invalid JSON in response";
             }
