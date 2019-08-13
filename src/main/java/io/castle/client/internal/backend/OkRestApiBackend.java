@@ -160,16 +160,12 @@ public class OkRestApiBackend implements RestApi {
                         .build();
                 return verdict;
             } else {
-                throw new CastleApiInternalServerErrorException(
-                        responseErrorMessage(response.code(), errorReason, jsonResponse)
-                );
+                throw new CastleApiInternalServerErrorException(response);
             }
         }
 
         // Could not extract Verdict, so fail for client logic space.
-        throw new CastleRuntimeException(
-            responseErrorMessage(response.code(), errorReason, jsonResponse)
-        );
+        throw new CastleRuntimeException(response);
     }
 
     @Override
@@ -432,13 +428,5 @@ public class OkRestApiBackend implements RestApi {
 
     private RequestBody createEmptyRequestBody() {
         return RequestBody.create(null, new byte[0]);
-    }
-
-    private String responseErrorMessage(Integer code, String message, String response) {
-        String errorMessage =
-            "Request error: server responded with code " + code.toString() + ". " +
-            message + ": `" + response + "`";
-
-        return errorMessage;
     }
 }
