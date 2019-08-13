@@ -318,7 +318,8 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, Review.class);
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleUserDevice extractDevice(Response response) throws IOException {
@@ -327,7 +328,8 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleUserDevice.class);
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleUserDevices extractDevices(Response response) throws IOException {
@@ -336,7 +338,8 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleUserDevices.class);
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleSuccess extractSuccess(Response response) throws IOException {
@@ -345,7 +348,8 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleSuccess.class);
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleUser extractUser(Response response) throws IOException {
@@ -353,8 +357,11 @@ public class OkRestApiBackend implements RestApi {
             String jsonResponse = response.body().string();
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleUser.class);
+        } else if (response.code() == 404) {
+            return null;
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private Request createApproveDeviceRequest(String deviceToken) {
