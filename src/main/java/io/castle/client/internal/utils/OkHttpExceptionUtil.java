@@ -18,7 +18,7 @@ public class OkHttpExceptionUtil {
         return new CastleRuntimeException(e);
     }
 
-    public static void handle(Response response) {
+    public static void handle(Response response) throws CastleServerErrorException {
         if (!response.isSuccessful() && !response.isRedirect()) {
             if (response.code() == 500) {
                 throw new CastleApiInternalServerErrorException(response);
