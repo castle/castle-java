@@ -63,4 +63,19 @@ public class CastleArchiveDevicesHttpTest extends AbstractCastleHttpLayerTest {
         //when a review request is made
         sdk.onRequest(request).archiveUserDevices(userId);
     }
+
+    @Test
+    public void archiveDevicesNotFoundTest () {
+
+        // given a server failure
+        server.enqueue(new MockResponse().setResponseCode(404));
+        // And a request
+        HttpServletRequest request = new MockHttpServletRequest();
+        String userId = "userId";
+
+        //when a review request is made
+        CastleUser user = sdk.onRequest(request).archiveUserDevices(userId);
+
+        Assert.assertNull(user);
+    }
 }
