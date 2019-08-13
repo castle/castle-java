@@ -1,5 +1,6 @@
 package io.castle.client.model;
 
+import io.castle.client.Castle;
 import okhttp3.Response;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class CastleServerErrorException extends CastleRuntimeException {
         try {
             this.response = response.body().string();
         } catch (NullPointerException | IOException | IllegalStateException e) {
-            e.printStackTrace();
+            Castle.logger.error("CastleServerErrorException. No response body.", e);
         }
     }
 
