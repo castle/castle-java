@@ -2,6 +2,7 @@ package io.castle.client.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CastleHeaders {
 
@@ -17,6 +18,19 @@ public class CastleHeaders {
 
     public void setHeaders(List<CastleHeader> headers) {
         this.headers = headers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CastleHeaders that = (CastleHeaders) o;
+        return Objects.equals(headers, that.headers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(headers);
     }
 
     @Override

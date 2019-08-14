@@ -1,5 +1,6 @@
 package io.castle.client.model;
 
+import java.util.Objects;
 import java.util.Properties;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.PropertiesReader;
@@ -37,6 +38,23 @@ public class CastleSdkRef {
                 ", platform='" + platform + '\'' +
                 ", platformVersion='" + platformVersion + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CastleSdkRef that = (CastleSdkRef) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(version, that.version) &&
+                Objects.equals(platform, that.platform) &&
+                Objects.equals(platformVersion, that.platformVersion);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, version, platform, platformVersion);
     }
 
     private Properties loadSdkVersion() {
