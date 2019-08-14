@@ -41,7 +41,7 @@ public class CastleDeviceHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(device).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void getDeviceTimeoutTest() {
 
         // given backend request timeouts

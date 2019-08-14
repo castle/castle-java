@@ -1,9 +1,6 @@
 package io.castle.client;
 
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.CastleUserDevice;
+import io.castle.client.model.*;
 import io.castle.client.utils.DeviceUtils;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -44,7 +41,7 @@ public class CastleDeviceApproveHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(device).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void approveDeviceTimeoutTest() {
 
         // given backend request timeouts

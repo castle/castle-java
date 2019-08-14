@@ -1,9 +1,6 @@
 package io.castle.client;
 
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.CastleSuccess;
+import io.castle.client.model.*;
 import io.castle.client.utils.DeviceUtils;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -45,7 +42,7 @@ public class CastleImpersonateEndHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(result).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void impersonateEndTimeoutTest() {
 
         // given backend request timeouts
