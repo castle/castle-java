@@ -109,7 +109,7 @@ public class CastleReviewHttpTest extends AbstractCastleHttpLayerTest {
         waitForValueAndVerify(result,true);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleServerErrorException.class)
     public void testExceptionWithServerError () {
 
         // given a server failure
