@@ -309,34 +309,23 @@ public class OkRestApiBackend implements RestApi {
     }
 
     private Review extractReview(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, Review.class);
-        } else if (response.code() == 404) {
-            return null;
-        }
-        OkHttpExceptionUtil.handle(response);
-        return null;
+        return (Review) extract(response, Review.class);
     }
 
     private CastleUserDevice extractDevice(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleUserDevice.class);
-        } else if (response.code() == 404) {
-            return null;
-        }
-        OkHttpExceptionUtil.handle(response);
-        return null;
+        return (CastleUserDevice) extract(response, CastleUserDevice.class);
     }
 
     private CastleUserDevices extractDevices(Response response) throws IOException {
+        return (CastleUserDevices) extract(response, CastleUserDevices.class);
+
+    }
+
+    private Object extract(Response response, Class clazz) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
             Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleUserDevices.class);
+            return gson.fromJson(jsonResponse, clazz);
         } else if (response.code() == 404) {
             return null;
         }
@@ -355,15 +344,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     private CastleUser extractUser(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleUser.class);
-        } else if (response.code() == 404) {
-            return null;
-        }
-        OkHttpExceptionUtil.handle(response);
-        return null;
+        return (CastleUser) extract(response, CastleUser.class);
     }
 
     private Request createApproveDeviceRequest(String deviceToken) {
