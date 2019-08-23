@@ -1,10 +1,8 @@
 package io.castle.client.api;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import io.castle.client.model.*;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -264,6 +262,14 @@ public interface CastleApi {
      * @see <a href="https://api.castle.io/docs#review">The docs</a>
      */
     void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler);
+
+    /**
+     * Makes an sync DELETE request to the privacy endpoint.
+     *
+     * @param userId             String representing a user id
+     * @see <a href="https://castle.io/docs/gdpr_apis#user-data-purge-requests">The docs</a>
+     */
+    void removeUser(String userId);
 
     /**
      * Makes a sync POST request to the approve device endpoint.

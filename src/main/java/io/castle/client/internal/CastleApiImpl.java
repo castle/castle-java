@@ -255,6 +255,13 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public void removeUser(String userId) {
+        Preconditions.checkNotNull(userId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        restApi.sendPrivacyRemoveUser(userId);
+    }
+
+    @Override
     public CastleUserDevice approve(String deviceToken) {
         Preconditions.checkNotNull(deviceToken);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
