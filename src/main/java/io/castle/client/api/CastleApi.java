@@ -264,7 +264,7 @@ public interface CastleApi {
     void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler);
 
     /**
-     * Makes an sync DELETE request to the privacy endpoint.
+     * Makes a DELETE request to the privacy endpoint.
      *
      * @param userId             String representing a user id
      * @see <a href="https://castle.io/docs/gdpr_apis#user-data-purge-requests">The docs</a>
