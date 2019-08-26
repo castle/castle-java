@@ -162,16 +162,12 @@ public class OkRestApiBackend implements RestApi {
                         .build();
                 return verdict;
             } else {
-                throw new CastleApiInternalServerErrorException(
-                        responseErrorMessage(response.code(), errorReason, jsonResponse)
-                );
+                throw new CastleApiInternalServerErrorException(response);
             }
         }
 
         // Could not extract Verdict, so fail for client logic space.
-        throw new CastleRuntimeException(
-            responseErrorMessage(response.code(), errorReason, jsonResponse)
-        );
+        throw new CastleRuntimeException(response);
     }
 
     @Override
@@ -325,30 +321,28 @@ public class OkRestApiBackend implements RestApi {
     }
 
     private Review extractReview(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, Review.class);
-        }
-        throw new IOException("HTTP request failure");
+        return (Review) extract(response, Review.class);
     }
 
     private CastleUserDevice extractDevice(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleUserDevice.class);
-        }
-        throw new IOException("HTTP request failure");
+        return (CastleUserDevice) extract(response, CastleUserDevice.class);
     }
 
     private CastleUserDevices extractDevices(Response response) throws IOException {
+        return (CastleUserDevices) extract(response, CastleUserDevices.class);
+
+    }
+
+    private Object extract(Response response, Class clazz) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
             Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleUserDevices.class);
+            return gson.fromJson(jsonResponse, clazz);
+        } else if (response.code() == 404) {
+            return null;
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleSuccess extractSuccess(Response response) throws IOException {
@@ -357,16 +351,12 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleSuccess.class);
         }
-        throw new IOException("HTTP request failure");
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleUser extractUser(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleUser.class);
-        }
-        throw new IOException("HTTP request failure");
+        return (CastleUser) extract(response, CastleUser.class);
     }
 
     private Request createApproveDeviceRequest(String deviceToken) {
@@ -445,13 +435,5 @@ public class OkRestApiBackend implements RestApi {
 
     private RequestBody createEmptyRequestBody() {
         return RequestBody.create(null, new byte[0]);
-    }
-
-    private String responseErrorMessage(Integer code, String message, String response) {
-        String errorMessage =
-            "Request error: server responded with code " + code.toString() + ". " +
-            message + ": `" + response + "`";
-
-        return errorMessage;
     }
 }

@@ -1,10 +1,7 @@
 package io.castle.client;
 
 import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.CastleUserDevice;
+import io.castle.client.model.*;
 import io.castle.client.utils.DeviceUtils;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -44,7 +41,7 @@ public class CastleDeviceHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(device).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void getDeviceTimeoutTest() {
 
         // given backend request timeouts
@@ -68,5 +65,20 @@ public class CastleDeviceHttpTest extends AbstractCastleHttpLayerTest {
         //when a review request is made
         sdk.onRequest(request).device(deviceToken);
 
+    }
+
+    @Test
+    public void getDeviceNotFoundTest () {
+
+        // given a server failure
+        server.enqueue(new MockResponse().setResponseCode(404));
+        // And a request
+        HttpServletRequest request = new MockHttpServletRequest();
+        String deviceToken = "deviceToken";
+
+        //when a review request is made
+        CastleUserDevice userDevice = sdk.onRequest(request).device(deviceToken);
+
+        Assert.assertNull(userDevice);
     }
 }

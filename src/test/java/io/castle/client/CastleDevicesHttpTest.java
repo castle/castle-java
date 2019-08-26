@@ -43,7 +43,7 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(devices).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void getDevicesTimeoutTest() {
 
         // given backend request timeouts
@@ -67,5 +67,20 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         //when a review request is made
         sdk.onRequest(request).userDevices(userId);
 
+    }
+
+    @Test
+    public void getDevicesNotFoundTest () {
+
+        // given a server failure
+        server.enqueue(new MockResponse().setResponseCode(404));
+        // And a request
+        HttpServletRequest request = new MockHttpServletRequest();
+        String userId = "userId";
+
+        //when a review request is made
+        CastleUserDevices userDevices = sdk.onRequest(request).userDevices(userId);
+
+        Assert.assertNull(userDevices);
     }
 }

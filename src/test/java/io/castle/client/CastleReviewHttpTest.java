@@ -71,7 +71,7 @@ public class CastleReviewHttpTest extends AbstractCastleHttpLayerTest {
         Assertions.assertThat(loaded).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleApiTimeoutException.class)
     public void reviewTimeoutTest() {
 
         // given backend request timeouts
@@ -109,7 +109,7 @@ public class CastleReviewHttpTest extends AbstractCastleHttpLayerTest {
         waitForValueAndVerify(result,true);
     }
 
-    @Test(expected = CastleRuntimeException.class)
+    @Test(expected = CastleServerErrorException.class)
     public void testExceptionWithServerError () {
 
         // given a server failure

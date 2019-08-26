@@ -1,12 +1,10 @@
 package io.castle.client.model;
 
-public class CastleApiInternalServerErrorException extends CastleRuntimeException {
+import okhttp3.Response;
 
-    public CastleApiInternalServerErrorException(Throwable throwable) {
-        super(throwable);
-    }
+public class CastleApiInternalServerErrorException extends CastleServerErrorException {
 
-    public CastleApiInternalServerErrorException(String message) {
-        super(message);
+    public CastleApiInternalServerErrorException(Response response) {
+        super(response);
     }
 }
