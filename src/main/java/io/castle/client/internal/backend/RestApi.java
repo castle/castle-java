@@ -53,6 +53,13 @@ public interface RestApi {
     void sendReviewRequestAsync(String reviewId, AsyncCallbackHandler<Review> callbackHandler);
 
     /**
+     * Remove user from Castle (GDPR reasons)
+     * @see <a href="https://castle.io/docs/gdpr_apis#user-data-purge-requests">The docs</a>
+     * @param userId        user id to be removed
+     */
+    void sendPrivacyRemoveUser(String userId);
+
+    /**
      * Sync call to the approve device endpoint.
      *
      * @param deviceToken string representing the token for the device to get

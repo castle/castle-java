@@ -27,6 +27,7 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl deviceBase;
     private final HttpUrl userBase;
     private final HttpUrl impersonateBase;
+    private final HttpUrl privacyBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
         HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
@@ -40,6 +41,7 @@ public class OkRestApiBackend implements RestApi {
         this.deviceBase = baseUrl.resolve("/v1/devices/");
         this.userBase = baseUrl.resolve("/v1/users/");
         this.impersonateBase = baseUrl.resolve("/v1/impersonate");
+        this.privacyBase = baseUrl.resolve("/v1/privacy/");
     }
 
     @Override
@@ -225,6 +227,16 @@ public class OkRestApiBackend implements RestApi {
                 callbackHandler.onResponse(extractReview(response));
             }
         });
+    }
+
+    @Override
+    public void sendPrivacyRemoveUser(String userId) {
+        Request request = createPrivacyRemoveRequest(userId);
+        try {
+            client.newCall(request).execute();
+        } catch (IOException e) {
+            throw new CastleRuntimeException(e);
+        }
     }
 
     @Override
@@ -420,6 +432,14 @@ public class OkRestApiBackend implements RestApi {
         return new Request.Builder()
                 .url(impersonateUrl)
                 .delete(body)
+                .build();
+    }
+
+    private Request createPrivacyRemoveRequest(String userId) {
+        HttpUrl privacyRemoveUrl = privacyBase.resolve("users/" + userId);
+        return new Request.Builder()
+                .url(privacyRemoveUrl)
+                .delete()
                 .build();
     }
 
