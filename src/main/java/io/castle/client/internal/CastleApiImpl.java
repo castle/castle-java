@@ -11,6 +11,7 @@ import io.castle.client.internal.utils.ContextMerge;
 import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
+import okhttp3.Response;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -255,10 +256,10 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void removeUser(String userId) {
+    public Response removeUser(String userId) {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendPrivacyRemoveUser(userId);
+        return restApi.sendPrivacyRemoveUser(userId);
     }
 
     @Override

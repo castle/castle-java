@@ -5,7 +5,6 @@ import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.OkHttpExceptionUtil;
-import io.castle.client.model.ImpersonatePayload;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.internal.utils.VerdictTransportModel;
 import io.castle.client.model.*;
@@ -226,12 +225,12 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public void sendPrivacyRemoveUser(String userId) {
+    public Response sendPrivacyRemoveUser(String userId) {
         Request request = createPrivacyRemoveRequest(userId);
         try {
-            client.newCall(request).execute();
+            return extractResponse(client.newCall(request).execute());
         } catch (IOException e) {
-            throw new CastleRuntimeException(e);
+            throw OkHttpExceptionUtil.handle(e);
         }
     }
 
@@ -330,7 +329,6 @@ public class OkRestApiBackend implements RestApi {
 
     private CastleUserDevices extractDevices(Response response) throws IOException {
         return (CastleUserDevices) extract(response, CastleUserDevices.class);
-
     }
 
     private Object extract(Response response, Class clazz) throws IOException {
@@ -353,6 +351,16 @@ public class OkRestApiBackend implements RestApi {
         }
         OkHttpExceptionUtil.handle(response);
         return null;
+    }
+
+    private Response extractResponse(Response response) {
+        if (response.isSuccessful()) {
+            return response;
+        } else if (response.code() == 404) {
+            return null;
+        }
+        OkHttpExceptionUtil.handle(response);
+        return response;
     }
 
     private CastleUser extractUser(Response response) throws IOException {
