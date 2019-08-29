@@ -57,7 +57,7 @@ public interface RestApi {
      * @see <a href="https://castle.io/docs/gdpr_apis#user-data-purge-requests">The docs</a>
      * @param userId        user id to be removed
      */
-    void sendPrivacyRemoveUser(String userId);
+    Boolean sendPrivacyRemoveUser(String userId);
 
     /**
      * Sync call to the approve device endpoint.

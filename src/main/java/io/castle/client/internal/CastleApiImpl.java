@@ -255,10 +255,10 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void removeUser(String userId) {
+    public Boolean removeUser(String userId) {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendPrivacyRemoveUser(userId);
+        return restApi.sendPrivacyRemoveUser(userId);
     }
 
     @Override
