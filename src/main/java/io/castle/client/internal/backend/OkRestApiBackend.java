@@ -225,7 +225,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public Response sendPrivacyRemoveUser(String userId) {
+    public Boolean sendPrivacyRemoveUser(String userId) {
         Request request = createPrivacyRemoveRequest(userId);
         try {
             return extractResponse(client.newCall(request).execute());
@@ -353,14 +353,14 @@ public class OkRestApiBackend implements RestApi {
         return null;
     }
 
-    private Response extractResponse(Response response) {
+    private Boolean extractResponse(Response response) {
         if (response.isSuccessful()) {
-            return response;
+            return true;
         } else if (response.code() == 404) {
             return null;
         }
         OkHttpExceptionUtil.handle(response);
-        return response;
+        return false;
     }
 
     private CastleUser extractUser(Response response) throws IOException {

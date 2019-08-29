@@ -3,7 +3,6 @@ package io.castle.client;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleApiInternalServerErrorException;
-import okhttp3.Response;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
@@ -29,12 +28,13 @@ public class CastleRemoveUserHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And an privacy remove user request is made
-        sdk.onRequest(request).removeUser("user-test-id");
+        Boolean response = sdk.onRequest(request).removeUser("user-test-id");
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals(testServerBaseUrl.resolve("v1/privacy/users/user-test-id"), recordedRequest.getRequestUrl());
         Assert.assertEquals("DELETE", recordedRequest.getMethod());
+        Assert.assertTrue(response);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class CastleRemoveUserHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And an privacy remove user request is made
-        Response response = sdk.onRequest(request).removeUser("user-test-id");
+        Boolean response = sdk.onRequest(request).removeUser("user-test-id");
 
         // Then it doesn't throw exception
         RecordedRequest recordedRequest = server.takeRequest();
@@ -69,7 +69,7 @@ public class CastleRemoveUserHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // And a privacy remove user request is made, exception throw
-        Response response = sdk.onRequest(request).removeUser("user-test-id");
+        Boolean response = sdk.onRequest(request).removeUser("user-test-id");
 
         Assert.assertNull(response);
     }

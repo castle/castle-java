@@ -2,7 +2,6 @@ package io.castle.client.api;
 
 import com.google.gson.JsonElement;
 import io.castle.client.model.*;
-import okhttp3.Response;
 
 import javax.annotation.Nullable;
 
@@ -270,7 +269,7 @@ public interface CastleApi {
      * @param userId             String representing a user id
      * @see <a href="https://castle.io/docs/gdpr_apis#user-data-purge-requests">The docs</a>
      */
-    Response removeUser(String userId);
+    Boolean removeUser(String userId);
 
     /**
      * Makes a sync POST request to the approve device endpoint.
