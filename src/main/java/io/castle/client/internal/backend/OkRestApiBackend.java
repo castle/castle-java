@@ -77,8 +77,7 @@ public class OkRestApiBackend implements RestApi {
                 .url(authenticate)
                 .post(body)
                 .build();
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractAuthenticationAction(response, userId);
         } catch (IOException e) {
             Castle.logger.error("HTTP layer. Error sending request.", e);
@@ -200,8 +199,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public Review sendReviewRequestSync(String reviewId) {
         Request request = createReviewRequest(reviewId);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractReview(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -237,8 +235,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleUserDevice sendApproveDeviceRequestSync(String deviceToken) {
         Request request = createApproveDeviceRequest(deviceToken);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractDevice(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -248,8 +245,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleUserDevice sendReportDeviceRequestSync(String deviceToken) {
         Request request = createReportDeviceRequest(deviceToken);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractDevice(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -259,8 +255,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleUserDevices sendGetUserDevicesRequestSync(String userId) {
         Request request = createGetUserDevicesRequest(userId);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractDevices(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -270,8 +265,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleUser sendArchiveUserDevicesRequestSync(String userId) {
         Request request = createArchiveUserDevicesRequest(userId);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractUser(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -281,8 +275,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken) {
         Request request = createGetUserDeviceRequest(deviceToken);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractDevice(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -292,8 +285,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleSuccess sendImpersonateStartRequestSync(String userId, String impersonator, JsonObject contextJson) {
         Request request = createImpersonateStartRequest(userId, impersonator, contextJson);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractSuccess(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
@@ -303,8 +295,7 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public CastleSuccess sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson) {
         Request request = createImpersonateEndRequest(userId, impersonator, contextJson);
-        try {
-            Response response = client.newCall(request).execute();
+        try (Response response = client.newCall(request).execute()) {
             return extractSuccess(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
