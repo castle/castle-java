@@ -139,6 +139,7 @@ public class OkRestApiBackend implements RestApi {
     private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
         String errorReason = response.message();
         String jsonResponse = response.body().string();
+        response.body().close();
 
         if (response.isSuccessful()) {
             Gson gson = model.getGson();
@@ -325,6 +326,7 @@ public class OkRestApiBackend implements RestApi {
     private Object extract(Response response, Class clazz) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
+            response.body().close();
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, clazz);
         } else if (response.code() == 404) {
@@ -337,6 +339,7 @@ public class OkRestApiBackend implements RestApi {
     private CastleSuccess extractSuccess(Response response) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
+            response.body().close();
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, CastleSuccess.class);
         }
