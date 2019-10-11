@@ -18,7 +18,6 @@ public class CastleServerErrorException extends CastleRuntimeException {
         this.responseMessage = response.message();
         try {
             this.response = response.body().string();
-            response.body().close();
         } catch (NullPointerException | IOException | IllegalStateException e) {
             Castle.logger.error("CastleServerErrorException. No response body.", e);
         }

@@ -61,8 +61,10 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (asyncCallbackHandler != null) {
-                    asyncCallbackHandler.onResponse(response.isSuccessful());
+                try (ResponseBody responseBody = response.body()) {
+                    if (asyncCallbackHandler != null) {
+                        asyncCallbackHandler.onResponse(response.isSuccessful());
+                    }
                 }
             }
         });
@@ -118,7 +120,9 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                asyncCallbackHandler.onResponse(extractAuthenticationAction(response, userId));
+                try (ResponseBody responseBody = response.body()) {
+                    asyncCallbackHandler.onResponse(extractAuthenticationAction(response, userId));
+                }
             }
         });
     }
@@ -139,7 +143,6 @@ public class OkRestApiBackend implements RestApi {
     private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
         String errorReason = response.message();
         String jsonResponse = response.body().string();
-        response.body().close();
 
         if (response.isSuccessful()) {
             Gson gson = model.getGson();
@@ -192,7 +195,9 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Castle.logger.debug("Identify request successful");
+                try (ResponseBody responseBody = response.body()) {
+                    Castle.logger.debug("Identify request successful");
+                }
             }
         });
     }
@@ -218,7 +223,9 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                callbackHandler.onResponse(extractReview(response));
+                try (ResponseBody responseBody = response.body()) {
+                    callbackHandler.onResponse(extractReview(response));
+                }
             }
         });
     }
@@ -226,8 +233,8 @@ public class OkRestApiBackend implements RestApi {
     @Override
     public Boolean sendPrivacyRemoveUser(String userId) {
         Request request = createPrivacyRemoveRequest(userId);
-        try {
-            return extractResponse(client.newCall(request).execute());
+        try (Response response = client.newCall(request).execute()) {
+            return extractResponse(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
         }
@@ -326,7 +333,6 @@ public class OkRestApiBackend implements RestApi {
     private Object extract(Response response, Class clazz) throws IOException {
         if (response.isSuccessful()) {
             String jsonResponse = response.body().string();
-            response.body().close();
             Gson gson = model.getGson();
             return gson.fromJson(jsonResponse, clazz);
         } else if (response.code() == 404) {
@@ -338,10 +344,11 @@ public class OkRestApiBackend implements RestApi {
 
     private CastleSuccess extractSuccess(Response response) throws IOException {
         if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            response.body().close();
-            Gson gson = model.getGson();
-            return gson.fromJson(jsonResponse, CastleSuccess.class);
+            if (response.body() != null) {
+                String jsonResponse = response.body().string();
+                Gson gson = model.getGson();
+                return gson.fromJson(jsonResponse, CastleSuccess.class);
+            }
         }
         OkHttpExceptionUtil.handle(response);
         return null;
