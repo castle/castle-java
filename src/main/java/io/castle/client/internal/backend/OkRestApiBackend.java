@@ -195,9 +195,9 @@ public class OkRestApiBackend implements RestApi {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    Castle.logger.debug("Identify request successful");
-                }
+                response.close();
+
+                Castle.logger.debug("Identify request successful");
             }
         });
     }
