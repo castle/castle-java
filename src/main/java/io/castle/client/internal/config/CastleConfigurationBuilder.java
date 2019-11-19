@@ -142,6 +142,7 @@ public class CastleConfigurationBuilder {
     public CastleConfigurationBuilder withDefaultBlacklist() {
         this.blackListHeaders = new LinkedList<>();
         this.blackListHeaders.add("Cookie");
+        this.blackListHeaders.add("Authorization");
         return this;
     }
 
