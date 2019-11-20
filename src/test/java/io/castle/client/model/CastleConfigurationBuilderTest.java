@@ -21,6 +21,7 @@ public class CastleConfigurationBuilderTest {
         Assertions.assertThat(config.getApiSecret()).isEqualTo(apiSecret);
         Assertions.assertThat(config.getCastleAppId()).isEqualTo(castleAppId);
         Assertions.assertThat(config.getBlackListHeaders()).contains("cookie");
+        Assertions.assertThat(config.getBlackListHeaders()).contains("authorization");
         Assertions.assertThat(config.getWhiteListHeaders()).isEmpty();
         Assertions.assertThat(config.getAuthenticateFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
         Assertions.assertThat(config.getTimeout()).isEqualTo(500);
