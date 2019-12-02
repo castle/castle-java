@@ -392,18 +392,6 @@ There is also available a Javadoc.
 Furthermore, there is a [sample application](https://github.com/castle/castle-java-example)
 using Java Servlets and this SDK.
 
-To generate the javadoc documentation run:
-
-    mvn clean compile javadoc:javadoc
-
-The javadoc will be located inside the `target/site` directory.
-
-To check test coverage run:
-
-    mvn clean test jacoco:report
-
-The coverage report will be on the page `target/jacoco-ut/index.html`
-
 # Development branch
 
 Branch for development process. The castle-java-example application have a parallel dev branch for test proposes.
