@@ -260,6 +260,7 @@ that can be optionally configured:
  * **Backend Provider**: The HTTP layer that will be used to make requests to the Castle API.
  Currently there is only one available and it uses [OkHttp](https://square.github.io/okhttp/).
  * **Base URL**: The base endpoint of the Castle API without any relative path.
+ * **IP Headers**: The headers checked (in order) to use for the context IP.
 
 Whitelist and Blacklist are case-insensitive.
 
@@ -287,6 +288,7 @@ Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUT
 Backend Provider | `OKHTTP` | `backend_provide` | `CASTLE_SDK_BACKEND_PROVIDER` |
 Base URL | `https://api.castle.io/` | `base_url` | `CASTLE_SDK_BASE_URL` |
 Log HTTP | false | `log_http` | `CASTLE_SDK_LOG_HTTP` |
+IP Headers |  | `ip_headers` | `CASTLE_SDK_IP_HEADERS` |
 
 By default, the SDK will look in the classpath for the Java Properties file named `castle_sdk.properties`.
 An alternative file can be chosen by setting the `CASTLE_PROPERTIES_FILE` environment variable to a different value.
@@ -303,6 +305,7 @@ backend_provider=OKHTTP
 failover_strategy=ALLOW
 base_url=https://api.castle.io/
 log_http=false
+ip_headers=
 ```
 
 ## Secure Mode

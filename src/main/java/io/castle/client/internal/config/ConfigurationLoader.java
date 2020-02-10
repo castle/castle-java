@@ -145,6 +145,11 @@ class ConfigurationLoader {
                 "log_http",
                 "CASTLE_SDK_LOG_HTTP"
         );
+        String ipHeadersValue = loadConfigurationValue(
+                castleConfigurationProperties,
+                "ip_headers",
+                "CASTLE_SDK_IP_HEADERS"
+        );
         CastleConfigurationBuilder builder = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret(envApiSecret)
@@ -185,6 +190,9 @@ class ConfigurationLoader {
         }
         if (logHttpRequests != null) {
             builder.withLogHttpRequests(Boolean.valueOf(logHttpRequests));
+        }
+        if (ipHeadersValue != null) {
+            builder.withIPHeaders(Splitter.on(",").splitToList(ipHeadersValue));
         }
 
         return builder;
