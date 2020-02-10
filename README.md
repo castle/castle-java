@@ -308,6 +308,22 @@ log_http=false
 ip_headers=
 ```
 
+To configure using the `CastleConfigurationBuilder` use the corresponding method to set the values
+
+```builder
+Castle castle = Castle.initialize(Castle.configurationBuilder()
+    .apiSecret("abcd")
+    .withWhiteListHeaders("User-Agent", "Accept-Language", "Accept-Encoding")
+    .withBlackListHeaders("Cookie")
+    .withTimeout(500)
+    .withBackendProvider(CastleBackendProvider.OKHTTP)
+    .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW))
+    .withApiBaseUrl("https://api.castle.io/")
+    .withLogHttpRequests(true)
+    .ipHeaders(Arrays.asList("X-Forwarded-For", "CF-Connecting-IP"))
+    .build());
+```
+
 ## Secure Mode
 
 See the documentation on [secure mode](https://castle.io/docs/securing_requests) in order to learn more.
