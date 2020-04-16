@@ -253,7 +253,7 @@ that can be optionally configured:
  never get passed to the context object. See [The Context Object](#the-context-object).
  * **Whitelisted Headers**: this is a comma-separated list of strings representing HTTP headers
  that will get passed to the context object with each call to the Castle API,
- unless they are blacklisted. See [The Context Object](#the-context-object).
+ unless they are blacklisted. If not set or empty all headers will be sent. See [The Context Object](#the-context-object).
  * **Authenticate Failover Strategy**: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
  See also [Authenticate](#authenticate)
  * **Timeout**: an integer that represents the time in milliseconds after which a request fails.
@@ -281,7 +281,7 @@ Finally, it also contains the environmental variable that can be used instead of
 Setting | Default values, when they exist | Properties file key | Environment variable |
 --- | --- | --- | --- |
 API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
-Whitelisted Headers | `User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR` | `white_list` | `CASTLE_SDK_WHITELIST_HEADERS` |
+Whitelisted Headers |   | `white_list` | `CASTLE_SDK_WHITELIST_HEADERS` |
 Blacklisted Headers | `Cookie` | `black_list` | `CASTLE_SDK_BLACKLIST_HEADERS` |
 Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
 Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
