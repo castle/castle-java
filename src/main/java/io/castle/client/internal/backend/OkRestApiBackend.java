@@ -148,7 +148,7 @@ public class OkRestApiBackend implements RestApi {
             Gson gson = model.getGson();
             JsonParser jsonParser = model.getJsonParser();
             VerdictTransportModel transport = gson.fromJson(jsonResponse, VerdictTransportModel.class);
-            if (transport != null && transport.getAction() != null && transport.getUserId() != null) {
+            if (transport != null && transport.getAction() != null) {
                 return VerdictBuilder.fromTransport(transport, jsonParser.parse(jsonResponse));
             } else {
                 errorReason = "Invalid JSON in response";

@@ -415,9 +415,9 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
     }
     @Test(expected = CastleRuntimeException.class)
-    public void authenticationUseDefaultOnBadResponseFormatTestMissingUseCase() throws InterruptedException {
+    public void authenticationUseDefaultOnBadResponseFormatTestInvalidActionUseCase() throws InterruptedException {
         //given a response do not match the transport contract
-        testIlegalJsonForAuthenticate("{\"action\":\"deny\"}");
+        testIlegalJsonForAuthenticate("{\"action\":\"action\"}");
 
     }
 
