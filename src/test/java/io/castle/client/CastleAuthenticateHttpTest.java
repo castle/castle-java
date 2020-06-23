@@ -3,6 +3,7 @@ package io.castle.client;
 import com.google.gson.JsonParser;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
+import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -26,7 +27,13 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     private static final String DENY_RESPONSE = "{\n" +
                                                 "  \"action\": \"deny\",\n" +
                                                 "  \"user_id\": \"12345\",\n" +
-                                                "  \"device_token\": \"abcdefg1234\"\n" +
+                                                "  \"device_token\": \"abcdefg1234\",\n" +
+                                                "  \"risk_policy\": {\n" +
+                                                "    \"id\": \"q-rbeMzBTdW2Fd09sbz55A\",\n" +
+                                                "    \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\n" +
+                                                "    \"name\": \"Block Users from X\",\n" +
+                                                "    \"type\": \"bot\"\n" +
+                                                "  }\n" +
                                                 "}";
 
     public CastleAuthenticateHttpTest() {
@@ -136,12 +143,15 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         JsonParser parser = new JsonParser();
 
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
         // and
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId("12345")
                 .withDeviceToken(deviceToken)
-                .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
                 .build();
         waitForValueAndVerify(result, expected);
     }
@@ -183,12 +193,15 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
 
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
         // and
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId("12345")
                 .withDeviceToken(deviceToken)
-                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
                 .build();
         waitForValueAndVerify(result, expected);
     }
@@ -301,14 +314,17 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // and an authenticate request is made
         Verdict verdict = sdk.onRequest(request).authenticate(event, id);
 
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
         // then
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId(id)
                 .withDeviceToken(deviceToken)
-                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
                 .build();
-        Assertions.assertThat(verdict).isEqualToComparingFieldByField(expected);
+        Assertions.assertThat(verdict).isEqualToComparingFieldByFieldRecursively(expected);
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();
@@ -339,14 +355,17 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .put("y",654321)
                 .build());
 
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
         // then
         Verdict expected = VerdictBuilder.success()
                 .withAction(AuthenticateAction.DENY)
                 .withUserId(id)
                 .withDeviceToken(deviceToken)
-                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
                 .build();
-        Assertions.assertThat(verdict).isEqualToComparingFieldByField(expected);
+        Assertions.assertThat(verdict).isEqualToComparingFieldByFieldRecursively(expected);
 
         // and
         RecordedRequest recordedRequest = server.takeRequest();

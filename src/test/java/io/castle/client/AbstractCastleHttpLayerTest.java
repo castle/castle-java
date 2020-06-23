@@ -62,7 +62,7 @@ public abstract class AbstractCastleHttpLayerTest {
 
     protected <T> void waitForValueAndVerify(AtomicReference<T> result, T expected) {
         T extracted = waitForValue(result);
-        Assertions.assertThat(extracted).isEqualToComparingFieldByField(expected);
+        Assertions.assertThat(extracted).isEqualToComparingFieldByFieldRecursively(expected);
     }
 
     protected <T> T waitForValue(AtomicReference<T> result) {
