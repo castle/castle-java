@@ -36,6 +36,12 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                                                 "  }\n" +
                                                 "}";
 
+    private static final String DENY_RESPONSE_NO_POLICY = "{\n" +
+                                                "  \"action\": \"deny\",\n" +
+                                                "  \"user_id\": \"12345\",\n" +
+                                                "  \"device_token\": \"abcdefg1234\"\n" +
+                                                "}";
+
     public CastleAuthenticateHttpTest() {
         super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
     }
@@ -152,6 +158,52 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .withDeviceToken(deviceToken)
                 .withRiskPolicy(riskPolicyResult)
                 .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        waitForValueAndVerify(result, expected);
+    }
+
+    @Test
+    public void authenticationAsyncEndpointNoRiskPolicyTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE_NO_POLICY));
+        String id = "12345";
+        String event = "$login.succeeded";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticateAsync(event, id, handler);
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        String json = "{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}";
+
+        JSONAssert.assertEquals(json, body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+
+        JsonParser parser = new JsonParser();
+
+        // and
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId("12345")
+                .withDeviceToken(deviceToken)
+                .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\"}"))
                 .build();
         waitForValueAndVerify(result, expected);
     }

@@ -31,7 +31,6 @@ public class VerdictTransportModelTest {
         Assertions.assertThat(loaded.getAction()).isEqualTo(AuthenticateAction.DENY);
         Assertions.assertThat(loaded.getDeviceToken()).isEqualTo("abcdefg1234");
         Assertions.assertThat(loaded.getUserId()).isEqualTo("12345");
-        Assertions.assertThat(loaded.getUserId()).isEqualTo("12345");
         Assertions.assertThat(loaded.getRiskPolicy().getId()).isEqualTo("q-rbeMzBTdW2Fd09sbz55A");
         Assertions.assertThat(loaded.getRiskPolicy().getRevisionId()).isEqualTo("pke4zqO2TnqVr-NHJOAHEg");
         Assertions.assertThat(loaded.getRiskPolicy().getName()).isEqualTo("Block Users from X");
