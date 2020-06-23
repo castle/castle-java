@@ -28,7 +28,7 @@ public class RiskPolicyResult {
     /**
      * type of the risk policy
      */
-    private String type;
+    private RiskPolicyType type;
 
 
     public String getId() {
@@ -43,7 +43,7 @@ public class RiskPolicyResult {
         return name;
     }
 
-    public String getType() {
+    public RiskPolicyType getType() {
         return type;
     }
 }

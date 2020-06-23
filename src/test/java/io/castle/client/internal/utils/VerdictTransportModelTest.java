@@ -2,6 +2,7 @@ package io.castle.client.internal.utils;
 
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.RiskPolicyType;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -34,6 +35,6 @@ public class VerdictTransportModelTest {
         Assertions.assertThat(loaded.getRiskPolicy().getId()).isEqualTo("q-rbeMzBTdW2Fd09sbz55A");
         Assertions.assertThat(loaded.getRiskPolicy().getRevisionId()).isEqualTo("pke4zqO2TnqVr-NHJOAHEg");
         Assertions.assertThat(loaded.getRiskPolicy().getName()).isEqualTo("Block Users from X");
-        Assertions.assertThat(loaded.getRiskPolicy().getType()).isEqualTo("bot");
+        Assertions.assertThat(loaded.getRiskPolicy().getType()).isEqualTo(RiskPolicyType.BOT);
     }
 }
