@@ -13,19 +13,10 @@ public enum RiskPolicyType {
      * @return the enum value matching the name, or null if it does not match any enum
      */
     public static RiskPolicyType fromType(String type) {
-        if (type == null) {
-            return null;
-        }
-        try {
-            return RiskPolicyType.valueOf(type);
-        } catch (IllegalArgumentException e) {
-            // no op, use string compare functions.
-        }
-        if (type.compareToIgnoreCase(BOT.name()) == 0) {
-            return BOT;
-        }
-        if (type.compareToIgnoreCase(AUTHENTICATION.name()) == 0) {
-            return AUTHENTICATION;
+        for (RiskPolicyType kind : RiskPolicyType.class.getEnumConstants()) {
+            if (kind.name().equalsIgnoreCase(type)) {
+                return kind;
+            }
         }
         return null;
     }
