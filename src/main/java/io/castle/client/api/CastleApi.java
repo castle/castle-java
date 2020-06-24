@@ -323,7 +323,7 @@ public interface CastleApi {
      * Makes a sync POST request to the impersonate endpoint.
      *
      * @param userId user unique ID
-     * @param impersonator description of impersonator eg email
+     * @param impersonator description of impersonator, e.g., email
      * @return
      */
     CastleSuccess impersonateStart(String userId, String impersonator);
@@ -340,7 +340,7 @@ public interface CastleApi {
      * Makes a sync DELETE request to the impersonate endpoint.
      *
      * @param userId user unique ID
-     * @param impersonator description of impersonator eg email
+     * @param impersonator description of impersonator, e.g., email
      * @return
      */
     CastleSuccess impersonateEnd(String userId, String impersonator);
