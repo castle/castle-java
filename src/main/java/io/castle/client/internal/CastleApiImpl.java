@@ -306,7 +306,6 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public CastleSuccess impersonateStart(String userId, String impersonator) {
         Preconditions.checkNotNull(userId);
-        Preconditions.checkNotNull(impersonator);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.sendImpersonateStartRequestSync(userId, impersonator, contextJson);
     }
@@ -321,7 +320,6 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public CastleSuccess impersonateEnd(String userId, String impersonator) {
         Preconditions.checkNotNull(userId);
-        Preconditions.checkNotNull(impersonator);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.sendImpersonateEndRequestSync(userId, impersonator, contextJson);
     }
