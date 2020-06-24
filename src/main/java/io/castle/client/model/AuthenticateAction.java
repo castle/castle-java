@@ -18,22 +18,10 @@ public enum AuthenticateAction {
      * @return the enum value matching the name, or null if it does not match any enum
      */
     public static AuthenticateAction fromAction(String action) {
-        if (action == null) {
-            return null;
-        }
-        try {
-            return AuthenticateAction.valueOf(action);
-        } catch (IllegalArgumentException e) {
-            // no op, use string compare functions.
-        }
-        if (action.compareToIgnoreCase(ALLOW.name()) == 0) {
-            return ALLOW;
-        }
-        if (action.compareToIgnoreCase(DENY.name()) == 0) {
-            return DENY;
-        }
-        if (action.compareToIgnoreCase(CHALLENGE.name()) == 0) {
-            return CHALLENGE;
+        for (AuthenticateAction kind : AuthenticateAction.class.getEnumConstants()) {
+            if (kind.name().equalsIgnoreCase(action)) {
+                return kind;
+            }
         }
         return null;
     }

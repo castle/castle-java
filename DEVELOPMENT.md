@@ -1,5 +1,7 @@
 # Development
 
+Use java8 for development
+
 ## Setup
 
 To be able to run tests, create a file `castle_sdk.properties` in the folder `src/test/resources`. The content should look something like this

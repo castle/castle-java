@@ -2,10 +2,12 @@ package io.castle.client.internal.utils;
 
 import com.google.gson.JsonElement;
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.RiskPolicyResult;
 import io.castle.client.model.Verdict;
 
 public class VerdictBuilder {
     private AuthenticateAction action;
+    private RiskPolicyResult riskPolicy;
     private String userId;
     private boolean failover;
     private String failoverReason;
@@ -36,6 +38,12 @@ public class VerdictBuilder {
         return this;
     }
 
+
+    public VerdictBuilder withRiskPolicy(RiskPolicyResult riskPolicy) {
+        this.riskPolicy = riskPolicy;
+        return this;
+    }
+
     public VerdictBuilder withDeviceToken(final String deviceToken) {
         this.deviceToken = deviceToken;
         return this;
@@ -48,10 +56,10 @@ public class VerdictBuilder {
         verdict.setFailover(failover);
         verdict.setFailoverReason(failoverReason);
         verdict.setDeviceToken(deviceToken);
+        verdict.setRiskPolicy(riskPolicy);
         verdict.setInternal(internal);
         return verdict;
     }
-
 
     public VerdictBuilder withFailover(boolean failover) {
         this.failover = failover;
@@ -74,6 +82,7 @@ public class VerdictBuilder {
                 .withAction(transport.getAction())
                 .withUserId(transport.getUserId())
                 .withDeviceToken(transport.getDeviceToken())
+                .withRiskPolicy(transport.getRiskPolicy())
                 .withInternal(internal)
                 .build();
     }

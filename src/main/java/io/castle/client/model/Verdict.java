@@ -33,6 +33,11 @@ public class Verdict {
     private String deviceToken;
 
     /**
+     * RiskPolicyResult representing risk policy used for generating this verdict.
+     */
+    private RiskPolicyResult riskPolicy;
+
+    /**
      * JsonElement representing the full response of the server request
      */
     private JsonElement internal;
@@ -79,5 +84,13 @@ public class Verdict {
 
     public void setInternal(JsonElement internal) {
         this.internal = internal;
+    }
+
+    public RiskPolicyResult getRiskPolicy() {
+        return riskPolicy;
+    }
+
+    public void setRiskPolicy(RiskPolicyResult riskPolicy) {
+        this.riskPolicy = riskPolicy;
     }
 }

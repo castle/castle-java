@@ -1,10 +1,12 @@
 package io.castle.client.internal.utils;
 
 import io.castle.client.model.AuthenticateAction;
+import io.castle.client.model.RiskPolicyResult;
 
 public class VerdictTransportModel {
 
     private AuthenticateAction action;
+    private RiskPolicyResult riskPolicy;
     private String userId;
     private String deviceToken;
 
@@ -14,6 +16,14 @@ public class VerdictTransportModel {
 
     public void setAction(AuthenticateAction action) {
         this.action = action;
+    }
+
+    public RiskPolicyResult getRiskPolicy() {
+        return riskPolicy;
+    }
+
+    public void setRiskPolicy(RiskPolicyResult riskPolicy) {
+        this.riskPolicy = riskPolicy;
     }
 
     public String getUserId() {
