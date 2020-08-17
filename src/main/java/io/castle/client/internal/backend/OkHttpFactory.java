@@ -37,13 +37,6 @@ public class OkHttpFactory implements RestApiFactory {
             builder = builder.addInterceptor(logging);
         }
 
-        ConnectionSpec sslSpec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .tlsVersions(TlsVersion.TLS_1_1, TlsVersion.TLS_1_2, TlsVersion.TLS_1_3)
-                .build();
-
-        ConnectionSpec cleartextSpec = new ConnectionSpec.Builder(ConnectionSpec.CLEARTEXT)
-                .build();
-
         OkHttpClient client = builder
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -54,7 +47,7 @@ public class OkHttpFactory implements RestApiFactory {
                         return chain.proceed(authenticatedRequest);
                     }
                 })
-                .connectionSpecs(ImmutableList.of(sslSpec, cleartextSpec))
+                .connectionSpecs(ImmutableList.of(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
                 .build();
 
         return client;
