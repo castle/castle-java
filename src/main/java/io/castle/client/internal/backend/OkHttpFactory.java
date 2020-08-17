@@ -47,7 +47,7 @@ public class OkHttpFactory implements RestApiFactory {
                         return chain.proceed(authenticatedRequest);
                     }
                 })
-                .connectionSpecs(ImmutableList.of(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
+                .connectionSpecs(ImmutableList.of(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
                 .build();
 
         return client;
