@@ -20,6 +20,10 @@ public class CastleHeaders {
         this.headers = headers;
     }
 
+    public CastleHeaders(List<CastleHeader> headers) { this.headers = headers; }
+
+    public CastleHeaders() {}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
