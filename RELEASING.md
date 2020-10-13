@@ -3,7 +3,7 @@ Releasing
 =========
 
 1. Create branch `release-X.Y.Z`.
-2. Update the package version to the new version in the `pom.xml` file.
+2. Update the package version to the new version in `pom.xml` and `README.md` files.
 3. Update `CHANGELOG.md` for the impending release.
 4. `git commit -am "release X.Y.Z."` (where X.Y.Z is the new version).
 5. Push to Github, make PR, and when ok, merge.
