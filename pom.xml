@@ -6,7 +6,7 @@
     <groupId>io.castle</groupId>
     <artifactId>castle-java</artifactId>
     <packaging>jar</packaging>
-    <version>1.5.4</version>
+    <version>1.6.0</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
     <description>Castle adds real-time monitoring of your authentication stack, instantly notifying you and your users
