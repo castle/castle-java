@@ -83,7 +83,7 @@ castle.client().track(CastleMessage.builder("$login.succeeded")
         .put("timestamp", "1984-01-01T11:22:33Z")
         .build())
     .properties(ImmutableMap.builder()
-        .put("quota", "12")
+        .put("quota", "12") // example custom event property
         .build())
     .build()
 );
