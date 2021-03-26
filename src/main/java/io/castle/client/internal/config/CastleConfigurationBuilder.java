@@ -87,6 +87,11 @@ public class CastleConfigurationBuilder {
      */
     private List<String> ipHeaders;
 
+    /**
+     * Max number of simultaneous requests to Castle
+     */
+    private int maxRequests = 5;
+
     private CastleConfigurationBuilder() {
     }
 
@@ -107,7 +112,8 @@ public class CastleConfigurationBuilder {
                 .withDefaultApiBaseUrl()
                 .withTimeout(500)
                 .withDefaultAuthenticateFailoverStrategy()
-                .withDefaultBackendProvider();
+                .withDefaultBackendProvider()
+                .withMaxRequests(5);
         return builder;
     }
 
@@ -197,6 +203,17 @@ public class CastleConfigurationBuilder {
      */
     public CastleConfigurationBuilder withDefaultBackendProvider() {
         return this.withBackendProvider(CastleBackendProvider.OKHTTP);
+    }
+
+    /**
+     * Sets a max number of simultaneous requests to the Castle API
+     *
+     * @param maxRequests max number of connections to Castle
+     * @return a castleConfigurationBuilder with a max request count
+     */
+    public CastleConfigurationBuilder withMaxRequests(Integer maxRequests) {
+        this.maxRequests = maxRequests;
+        return this;
     }
 
     /**
@@ -318,7 +335,8 @@ public class CastleConfigurationBuilder {
                 castleAppId,
                 backendProvider,
                 logHttpRequests,
-                ipHeaders);
+                ipHeaders,
+                maxRequests);
     }
 
     /**

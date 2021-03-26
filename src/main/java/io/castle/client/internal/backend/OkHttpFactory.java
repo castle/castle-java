@@ -25,10 +25,15 @@ public class OkHttpFactory implements RestApiFactory {
     private OkHttpClient createOkHttpClient() {
         final String credential = Credentials.basic("", configuration.getApiSecret());
 
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(configuration.getMaxRequests());
+        dispatcher.setMaxRequestsPerHost(configuration.getMaxRequests());
+
         OkHttpClient.Builder builder = new OkHttpClient()
                 .newBuilder()
                 .connectTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS)
                 .readTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS)
+                .dispatcher(dispatcher)
                 .writeTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS);
         if (configuration.isLogHttpRequests()) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

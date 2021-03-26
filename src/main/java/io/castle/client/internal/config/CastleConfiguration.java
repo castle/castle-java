@@ -61,7 +61,12 @@ public class CastleConfiguration {
 
     private final List<String> ipHeaders;
 
-    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders) {
+    /**
+     * Max number of simultaneous requests to Castle
+     */
+    private final int maxRequests;
+
+    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests) {
         this.apiBaseUrl = apiBaseUrl;
         this.timeout = timeout;
         this.authenticateFailoverStrategy = authenticateFailoverStrategy;
@@ -72,6 +77,7 @@ public class CastleConfiguration {
         this.backendProvider = backendProvider;
         this.logHttpRequests = logHttpRequests;
         this.ipHeaders = ipHeaders;
+        this.maxRequests = maxRequests;
     }
 
     public String getApiBaseUrl() {
@@ -122,5 +128,9 @@ public class CastleConfiguration {
 
     public List<String> getIpHeaders() {
         return ipHeaders;
+    }
+
+    public int getMaxRequests() {
+        return maxRequests;
     }
 }
