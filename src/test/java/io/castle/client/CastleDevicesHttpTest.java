@@ -37,7 +37,7 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals(testServerBaseUrl.resolve("v1/users/userId/devices"), recordedRequest.getRequestUrl());
 
-        // and the correct Review model object is extracted
+        // and the correct CastleUserDevice model object is extracted
         CastleUserDevices expected = DeviceUtils.createExpectedDevices();
 
         Assertions.assertThat(devices).isEqualToComparingFieldByFieldRecursively(expected);
@@ -51,7 +51,7 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String userId = "userId";
 
-        //when a review request is made
+        //when a v1/users/:user_id/devices request is made
         sdk.onRequest(request).userDevices(userId);
     }
 
@@ -64,7 +64,7 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String userId = "userId";
 
-        //when a review request is made
+        //when a v1/users/:user_id/devices request is made
         sdk.onRequest(request).userDevices(userId);
 
     }
@@ -78,7 +78,7 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String userId = "userId";
 
-        //when a review request is made
+        //when a v1/users/:user_id/devices request is made
         CastleUserDevices userDevices = sdk.onRequest(request).userDevices(userId);
 
         Assert.assertNull(userDevices);

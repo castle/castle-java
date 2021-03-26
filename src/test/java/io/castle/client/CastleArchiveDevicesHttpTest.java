@@ -60,7 +60,7 @@ public class CastleArchiveDevicesHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String userId = "userId";
 
-        //when a review request is made
+        //when a v1/users/:user_id/archive_devices request is made
         sdk.onRequest(request).archiveUserDevices(userId);
     }
 
@@ -73,7 +73,7 @@ public class CastleArchiveDevicesHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String userId = "userId";
 
-        //when a review request is made
+        //when a v1/users/:user_id/archive_devices request is made
         CastleUser user = sdk.onRequest(request).archiveUserDevices(userId);
 
         Assert.assertNull(user);

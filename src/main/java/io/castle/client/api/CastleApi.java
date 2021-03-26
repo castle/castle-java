@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
  * Contains methods for calling the Castle API and the settings needed to properly make such a request.
  * <p>
  * Methods of this interface can be used to make calls to Castle's API
- * {@code /v1/identify}, {@code /v1/track}, {@code /v1/reviews/} and {@code /v1/identify} endpoints.
+ * {@code /v1/authenticate} and {@code /v1/track} endpoints.
  * <p>
  * A {@code castleApi} contains all necessary configurations to correctly call the Castle API.
  * In particular, it contains:
@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * An instance of {@code CastleApi} contains a boolean named doNotTrack in a private field.
  * When doNotTrack is set to false, the CastleApi instance created is configured to make requests when any
  * of its methods is called.
- * When set to true, authenticate, track and identify methods return immediately without making any request.
+ * When set to true, authenticate and track methods return immediately without making any request.
  * The {@code this#authenticate} method will resort to the {@link io.castle.client.model.AuthenticateFailoverStrategy}
  * with authenticate action set to {@link io.castle.client.model.AuthenticateAction#ALLOW}.
  * When doNotTrack is set to true, this will resort to the {@link io.castle.client.model.AuthenticateFailoverStrategy}
@@ -211,57 +211,6 @@ public interface CastleApi {
      *                             how to handle success of failure of authenticate API calls
      */
     void track(CastleMessage message, AsyncCallbackHandler<Boolean> asyncCallbackHandler);
-
-    /**
-     * Makes an async POST request to the identify endpoint with all required parameters.
-     * <p>
-     * traits parameter is null by default.
-     * active parameter is true by default.
-     *
-     * @param userId user unique ID
-     * @see <a href="https://api.castle.io/docs#identify">The docs</a>
-     */
-    void identify(String userId);
-
-    /**
-     * Makes an async POST request to the identify endpoint with an additional traits object.
-     * <p>
-     * active parameter is true by default.
-     *
-     * @param userId user unique ID
-     * @param traits object for recording additional information connected to the user, takes null
-     * @see <a href="https://api.castle.io/docs#identify">The docs</a>
-     */
-    void identify(String userId, Object traits);
-
-    /**
-     * Makes an async POST request to the identify endpoint
-     *
-     * @param userId user unique ID
-     * @param traits object for recording additional information connected to the user, takes null
-     * @param active is this call associated to an active user session
-     * @see <a href="https://api.castle.io/docs#identify">The docs</a>
-     */
-    void identify(String userId, @Nullable Object traits, boolean active);
-
-    /**
-     * Makes a sync GET request to the review endpoint.
-     *
-     * @param reviewId String representing a user id
-     * @return review model object
-     * @see <a href="https://api.castle.io/docs#review">The docs</a>
-     */
-    Review review(String reviewId);
-
-    /**
-     * Makes an async GET request to the review endpoint.
-     *
-     * @param reviewId             String representing a user id
-     * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
-     *                             how to handle success of failure of authenticate API calls
-     * @see <a href="https://api.castle.io/docs#review">The docs</a>
-     */
-    void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler);
 
     /**
      * Makes a DELETE request to the privacy endpoint.
