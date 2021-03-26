@@ -127,7 +127,6 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         //And responses are setup on mock server
         server.enqueue(new MockResponse().setResponseCode(200));
-        server.enqueue(new MockResponse().setResponseCode(200));
         server.enqueue(new MockResponse().setBody(
                 "{\n" +
                         "  \"action\": \"deny\",\n" +
@@ -164,7 +163,7 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
 
         //Then all the calls are executed
         waitForValue(result);
-        Assertions.assertThat(server.getRequestCount()).isEqualTo(4);
+        Assertions.assertThat(server.getRequestCount()).isEqualTo(3);
         Assert.assertEquals(AuthenticateAction.DENY, result.get().getAction());
     }
 
