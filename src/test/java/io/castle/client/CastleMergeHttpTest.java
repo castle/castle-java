@@ -15,6 +15,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import com.google.common.collect.ImmutableMap;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.atomic.AtomicReference;
+import io.castle.client.model.AsyncCallbackHandler;
+import org.assertj.core.api.Assertions;
 
 public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
 
@@ -24,51 +27,45 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
 
     @Test
     public void mergeContextIsSendOnHttp() throws InterruptedException, JSONException {
-
-        //Given
+        // Given
         server.enqueue(new MockResponse().setResponseCode(200));
-        String id = "12345";
-        String event = "$login.succeeded";
+        String event = "any.valid.event";
+
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
+
         // And a extra context
         CustomExtraContext customExtraContext = new CustomExtraContext();
         customExtraContext.setAddString("String value");
         customExtraContext.setCondition(true);
         customExtraContext.setValue(10L);
+        sdk.onRequest(request).mergeContext(customExtraContext).track(event, null, null, null, ImmutableMap.builder()
+            .put("x", "valueX")
+            .put("y", 234567)
+            .build());
 
-        // and an authenticate request is made
-        sdk.onRequest(request).mergeContext(customExtraContext).authenticate(event, id, ImmutableMap.builder()
-                .put("x", "valueX")
-                .put("y", 234567)
-                .build(), null);
-        //When
-
-        //Then the json send contains a extended context object
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +",\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"traits\":{\"x\":\"valueX\",\"y\":234567}}",
-                body, false);
+
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +",\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"user_traits\":{\"x\":\"valueX\",\"y\":234567}}", body, false);
     }
 
     @Test
     public void mergeContextIsNull() throws InterruptedException, JSONException {
-        //Given
+        // Given
         server.enqueue(new MockResponse().setResponseCode(200));
-        String id = "12345";
-        String event = "$login.succeeded";
+        String event = "any.valid.event";
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        // and an authenticate request is made with a null context
-        sdk.onRequest(request).mergeContext(null).authenticate(event, id);
+        // And null context
+        sdk.onRequest(request).mergeContext(null).track(event, null, null, null);
 
-        //Then the json send contains a context object with active key only
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"user_id\":\"12345\",\"context\":{\"active\":true}}",
-                body, false);
+
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\"}", body, false);
     }
 
     private static class CustomExtraContext {
