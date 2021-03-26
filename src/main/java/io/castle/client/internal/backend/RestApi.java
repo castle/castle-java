@@ -27,16 +27,6 @@ public interface RestApi {
     void sendAuthenticateAsync(JsonElement payloadJson, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
-     * Async call to the identify endpoint, returning immediately.
-     *
-     * @param userId      unique userId
-     * @param contextJson context json
-     * @param active      is this call realized as part of a active session of the user
-     * @param traitsJson  additional traits json
-     */
-    void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson);
-
-    /**
      * Remove user from Castle (GDPR reasons)
      * @see <a href="https://castle.io/docs/gdpr_apis#user-data-purge-requests">The docs</a>
      * @param userId        user id to be removed

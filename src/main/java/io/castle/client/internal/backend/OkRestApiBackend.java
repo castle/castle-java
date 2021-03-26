@@ -21,7 +21,6 @@ public class OkRestApiBackend implements RestApi {
 
     private final HttpUrl track;
     private final HttpUrl authenticate;
-    private final HttpUrl identify;
     private final HttpUrl deviceBase;
     private final HttpUrl userBase;
     private final HttpUrl impersonateBase;
@@ -34,7 +33,6 @@ public class OkRestApiBackend implements RestApi {
         this.configuration = configuration;
         this.track = baseUrl.resolve("/v1/track");
         this.authenticate = baseUrl.resolve("/v1/authenticate");
-        this.identify = baseUrl.resolve("/v1/identify");
         this.deviceBase = baseUrl.resolve("/v1/devices/");
         this.userBase = baseUrl.resolve("/v1/users/");
         this.impersonateBase = baseUrl.resolve("/v1/impersonate");
@@ -168,36 +166,6 @@ public class OkRestApiBackend implements RestApi {
 
         // Could not extract Verdict, so fail for client logic space.
         throw new CastleRuntimeException(response);
-    }
-
-    @Override
-    public void sendIdentifyRequest(String userId, JsonObject contextJson, boolean active, JsonElement traitsJson) {
-        JsonObject json = new JsonObject();
-        json.add("user_id", new JsonPrimitive(userId));
-//        json.add("active", new JsonPrimitive(active));
-        contextJson.add("active", new JsonPrimitive(active));
-        json.add("context", contextJson);
-        if (traitsJson != null) {
-            json.add("traits", traitsJson);
-        }
-        RequestBody body = RequestBody.create(JSON, json.toString());
-        Request request = new Request.Builder()
-                .url(identify)
-                .post(body)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Castle.logger.error("HTTP layer. Error sending request.", e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                response.close();
-
-                Castle.logger.debug("Identify request successful");
-            }
-        });
     }
 
     @Override

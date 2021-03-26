@@ -214,31 +214,6 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public void identify(String userId, @Nullable Object traits, boolean active) {
-        Preconditions.checkNotNull(userId);
-        if (doNotTrack) {
-            return;
-        }
-        JsonElement traitsJson = null;
-        if (traits != null) {
-            traitsJson = configuration.getModel().getGson().toJsonTree(traits);
-        }
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendIdentifyRequest(userId, contextJson, active, traitsJson);
-    }
-
-    @Override
-    public void identify(String userId) {
-        identify(userId, null, true);
-    }
-
-    @Override
-    public void identify(String userId, @Nullable Object traits) {
-        Preconditions.checkNotNull(userId);
-        identify(userId, traits, true);
-    }
-
-    @Override
     public Boolean removeUser(String userId) {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();

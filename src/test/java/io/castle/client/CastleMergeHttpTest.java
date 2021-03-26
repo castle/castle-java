@@ -28,7 +28,7 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         //Given
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
-
+        String event = "$login.succeeded";
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
         // And a extra context
@@ -38,10 +38,10 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         customExtraContext.setValue(10L);
 
         // and an authenticate request is made
-        sdk.onRequest(request).mergeContext(customExtraContext).identify(id, ImmutableMap.builder()
+        sdk.onRequest(request).mergeContext(customExtraContext).authenticate(event, id, ImmutableMap.builder()
                 .put("x", "valueX")
                 .put("y", 234567)
-                .build());
+                .build(), null);
         //When
 
         //Then the json send contains a extended context object
@@ -56,12 +56,13 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         //Given
         server.enqueue(new MockResponse().setResponseCode(200));
         String id = "12345";
+        String event = "$login.succeeded";
 
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        // and an identify request is made with a null context
-        sdk.onRequest(request).mergeContext(null).identify(id);
+        // and an authenticate request is made with a null context
+        sdk.onRequest(request).mergeContext(null).authenticate(event, id);
 
         //Then the json send contains a context object with active key only
         RecordedRequest recordedRequest = server.takeRequest();

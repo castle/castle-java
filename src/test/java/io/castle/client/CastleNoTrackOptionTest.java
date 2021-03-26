@@ -43,7 +43,6 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
 
         //When all API call are executed
         castleApi.track("testEvent");
-        castleApi.identify("userId", true);
         Verdict verdict = castleApi.authenticate("testEvent", "userId");
         castleApi.authenticateAsync("testEvent", "userId", handler);
 
@@ -157,8 +156,6 @@ public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {
 
         //When all API call are executed
         castleApi.track("testEvent");
-        server.takeRequest();
-        castleApi.identify("userId", true);
         server.takeRequest();
         castleApi.authenticate("testEvent", "userId");
         server.takeRequest();
