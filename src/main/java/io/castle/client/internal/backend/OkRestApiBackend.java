@@ -22,7 +22,6 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl track;
     private final HttpUrl authenticate;
     private final HttpUrl identify;
-    private final HttpUrl reviewsBase;
     private final HttpUrl deviceBase;
     private final HttpUrl userBase;
     private final HttpUrl impersonateBase;
@@ -35,7 +34,6 @@ public class OkRestApiBackend implements RestApi {
         this.configuration = configuration;
         this.track = baseUrl.resolve("/v1/track");
         this.authenticate = baseUrl.resolve("/v1/authenticate");
-        this.reviewsBase = baseUrl.resolve("/v1/reviews/");
         this.identify = baseUrl.resolve("/v1/identify");
         this.deviceBase = baseUrl.resolve("/v1/devices/");
         this.userBase = baseUrl.resolve("/v1/users/");
@@ -203,34 +201,6 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public Review sendReviewRequestSync(String reviewId) {
-        Request request = createReviewRequest(reviewId);
-        try (Response response = client.newCall(request).execute()) {
-            return extractReview(response);
-        } catch (IOException e) {
-            throw OkHttpExceptionUtil.handle(e);
-        }
-    }
-
-    @Override
-    public void sendReviewRequestAsync(String reviewId, final AsyncCallbackHandler<Review> callbackHandler) {
-        Request request = createReviewRequest(reviewId);
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callbackHandler.onException(e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    callbackHandler.onResponse(extractReview(response));
-                }
-            }
-        });
-    }
-
-    @Override
     public Boolean sendPrivacyRemoveUser(String userId) {
         Request request = createPrivacyRemoveRequest(userId);
         try (Response response = client.newCall(request).execute()) {
@@ -308,18 +278,6 @@ public class OkRestApiBackend implements RestApi {
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
         }
-    }
-
-    private Request createReviewRequest(String reviewId) {
-        HttpUrl reviewUrl = reviewsBase.resolve(reviewId);
-        return new Request.Builder()
-                .url(reviewUrl)
-                .get()
-                .build();
-    }
-
-    private Review extractReview(Response response) throws IOException {
-        return (Review) extract(response, Review.class);
     }
 
     private CastleUserDevice extractDevice(Response response) throws IOException {

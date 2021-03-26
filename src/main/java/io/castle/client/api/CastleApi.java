@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
  * Contains methods for calling the Castle API and the settings needed to properly make such a request.
  * <p>
  * Methods of this interface can be used to make calls to Castle's API
- * {@code /v1/identify}, {@code /v1/track}, {@code /v1/reviews/} and {@code /v1/identify} endpoints.
+ * {@code /v1/identify}, {@code /v1/track} and {@code /v1/identify} endpoints.
  * <p>
  * A {@code castleApi} contains all necessary configurations to correctly call the Castle API.
  * In particular, it contains:
@@ -243,25 +243,6 @@ public interface CastleApi {
      * @see <a href="https://api.castle.io/docs#identify">The docs</a>
      */
     void identify(String userId, @Nullable Object traits, boolean active);
-
-    /**
-     * Makes a sync GET request to the review endpoint.
-     *
-     * @param reviewId String representing a user id
-     * @return review model object
-     * @see <a href="https://api.castle.io/docs#review">The docs</a>
-     */
-    Review review(String reviewId);
-
-    /**
-     * Makes an async GET request to the review endpoint.
-     *
-     * @param reviewId             String representing a user id
-     * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
-     *                             how to handle success of failure of authenticate API calls
-     * @see <a href="https://api.castle.io/docs#review">The docs</a>
-     */
-    void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler);
 
     /**
      * Makes a DELETE request to the privacy endpoint.

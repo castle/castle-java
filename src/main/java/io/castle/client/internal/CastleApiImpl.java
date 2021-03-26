@@ -238,22 +238,6 @@ public class CastleApiImpl implements CastleApi {
         identify(userId, traits, true);
     }
 
-
-    @Override
-    public Review review(String reviewId) {
-        Preconditions.checkNotNull(reviewId);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.sendReviewRequestSync(reviewId);
-    }
-
-    @Override
-    public void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler) {
-        Preconditions.checkNotNull(reviewId);
-        Preconditions.checkNotNull(asyncCallbackHandler);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        restApi.sendReviewRequestAsync(reviewId, asyncCallbackHandler);
-    }
-
     @Override
     public Boolean removeUser(String userId) {
         Preconditions.checkNotNull(userId);
