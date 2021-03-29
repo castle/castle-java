@@ -34,7 +34,7 @@ public class CastleContextTest {
     public void booleanContextValues() throws JSONException {
         //given
         CastleContext aContext = new CastleContext();
-        aContext.setClientId(true);
+        aContext.setFingerprint(true);
         aContext.setUserAgent(true);
 
         //when
@@ -42,7 +42,7 @@ public class CastleContextTest {
 
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
-                "\"client_id\":true," +
+                "\"fingerprint\":true," +
                 "" + SDKVersion.getLibraryString() +"," +
                 "\"user_agent\":true}";
 
@@ -54,7 +54,7 @@ public class CastleContextTest {
 
         //given
         CastleContext aContext = new CastleContext();
-        aContext.setClientId("clientIDX");
+        aContext.setFingerprint("fingerprintX");
 
         CastleDevice device = new CastleDevice();
         device.setId("d_id");
@@ -121,7 +121,7 @@ public class CastleContextTest {
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
                 "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}," +
-                "\"client_id\":\"clientIDX\"," +
+                "\"fingerprint\":\"fingerprintX\"," +
                 "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
                 "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
@@ -147,7 +147,7 @@ public class CastleContextTest {
         //Given a json with headers not matching the api contract
         String notMatchingJson = "{\"active\":true," +
                 "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}," +
-                "\"client_id\":\"clientIDX\"," +
+                "\"fingerprint\":\"fingerprintX\"," +
                 "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
                 "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"," +
@@ -191,7 +191,7 @@ public class CastleContextTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyContextInstance() {
 
         // given
-        String expected = "CastleContext{active=true, device=null, clientId='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
+        String expected = "CastleContext{active=true, device=null, fingerprint='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
         CastleContext context = new CastleContext();
 
         //when
@@ -217,7 +217,7 @@ public class CastleContextTest {
         device.setModel("d_model");
         aContext.setDevice(device);
 
-        aContext.setClientId("clientIDX");
+        aContext.setFingerprint("fingerprintX");
 
         aContext.setIp("ip");
 
@@ -275,7 +275,7 @@ public class CastleContextTest {
 
         String expected = "CastleContext{active=false, " +
                 "device=CastleDevice{id='d_id', manufacturer='d_manufacturer', model='d_model', name='d_name', type='d_type'}, " +
-                "clientId='clientIDX', " +
+                "fingerprint='fingerprintX', " +
                 "ip='ip', " +
                 "locale='locale', " +
                 "timezone='timezone', " +

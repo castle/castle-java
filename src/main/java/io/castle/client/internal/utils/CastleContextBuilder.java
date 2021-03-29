@@ -36,13 +36,13 @@ public class CastleContextBuilder {
         return this;
     }
 
-    public CastleContextBuilder clientId(String clientId) {
-        context.setClientId(clientId);
+    public CastleContextBuilder fingerprint(String fingerprint) {
+        context.setFingerprint(fingerprint);
         return this;
     }
 
-    public CastleContextBuilder clientId(boolean clientId) {
-        context.setClientId(clientId);
+    public CastleContextBuilder fingerprint(boolean fingerprint) {
+        context.setFingerprint(fingerprint);
         return this;
     }
 
@@ -72,7 +72,7 @@ public class CastleContextBuilder {
     }
 
     public CastleContextBuilder fromHttpServletRequest(HttpServletRequest request) {
-        context.setClientId(setClientIdFromHttpServletRequest(request));
+        context.setFingerprint(setFingerprintFromHttpServletRequest(request));
         this.headers = setCastleHeadersFromHttpServletRequest(request);
         context.setUserAgent(setUserAgentFromHttpServletRequest(request));
 
@@ -140,12 +140,12 @@ public class CastleContextBuilder {
     }
 
     /**
-     * Extract the clientId from the request.
+     * Extract the fingerprint from the request.
      * If header 'X-Castle-Client-Id' is set use that value, if not use __cid cookie, if none is set default to false
-     * @param request HttpServletRequest to extract clientId from
-     * @return a string clientId or false
+     * @param request HttpServletRequest to extract fingerprint from
+     * @return a string fingerprint or false
      */
-    private Object setClientIdFromHttpServletRequest(HttpServletRequest request) {
+    private Object setFingerprintFromHttpServletRequest(HttpServletRequest request) {
         String cid = request.getHeader("X-Castle-Client-Id");
 
         // If client id header is not included, check cookie

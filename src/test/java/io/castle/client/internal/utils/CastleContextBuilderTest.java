@@ -143,7 +143,7 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void clientIdIsInFirstPlaceTakenFromHeader() throws CastleSdkConfigurationException {
+    public void fingerprintIsInFirstPlaceTakenFromHeader() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
@@ -159,10 +159,10 @@ public class CastleContextBuilderTest {
         Cookie someOtherCookie = new Cookie("Some", "cookie");
         standardRequest.setCookies(cookie, someOtherCookie);
         //And a custom castle header
-        standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
+        standardRequest.addHeader(customFingerprintHeader, "valueFromHeaders");
 
-        //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
+        //And a expected context value with matching fingerprint
+        CastleContext standardContext = getStandardContextWithFingerprint("valueFromHeaders");
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest)
@@ -174,7 +174,7 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void clientIdUseFailoverValueFromHeaders() throws CastleSdkConfigurationException {
+    public void fingerprintUseFailoverValueFromHeaders() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
@@ -187,10 +187,10 @@ public class CastleContextBuilderTest {
         //And a http request without __cid cookie
         MockHttpServletRequest standardRequest = getStandardRequestMock();
         //And a custom castle header
-        standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
+        standardRequest.addHeader(customFingerprintHeader, "valueFromHeaders");
 
-        //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
+        //And a expected context value with matching fingerprint
+        CastleContext standardContext = getStandardContextWithFingerprint("valueFromHeaders");
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest)
@@ -264,7 +264,7 @@ public class CastleContextBuilderTest {
             .toJson();
 
         // Then
-        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"client_id\":false,\"user_agent\":\"ua\",\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"},\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
+        JSONAssert.assertEquals(contextJson, "{\"active\":true,\"fingerprint\":false,\"user_agent\":\"ua\",\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"},\"headers\":{\"User-Agent\":\"ua\"}," + SDKVersion.getLibraryString() + "}", false);
     }
 
     @Test
@@ -275,13 +275,13 @@ public class CastleContextBuilderTest {
                 .withApiSecret("abcd")
                 .build();
         String contextJson = new CastleContextBuilder(configuration, model)
-                .clientId(true)
+                .fingerprint(true)
                 .userAgent(true)
                 .active(false)
                 .toJson();
 
         // Then
-        JSONAssert.assertEquals(contextJson, "{\"active\":false,\"client_id\":true,\"user_agent\":true," + SDKVersion.getLibraryString() + "}", false);
+        JSONAssert.assertEquals(contextJson, "{\"active\":false,\"fingerprint\":true,\"user_agent\":true," + SDKVersion.getLibraryString() + "}", false);
     }
 
     @Test
@@ -312,7 +312,7 @@ public class CastleContextBuilderTest {
     private String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";
     private String ip = "8.8.8.8";
     private String userAgentHeader = "User-Agent";
-    private String customClientIdHeader = "X-Castle-Client-Id";
+    private String customFingerprintHeader = "X-Castle-Client-Id";
     private String acceptHeader = "Accept";
     private String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
     private String acceptLanguageHeader = "Accept-Language";
@@ -332,7 +332,6 @@ public class CastleContextBuilderTest {
         request.setRemoteAddr(ip);
         request.addHeader(keyControlCache, valueControlCache);
         request.addHeader(userAgentHeader, userAgent);
-//        request.addHeader(customClientIdHeader, clientId);
         request.addHeader(acceptHeader, accept);
         request.addHeader(acceptLanguageHeader, acceptLanguage);
         request.addHeader(acceptEncodingHeader, acceptEncoding);
@@ -385,16 +384,16 @@ public class CastleContextBuilderTest {
 
     public CastleContext getStandardContextFromServletRequest() {
         CastleContext expectedContext = getStandardContext();
-        expectedContext.setClientId(false);
+        expectedContext.setFingerprint(false);
 
         return expectedContext;
     }
 
-    public CastleContext getStandardContextWithClientId(String clientId) {
+    public CastleContext getStandardContextWithFingerprint(String fingerprint) {
         CastleContext expectedContext = getStandardContext();
-        expectedContext.setClientId(clientId);
+        expectedContext.setFingerprint(fingerprint);
         List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
-        listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, clientId));
+        listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customFingerprintHeader, fingerprint));
         expectedContext.getHeaders().setHeaders(listOfHeaders);
 
         return expectedContext;

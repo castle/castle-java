@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
-    private Object clientId;
+    private Object fingerprint;
     private String ip;
     private String locale;
     private String timezone;
@@ -40,24 +40,24 @@ public class CastleContext {
         this.device = device;
     }
 
-    public Object getClientId() {
-        return clientId;
+    public Object getFingerprint() {
+        return fingerprint;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public void setFingerprint(String fingerprint) {
+        this.fingerprint = fingerprint;
     }
 
-    public void setClientId(Object clientId) {
-        if (clientId instanceof Boolean || clientId instanceof String) {
-            this.clientId = clientId;
+    public void setFingerprint(Object fingerprint) {
+        if (fingerprint instanceof Boolean || fingerprint instanceof String) {
+            this.fingerprint = fingerprint;
         } else {
-            throw new IllegalArgumentException("ClientId must be a string or boolean value");
+            throw new IllegalArgumentException("Fingerprint must be a string or boolean value");
         }
     }
 
-    public void setClientId(boolean clientId) {
-        this.clientId = clientId;
+    public void setFingerprint(boolean fingerprint) {
+        this.fingerprint = fingerprint;
     }
 
     public CastlePage getPage() {
@@ -174,7 +174,7 @@ public class CastleContext {
         return "CastleContext{" +
                 "active=" + active +
                 ", device=" + device +
-                ", clientId='" + clientId + '\'' +
+                ", fingerprint='" + fingerprint + '\'' +
                 ", ip='" + ip + '\'' +
                 ", locale='" + locale + '\'' +
                 ", timezone='" + timezone + '\'' +

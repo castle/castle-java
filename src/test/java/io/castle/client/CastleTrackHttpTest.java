@@ -38,7 +38,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         CastleContext context = Castle.instance().contextBuilder()
             .ip("1.1.1.1")
             .userAgent("Mozilla/5.0")
-            .clientId("")
+            .fingerprint("")
             .headers(CastleHeaders.builder()
                 .add("User-Agent", "Mozilla/5.0")
                 .add("Accept-Language", "sv-se")
@@ -60,7 +60,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"fingerprint\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));

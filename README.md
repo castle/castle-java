@@ -170,7 +170,7 @@ gets extracted and set automatically:
 ```JSON
     {
         "active": true,
-        "client_id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
+        "fingerprint": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
         "headers": {
             "Accept-Language": "en-US,en;q=0.8"
           },
