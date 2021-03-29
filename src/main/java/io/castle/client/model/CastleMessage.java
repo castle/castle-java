@@ -10,6 +10,7 @@ public class CastleMessage {
     private String timestamp;
     private String deviceToken;
     @Nonnull private String event;
+    private String status;
     /**
      * Collect other attributes that haven't not explicit setters to accommodate for
      * future parameters
@@ -76,6 +77,10 @@ public class CastleMessage {
     public void setEvent(@Nonnull String event) {
         this.event = event;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 
     public HashMap getOther() {
         if (other == null) {
@@ -184,6 +189,11 @@ public class CastleMessage {
 
         public Builder userId(String userId) {
             payload.setUserId(userId);
+            return this;
+        }
+
+        public Builder status(String status) {
+            payload.setStatus(status);
             return this;
         }
 
