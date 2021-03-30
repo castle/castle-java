@@ -74,6 +74,11 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public Verdict authenticate(String event, @Nullable String status, @Nullable String userId, @Nullable String email, @Nullable String fingerprint, @Nullable Object properties, @Nullable Object traits) {
+        return authenticate(buildMessage(event, status, userId, email, fingerprint, properties, traits));
+    }
+
+    @Override
     public Verdict authenticate(CastleMessage message) {
         JsonElement request = buildAuthenticateRequest(message);
         return sendAuthenticateRequest(request);
@@ -288,6 +293,40 @@ public class CastleApiImpl implements CastleApi {
 
         message.setUserId(userId);
 
+        return setTraitsAndProperties(message, properties, traits);
+    }
+
+    private CastleMessage buildMessage(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable Object properties,
+            @Nullable Object traits
+    ) {
+        CastleMessage message = new CastleMessage(event);
+
+        if (userId != null) {
+            message.setUserId(userId);
+        }
+
+        if (email != null) {
+            message.setEmail(email);
+        }
+
+        if (status != null) {
+            message.setStatus(status);
+        }
+
+        if (fingerprint != null) {
+            message.setFingerprint(fingerprint);
+        }
+
+        return setTraitsAndProperties(message, properties, traits);
+    }
+
+    private CastleMessage setTraitsAndProperties( CastleMessage message, @Nullable Object properties, @Nullable Object traits) {
         if (properties != null) {
             JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
             message.setProperties(propertiesJson);
@@ -297,7 +336,6 @@ public class CastleApiImpl implements CastleApi {
             JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
             message.setUserTraits(traitsJson);
         }
-
         return message;
     }
 
