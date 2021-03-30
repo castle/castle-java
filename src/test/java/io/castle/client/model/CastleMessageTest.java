@@ -23,6 +23,7 @@ public class CastleMessageTest {
         message.setReviewId("2345");
         message.setStatus("$succeeded");
         message.setEmail("test@example.com");
+        message.setFingerprint("fingerprintX");
         message.setProperties(ImmutableMap.builder()
                 .put("key", "val")
                 .build());
@@ -35,7 +36,7 @@ public class CastleMessageTest {
         String payloadJson = model.getGson().toJson(message);
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"status\":\"$succeeded\",\"email\":\"test@example.com\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
+        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"status\":\"$succeeded\",\"email\":\"test@example.com\",\"fingerprint\":\"fingerprintX\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
     }
 
     @Test
@@ -48,6 +49,7 @@ public class CastleMessageTest {
             .reviewId("2345")
             .status("$succeeded")
             .email("test@example.com")
+            .fingerprint("fingerprintX")
             .properties(ImmutableMap.builder()
                 .put("key", "val")
                 .build())
@@ -64,6 +66,7 @@ public class CastleMessageTest {
         Assert.assertEquals(message.getEvent(), "event");
         Assert.assertEquals(message.getStatus(), "$succeeded");
         Assert.assertEquals(message.getEmail(), "test@example.com");
+        Assert.assertEquals(message.getFingerprint(), "fingerprintX");
         Assert.assertEquals(message.getUserTraits(), ImmutableMap.builder()
                 .put("key", "val")
                 .build());
@@ -75,7 +78,7 @@ public class CastleMessageTest {
         String payloadJson = model.getGson().toJson(message);
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"status\":\"$succeeded\",\"email\":\"test@example.com\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
+        Assertions.assertThat(payloadJson).isEqualTo("{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"status\":\"$succeeded\",\"email\":\"test@example.com\",\"fingerprint\":\"fingerprintX\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}");
     }
 
     @Test

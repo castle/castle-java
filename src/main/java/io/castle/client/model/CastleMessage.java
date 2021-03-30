@@ -12,6 +12,7 @@ public class CastleMessage {
     @Nonnull private String event;
     private String status;
     private String email;
+    private String fingerprint;
     /**
      * Collect other attributes that haven't not explicit setters to accommodate for
      * future parameters
@@ -86,6 +87,10 @@ public class CastleMessage {
     public String getEmail() { return email; }
 
     public void setEmail(String email) { this.email = email; }
+
+    public String getFingerprint() { return fingerprint; }
+
+    public void setFingerprint(String fingerprint) { this.fingerprint = fingerprint; }
 
     public HashMap getOther() {
         if (other == null) {
@@ -204,6 +209,11 @@ public class CastleMessage {
 
         public Builder email(String email) {
             payload.setEmail(email);
+            return this;
+        }
+
+        public Builder fingerprint(String fingerprint) {
+            payload.setFingerprint(fingerprint);
             return this;
         }
 
