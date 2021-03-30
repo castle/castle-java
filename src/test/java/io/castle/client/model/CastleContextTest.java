@@ -149,13 +149,11 @@ public class CastleContextTest {
                 "}," +
                 "\"ip\":\"ip\"," +
                 SDKVersion.getLibraryString() +"," +
-                "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
                 "\"os\":{\"name\":\"o_name\",\"version\":\"0_version\"}," +
                 "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
-                "\"timezone\":\"timezone\"," +
-                "\"userAgent\":\"userAgent\"}";
+                "\"timezone\":\"timezone\"" +"}";
 
         //When CastleContext is created
         CastleContext created = model.getGson().fromJson(notMatchingJson, CastleContext.class);
