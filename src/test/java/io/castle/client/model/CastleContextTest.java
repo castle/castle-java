@@ -35,7 +35,6 @@ public class CastleContextTest {
         //given
         CastleContext aContext = new CastleContext();
         aContext.setFingerprint(true);
-        aContext.setUserAgent(true);
 
         //when
         String contextJson = model.getGson().toJson(aContext);
@@ -43,8 +42,7 @@ public class CastleContextTest {
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
                 "\"fingerprint\":true," +
-                "" + SDKVersion.getLibraryString() +"," +
-                "\"user_agent\":true}";
+                "" + SDKVersion.getLibraryString() +"}";
 
         JSONAssert.assertEquals(expectedJson, contextJson, true);
     }
@@ -72,7 +70,6 @@ public class CastleContextTest {
         aContext.setHeaders(headers);
 
         aContext.setIp("ip");
-        aContext.setLocale("locale");
 
         CastleNetwork network = new CastleNetwork();
         network.setBluetooth(true);
@@ -114,7 +111,6 @@ public class CastleContextTest {
         aContext.setReferrer(referrer);
 
         aContext.setTimezone("timezone");
-        aContext.setUserAgent("userAgent");
         //when
         String contextJson = model.getGson().toJson(aContext);
 
@@ -127,13 +123,11 @@ public class CastleContextTest {
                 "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
                 "\"ip\":\"ip\"," +
                 "" + SDKVersion.getLibraryString() +"," +
-                "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
                 "\"os\":{\"name\":\"o_name\",\"version\":\"0_version\"}," +
                 "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
-                "\"timezone\":\"timezone\"," +
-                "\"user_agent\":\"userAgent\"}";
+                "\"timezone\":\"timezone\"}";
         JSONAssert.assertEquals(expectedJson, contextJson, true);
 
         // And json to object create the same structure
@@ -191,7 +185,7 @@ public class CastleContextTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyContextInstance() {
 
         // given
-        String expected = "CastleContext{active=true, device=null, fingerprint='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
+        String expected = "CastleContext{active=true, device=null, fingerprint='null', ip='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null'}";
         CastleContext context = new CastleContext();
 
         //when
@@ -220,8 +214,6 @@ public class CastleContextTest {
         aContext.setFingerprint("fingerprintX");
 
         aContext.setIp("ip");
-
-        aContext.setLocale("locale");
 
         aContext.setTimezone("timezone");
 
@@ -271,13 +263,11 @@ public class CastleContextTest {
         screen.setDensity(2);
         aContext.setScreen(screen);
 
-        aContext.setUserAgent("userAgent");
 
         String expected = "CastleContext{active=false, " +
                 "device=CastleDevice{id='d_id', manufacturer='d_manufacturer', model='d_model', name='d_name', type='d_type'}, " +
                 "fingerprint='fingerprintX', " +
                 "ip='ip', " +
-                "locale='locale', " +
                 "timezone='timezone', " +
                 "page=CastlePage{path='p_path', referrer='p_referrer', search='p_search', title='p_title', url='p_url'}, " +
                 "referrer=CastleReferrer{id='r_id', type='r_type'}, " +
@@ -286,8 +276,7 @@ public class CastleContextTest {
                 "location=CastleLocation{city='l_city', country='l_country', latitude=10, longitude=10, speed=0}, " +
                 "network=CastleNetwork{bluetooth=true, cellular=true, carrier='n_carrier', wifi=true}, " +
                 "os=CastleOS{name='o_name', version='0_version'}, " +
-                "screen=CastleScreen{width=10, height=20, density=2}, " +
-                "userAgent='userAgent'}";
+                "screen=CastleScreen{width=10, height=20, density=2}'}";
 
 
         //when

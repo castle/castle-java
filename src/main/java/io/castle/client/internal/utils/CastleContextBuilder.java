@@ -61,20 +61,9 @@ public class CastleContextBuilder {
         return this;
     }
 
-    public CastleContextBuilder userAgent(String userAgent) {
-        context.setUserAgent(userAgent);
-        return this;
-    }
-
-    public CastleContextBuilder userAgent(boolean userAgent) {
-        context.setUserAgent(userAgent);
-        return this;
-    }
-
     public CastleContextBuilder fromHttpServletRequest(HttpServletRequest request) {
         context.setFingerprint(setFingerprintFromHttpServletRequest(request));
         this.headers = setCastleHeadersFromHttpServletRequest(request);
-        context.setUserAgent(setUserAgentFromHttpServletRequest(request));
 
         context.setIp(request.getRemoteAddr());
         if (configuration.getIpHeaders() != null) {
@@ -167,22 +156,4 @@ public class CastleContextBuilder {
 
         return cid;
     }
-
-    /**
-     * Extract the User Agent from the request.
-     * If header 'User-Agent' is set use that value, if not default to false
-     * @param request HttpServletRequest to extract User Agent from
-     * @return a string User Agent or false
-     */
-    private Object setUserAgentFromHttpServletRequest(HttpServletRequest request) {
-        String userAgent = request.getHeader("User-Agent");
-
-        // If User Agent header is not present, default to false
-        if (userAgent == null) {
-            return false;
-        }
-
-        return userAgent;
-    }
-
 }

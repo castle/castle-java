@@ -211,7 +211,6 @@ public class CastleContextBuilderTest {
 
         // When
         CastleContext context = new CastleContextBuilder(configuration, model)
-            .userAgent(userAgent)
             .headers(getStandardCastleHeaders())
             .ip(ip)
             .device(getStandardDevice())
@@ -276,12 +275,11 @@ public class CastleContextBuilderTest {
                 .build();
         String contextJson = new CastleContextBuilder(configuration, model)
                 .fingerprint(true)
-                .userAgent(true)
                 .active(false)
                 .toJson();
 
         // Then
-        JSONAssert.assertEquals(contextJson, "{\"active\":false,\"fingerprint\":true,\"user_agent\":true," + SDKVersion.getLibraryString() + "}", false);
+        JSONAssert.assertEquals(contextJson, "{\"active\":false,\"fingerprint\":true," + SDKVersion.getLibraryString() + "}", false);
     }
 
     @Test
@@ -364,7 +362,6 @@ public class CastleContextBuilderTest {
     public CastleContext getStandardContext() {
         CastleContext expectedContext = new CastleContext();
         expectedContext.setHeaders(getStandardCastleHeaders());
-        expectedContext.setUserAgent(userAgent);
         expectedContext.setDevice(getStandardDevice());
         expectedContext.setIp(ip);
 

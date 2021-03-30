@@ -10,7 +10,6 @@ public class CastleContext {
     private CastleDevice device;
     private Object fingerprint;
     private String ip;
-    private String locale;
     private String timezone;
     private CastlePage page;
     private CastleReferrer referrer;
@@ -20,9 +19,6 @@ public class CastleContext {
     private CastleNetwork network;
     private CastleOS os;
     private CastleScreen screen;
-
-    @SerializedName("user_agent")
-    private Object userAgent;
 
     public boolean isActive() {
         return active;
@@ -96,14 +92,6 @@ public class CastleContext {
         return library;
     }
 
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
     public CastleLocation getLocation() {
         return location;
     }
@@ -144,26 +132,6 @@ public class CastleContext {
         this.timezone = timezone;
     }
 
-    public Object getUserAgent() {
-        return userAgent;
-    }
-
-    public void setUserAgent(Object userAgent) {
-        if (userAgent instanceof Boolean || userAgent instanceof String) {
-            this.userAgent = userAgent;
-        } else {
-            throw new IllegalArgumentException("User Agent must be a string or boolean value");
-        }
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
-
-    public void setUserAgent(boolean userAgent) {
-        this.userAgent = userAgent;
-    }
-
     /**
      * Produces a string representation of the context object.
      *
@@ -176,7 +144,6 @@ public class CastleContext {
                 ", device=" + device +
                 ", fingerprint='" + fingerprint + '\'' +
                 ", ip='" + ip + '\'' +
-                ", locale='" + locale + '\'' +
                 ", timezone='" + timezone + '\'' +
                 ", page=" + page +
                 ", referrer=" + referrer +
@@ -185,8 +152,7 @@ public class CastleContext {
                 ", location=" + location +
                 ", network=" + network +
                 ", os=" + os +
-                ", screen=" + screen +
-                ", userAgent='" + userAgent + '\'' +
+                ", screen=" + screen + '\'' +
                 '}';
     }
 }
