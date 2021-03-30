@@ -122,6 +122,33 @@ public interface CastleApi {
     void authenticateAsync(String event, String userId, @Nullable Object properties, @Nullable Object traits, AsyncCallbackHandler<Verdict> asyncCallbackHandler);
 
     /**
+     * Makes a sync POST request to the authenticate endpoint containing required and optional parameters.
+     *
+     * @param event                a String representing an event understood by the Castle API
+     * @param status               a String representing event status
+     * @param userId               a String representing a user ID associated to an authentication attempt
+     * @param email                a String representing an email associated with an authentication attempt
+     * @param fingerprint          a String for representing fingerprint
+     * @param properties           object for recording additional information connected to the event, takes null
+     * @param traits               object for recording additional information connected to the user, takes null
+     * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
+     *                             how to handle success of failure of authenticate API calls
+     * @return a verdict that might result from a successful call to the Castle API or from the client's
+     * {@link io.castle.client.model.AuthenticateFailoverStrategy}, in case of a failed call
+     * @see <a href="https://api.castle.io/docs#authenticate">The docs</a>
+     */
+    void authenticateAsync(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable Object properties,
+            @Nullable Object traits,
+            AsyncCallbackHandler<Verdict> asyncCallbackHandler
+    );
+
+    /**
      * Makes an async POST request to the authenticate endpoint containing all required parameters.
      * <p>
      * Optional parameters (that is, traits and properties) are set to null.

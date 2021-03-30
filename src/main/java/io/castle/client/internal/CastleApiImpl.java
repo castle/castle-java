@@ -144,6 +144,23 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public void authenticateAsync(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable Object properties,
+            @Nullable Object traits,
+            AsyncCallbackHandler<Verdict> asyncCallbackHandler
+    ) {
+        authenticateAsync(
+                buildMessage(event, status, userId, email, fingerprint, properties, traits),
+                asyncCallbackHandler
+        );
+    }
+
+    @Override
     public void track(String event) {
         track(event, null, null, null, null);
     }
