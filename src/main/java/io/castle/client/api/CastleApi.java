@@ -296,14 +296,6 @@ public interface CastleApi {
     CastleUserDevices userDevices(String userId);
 
     /**
-     * Makes a sync PUT request to the archive devices endpoint.
-     *
-     * @param userId user unique ID
-     * @return user model object
-     */
-    CastleUser archiveUserDevices(String userId);
-
-    /**
      * Makes a sync GET request to the device endpoint.
      *
      * @param deviceToken string representing the device to report
