@@ -43,4 +43,18 @@ public class CastleOptions {
     public void setHeaders(CastleHeaders headers) {
         this.headers = headers;
     }
+
+    /**
+     * Produces a string representation of the options object.
+     *
+     * @return the string representation of this {@code castleOptions}
+     */
+    @Override
+    public String toString() {
+        return "CastleOptions{" +
+                "fingerprint='" + fingerprint + '\'' +
+                ", headers=" + headers +
+                ", ip='" + ip + '\'' +
+                '}';
+    }
 }
