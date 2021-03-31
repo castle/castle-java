@@ -1,11 +1,14 @@
 package io.castle.client.model;
 
+import io.castle.client.Castle;
+
 import java.util.HashMap;
 
 import javax.annotation.Nonnull;
 
 public class CastleMessage {
     private transient CastleContext context;
+    private transient CastleOptions options;
     private String createdAt;
     private String timestamp;
     private String deviceToken;
@@ -38,6 +41,12 @@ public class CastleMessage {
     public void setContext(CastleContext context) {
         this.context = context;
     }
+
+    public CastleOptions getOptions() {
+        return options;
+    }
+
+    public void setOptions(CastleOptions options) { this.options = options; }
 
     /**
      * @deprecated use {@link #getTimestamp()} instead.

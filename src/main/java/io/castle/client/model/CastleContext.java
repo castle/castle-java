@@ -1,19 +1,14 @@
 package io.castle.client.model;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Complete model of a context object with all the fields the Castle API understands.
  */
 public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
-    private Object fingerprint;
-    private String ip;
     private String timezone;
     private CastlePage page;
     private CastleReferrer referrer;
-    private CastleHeaders headers;
     private CastleSdkRef library = new CastleSdkRef();
     private CastleLocation location;
     private CastleNetwork network;
@@ -36,26 +31,6 @@ public class CastleContext {
         this.device = device;
     }
 
-    public Object getFingerprint() {
-        return fingerprint;
-    }
-
-    public void setFingerprint(String fingerprint) {
-        this.fingerprint = fingerprint;
-    }
-
-    public void setFingerprint(Object fingerprint) {
-        if (fingerprint instanceof Boolean || fingerprint instanceof String) {
-            this.fingerprint = fingerprint;
-        } else {
-            throw new IllegalArgumentException("Fingerprint must be a string or boolean value");
-        }
-    }
-
-    public void setFingerprint(boolean fingerprint) {
-        this.fingerprint = fingerprint;
-    }
-
     public CastlePage getPage() {
         return page;
     }
@@ -70,22 +45,6 @@ public class CastleContext {
 
     public void setReferrer(CastleReferrer referrer) {
         this.referrer = referrer;
-    }
-
-    public CastleHeaders getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(CastleHeaders headers) {
-        this.headers = headers;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
     }
 
     public CastleSdkRef getLibrary() {
@@ -142,12 +101,9 @@ public class CastleContext {
         return "CastleContext{" +
                 "active=" + active +
                 ", device=" + device +
-                ", fingerprint='" + fingerprint + '\'' +
-                ", ip='" + ip + '\'' +
                 ", timezone='" + timezone + '\'' +
                 ", page=" + page +
                 ", referrer=" + referrer +
-                ", headers=" + headers +
                 ", library=" + library +
                 ", location=" + location +
                 ", network=" + network +
