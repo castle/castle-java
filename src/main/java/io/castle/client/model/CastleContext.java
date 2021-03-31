@@ -108,7 +108,7 @@ public class CastleContext {
                 ", location=" + location +
                 ", network=" + network +
                 ", os=" + os +
-                ", screen=" + screen + '\'' +
+                ", screen=" + screen +
                 '}';
     }
 }

@@ -130,7 +130,7 @@ public class CastleContextTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyContextInstance() {
 
         // given
-        String expected = "CastleContext{active=true, device=null, timezone='null', page=null, referrer=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null'}";
+        String expected = "CastleContext{active=true, device=null, timezone='null', page=null, referrer=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null}";
         CastleContext context = new CastleContext();
 
         //when
@@ -207,7 +207,7 @@ public class CastleContextTest {
                 "location=CastleLocation{city='l_city', country='l_country', latitude=10, longitude=10, speed=0}, " +
                 "network=CastleNetwork{bluetooth=true, cellular=true, carrier='n_carrier', wifi=true}, " +
                 "os=CastleOS{name='o_name', version='0_version'}, " +
-                "screen=CastleScreen{width=10, height=20, density=2}'}";
+                "screen=CastleScreen{width=10, height=20, density=2}}";
 
 
         //when
