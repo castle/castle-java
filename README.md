@@ -249,11 +249,11 @@ If the API Secret is not provided, the client's initialization process will fail
 Besides the aforementioned settings, the following are other application-level setting
 that can be optionally configured:
 
- * **Blacklisted Headers**: a comma-separated list of strings representing HTTP headers that will
+ * **Denylisted Headers**: a comma-separated list of strings representing HTTP headers that will
  never get passed to the context object. See [The Context Object](#the-context-object).
- * **Whitelisted Headers**: this is a comma-separated list of strings representing HTTP headers
+ * **Allowlisted Headers**: this is a comma-separated list of strings representing HTTP headers
  that will get passed to the context object with each call to the Castle API,
- unless they are blacklisted. If not set or empty all headers will be sent. See [The Context Object](#the-context-object).
+ unless they are denylisted. If not set or empty all headers will be sent. See [The Context Object](#the-context-object).
  * **Authenticate Failover Strategy**: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
  See also [Authenticate](#authenticate)
  * **Timeout**: an integer that represents the time in milliseconds after which a request fails.
@@ -262,7 +262,7 @@ that can be optionally configured:
  * **Base URL**: The base endpoint of the Castle API without any relative path.
  * **IP Headers**: The headers checked (in order) to use for the context IP.
 
-Whitelist and Blacklist are case-insensitive.
+Allowlist and Denylist are case-insensitive.
 
 If the value of any of these keys is left unspecified, the client will be configured with their default values.
 See *[Where to Configure Settings](#where-to-configure-settings)* for a list of the default values.
@@ -281,8 +281,8 @@ Finally, it also contains the environmental variable that can be used instead of
 Setting | Default values, when they exist | Properties file key | Environment variable |
 --- | --- | --- | --- |
 API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
-Whitelisted Headers |   | `white_list` | `CASTLE_SDK_WHITELIST_HEADERS` |
-Blacklisted Headers | `Cookie` | `black_list` | `CASTLE_SDK_BLACKLIST_HEADERS` |
+Allowlisted Headers |   | `allow_list` | `CASTLE_SDK_ALLOWLIST_HEADERS` |
+Denylisted Headers | `Cookie` | `deny_list` | `CASTLE_SDK_DENYLIST_HEADERS` |
 Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
 Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
 Backend Provider | `OKHTTP` | `backend_provide` | `CASTLE_SDK_BACKEND_PROVIDER` |
@@ -298,8 +298,8 @@ modified:
 
 ```properties
 api_secret=
-white_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
-black_list=Cookie
+allow_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
+deny_list=Cookie
 timeout=500
 backend_provider=OKHTTP
 failover_strategy=ALLOW
@@ -313,8 +313,8 @@ To configure using the `CastleConfigurationBuilder` use the corresponding method
 ```builder
 Castle castle = Castle.initialize(Castle.configurationBuilder()
     .apiSecret("abcd")
-    .withWhiteListHeaders("User-Agent", "Accept-Language", "Accept-Encoding")
-    .withBlackListHeaders("Cookie")
+    .withAllowListHeaders("User-Agent", "Accept-Language", "Accept-Encoding")
+    .withDenyListHeaders("Cookie")
     .withTimeout(500)
     .withBackendProvider(CastleBackendProvider.OKHTTP)
     .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW))

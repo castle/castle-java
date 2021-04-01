@@ -20,8 +20,8 @@ import java.util.List;
  * <ul>
  * <li> timeout
  * <li> failoverStrategy
- * <li> whiteListHeaders
- * <li> blackListHeaders
+ * <li> allowListHeaders
+ * <li> denyListHeaders
  * <li> apiSecret
  * <li> castleAppId
  * <li> backendProvider
@@ -30,10 +30,10 @@ import java.util.List;
  * It will throw a {@link CastleSdkConfigurationException} if one of the fields is left unset.
  * {@code apiSecret} and {@code castleAppId} do not have defaults.
  * A value for the Api Secret should be provided before calling {@code  build}.
- * <h2>How to use Whitelist and Blacklist</h2>
- * When {@link io.castle.client.Castle#onRequest} is called, whitelisted headers and blacklisted headers are checked.
- * Headers are only passed to the context if they are in the whitelist, but not in the blacklist.
- * That is, if a header is in both lists, the blacklisted value takes precedence, and the header is not passed to the
+ * <h2>How to use AllowList and DenyList</h2>
+ * When {@link io.castle.client.Castle#onRequest} is called, allowListed headers and denyListed headers are checked.
+ * Headers are only passed to the context if they are in the allowList, but not in the denyList.
+ * That is, if a header is in both lists, the denyListed value takes precedence, and the header is not passed to the
  * context object.
  */
 public class CastleConfigurationBuilder {
@@ -48,14 +48,14 @@ public class CastleConfigurationBuilder {
     private AuthenticateFailoverStrategy failoverStrategy;
 
     /**
-     * Strings representing headers that should be passed to the context object unless they are also blacklisted.
+     * Strings representing headers that should be passed to the context object unless they are also denyListed.
      */
-    private List<String> whiteListHeaders;
+    private List<String> allowListHeaders;
 
     /**
      * Strings representing headers that should never be passed to the context object.
      */
-    private List<String> blackListHeaders;
+    private List<String> denyListHeaders;
 
     /**
      * String represented the API secret associated with a Castle account.
@@ -107,8 +107,8 @@ public class CastleConfigurationBuilder {
      */
     public static CastleConfigurationBuilder defaultConfigBuilder() {
         CastleConfigurationBuilder builder = new CastleConfigurationBuilder()
-                .withDefaultWhitelist()
-                .withDefaultBlacklist()
+                .withDefaultAllowList()
+                .withDefaultDenyList()
                 .withDefaultApiBaseUrl()
                 .withTimeout(500)
                 .withDefaultAuthenticateFailoverStrategy()
@@ -129,26 +129,26 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Sets the default list of whitelisted headers.
+     * Sets the default list of allowListed headers.
      *
-     * @return a castleConfigurationBuilder instance with the default list of whitelisted headers.
+     * @return a castleConfigurationBuilder instance with the default list of allowListed headers.
      */
-    public CastleConfigurationBuilder withDefaultWhitelist() {
-        this.whiteListHeaders = new LinkedList<>();
+    public CastleConfigurationBuilder withDefaultAllowList() {
+        this.allowListHeaders = new LinkedList<>();
         return this;
     }
 
     /**
-     * Sets the default list of blacklisted headers.
+     * Sets the default list of denyListed headers.
      * <p>
      * The default value is a list whose single element is the {@code Cookie} header.
      *
-     * @return a castleConfigurationBuilder instance with the default list of blacklisted headers
+     * @return a castleConfigurationBuilder instance with the default list of denyListed headers
      */
-    public CastleConfigurationBuilder withDefaultBlacklist() {
-        this.blackListHeaders = new LinkedList<>();
-        this.blackListHeaders.add("Cookie");
-        this.blackListHeaders.add("Authorization");
+    public CastleConfigurationBuilder withDefaultDenyList() {
+        this.denyListHeaders = new LinkedList<>();
+        this.denyListHeaders.add("Cookie");
+        this.denyListHeaders.add("Authorization");
         return this;
     }
 
@@ -217,50 +217,50 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Whitelists a list of strings representing headers that will be passed to the context object from an
+     * AllowLists a list of strings representing headers that will be passed to the context object from an
      * {@code HttpServletRequest}.
      *
-     * @param whitelistedHeaders a list of strings representing headers; case insensitive, not null.
-     * @return a castleConfigurationBuilder with a whitelist of headers for building context objects
+     * @param allowListedHeaders a list of strings representing headers; case insensitive, not null.
+     * @return a castleConfigurationBuilder with a allowlist of headers for building context objects
      */
-    public CastleConfigurationBuilder withWhiteListHeaders(List<String> whitelistedHeaders) {
-        this.whiteListHeaders = whitelistedHeaders;
+    public CastleConfigurationBuilder withAllowListHeaders(List<String> allowListedHeaders) {
+        this.allowListHeaders = allowListedHeaders;
         return this;
     }
 
     /**
-     * Whitelists a a comma separated list of string parameters representing headers that will be passed to the context
+     * AllowLists a a comma separated list of string parameters representing headers that will be passed to the context
      * object from an {@code HttpServletRequest}.
      *
-     * @param whitelistedHeaders a comma separated list of string parameters representing headers; case insensitive, not
+     * @param allowListedHeaders a comma separated list of string parameters representing headers; case insensitive, not
      *                           null.
-     * @return a castleConfigurationBuilder with a whitelist of headers for building context objects
+     * @return a castleConfigurationBuilder with an allowList of headers for building context objects
      */
-    public CastleConfigurationBuilder withWhiteListHeaders(String... whitelistedHeaders) {
-        return withWhiteListHeaders(ImmutableList.copyOf(whitelistedHeaders));
+    public CastleConfigurationBuilder withAllowListHeaders(String... allowListedHeaders) {
+        return withAllowListHeaders(ImmutableList.copyOf(allowListedHeaders));
     }
 
     /**
-     * Blacklists a a comma separated list of string parameters representing headers that will be passed to the context
+     * DenyLists a a comma separated list of string parameters representing headers that will be passed to the context
      * object from an {@code HttpServletRequest}.
      *
-     * @param blacklistedHeaders a comma separated list of string parameters representing headers; case insensitive, not
+     * @param denyListedHeaders a comma separated list of string parameters representing headers; case insensitive, not
      *                           null.
-     * @return a castleConfigurationBuilder with a blacklist of headers for building context objects
+     * @return a castleConfigurationBuilder with a denyList of headers for building context objects
      */
-    public CastleConfigurationBuilder withBlackListHeaders(String... blacklistedHeaders) {
-        return withBlackListHeaders(ImmutableList.copyOf(blacklistedHeaders));
+    public CastleConfigurationBuilder withDenyListHeaders(String... denyListedHeaders) {
+        return withDenyListHeaders(ImmutableList.copyOf(denyListedHeaders));
     }
 
     /**
-     * Blacklists a list of strings representing headers that will be passed to the context object from an
+     * DenyLists a list of strings representing headers that will be passed to the context object from an
      * {@code HttpServletRequest}.
      *
-     * @param blacklistedHeaders a list of strings representing headers; case insensitive, not null.
-     * @return a castleConfigurationBuilder with a blacklist of headers for building context objects
+     * @param denyListedHeaders a list of strings representing headers; case insensitive, not null.
+     * @return a castleConfigurationBuilder with a denyList of headers for building context objects
      */
-    public CastleConfigurationBuilder withBlackListHeaders(List<String> blacklistedHeaders) {
-        this.blackListHeaders = blacklistedHeaders;
+    public CastleConfigurationBuilder withDenyListHeaders(List<String> denyListedHeaders) {
+        this.denyListHeaders = denyListedHeaders;
         return this;
     }
 
@@ -291,8 +291,8 @@ public class CastleConfigurationBuilder {
      * This method will not detect wrong headers, API secrets or APP ID's.
      *
      * @return a castleConfiguration with all fields set to some meaningful value
-     * @throws CastleSdkConfigurationException if at least one of castleAppId, apiSecret, whiteListHeaders,
-     *                                         blackListHeaders, failoverStrategy, backendProvider is not provided
+     * @throws CastleSdkConfigurationException if at least one of castleAppId, apiSecret, allowListHeaders,
+     *                                         denyListHeaders, failoverStrategy, backendProvider is not provided
      *                                         during the building stage of the
      *                                         CastleConfiguration instance.
      */
@@ -302,13 +302,13 @@ public class CastleConfigurationBuilder {
             builder.add("The apiSecret for the castleSDK must be provided in the configuration. Read documentation " +
                     "for further details.");
         }
-        if (whiteListHeaders == null) {
-            builder.add("A whitelist of headers must be provided. If not sure, then use the default values provided " +
-                    "by method withDefaultWhitelist. Read documentation for further details.");
+        if (allowListHeaders == null) {
+            builder.add("An allowList of headers must be provided. If not sure, then use the default values provided " +
+                    "by method withDefaultAllowList. Read documentation for further details.");
         }
-        if (blackListHeaders == null) {
-            builder.add("A blacklist of headers must be provided. If not sure, then use the default values provided " +
-                    "by method withDefaultBlacklist. Read documentation for further details.");
+        if (denyListHeaders == null) {
+            builder.add("A denyList of headers must be provided. If not sure, then use the default values provided " +
+                    "by method withDefaultDenyList. Read documentation for further details.");
         }
         if (failoverStrategy == null) {
             builder.add("A failover strategy must be provided. If not sure, then use the default values provided " +
@@ -329,8 +329,8 @@ public class CastleConfigurationBuilder {
         return new CastleConfiguration(apiBaseUrl,
                 timeout,
                 failoverStrategy,
-                normalizer.normalizeList(whiteListHeaders),
-                normalizer.normalizeList(blackListHeaders),
+                normalizer.normalizeList(allowListHeaders),
+                normalizer.normalizeList(denyListHeaders),
                 apiSecret,
                 castleAppId,
                 backendProvider,

@@ -36,14 +36,14 @@ public class CastleTest {
                 .extracting("apiSecret", "castleAppId")
                 .containsExactly("test_api_secret", "test_app_id");
 
-        Assertions.assertThat(sdkConfiguration.getBlackListHeaders())
+        Assertions.assertThat(sdkConfiguration.getDenyListHeaders())
                 .containsExactlyInAnyOrder(
                         "cookie",
-                        "testblack"
+                        "testdeny"
                 );
-        Assertions.assertThat(sdkConfiguration.getWhiteListHeaders())
+        Assertions.assertThat(sdkConfiguration.getAllowListHeaders())
                 .containsExactlyInAnyOrder(
-                        "testwhite",
+                        "testallow",
                         "user-agent",
                         "accept-language",
                         "accept-encoding",
