@@ -45,14 +45,14 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void blockHeadersOnBlackList() throws CastleSdkConfigurationException {
+    public void blockHeadersOnDenyList() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
-                .withBlackListHeaders("Cookie", acceptLanguageHeader)
+                .withDenyListHeaders("Cookie", acceptLanguageHeader)
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model)
                 .device(getStandardDevice());
@@ -78,15 +78,15 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void blackListIsMoreRelevantThatWhitelist() throws CastleSdkConfigurationException {
+    public void denyListIsMoreRelevantThatAllowlist() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
-                .withBlackListHeaders(connectionHeader)
-                .withWhiteListHeaders(connectionHeader)
+                .withDenyListHeaders(connectionHeader)
+                .withAllowListHeaders(connectionHeader)
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
@@ -113,21 +113,21 @@ public class CastleContextBuilderTest {
     }
 
     @Test
-    public void whiteListPassHeadersToTheContext() throws CastleSdkConfigurationException {
+    public void allowListPassHeadersToTheContext() throws CastleSdkConfigurationException {
 
         //Given a Configuration that block the accept-language header
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
-                .withDefaultBlacklist()
-                .withWhiteListHeaders(connectionHeader)
+                .withDefaultDenyList()
+                .withAllowListHeaders(connectionHeader)
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model)
                 .device(getStandardDevice());
         HttpServletRequest standardRequest = getStandardRequestMock();
 
-        //And a expected castle context with a single whitelisted header
+        //And a expected castle context with a single allowlisted header
         CastleContext standardContext = getStandardScrubbedContext();
         for (CastleHeader header : standardContext.getHeaders().getHeaders()) {
             if (header.getKey().equals(connectionHeader)) {

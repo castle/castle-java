@@ -20,9 +20,9 @@ public class CastleConfigurationBuilderTest {
         //then the configuration match the default values
         Assertions.assertThat(config.getApiSecret()).isEqualTo(apiSecret);
         Assertions.assertThat(config.getCastleAppId()).isEqualTo(castleAppId);
-        Assertions.assertThat(config.getBlackListHeaders()).contains("cookie");
-        Assertions.assertThat(config.getBlackListHeaders()).contains("authorization");
-        Assertions.assertThat(config.getWhiteListHeaders()).isEmpty();
+        Assertions.assertThat(config.getDenyListHeaders()).contains("cookie");
+        Assertions.assertThat(config.getDenyListHeaders()).contains("authorization");
+        Assertions.assertThat(config.getAllowListHeaders()).isEmpty();
         Assertions.assertThat(config.getAuthenticateFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
         Assertions.assertThat(config.getTimeout()).isEqualTo(500);
 
