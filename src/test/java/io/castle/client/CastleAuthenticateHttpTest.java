@@ -80,6 +80,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
+    @Test
     public void authenticateAsyncEndpointWithPayload() throws InterruptedException, JSONException {
         // Given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
