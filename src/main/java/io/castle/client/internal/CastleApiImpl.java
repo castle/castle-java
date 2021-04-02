@@ -6,10 +6,7 @@ import com.google.gson.JsonObject;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
-import io.castle.client.internal.utils.CastleContextBuilder;
-import io.castle.client.internal.utils.ContextMerge;
-import io.castle.client.internal.utils.Timestamp;
-import io.castle.client.internal.utils.VerdictBuilder;
+import io.castle.client.internal.utils.*;
 import io.castle.client.model.*;
 
 import javax.annotation.Nullable;
@@ -19,11 +16,13 @@ public class CastleApiImpl implements CastleApi {
 
     private final boolean doNotTrack;
     private final CastleSdkInternalConfiguration configuration;
+    private final CastleOptions castleOptions;
     private final JsonObject contextJson;
 
     public CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
+        this.castleOptions = buildOptions(request);
         CastleContext castleContext = buildContext(request);
         this.contextJson = configuration.getModel().getGson().toJsonTree(castleContext).getAsJsonObject();
     }
@@ -31,12 +30,14 @@ public class CastleApiImpl implements CastleApi {
     public CastleApiImpl(CastleSdkInternalConfiguration configuration, boolean doNotTrack) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
+        this.castleOptions = null;
         this.contextJson = null;
     }
 
     private CastleApiImpl(boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
+        this.castleOptions = null;
         this.contextJson = contextJson;
     }
 
@@ -46,6 +47,14 @@ public class CastleApiImpl implements CastleApi {
                 .fromHttpServletRequest(request)
                 .build();
         return context;
+    }
+
+    private CastleOptions buildOptions(HttpServletRequest request) {
+        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration.getConfiguration(), configuration.getModel());
+        CastleOptions options = builder
+                .fromHttpServletRequest(request)
+                .build();
+        return options;
     }
 
     @Override
@@ -358,6 +367,14 @@ public class CastleApiImpl implements CastleApi {
             contextJson = this.contextJson;
         } else {
             contextJson = configuration.getModel().getGson().toJsonTree(context).getAsJsonObject();
+        }
+
+        if (this.castleOptions != null) {
+            if (message.getFingerprint() == null) {
+                message.setFingerprint(this.castleOptions.getFingerprint());
+            }
+            message.setHeaders(this.castleOptions.getHeaders());
+            message.setIp(this.castleOptions.getIp());
         }
 
         JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);

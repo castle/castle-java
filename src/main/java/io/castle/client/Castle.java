@@ -8,6 +8,7 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.CastleContextBuilder;
+import io.castle.client.internal.utils.CastleOptionsBuilder;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -139,7 +140,7 @@ public class Castle {
 
     /**
      * Returns a new builder object for constructing a CastleContext
-     * @return Return CatleContextBuilder object
+     * @return Return CastleContextBuilder object
      */
     public CastleContextBuilder contextBuilder() {
         return buildContextBuilder();
@@ -151,9 +152,28 @@ public class Castle {
      */
     public CastleContextBuilder buildContextBuilder() {
         return new CastleContextBuilder(
-            getSdkConfiguration(),
-            getGsonModel()
+                getSdkConfiguration(),
+                getGsonModel()
         );
+    }
+
+    /**
+     * Create a new instance of request options builder
+     * @return a new instance of {@code CastleOptionsBuilder}
+     */
+    public CastleOptionsBuilder buildOptionsBuilder() {
+        return new CastleOptionsBuilder(
+                getSdkConfiguration(),
+                getGsonModel()
+        );
+    }
+
+    /**
+     * Returns a new builder object for constructing a CastleContext
+     * @return Return CastleOptionsBuilder object
+     */
+    public CastleOptionsBuilder optionsBuilder() {
+        return buildOptionsBuilder();
     }
 
     public CastleApi buildApiClient() {

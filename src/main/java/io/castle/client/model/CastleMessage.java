@@ -15,7 +15,9 @@ public class CastleMessage {
     @Nonnull private String event;
     private String status;
     private String email;
-    private String fingerprint;
+    private Object fingerprint;
+    private String ip;
+    private CastleHeaders headers;
     /**
      * Collect other attributes that haven't not explicit setters to accommodate for
      * future parameters
@@ -97,9 +99,33 @@ public class CastleMessage {
 
     public void setEmail(String email) { this.email = email; }
 
-    public String getFingerprint() { return fingerprint; }
+    public Object getFingerprint() {
+        return fingerprint;
+    }
 
-    public void setFingerprint(String fingerprint) { this.fingerprint = fingerprint; }
+    public void setFingerprint(String fingerprint) {
+        this.fingerprint = fingerprint;
+    }
+
+    public void setFingerprint(Object fingerprint) {
+        if (fingerprint instanceof Boolean || fingerprint instanceof String) {
+            this.fingerprint = fingerprint;
+        } else {
+            throw new IllegalArgumentException("Fingerprint must be a string or boolean value");
+        }
+    }
+
+    public void setFingerprint(boolean fingerprint) {
+        this.fingerprint = fingerprint;
+    }
+
+    public CastleHeaders getHeaders() { return headers; }
+
+    public void setHeaders(CastleHeaders headers) { this.headers = headers; }
+
+    public String getIp() { return ip; }
+
+    public void setIp(String ip) { this.ip = ip; }
 
     public HashMap getOther() {
         if (other == null) {
