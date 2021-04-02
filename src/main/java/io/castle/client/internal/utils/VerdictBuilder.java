@@ -13,6 +13,7 @@ public class VerdictBuilder {
     private String failoverReason;
     private String deviceToken;
     private JsonElement internal;
+    private float risk;
 
     private VerdictBuilder() {
     }
@@ -49,6 +50,11 @@ public class VerdictBuilder {
         return this;
     }
 
+    public VerdictBuilder withRisk(final float risk) {
+        this.risk = risk;
+        return this;
+    }
+
     public Verdict build() {
         Verdict verdict = new Verdict();
         verdict.setAction(action);
@@ -58,6 +64,7 @@ public class VerdictBuilder {
         verdict.setDeviceToken(deviceToken);
         verdict.setRiskPolicy(riskPolicy);
         verdict.setInternal(internal);
+        verdict.setRisk(risk);
         return verdict;
     }
 
@@ -83,6 +90,7 @@ public class VerdictBuilder {
                 .withUserId(transport.getUserId())
                 .withDeviceToken(transport.getDeviceToken())
                 .withRiskPolicy(transport.getRiskPolicy())
+                .withRisk(transport.getRisk())
                 .withInternal(internal)
                 .build();
     }
