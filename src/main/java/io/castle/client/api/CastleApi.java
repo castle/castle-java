@@ -83,9 +83,11 @@ public interface CastleApi {
      *
      * @param event       a String representing an event understood by the Castle API
      * @param status      a String representing event status
-     * @param userId      a String representing a user ID associated to an authentication attempt
+     * @param userId      a String representing a user ID associated with an authentication attempt
      * @param email       a String representing an email associated with an authentication attempt
      * @param fingerprint a String for representing fingerprint
+     * @param headers     custom CastleHeaders associated with an authentication attempt
+     * @param ip          a String representing IP associated with an authentication attempt
      * @param properties  object for recording additional information connected to the event, takes null
      * @param traits      object for recording additional information connected to the user, takes null
      * @return a verdict that might result from a successful call to the Castle API or from the client's
@@ -98,6 +100,8 @@ public interface CastleApi {
             @Nullable String userId,
             @Nullable String email,
             @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
             @Nullable Object properties,
             @Nullable Object traits
     );
@@ -129,6 +133,8 @@ public interface CastleApi {
      * @param userId               a String representing a user ID associated to an authentication attempt
      * @param email                a String representing an email associated with an authentication attempt
      * @param fingerprint          a String for representing fingerprint
+     * @param headers              custom CastleHeaders associated with an authentication attempt
+     * @param ip                   a String representing IP associated with an authentication attempt
      * @param properties           object for recording additional information connected to the event, takes null
      * @param traits               object for recording additional information connected to the user, takes null
      * @param asyncCallbackHandler a user-implemented instance of {@code AsyncCallbackHandler} which specifies
@@ -143,6 +149,8 @@ public interface CastleApi {
             @Nullable String userId,
             @Nullable String email,
             @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
             @Nullable Object properties,
             @Nullable Object traits,
             AsyncCallbackHandler<Verdict> asyncCallbackHandler

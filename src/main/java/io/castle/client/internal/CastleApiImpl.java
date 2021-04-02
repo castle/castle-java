@@ -82,8 +82,18 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public Verdict authenticate(String event, @Nullable String status, @Nullable String userId, @Nullable String email, @Nullable String fingerprint, @Nullable Object properties, @Nullable Object traits) {
-        return authenticate(buildMessage(event, status, userId, email, fingerprint, properties, traits));
+    public Verdict authenticate(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
+            @Nullable Object properties,
+            @Nullable Object traits
+    ) {
+        return authenticate(buildMessage(event, status, userId, email, fingerprint, ip, headers, properties, traits));
     }
 
     @Override
@@ -158,12 +168,14 @@ public class CastleApiImpl implements CastleApi {
             @Nullable String userId,
             @Nullable String email,
             @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
             @Nullable Object properties,
             @Nullable Object traits,
             AsyncCallbackHandler<Verdict> asyncCallbackHandler
     ) {
         authenticateAsync(
-                buildMessage(event, status, userId, email, fingerprint, properties, traits),
+                buildMessage(event, status, userId, email, fingerprint, ip, headers, properties, traits),
                 asyncCallbackHandler
         );
     }
@@ -320,6 +332,8 @@ public class CastleApiImpl implements CastleApi {
             @Nullable String userId,
             @Nullable String email,
             @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
             @Nullable Object properties,
             @Nullable Object traits
     ) {
@@ -339,6 +353,14 @@ public class CastleApiImpl implements CastleApi {
 
         if (fingerprint != null) {
             message.setFingerprint(fingerprint);
+        }
+
+        if (ip != null) {
+            message.setIp(ip);
+        }
+
+        if (headers != null) {
+            message.setHeaders(headers);
         }
 
         return setTraitsAndProperties(message, properties, traits);
@@ -372,8 +394,12 @@ public class CastleApiImpl implements CastleApi {
             if (message.getFingerprint() == null) {
                 message.setFingerprint(this.castleOptions.getFingerprint());
             }
-            message.setHeaders(this.castleOptions.getHeaders());
-            message.setIp(this.castleOptions.getIp());
+            if (message.getHeaders() == null) {
+                message.setHeaders(this.castleOptions.getHeaders());
+            }
+            if (message.getIp() == null) {
+                message.setIp(this.castleOptions.getIp());
+            }
         }
 
         JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);

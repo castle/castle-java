@@ -1,7 +1,5 @@
 package io.castle.client.model;
 
-import io.castle.client.Castle;
-
 import java.util.HashMap;
 
 import javax.annotation.Nonnull;

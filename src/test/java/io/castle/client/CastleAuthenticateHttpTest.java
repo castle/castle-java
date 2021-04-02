@@ -190,7 +190,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
             }
         };
         // and an authenticate request is made
-        sdk.onRequest(request).authenticateAsync(event, status, userId, email, fingerprint, null, null, handler);
+        sdk.onRequest(request).authenticateAsync(event, status, userId, email, fingerprint,null, null, null, null, handler);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
@@ -456,7 +456,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null);
+        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null, null, null);
 
         RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
 
@@ -494,7 +494,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, ImmutableMap.builder()
+        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null, ImmutableMap.builder()
                 .put("a","valueA")
                 .put("b",123456)
                 .build(), ImmutableMap.builder()
