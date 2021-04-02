@@ -17,6 +17,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -259,7 +260,6 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         waitForValueAndVerify(result, expected);
     }
 
-
     @Test
     public void authenticationAsyncEndpointProvideDefaultValueOnTimeoutErrorTest() throws InterruptedException, JSONException {
         //given
@@ -383,6 +383,89 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
         JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+    }
+
+
+    @Test
+    public void authenticationWithAttributesEndpointTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+        String event = "$login";
+        String status = "$succeeded";
+        String userId = "12345";
+        String email = "test@example.com";
+        String fingerprint = "fingerprintX";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // and an authenticate request is made
+        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null);
+
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
+        // then
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId(userId)
+                .withDeviceToken(deviceToken)
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        Assertions.assertThat(verdict).isEqualToComparingFieldByFieldRecursively(expected);
+
+        // and
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        JSONAssert.assertEquals("{\"event\":\"$login\",\"status\":\"$succeeded\",\"fingerprint\":\"fingerprintX\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+    }
+
+    @Test
+    public void authenticationWithAttributesPropertiesAndTraitsTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+        String event = "$login";
+        String status = "$succeeded";
+        String userId = "12345";
+        String email = "test@example.com";
+        String fingerprint = "fingerprintX";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // and an authenticate request is made
+        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), ImmutableMap.builder()
+                .put("x","valueX")
+                .put("y",654321)
+                .build());
+
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
+        // then
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId(userId)
+                .withDeviceToken(deviceToken)
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        Assertions.assertThat(verdict).isEqualToComparingFieldByFieldRecursively(expected);
+
+        // and
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        JSONAssert.assertEquals("{\"event\":\"$login\",\"status\":\"$succeeded\",\"fingerprint\":\"fingerprintX\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
