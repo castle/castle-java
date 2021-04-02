@@ -13,7 +13,7 @@ public class CastleServerErrorException extends CastleRuntimeException {
 
     public CastleServerErrorException(Response response) {
         super(response.toString());
-
+        
         this.responseCode = response.code();
         this.responseMessage = response.message();
         try {
