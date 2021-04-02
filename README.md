@@ -71,7 +71,6 @@ instance.
 // `req` is an instance of `HttpServletRequest`.
 Castle castle = Castle.initialize();
 CastleContext context = castle.contextBuilder()
-    .fromHttpServletRequest(req)
     .build();
 
 castle.client().track(CastleMessage.builder("$login.succeeded")
@@ -95,7 +94,6 @@ By default `REMOTE_ADDR` is used for IP. To use another header or value use the 
 ```java
 Castle castle = Castle.initialize();
 CastleContext context = castle.contextBuilder()
-    .fromHttpServletRequest(req)
     .ip(req.getHeader("X-Forwarded-For"))
     .build();
 ```
@@ -112,7 +110,6 @@ is that a `Verdict` will be returned, indicating which action to take based on t
 // `req` is an instance of `HttpServletRequest`.
 Castle castle = Castle.initialize();
 CastleContext context = castle.contextBuilder()
-    .fromHttpServletRequest(req)
     .build();
 
 Verdict verdict = castle.client().authenticate(CastleMessage.builder("$login.succeeded")
@@ -139,7 +136,6 @@ such as IP and UserAgent
 
 // Quick way of building context through the incoming HttpServletRequest
 CastleContext context = castle.contextBuilder()
-    .fromHttpServletRequest(request)
     .build()
 
 // or build context manually
@@ -170,16 +166,10 @@ gets extracted and set automatically:
 ```JSON
     {
         "active": true,
-        "fingerprint": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
-        "headers": {
-            "Accept-Language": "en-US,en;q=0.8"
-          },
-        "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
           "version": "1.0.1"
-        },
-        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
+        }
       }
 ```
 
