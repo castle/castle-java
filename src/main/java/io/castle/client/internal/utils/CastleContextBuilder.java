@@ -39,10 +39,6 @@ public class CastleContextBuilder {
         return this;
     }
 
-    public CastleContextBuilder fromHttpServletRequest(HttpServletRequest request) {
-        return this;
-    }
-
     public CastleContextBuilder fromJson(String contextString) {
         this.context = model.getGson().fromJson(contextString, CastleContext.class);
         return this;

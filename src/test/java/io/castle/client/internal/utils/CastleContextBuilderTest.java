@@ -32,11 +32,10 @@ public class CastleContextBuilderTest {
                 .withCastleAppId("anyValidAppId")
                 .build();
         CastleContextBuilder builder = new CastleContextBuilder(configuration, model);
-        HttpServletRequest standardRequest = getStandardRequestMock();
         CastleContext standardContext = getStandardContextFromServletRequest();
 
         //When
-        CastleContext context = builder.fromHttpServletRequest(standardRequest)
+        CastleContext context = builder
                 .device(getStandardDevice())
                 .build();
 
@@ -76,7 +75,6 @@ public class CastleContextBuilderTest {
 
         // When
         String json = new CastleContextBuilder(configuration, model)
-            .fromHttpServletRequest(standardRequest)
             .device(getStandardDevice())
             .toJson();
 
