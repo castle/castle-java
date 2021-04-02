@@ -192,9 +192,6 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // and an authenticate request is made
         sdk.onRequest(request).authenticateAsync(event, status, userId, email, fingerprint, null, null, handler);
 
-        // and an authenticate request is made
-        sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null);
-
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
