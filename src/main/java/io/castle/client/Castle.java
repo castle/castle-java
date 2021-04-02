@@ -157,25 +157,6 @@ public class Castle {
         );
     }
 
-    /**
-     * Create a new instance of request options builder
-     * @return a new instance of {@code CastleOptionsBuilder}
-     */
-    public CastleOptionsBuilder buildOptionsBuilder() {
-        return new CastleOptionsBuilder(
-                getSdkConfiguration(),
-                getGsonModel()
-        );
-    }
-
-    /**
-     * Returns a new builder object for constructing a CastleContext
-     * @return Return CastleOptionsBuilder object
-     */
-    public CastleOptionsBuilder optionsBuilder() {
-        return buildOptionsBuilder();
-    }
-
     public CastleApi buildApiClient() {
         return buildApiClient(false);
     }
