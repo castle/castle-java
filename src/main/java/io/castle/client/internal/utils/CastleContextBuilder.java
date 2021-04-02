@@ -15,10 +15,8 @@ import java.util.Enumeration;
 public class CastleContextBuilder {
 
     private CastleContext context;
-    private CastleHeaders headers;
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
-    private final HeaderNormalizer headerNormalizer = new HeaderNormalizer();
 
     public CastleContextBuilder(CastleConfiguration configuration, CastleGsonModel model) {
         this.configuration = configuration;
@@ -38,11 +36,6 @@ public class CastleContextBuilder {
 
     public CastleContextBuilder device(CastleDevice device) {
         context.setDevice(device);
-        return this;
-    }
-
-    public CastleContextBuilder headers(CastleHeaders headers) {
-        this.headers = headers;
         return this;
     }
 

@@ -44,7 +44,6 @@ public class CastleApiImpl implements CastleApi {
     private CastleContext buildContext(HttpServletRequest request) {
         CastleContextBuilder builder = new CastleContextBuilder(configuration.getConfiguration(), configuration.getModel());
         CastleContext context = builder
-                .fromHttpServletRequest(request)
                 .build();
         return context;
     }

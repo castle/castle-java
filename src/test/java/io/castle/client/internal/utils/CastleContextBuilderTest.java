@@ -96,10 +96,6 @@ public class CastleContextBuilderTest {
             .withApiSecret("abcd")
             .build();
         String contextJson = new CastleContextBuilder(configuration, model)
-            .headers(CastleHeaders.builder()
-                .add("User-Agent", "ua")
-                .build()
-            )
             .device(getStandardDevice())
             .toJson();
 
