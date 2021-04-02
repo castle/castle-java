@@ -165,6 +165,61 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
     }
 
     @Test
+    public void authenticationAsyncWithAttributesEndpointTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+        String event = "$login";
+        String status = "$succeeded";
+        String userId = "12345";
+        String email = "test@example.com";
+        String fingerprint = "fingerprintX";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticateAsync(event, status, userId, email, fingerprint, null, null, handler);
+
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null);
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        String json = "{\"event\":\"$login\",\"status\":\"$succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}";
+
+        JSONAssert.assertEquals(json, body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+
+        JsonParser parser = new JsonParser();
+
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
+        // and
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId("12345")
+                .withDeviceToken(deviceToken)
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        waitForValueAndVerify(result, expected);
+    }
+
+    @Test
     public void authenticationAsyncEndpointNoRiskPolicyTest() throws InterruptedException, JSONException {
         //given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE_NO_POLICY));
