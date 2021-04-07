@@ -48,8 +48,8 @@ public class ConfigurationLoaderTest {
                 .withApiSecret("test_api_secret")
                 .withCastleAppId("test_app_id")
                 .withApiBaseUrl("https://testing.api.dev.castle/v1/")
-                .withWhiteListHeaders(
-                        "TestWhite",
+                .withAllowListHeaders(
+                        "TestAllow",
                         "User-Agent",
                         "Accept-Language",
                         "Accept-Encoding",
@@ -62,8 +62,8 @@ public class ConfigurationLoaderTest {
                         "X-Real-IP",
                         "REMOTE_ADDR"
                 )
-                .withBlackListHeaders(
-                        "TestBlack",
+                .withDenyListHeaders(
+                        "TestDeny",
                         "Cookie"
                 )
                 .withDefaultBackendProvider()
@@ -90,12 +90,12 @@ public class ConfigurationLoaderTest {
                 "DENY"
         );
         setEnvAndTestCorrectness(
-                "CASTLE_SDK_WHITELIST_HEADERS",
+                "CASTLE_SDK_ALLOWLIST_HEADERS",
                 "Accept-Encoding,Accept-Charset"
         );
         setEnvAndTestCorrectness(
-                "CASTLE_SDK_BLACKLIST_HEADERS",
-                "TestBlackEnv,Cookie"
+                "CASTLE_SDK_DENYLIST_HEADERS",
+                "TestDenyEnv,Cookie"
         );
         setEnvAndTestCorrectness(
                 "CASTLE_SDK_APP_ID",
@@ -114,12 +114,12 @@ public class ConfigurationLoaderTest {
                 .aConfigBuilder()
                 .withApiSecret("1234")
                 .withCastleAppId("test_app_id_env")
-                .withWhiteListHeaders(
+                .withAllowListHeaders(
                         "Accept-Encoding",
                         "Accept-Charset"
                 )
-                .withBlackListHeaders(
-                        "TestBlackEnv",
+                .withDenyListHeaders(
+                        "TestDenyEnv",
                         "Cookie"
                 )
                 .withApiBaseUrl("https://api.dev.castle.io/v1/")

@@ -6,10 +6,7 @@ import com.google.gson.JsonObject;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
-import io.castle.client.internal.utils.CastleContextBuilder;
-import io.castle.client.internal.utils.ContextMerge;
-import io.castle.client.internal.utils.Timestamp;
-import io.castle.client.internal.utils.VerdictBuilder;
+import io.castle.client.internal.utils.*;
 import io.castle.client.model.*;
 
 import javax.annotation.Nullable;
@@ -19,11 +16,13 @@ public class CastleApiImpl implements CastleApi {
 
     private final boolean doNotTrack;
     private final CastleSdkInternalConfiguration configuration;
+    private final CastleOptions castleOptions;
     private final JsonObject contextJson;
 
     public CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
+        this.castleOptions = buildOptions(request);
         CastleContext castleContext = buildContext(request);
         this.contextJson = configuration.getModel().getGson().toJsonTree(castleContext).getAsJsonObject();
     }
@@ -31,21 +30,30 @@ public class CastleApiImpl implements CastleApi {
     public CastleApiImpl(CastleSdkInternalConfiguration configuration, boolean doNotTrack) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
+        this.castleOptions = null;
         this.contextJson = null;
     }
 
     private CastleApiImpl(boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
+        this.castleOptions = null;
         this.contextJson = contextJson;
     }
 
     private CastleContext buildContext(HttpServletRequest request) {
         CastleContextBuilder builder = new CastleContextBuilder(configuration.getConfiguration(), configuration.getModel());
         CastleContext context = builder
-                .fromHttpServletRequest(request)
                 .build();
         return context;
+    }
+
+    private CastleOptions buildOptions(HttpServletRequest request) {
+        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration.getConfiguration(), configuration.getModel());
+        CastleOptions options = builder
+                .fromHttpServletRequest(request)
+                .build();
+        return options;
     }
 
     @Override
@@ -71,6 +79,21 @@ public class CastleApiImpl implements CastleApi {
     @Override
     public Verdict authenticate(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
         return authenticate(buildMessage(event, userId, properties, traits));
+    }
+
+    @Override
+    public Verdict authenticate(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
+            @Nullable Object properties,
+            @Nullable Object traits
+    ) {
+        return authenticate(buildMessage(event, status, userId, email, fingerprint, ip, headers, properties, traits));
     }
 
     @Override
@@ -136,6 +159,25 @@ public class CastleApiImpl implements CastleApi {
     public void authenticateAsync(CastleMessage message, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
         JsonElement request = buildAuthenticateRequest(message);
         sendAuthenticateRequest(request, asyncCallbackHandler);
+    }
+
+    @Override
+    public void authenticateAsync(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
+            @Nullable Object properties,
+            @Nullable Object traits,
+            AsyncCallbackHandler<Verdict> asyncCallbackHandler
+    ) {
+        authenticateAsync(
+                buildMessage(event, status, userId, email, fingerprint, ip, headers, properties, traits),
+                asyncCallbackHandler
+        );
     }
 
     @Override
@@ -242,13 +284,6 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleUser archiveUserDevices(String userId) {
-        Preconditions.checkNotNull(userId);
-        RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.sendArchiveUserDevicesRequestSync(userId);
-    }
-
-    @Override
     public CastleUserDevice device(String deviceToken) {
         Preconditions.checkNotNull(deviceToken);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
@@ -288,6 +323,50 @@ public class CastleApiImpl implements CastleApi {
 
         message.setUserId(userId);
 
+        return setTraitsAndProperties(message, properties, traits);
+    }
+
+    private CastleMessage buildMessage(
+            String event,
+            @Nullable String status,
+            @Nullable String userId,
+            @Nullable String email,
+            @Nullable String fingerprint,
+            @Nullable String ip,
+            @Nullable CastleHeaders headers,
+            @Nullable Object properties,
+            @Nullable Object traits
+    ) {
+        CastleMessage message = new CastleMessage(event);
+
+        if (userId != null) {
+            message.setUserId(userId);
+        }
+
+        if (email != null) {
+            message.setEmail(email);
+        }
+
+        if (status != null) {
+            message.setStatus(status);
+        }
+
+        if (fingerprint != null) {
+            message.setFingerprint(fingerprint);
+        }
+
+        if (ip != null) {
+            message.setIp(ip);
+        }
+
+        if (headers != null) {
+            message.setHeaders(headers);
+        }
+
+        return setTraitsAndProperties(message, properties, traits);
+    }
+
+    private CastleMessage setTraitsAndProperties( CastleMessage message, @Nullable Object properties, @Nullable Object traits) {
         if (properties != null) {
             JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
             message.setProperties(propertiesJson);
@@ -297,7 +376,6 @@ public class CastleApiImpl implements CastleApi {
             JsonElement traitsJson = configuration.getModel().getGson().toJsonTree(traits);
             message.setUserTraits(traitsJson);
         }
-
         return message;
     }
 
@@ -310,6 +388,18 @@ public class CastleApiImpl implements CastleApi {
             contextJson = this.contextJson;
         } else {
             contextJson = configuration.getModel().getGson().toJsonTree(context).getAsJsonObject();
+        }
+
+        if (this.castleOptions != null) {
+            if (message.getFingerprint() == null) {
+                message.setFingerprint(this.castleOptions.getFingerprint());
+            }
+            if (message.getHeaders() == null) {
+                message.setHeaders(this.castleOptions.getHeaders());
+            }
+            if (message.getIp() == null) {
+                message.setIp(this.castleOptions.getIp());
+            }
         }
 
         JsonElement messageJson = configuration.getModel().getGson().toJsonTree(message);

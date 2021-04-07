@@ -17,6 +17,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -74,13 +75,14 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
     }
 
-    public void authenticateAsyncEndpontWithPayload() throws InterruptedException, JSONException {
+    @Test
+    public void authenticateAsyncEndpointWithPayload() throws InterruptedException, JSONException {
         // Given
         server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
 
@@ -107,7 +109,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -141,7 +143,59 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        String json = "{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}";
+        String json = "{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}";
+
+        JSONAssert.assertEquals(json, body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+
+        JsonParser parser = new JsonParser();
+
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
+        // and
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId("12345")
+                .withDeviceToken(deviceToken)
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(parser.parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        waitForValueAndVerify(result, expected);
+    }
+
+    @Test
+    public void authenticationAsyncWithAttributesEndpointTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+        String event = "$login";
+        String status = "$succeeded";
+        String userId = "12345";
+        String email = "test@example.com";
+        String fingerprint = "fingerprintX";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+        final AtomicReference<Verdict> result = new AtomicReference<>();
+        AsyncCallbackHandler<Verdict> handler = new AsyncCallbackHandler<Verdict>() {
+            @Override
+            public void onResponse(Verdict response) {
+                result.set(response);
+            }
+
+            @Override
+            public void onException(Exception exception) {
+                Assertions.fail("error on request", exception);
+            }
+        };
+        // and an authenticate request is made
+        sdk.onRequest(request).authenticateAsync(event, status, userId, email, fingerprint,null, null, null, null, handler);
+
+        // then
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        String json = "{\"event\":\"$login\",\"status\":\"$succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}";
 
         JSONAssert.assertEquals(json, body, false);
 
@@ -190,7 +244,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        String json = "{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}";
+        String json = "{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}";
 
         JSONAssert.assertEquals(json, body, false);
 
@@ -240,7 +294,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"b\":0},\"user_id\":\"12345\",\"user_traits\":{\"y\":0},\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -257,7 +311,6 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
                 .build();
         waitForValueAndVerify(result, expected);
     }
-
 
     @Test
     public void authenticationAsyncEndpointProvideDefaultValueOnTimeoutErrorTest() throws InterruptedException, JSONException {
@@ -286,7 +339,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -324,7 +377,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // and
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -346,7 +399,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -381,7 +434,90 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // and
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+    }
+
+
+    @Test
+    public void authenticationWithAttributesEndpointTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+        String event = "$login";
+        String status = "$succeeded";
+        String userId = "12345";
+        String email = "test@example.com";
+        String fingerprint = "fingerprintX";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // and an authenticate request is made
+        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null, null, null);
+
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
+        // then
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId(userId)
+                .withDeviceToken(deviceToken)
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        Assertions.assertThat(verdict).isEqualToComparingFieldByFieldRecursively(expected);
+
+        // and
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        JSONAssert.assertEquals("{\"event\":\"$login\",\"status\":\"$succeeded\",\"fingerprint\":\"fingerprintX\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
+                body, false);
+
+        Assert.assertTrue(new JSONObject(body).has("sent_at"));
+    }
+
+    @Test
+    public void authenticationWithAttributesPropertiesAndTraitsTest() throws InterruptedException, JSONException {
+        //given
+        server.enqueue(new MockResponse().setBody(DENY_RESPONSE));
+        String event = "$login";
+        String status = "$succeeded";
+        String userId = "12345";
+        String email = "test@example.com";
+        String fingerprint = "fingerprintX";
+        String deviceToken = "abcdefg1234";
+
+        // And a mock Request
+        HttpServletRequest request = new MockHttpServletRequest();
+
+        // and an authenticate request is made
+        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null, ImmutableMap.builder()
+                .put("a","valueA")
+                .put("b",123456)
+                .build(), ImmutableMap.builder()
+                .put("x","valueX")
+                .put("y",654321)
+                .build());
+
+        RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
+
+        // then
+        Verdict expected = VerdictBuilder.success()
+                .withAction(AuthenticateAction.DENY)
+                .withUserId(userId)
+                .withDeviceToken(deviceToken)
+                .withRiskPolicy(riskPolicyResult)
+                .withInternal(new JsonParser().parse("{\"action\":\"deny\",\"user_id\":\"12345\",\"device_token\":\"abcdefg1234\", \"risk_policy\": {\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}}"))
+                .build();
+        Assertions.assertThat(verdict).isEqualToComparingFieldByFieldRecursively(expected);
+
+        // and
+        RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
+        JSONAssert.assertEquals("{\"event\":\"$login\",\"status\":\"$succeeded\",\"fingerprint\":\"fingerprintX\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -422,7 +558,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // and
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"user_traits\":{\"x\":\"valueX\",\"y\":654321},\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -473,7 +609,7 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         // and
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));

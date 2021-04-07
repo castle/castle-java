@@ -36,14 +36,6 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
 
         // When
         CastleContext context = Castle.instance().contextBuilder()
-            .ip("1.1.1.1")
-            .userAgent("Mozilla/5.0")
-            .clientId("")
-            .headers(CastleHeaders.builder()
-                .add("User-Agent", "Mozilla/5.0")
-                .add("Accept-Language", "sv-se")
-                .build()
-            )
             .build();
 
         // And a mock Request
@@ -60,7 +52,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"client_id\":\"\",\"ip\":\"1.1.1.1\",\"headers\":{\"User-Agent\":\"Mozilla/5.0\",\"Accept-Language\":\"sv-se\"}," + SDKVersion.getLibraryString() +",\"user_agent\":\"Mozilla/5.0\"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() + "}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -99,7 +91,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // Then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -121,7 +113,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -144,7 +136,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"review_id\":\"r45677\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"review_id\":\"r45677\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -170,7 +162,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"12345\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"12345\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -199,7 +191,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"23456\",\"user_traits\":{\"x\":\"x value\",\"y\":2342},\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"$login.succeeded\",\"properties\":{\"a\":\"valueA\",\"b\":123456},\"review_id\":\"r987\",\"user_id\":\"23456\",\"user_traits\":{\"x\":\"x value\",\"y\":2342},\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -219,7 +211,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -280,7 +272,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
@@ -303,7 +295,7 @@ public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {
         // then the track request must be send
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
-        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +"}}",
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +"}}",
                 body, false);
 
         Assert.assertTrue(new JSONObject(body).has("sent_at"));
