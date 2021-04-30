@@ -106,4 +106,8 @@ public class Verdict {
     public void setRiskPolicy(RiskPolicyResult riskPolicy) {
         this.riskPolicy = riskPolicy;
     }
+
+    public JsonElement getInternal() {
+        return internal;
+    }
 }
