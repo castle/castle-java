@@ -33,9 +33,9 @@ public class Verdict {
     private String deviceToken;
 
     /**
-     * Integer representing risk value associated with an authenticate call.
+     * Flott representing risk value associated with an authenticate call.
      */
-    private int risk;
+    private float risk;
 
     /**
      * RiskPolicyResult representing risk policy used for generating this verdict.
@@ -83,11 +83,11 @@ public class Verdict {
         return deviceToken;
     }
 
-    public void setRisk(int risk) {
+    public void setRisk(float risk) {
         this.risk = risk;
     }
 
-    public int getRisk() {
+    public float getRisk() {
         return risk;
     }
 
