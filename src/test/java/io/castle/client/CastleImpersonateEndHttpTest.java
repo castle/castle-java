@@ -50,7 +50,7 @@ public class CastleImpersonateEndHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String userId = "userId";
 
-        //when a v1/impersonate request is made
+        //when a review request is made
         sdk.onRequest(request).impersonateStart(userId);
     }
 }

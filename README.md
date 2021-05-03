@@ -378,6 +378,8 @@ The following list specifies the behaviour of each API call when this field is s
 * **Track**: the method returns immediately and no request is made.
 The track call enables users to specify a custom instance of `io.castle.client.model.AsyncCallbackHandler<Boolean>`.
 In such case, the behaviour is to call the handler's `onResponse` method with `true` as value and then return without making any request to the Castle API.
+* **Identify**: the method returns immediately and no request is made.
+* **Review**: not applicable.
 
 # Documentation
 

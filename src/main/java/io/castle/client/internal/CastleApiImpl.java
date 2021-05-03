@@ -256,6 +256,47 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public void identify(String userId, @Nullable Object traits, boolean active) {
+        Preconditions.checkNotNull(userId);
+        if (doNotTrack) {
+            return;
+        }
+        JsonElement traitsJson = null;
+        if (traits != null) {
+            traitsJson = configuration.getModel().getGson().toJsonTree(traits);
+        }
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        restApi.sendIdentifyRequest(userId, contextJson, active, traitsJson);
+    }
+
+    @Override
+    public void identify(String userId) {
+        identify(userId, null, true);
+    }
+
+    @Override
+    public void identify(String userId, @Nullable Object traits) {
+        Preconditions.checkNotNull(userId);
+        identify(userId, traits, true);
+    }
+
+
+    @Override
+    public Review review(String reviewId) {
+        Preconditions.checkNotNull(reviewId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.sendReviewRequestSync(reviewId);
+    }
+
+    @Override
+    public void reviewAsync(String reviewId, AsyncCallbackHandler<Review> asyncCallbackHandler) {
+        Preconditions.checkNotNull(reviewId);
+        Preconditions.checkNotNull(asyncCallbackHandler);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        restApi.sendReviewRequestAsync(reviewId, asyncCallbackHandler);
+    }
+
+    @Override
     public Boolean removeUser(String userId) {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();

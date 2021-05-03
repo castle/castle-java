@@ -35,7 +35,7 @@ public class CastleDeviceApproveHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals(testServerBaseUrl.resolve("v1/devices/deviceToken/approve"), recordedRequest.getRequestUrl());
         Assert.assertEquals("PUT", recordedRequest.getMethod());
 
-        // and the correct CastleUserDevice model object is extracted
+        // and the correct Review model object is extracted
         CastleUserDevice expected = DeviceUtils.createExpectedDevice();
 
         Assertions.assertThat(device).isEqualToComparingFieldByFieldRecursively(expected);
@@ -49,7 +49,7 @@ public class CastleDeviceApproveHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String deviceToken = "deviceToken";
 
-        //when a v1/devices/:device_token/approve request is made
+        //when a review request is made
         sdk.onRequest(request).approve(deviceToken);
     }
 
@@ -62,7 +62,7 @@ public class CastleDeviceApproveHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
         String deviceToken = "deviceToken";
 
-        //when a v1/devices/:device_token/approve request is made
+        //when a review request is made
         sdk.onRequest(request).approve(deviceToken);
 
     }
