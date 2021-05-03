@@ -110,15 +110,15 @@ class ConfigurationLoader {
                 "app_id",
                 "CASTLE_SDK_APP_ID"
         );
-        String allowListValue = loadConfigurationValue(
+        String whiteListValue = loadConfigurationValue(
                 castleConfigurationProperties,
-                "allow_list",
-                "CASTLE_SDK_ALLOWLIST_HEADERS"
+                "white_list",
+                "CASTLE_SDK_WHITELIST_HEADERS"
         );
-        String denyListValue = loadConfigurationValue(
+        String blackListValue = loadConfigurationValue(
                 castleConfigurationProperties,
-                "deny_list",
-                "CASTLE_SDK_DENYLIST_HEADERS"
+                "black_list",
+                "CASTLE_SDK_BLACKLIST_HEADERS"
         );
         String timeoutValue = loadConfigurationValue(
                 castleConfigurationProperties,
@@ -159,11 +159,11 @@ class ConfigurationLoader {
         } else {
             builder.withDefaultApiBaseUrl();
         }
-        if (allowListValue != null) {
-            builder.withAllowListHeaders(Splitter.on(",").splitToList(allowListValue));
+        if (whiteListValue != null) {
+            builder.withWhiteListHeaders(Splitter.on(",").splitToList(whiteListValue));
         }
-        if (denyListValue != null) {
-            builder.withDenyListHeaders(Splitter.on(",").splitToList(denyListValue));
+        if (blackListValue != null) {
+            builder.withBlackListHeaders(Splitter.on(",").splitToList(blackListValue));
         }
         if (timeoutValue != null) {
             // might throw NumberFormatException if string is not parsable to int
