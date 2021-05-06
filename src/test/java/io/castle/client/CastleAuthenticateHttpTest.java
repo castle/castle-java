@@ -190,7 +190,14 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
             }
         };
         // and an authenticate request is made
-        sdk.onRequest(request).authenticateAsync(event, status, userId, email, fingerprint,null, null, null, null, handler);
+        CastleMessage authenticateMessage = CastleMessage.builder(event)
+                .status(status)
+                .userId(userId)
+                .email(email)
+                .fingerprint(fingerprint)
+                .build();
+
+        sdk.onRequest(request).authenticateAsync(authenticateMessage, handler);
 
         // then
         RecordedRequest recordedRequest = server.takeRequest();
@@ -456,7 +463,14 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null, null, null);
+        CastleMessage authenticateMessage = CastleMessage.builder(event)
+                .status(status)
+                .userId(userId)
+                .email(email)
+                .fingerprint(fingerprint)
+                .build();
+
+        Verdict verdict = sdk.onRequest(request).authenticate(authenticateMessage);
 
         RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
 
@@ -494,13 +508,22 @@ public class CastleAuthenticateHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // and an authenticate request is made
-        Verdict verdict = sdk.onRequest(request).authenticate(event, status, userId, email, fingerprint, null, null, ImmutableMap.builder()
-                .put("a","valueA")
-                .put("b",123456)
-                .build(), ImmutableMap.builder()
-                .put("x","valueX")
-                .put("y",654321)
-                .build());
+        CastleMessage authenticateMessage = CastleMessage.builder(event)
+                .status(status)
+                .userId(userId)
+                .email(email)
+                .fingerprint(fingerprint)
+                .properties(ImmutableMap.builder()
+                        .put("a","valueA")
+                        .put("b",123456)
+                        .build())
+                .userTraits(ImmutableMap.builder()
+                        .put("x","valueX")
+                        .put("y",654321)
+                        .build())
+                .build();
+
+        Verdict verdict = sdk.onRequest(request).authenticate(authenticateMessage);
 
         RiskPolicyResult riskPolicyResult = new CastleGsonModel().getGson().fromJson("{\"id\": \"q-rbeMzBTdW2Fd09sbz55A\", \"revision_id\": \"pke4zqO2TnqVr-NHJOAHEg\",\"name\": \"Block Users from X\",\"type\": \"bot\"}", RiskPolicyResult.class);
 

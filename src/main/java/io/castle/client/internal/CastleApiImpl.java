@@ -82,21 +82,6 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public Verdict authenticate(
-            String event,
-            @Nullable String status,
-            @Nullable String userId,
-            @Nullable String email,
-            @Nullable String fingerprint,
-            @Nullable String ip,
-            @Nullable CastleHeaders headers,
-            @Nullable Object properties,
-            @Nullable Object traits
-    ) {
-        return authenticate(buildMessage(event, status, userId, email, fingerprint, ip, headers, properties, traits));
-    }
-
-    @Override
     public Verdict authenticate(CastleMessage message) {
         JsonElement request = buildAuthenticateRequest(message);
         return sendAuthenticateRequest(request);
@@ -159,25 +144,6 @@ public class CastleApiImpl implements CastleApi {
     public void authenticateAsync(CastleMessage message, AsyncCallbackHandler<Verdict> asyncCallbackHandler) {
         JsonElement request = buildAuthenticateRequest(message);
         sendAuthenticateRequest(request, asyncCallbackHandler);
-    }
-
-    @Override
-    public void authenticateAsync(
-            String event,
-            @Nullable String status,
-            @Nullable String userId,
-            @Nullable String email,
-            @Nullable String fingerprint,
-            @Nullable String ip,
-            @Nullable CastleHeaders headers,
-            @Nullable Object properties,
-            @Nullable Object traits,
-            AsyncCallbackHandler<Verdict> asyncCallbackHandler
-    ) {
-        authenticateAsync(
-                buildMessage(event, status, userId, email, fingerprint, ip, headers, properties, traits),
-                asyncCallbackHandler
-        );
     }
 
     @Override
