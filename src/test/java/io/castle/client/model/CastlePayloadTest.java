@@ -84,7 +84,7 @@ public class CastlePayloadTest {
                 "}," +
                 "\"ip\":\"ip\"}";
 
-        //When CastleOptions is created
+        //When CastlePayload is created
         CastlePayload created = model.getGson().fromJson(notMatchingJson, CastlePayload.class);
 
         //Then the bad headers are ignored
@@ -112,7 +112,7 @@ public class CastlePayloadTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyOptionsInstance() {
 
         // given
-        String expected = "CastleOptions{fingerprint='null', headers=null, ip='null'}";
+        String expected = "CastlePayload{fingerprint='null', headers=null, ip='null'}";
         CastlePayload options = new CastlePayload();
 
         //when
@@ -139,7 +139,7 @@ public class CastlePayloadTest {
         ));
         aOptions.setHeaders(headers);
 
-        String expected = "CastleOptions{fingerprint='fingerprintX', " +
+        String expected = "CastlePayload{fingerprint='fingerprintX', " +
                 "headers=CastleHeaders{headers=[CastleHeader{key='key1', value='value1'}, CastleHeader{key='key2', value='value2'}]}, " +
                 "ip='ip'" +
                 "}";
