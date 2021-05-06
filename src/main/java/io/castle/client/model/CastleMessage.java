@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 public class CastleMessage {
     private transient CastleContext context;
-    private transient CastleOptions options;
+    private transient CastlePayload options;
     private String createdAt;
     private String timestamp;
     private String deviceToken;
@@ -42,11 +42,11 @@ public class CastleMessage {
         this.context = context;
     }
 
-    public CastleOptions getOptions() {
+    public CastlePayload getOptions() {
         return options;
     }
 
-    public void setOptions(CastleOptions options) { this.options = options; }
+    public void setOptions(CastlePayload options) { this.options = options; }
 
     /**
      * @deprecated use {@link #getTimestamp()} instead.

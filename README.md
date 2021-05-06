@@ -82,13 +82,13 @@ castle.client().track(CastleMessage.builder("$login.succeeded")
     .build()
 );
 ```
-By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastleOptionsBuilder` method `ip`.
+By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastlePayloadBuilder` method `ip`.
 
 **Example**
 
 ```java
 Castle castle = Castle.initialize();
-CastleOptionsBuilder options = castle.optionsBuilder()
+CastlePayloadBuilder payload = castle.payloadBuilder()
     .ip(req.getHeader("X-Forwarded-For"))
     .build();
 ```
@@ -125,12 +125,12 @@ such as IP and headers
 ```java
 
 // Quick way of building options through the incoming HttpServletRequest
-CastleOptions options = castle.optionsBuilder()
+CastleOptions options = castle.payloadBuilder()
     .fromHttpServletRequest(request)
     .build()
 
 // or build options manually
-CastleOptions options = castle.optionsBuilder()
+CastleOptions options = castle.payloadBuilder()
     .ip("1.1.1.1")
     .headers(CastleHeaders.builder()
         .add("User-Agent", "Mozilla/5.0")
