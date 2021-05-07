@@ -1,9 +1,7 @@
 package io.castle.client.model;
 
 import com.google.common.collect.ImmutableList;
-import io.castle.client.Castle;
 import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.utils.SDKVersion;
 import org.assertj.core.api.Assertions;
 import org.json.JSONException;
 import org.junit.Assert;
@@ -13,7 +11,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import java.util.Comparator;
 import java.util.List;
 
-public class CastleOptionsTest {
+public class CastlePayloadTest {
 
     private CastleGsonModel model = new CastleGsonModel();
 
@@ -21,7 +19,7 @@ public class CastleOptionsTest {
     public void minimalContextAsJson() {
 
         //given
-        CastleOptions aOptions = new CastleOptions();
+        CastlePayload aOptions = new CastlePayload();
 
         //when
         String optionsJson = model.getGson().toJson(aOptions);
@@ -34,7 +32,7 @@ public class CastleOptionsTest {
     @Test
     public void booleanContextValues() throws JSONException {
         //given
-        CastleOptions aOptions = new CastleOptions();
+        CastlePayload aOptions = new CastlePayload();
         aOptions.setFingerprint(true);
 
         //when
@@ -50,7 +48,7 @@ public class CastleOptionsTest {
     public void completeContextJsonSpec() throws JSONException {
 
         //given
-        CastleOptions aOptions = new CastleOptions();
+        CastlePayload aOptions = new CastlePayload();
         aOptions.setFingerprint("fingerprintX");
 
         CastleHeaders headers = new CastleHeaders();
@@ -72,7 +70,7 @@ public class CastleOptionsTest {
         JSONAssert.assertEquals(expectedJson, contextJson, true);
 
         // And json to object create the same structure
-        CastleOptions fromJson = model.getGson().fromJson(expectedJson, CastleOptions.class);
+        CastlePayload fromJson = model.getGson().fromJson(expectedJson, CastlePayload.class);
         Assertions.assertThat(fromJson).isEqualToComparingFieldByFieldRecursively(aOptions);
     }
 
@@ -86,8 +84,8 @@ public class CastleOptionsTest {
                 "}," +
                 "\"ip\":\"ip\"}";
 
-        //When CastleOptions is created
-        CastleOptions created = model.getGson().fromJson(notMatchingJson, CastleOptions.class);
+        //When CastlePayload is created
+        CastlePayload created = model.getGson().fromJson(notMatchingJson, CastlePayload.class);
 
         //Then the bad headers are ignored
         List<CastleHeader> headers = created.getHeaders().getHeaders();
@@ -114,8 +112,8 @@ public class CastleOptionsTest {
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyOptionsInstance() {
 
         // given
-        String expected = "CastleOptions{fingerprint='null', headers=null, ip='null'}";
-        CastleOptions options = new CastleOptions();
+        String expected = "CastlePayload{fingerprint='null', headers=null, ip='null'}";
+        CastlePayload options = new CastlePayload();
 
         //when
         String toString = options.toString();
@@ -127,7 +125,7 @@ public class CastleOptionsTest {
     @Test
     public void toStringMethodCreatesAWellFormedStringFromAFullExample() throws JSONException {
         //given
-        CastleOptions aOptions = new CastleOptions();
+        CastlePayload aOptions = new CastlePayload();
 
         aOptions.setFingerprint("fingerprintX");
 
@@ -141,7 +139,7 @@ public class CastleOptionsTest {
         ));
         aOptions.setHeaders(headers);
 
-        String expected = "CastleOptions{fingerprint='fingerprintX', " +
+        String expected = "CastlePayload{fingerprint='fingerprintX', " +
                 "headers=CastleHeaders{headers=[CastleHeader{key='key1', value='value1'}, CastleHeader{key='key2', value='value2'}]}, " +
                 "ip='ip'" +
                 "}";

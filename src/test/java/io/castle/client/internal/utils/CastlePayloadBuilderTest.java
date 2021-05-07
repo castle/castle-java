@@ -1,6 +1,5 @@
 package io.castle.client.internal.utils;
 
-import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.json.CastleGsonModel;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class CastleOptionsBuilderTest {
+public class CastlePayloadBuilderTest {
 
     private final CastleGsonModel model = new CastleGsonModel();
 
@@ -31,12 +30,12 @@ public class CastleOptionsBuilderTest {
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
                 .build();
-        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration, model);
+        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
-        CastleOptions standardOptions = getStandardOptionsFromServletRequest();
+        CastlePayload standardOptions = getStandardOptionsFromServletRequest();
 
         //When
-        CastleOptions options = builder.fromHttpServletRequest(standardRequest)
+        CastlePayload options = builder.fromHttpServletRequest(standardRequest)
                 .build();
 
         //Then
@@ -53,11 +52,11 @@ public class CastleOptionsBuilderTest {
                 .withCastleAppId("anyValidAppId")
                 .withDenyListHeaders("Cookie", acceptLanguageHeader)
                 .build();
-        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration, model);
+        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And expected castle options without the accept-language header
-        CastleOptions standardOptions = getStandardOptionsFromServletRequest();
+        CastlePayload standardOptions = getStandardOptionsFromServletRequest();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
         for (CastleHeader header : standardOptions.getHeaders().getHeaders()) {
             if (!header.getKey().equals("Cookie") && !header.getKey().equals(acceptLanguageHeader)) {
@@ -69,7 +68,7 @@ public class CastleOptionsBuilderTest {
         standardOptions.getHeaders().setHeaders(listOfHeaders);
 
         //When
-        CastleOptions options = builder.fromHttpServletRequest(standardRequest).build();
+        CastlePayload options = builder.fromHttpServletRequest(standardRequest).build();
 
         //Then
         Assertions.assertThat(options).isEqualToComparingFieldByFieldRecursively(standardOptions);
@@ -86,11 +85,11 @@ public class CastleOptionsBuilderTest {
                 .withDenyListHeaders(connectionHeader)
                 .withAllowListHeaders(connectionHeader)
                 .build();
-        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration, model);
+        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And expected castle options
-        CastleOptions standardOptions = getStandardScrubbedOptions();
+        CastlePayload standardOptions = getStandardScrubbedOptions();
         List<CastleHeader> listOfHeaders = new ArrayList<>();
         for (CastleHeader header : standardOptions.getHeaders().getHeaders()) {
             if (!header.getKey().equals(connectionHeader)) {
@@ -102,7 +101,7 @@ public class CastleOptionsBuilderTest {
         standardOptions.getHeaders().setHeaders(listOfHeaders);
 
         //When
-        CastleOptions options = builder.fromHttpServletRequest(standardRequest)
+        CastlePayload options = builder.fromHttpServletRequest(standardRequest)
                 .build();
 
         //Then
@@ -120,11 +119,11 @@ public class CastleOptionsBuilderTest {
                 .withDefaultDenyList()
                 .withAllowListHeaders(connectionHeader)
                 .build();
-        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration, model);
+        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration, model);
         HttpServletRequest standardRequest = getStandardRequestMock();
 
         //And expected castle options with a single allowListed header
-        CastleOptions standardOptions = getStandardScrubbedOptions();
+        CastlePayload standardOptions = getStandardScrubbedOptions();
         for (CastleHeader header : standardOptions.getHeaders().getHeaders()) {
             if (header.getKey().equals(connectionHeader)) {
                 header.setValue(connection);
@@ -132,7 +131,7 @@ public class CastleOptionsBuilderTest {
         }
 
         //When
-        CastleOptions options = builder.fromHttpServletRequest(standardRequest).build();
+        CastlePayload options = builder.fromHttpServletRequest(standardRequest).build();
 
         //Then
         Assertions.assertThat(options).isEqualToComparingFieldByFieldRecursively(standardOptions);
@@ -147,7 +146,7 @@ public class CastleOptionsBuilderTest {
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
                 .build();
-        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration, model);
+        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration, model);
 
         //And a http request with __cid cookie
         MockHttpServletRequest standardRequest = getStandardRequestMock();
@@ -158,10 +157,10 @@ public class CastleOptionsBuilderTest {
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
         //And expected options value with matching fingerprint
-        CastleOptions standardOptions = getStandardOptionsWithFingerprint("valueFromHeaders");
+        CastlePayload standardOptions = getStandardOptionsWithFingerprint("valueFromHeaders");
 
         //When
-        CastleOptions options = builder.fromHttpServletRequest(standardRequest)
+        CastlePayload options = builder.fromHttpServletRequest(standardRequest)
                 .build();
 
         //Then
@@ -177,7 +176,7 @@ public class CastleOptionsBuilderTest {
                 .withApiSecret("anyValidKey")
                 .withCastleAppId("anyValidAppId")
                 .build();
-        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration, model);
+        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration, model);
 
         //And a http request without __cid cookie
         MockHttpServletRequest standardRequest = getStandardRequestMock();
@@ -185,10 +184,10 @@ public class CastleOptionsBuilderTest {
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
         //And an expected options value with matching fingerprint
-        CastleOptions standardOptions = getStandardOptionsWithFingerprint("valueFromHeaders");
+        CastlePayload standardOptions = getStandardOptionsWithFingerprint("valueFromHeaders");
 
         //When
-        CastleOptions options = builder.fromHttpServletRequest(standardRequest)
+        CastlePayload options = builder.fromHttpServletRequest(standardRequest)
                 .build();
 
         //Then
@@ -204,13 +203,13 @@ public class CastleOptionsBuilderTest {
                 .build();
 
         // When
-        CastleOptions options = new CastleOptionsBuilder(configuration, model)
+        CastlePayload options = new CastlePayloadBuilder(configuration, model)
                 .headers(getStandardCastleHeaders())
                 .ip(ip)
                 .build();
 
         // And
-        CastleOptions standardOptions = getStandardOptions();
+        CastlePayload standardOptions = getStandardOptions();
 
         //Then
         Assertions.assertThat(options).isEqualToComparingFieldByFieldRecursively(standardOptions);
@@ -220,18 +219,18 @@ public class CastleOptionsBuilderTest {
     public void toAndFromJson() throws CastleSdkConfigurationException {
         // Given
         MockHttpServletRequest standardRequest = getStandardRequestMock();
-        CastleOptions standardOptions = getStandardOptionsFromServletRequest();
+        CastlePayload standardOptions = getStandardOptionsFromServletRequest();
         CastleConfiguration configuration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("abcd")
                 .build();
 
         // When
-        String json = new CastleOptionsBuilder(configuration, model)
+        String json = new CastlePayloadBuilder(configuration, model)
                 .fromHttpServletRequest(standardRequest)
                 .toJson();
 
-        CastleOptions options = new CastleOptionsBuilder(configuration, model)
+        CastlePayload options = new CastlePayloadBuilder(configuration, model)
                 .fromJson(json)
                 .build();
 
@@ -246,7 +245,7 @@ public class CastleOptionsBuilderTest {
                 .defaultConfigBuilder()
                 .withApiSecret("abcd")
                 .build();
-        String contextJson = new CastleOptionsBuilder(configuration, model)
+        String contextJson = new CastlePayloadBuilder(configuration, model)
                 .headers(CastleHeaders.builder()
                         .add("User-Agent", "ua")
                         .build()
@@ -264,7 +263,7 @@ public class CastleOptionsBuilderTest {
                 .defaultConfigBuilder()
                 .withApiSecret("abcd")
                 .build();
-        String contextJson = new CastleOptionsBuilder(configuration, model)
+        String contextJson = new CastlePayloadBuilder(configuration, model)
                 .fingerprint(true)
                 .toJson();
 
@@ -284,10 +283,10 @@ public class CastleOptionsBuilderTest {
         standardRequest.addHeader("X-Forwarded-For", "1.1.1.1,2.2.2.2,3.3.3.3");
         standardRequest.addHeader("CF-Connecting-IP", "4.4.4.4");
 
-        CastleOptions standardOptions = getStandardOptions();
+        CastlePayload standardOptions = getStandardOptions();
         standardOptions.setIp("1.1.1.1,2.2.2.2,3.3.3.3");
 
-        CastleOptions options = new CastleOptionsBuilder(configuration, model)
+        CastlePayload options = new CastlePayloadBuilder(configuration, model)
                 .fromHttpServletRequest(standardRequest)
                 .build();
 
@@ -350,23 +349,23 @@ public class CastleOptionsBuilderTest {
         return headers;
     }
 
-    public CastleOptions getStandardOptions() {
-        CastleOptions expectedOptions = new CastleOptions();
+    public CastlePayload getStandardOptions() {
+        CastlePayload expectedOptions = new CastlePayload();
         expectedOptions.setHeaders(getStandardCastleHeaders());
         expectedOptions.setIp(ip);
 
         return expectedOptions;
     }
 
-    public CastleOptions getStandardOptionsFromServletRequest() {
-        CastleOptions expectedOptions = getStandardOptions();
+    public CastlePayload getStandardOptionsFromServletRequest() {
+        CastlePayload expectedOptions = getStandardOptions();
         expectedOptions.setFingerprint(false);
 
         return expectedOptions;
     }
 
-    public CastleOptions getStandardOptionsWithFingerprint(String fingerprint) {
-        CastleOptions expectedOptions = getStandardOptions();
+    public CastlePayload getStandardOptionsWithFingerprint(String fingerprint) {
+        CastlePayload expectedOptions = getStandardOptions();
         expectedOptions.setFingerprint(fingerprint);
         List<CastleHeader> listOfHeaders = expectedOptions.getHeaders().getHeaders();
         listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, fingerprint));
@@ -375,8 +374,8 @@ public class CastleOptionsBuilderTest {
         return expectedOptions;
     }
 
-    public CastleOptions getStandardScrubbedOptions() {
-        CastleOptions expectedOptions = getStandardOptionsFromServletRequest();
+    public CastlePayload getStandardScrubbedOptions() {
+        CastlePayload expectedOptions = getStandardOptionsFromServletRequest();
 
         List<CastleHeader> listOfHeaders = expectedOptions.getHeaders().getHeaders();
         for (CastleHeader header : listOfHeaders) {

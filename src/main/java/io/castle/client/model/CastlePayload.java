@@ -1,9 +1,9 @@
 package io.castle.client.model;
 
 /**
- * Complete model of default request options
+ * Complete model of default request payload
  */
-public class CastleOptions {
+public class CastlePayload {
     private Object fingerprint;
     private String ip;
     private CastleHeaders headers;
@@ -45,13 +45,13 @@ public class CastleOptions {
     }
 
     /**
-     * Produces a string representation of the options object.
+     * Produces a string representation of the payload object.
      *
-     * @return the string representation of this {@code castleOptions}
+     * @return the string representation of this {@code castlePayload}
      */
     @Override
     public String toString() {
-        return "CastleOptions{" +
+        return "CastlePayload{" +
                 "fingerprint='" + fingerprint + '\'' +
                 ", headers=" + headers +
                 ", ip='" + ip + '\'' +
