@@ -1,5 +1,6 @@
 package io.castle.client.api;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import io.castle.client.model.*;
 
@@ -285,4 +286,16 @@ public interface CastleApi {
      * @return
      */
     CastleSuccess impersonateEnd(String userId, String impersonator);
+
+    JsonElement get(String url);
+
+    JsonElement post(String url, ImmutableMap<String, Object> payload);
+
+    JsonElement put(String url);
+
+    JsonElement put(String url, ImmutableMap<String, Object> payload);
+
+    JsonElement delete(String url);
+
+    JsonElement delete(String url, ImmutableMap<String, Object> payload);
 }

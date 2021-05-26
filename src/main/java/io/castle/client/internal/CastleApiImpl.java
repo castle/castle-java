@@ -1,6 +1,7 @@
 package io.castle.client.internal;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.api.CastleApi;
@@ -274,6 +275,42 @@ public class CastleApiImpl implements CastleApi {
         Preconditions.checkNotNull(userId);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.sendImpersonateEndRequestSync(userId, impersonator, contextJson);
+    }
+
+    @Override
+    public JsonElement get(String url) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.get(url);
+    }
+
+    @Override
+    public JsonElement post(String url, ImmutableMap<String, Object> payload) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(url, payload);
+    }
+
+    @Override
+    public JsonElement put(String url) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.put(url);
+    }
+
+    @Override
+    public JsonElement put(String url, ImmutableMap<String, Object> payload) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.put(url, payload);
+    }
+
+    @Override
+    public JsonElement delete(String url) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.delete(url);
+    }
+
+    @Override
+    public JsonElement delete(String url, ImmutableMap<String, Object> payload) {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.delete(url, payload);
     }
 
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {

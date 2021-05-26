@@ -1,5 +1,6 @@
 package io.castle.client.internal.backend;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
@@ -19,6 +20,7 @@ public class OkRestApiBackend implements RestApi {
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
 
+    private final HttpUrl baseUrl;
     private final HttpUrl track;
     private final HttpUrl authenticate;
     private final HttpUrl deviceBase;
@@ -27,7 +29,7 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl privacyBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
-        HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
+        this.baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
         this.client = client;
         this.model = model;
         this.configuration = configuration;
@@ -236,6 +238,77 @@ public class OkRestApiBackend implements RestApi {
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
         }
+    }
+
+    public JsonElement get(String url) {
+        return makeRequest(url, null, "GET");
+    }
+
+    @Override
+    public JsonElement put(String url) {
+        return makeRequest(url, null, "PUT");
+    }
+
+    @Override
+    public JsonElement put(String url, ImmutableMap<String, Object> payload) {
+        return makeRequest(url, model.getGson().toJsonTree(payload), "PUT");
+    }
+
+    @Override
+    public JsonElement delete(String url) {
+        return makeRequest(url, null, "DELETE");
+    }
+
+    @Override
+    public JsonElement delete(String url, ImmutableMap<String, Object> payload) {
+        return makeRequest(url, model.getGson().toJsonTree(payload), "DELETE");
+    }
+
+    @Override
+    public JsonElement post(String url, ImmutableMap<String, Object> payload) {
+        return makeRequest(url, model.getGson().toJsonTree(payload), "POST");
+    }
+
+    private JsonElement makeRequest(String url, JsonElement payload, String method) {
+        RequestBody body = payload != null ? RequestBody.create(JSON, payload.toString()) : createEmptyRequestBody();
+
+        Request.Builder builder = new Request.Builder()
+                .url(baseUrl.resolve(url));
+
+        switch (method) {
+            case "DELETE":
+                builder.delete(body);
+                break;
+            case "POST":
+                builder.post(body);
+                break;
+            case "PUT":
+                builder.put(body);
+                break;
+            case "GET":
+                builder.get();
+                break;
+        }
+
+        Request request = builder.build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return extractJsonElement(response);
+        } catch (IOException e) {
+            throw OkHttpExceptionUtil.handle(e);
+        }
+    }
+
+    private JsonElement extractJsonElement(Response response) throws IOException {
+        if (response.isSuccessful()) {
+            String jsonResponse = response.body().string();
+            JsonParser gson = new JsonParser();
+            return gson.parse(jsonResponse);
+        } else if (response.code() == 404) {
+            return null;
+        }
+        OkHttpExceptionUtil.handle(response);
+        return null;
     }
 
     private CastleUserDevice extractDevice(Response response) throws IOException {

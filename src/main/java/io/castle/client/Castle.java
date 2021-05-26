@@ -1,6 +1,8 @@
 package io.castle.client;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.HashFunction;
+import com.google.gson.JsonElement;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.CastleApiImpl;
 import io.castle.client.internal.config.CastleConfiguration;
@@ -221,4 +223,67 @@ public class Castle {
         HashFunction hashFunction = internalConfiguration.getSecureHashFunction();
         return hashFunction.hashString(userId,com.google.common.base.Charsets.UTF_8).toString();
     }
+
+    /**
+     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    public JsonElement get(String path) {
+        return client().get(path);
+    }
+
+    /**
+     * Make a POST request to a Castle API endpoint such as /v1/track
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    public JsonElement post(String path, ImmutableMap<String, Object> payload) {
+        return client().post(path, payload);
+    }
+    /**
+     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    public JsonElement put(String path) {
+        return client().put(path);
+    }
+
+    /**
+     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    public JsonElement put(String path, ImmutableMap<String, Object> payload) {
+        return client().put(path, payload);
+    }
+
+    /**
+     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    public JsonElement delete(String path) {
+        return client().delete(path);
+    }
+
+    /**
+     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
+        return client().delete(path, payload);
+    }
+
 }
