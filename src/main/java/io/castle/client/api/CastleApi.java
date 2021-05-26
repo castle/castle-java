@@ -287,15 +287,15 @@ public interface CastleApi {
      */
     CastleSuccess impersonateEnd(String userId, String impersonator);
 
-    JsonElement get(String url);
+    JsonElement get(String path);
 
-    JsonElement post(String url, ImmutableMap<String, Object> payload);
+    JsonElement post(String path, ImmutableMap<String, Object> payload);
 
-    JsonElement put(String url);
+    JsonElement put(String path);
 
-    JsonElement put(String url, ImmutableMap<String, Object> payload);
+    JsonElement put(String path, ImmutableMap<String, Object> payload);
 
-    JsonElement delete(String url);
+    JsonElement delete(String path);
 
-    JsonElement delete(String url, ImmutableMap<String, Object> payload);
+    JsonElement delete(String path, ImmutableMap<String, Object> payload);
 }
