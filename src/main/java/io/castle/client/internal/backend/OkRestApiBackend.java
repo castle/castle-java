@@ -15,6 +15,11 @@ import java.io.IOException;
 
 public class OkRestApiBackend implements RestApi {
 
+    public static final String METHOD_DELETE = "DELETE";
+    public static final String METHOD_POST = "POST";
+    public static final String METHOD_PUT = "PUT";
+    public static final String METHOD_GET = "GET";
+
     private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient client;
     private final CastleGsonModel model;
@@ -241,32 +246,32 @@ public class OkRestApiBackend implements RestApi {
     }
 
     public JsonElement get(String path) {
-        return makeRequest(path, null, "GET");
+        return makeRequest(path, null, METHOD_GET);
     }
 
     @Override
     public JsonElement put(String path) {
-        return makeRequest(path, null, "PUT");
+        return makeRequest(path, null, METHOD_PUT);
     }
 
     @Override
     public JsonElement put(String path, ImmutableMap<String, Object> payload) {
-        return makeRequest(path, model.getGson().toJsonTree(payload), "PUT");
+        return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_PUT);
     }
 
     @Override
     public JsonElement delete(String path) {
-        return makeRequest(path, null, "DELETE");
+        return makeRequest(path, null, METHOD_DELETE);
     }
 
     @Override
     public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
-        return makeRequest(path, model.getGson().toJsonTree(payload), "DELETE");
+        return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_DELETE);
     }
 
     @Override
     public JsonElement post(String path, ImmutableMap<String, Object> payload) {
-        return makeRequest(path, model.getGson().toJsonTree(payload), "POST");
+        return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_POST);
     }
 
     private JsonElement makeRequest(String path, JsonElement payload, String method) {
@@ -276,16 +281,16 @@ public class OkRestApiBackend implements RestApi {
                 .url(baseUrl.resolve(path));
 
         switch (method) {
-            case "DELETE":
+            case METHOD_DELETE:
                 builder.delete(body);
                 break;
-            case "POST":
+            case METHOD_POST:
                 builder.post(body);
                 break;
-            case "PUT":
+            case METHOD_PUT:
                 builder.put(body);
                 break;
-            case "GET":
+            case METHOD_GET:
                 builder.get();
                 break;
         }
