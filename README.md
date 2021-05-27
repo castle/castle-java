@@ -130,6 +130,86 @@ Note that the `req` instance should be bound to the underlying request in order 
 It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the
 `CastleApi` instance can be passed to any thread independently of the original thread life cycle.
 
+## Log
+
+```java
+Castle castle = Castle.initialize();
+
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .build();
+
+CastleResponse response = castle.client().log(ImmutableMap.builder()
+    .put(Castle.KEY_EVENT, "$login")
+    .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
+        .put(Castle.KEY_IP, context.getIp())
+        .put(Castle.KEY_HEADERS, context.getHeaders())
+        build()
+    )
+    .put(Castle.KEY_USER, ImmutableMap.builder()
+        .put(Castle.KEY_USER_ID, user.getId())
+        .put(Castle.KEY_EMAIL, user.getEmail())
+        .put("username", user.getUsername())
+        .build()
+    )
+    .build()
+);
+```
+
+## Filter
+
+```java
+Castle castle = Castle.initialize();
+
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .build();
+        
+CastleResponse response = castle.client().filter(ImmutableMap.builder()
+    .put(Castle.KEY_EVENT, "$login")
+    .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
+        .put(Castle.KEY_IP, context.getIp())
+        .put(Castle.KEY_HEADERS, context.getHeaders())
+        build()
+    )
+    .put(Castle.KEY_USER, ImmutableMap.builder()
+        .put(Castle.KEY_USER_ID, user.getId())
+        .put(Castle.KEY_EMAIL, user.getEmail())
+        .put("username", user.getUsername())
+        .build()
+    )
+    .put(Castle.KEY_REQUEST_TOKEN, "0af87174-37b4-4adc-a1a6-eb")
+    .build()
+);
+```
+
+## Filter
+
+```java
+Castle castle = Castle.initialize();
+
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .build();
+
+CastleResponse response = castle.client().risk(ImmutableMap.builder()
+    .put(Castle.KEY_EVENT, "$login")
+    .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
+        .put(Castle.KEY_IP, context.getIp())
+        .put(Castle.KEY_HEADERS, context.getHeaders())
+        build()
+    )
+    .put(Castle.KEY_USER, ImmutableMap.builder()
+        .put(Castle.KEY_USER_ID, user.getId())
+        .put(Castle.KEY_EMAIL, user.getEmail())
+        .put("username", user.getUsername())
+        .build()
+    )
+    .put(Castle.KEY_REQUEST_TOKEN, "0af87174-37b4-4adc-a1a6-eb")
+    .build()
+);
+```
+
 ## The Context Object
 
 The context object contains information about the request sent by the end-user,
@@ -140,7 +220,7 @@ such as IP and UserAgent
 // Quick way of building context through the incoming HttpServletRequest
 CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(request)
-    .build()
+    .build();
 
 // or build context manually
 CastleContext context = castle.contextBuilder()
@@ -202,7 +282,7 @@ String jsonContext = castle.contextBuilder()
 // Convert json back to a CastleContext
 CastleContext context = castle.contextBuilder()
     .fromJson(jsonContext)
-    .build()
+    .build();
 
 // Send the tracking request
 castle.client().track(CastleMessage.builder("$login.failed")
