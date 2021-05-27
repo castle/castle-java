@@ -287,15 +287,15 @@ public interface CastleApi {
      */
     CastleSuccess impersonateEnd(String userId, String impersonator);
 
-    JsonElement get(String path);
+    CastleResponse get(String path);
 
-    JsonElement post(String path, ImmutableMap<String, Object> payload);
+    CastleResponse post(String path, ImmutableMap<String, Object> payload);
 
-    JsonElement put(String path);
+    CastleResponse put(String path);
 
-    JsonElement put(String path, ImmutableMap<String, Object> payload);
+    CastleResponse put(String path, ImmutableMap<String, Object> payload);
 
-    JsonElement delete(String path);
+    CastleResponse delete(String path);
 
-    JsonElement delete(String path, ImmutableMap<String, Object> payload);
+    CastleResponse delete(String path, ImmutableMap<String, Object> payload);
 }

@@ -2,7 +2,6 @@ package io.castle.client;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.HashFunction;
-import com.google.gson.JsonElement;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.CastleApiImpl;
 import io.castle.client.internal.config.CastleConfiguration;
@@ -10,6 +9,7 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.CastleContextBuilder;
+import io.castle.client.model.CastleResponse;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -258,7 +258,7 @@ public class Castle {
      * @param path api path
      * @return a decoded json response
      */
-    public JsonElement get(String path) {
+    public CastleResponse get(String path) {
         return client().get(path);
     }
 
@@ -269,7 +269,7 @@ public class Castle {
      * @param payload request payload
      * @return a decoded json response
      */
-    public JsonElement post(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
         return client().post(path, payload);
     }
     /**
@@ -278,7 +278,7 @@ public class Castle {
      * @param path api path
      * @return a decoded json response
      */
-    public JsonElement put(String path) {
+    public CastleResponse put(String path) {
         return client().put(path);
     }
 
@@ -289,7 +289,7 @@ public class Castle {
      * @param payload request payload
      * @return a decoded json response
      */
-    public JsonElement put(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
         return client().put(path, payload);
     }
 
@@ -299,7 +299,7 @@ public class Castle {
      * @param path api path
      * @return a decoded json response
      */
-    public JsonElement delete(String path) {
+    public CastleResponse delete(String path) {
         return client().delete(path);
     }
 
@@ -310,7 +310,7 @@ public class Castle {
      * @param payload request payload
      * @return a decoded json response
      */
-    public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
         return client().delete(path, payload);
     }
 }

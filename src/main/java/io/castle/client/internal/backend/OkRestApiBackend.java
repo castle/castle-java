@@ -245,36 +245,36 @@ public class OkRestApiBackend implements RestApi {
         }
     }
 
-    public JsonElement get(String path) {
+    public CastleResponse get(String path) {
         return makeRequest(path, null, METHOD_GET);
     }
 
     @Override
-    public JsonElement put(String path) {
+    public CastleResponse put(String path) {
         return makeRequest(path, null, METHOD_PUT);
     }
 
     @Override
-    public JsonElement put(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
         return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_PUT);
     }
 
     @Override
-    public JsonElement delete(String path) {
+    public CastleResponse delete(String path) {
         return makeRequest(path, null, METHOD_DELETE);
     }
 
     @Override
-    public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
         return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_DELETE);
     }
 
     @Override
-    public JsonElement post(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
         return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_POST);
     }
 
-    private JsonElement makeRequest(String path, JsonElement payload, String method) {
+    private CastleResponse makeRequest(String path, JsonElement payload, String method) {
         RequestBody body = payload != null ? RequestBody.create(JSON, payload.toString()) : createEmptyRequestBody();
 
         Request.Builder builder = new Request.Builder()
@@ -298,22 +298,10 @@ public class OkRestApiBackend implements RestApi {
         Request request = builder.build();
 
         try (Response response = client.newCall(request).execute()) {
-            return extractJsonElement(response);
+            return new CastleResponse(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
         }
-    }
-
-    private JsonElement extractJsonElement(Response response) throws IOException {
-        if (response.isSuccessful()) {
-            String jsonResponse = response.body().string();
-            JsonParser gson = new JsonParser();
-            return gson.parse(jsonResponse);
-        } else if (response.code() == 404) {
-            return null;
-        }
-        OkHttpExceptionUtil.handle(response);
-        return null;
     }
 
     private CastleUserDevice extractDevice(Response response) throws IOException {

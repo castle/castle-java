@@ -278,37 +278,37 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public JsonElement get(String path) {
+    public CastleResponse get(String path) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.get(path);
     }
 
     @Override
-    public JsonElement post(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(path, payload);
     }
 
     @Override
-    public JsonElement put(String path) {
+    public CastleResponse put(String path) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.put(path);
     }
 
     @Override
-    public JsonElement put(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.put(path, payload);
     }
 
     @Override
-    public JsonElement delete(String path) {
+    public CastleResponse delete(String path) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.delete(path);
     }
 
     @Override
-    public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.delete(path, payload);
     }
