@@ -240,40 +240,40 @@ public class OkRestApiBackend implements RestApi {
         }
     }
 
-    public JsonElement get(String url) {
-        return makeRequest(url, null, "GET");
+    public JsonElement get(String path) {
+        return makeRequest(path, null, "GET");
     }
 
     @Override
-    public JsonElement put(String url) {
-        return makeRequest(url, null, "PUT");
+    public JsonElement put(String path) {
+        return makeRequest(path, null, "PUT");
     }
 
     @Override
-    public JsonElement put(String url, ImmutableMap<String, Object> payload) {
-        return makeRequest(url, model.getGson().toJsonTree(payload), "PUT");
+    public JsonElement put(String path, ImmutableMap<String, Object> payload) {
+        return makeRequest(path, model.getGson().toJsonTree(payload), "PUT");
     }
 
     @Override
-    public JsonElement delete(String url) {
-        return makeRequest(url, null, "DELETE");
+    public JsonElement delete(String path) {
+        return makeRequest(path, null, "DELETE");
     }
 
     @Override
-    public JsonElement delete(String url, ImmutableMap<String, Object> payload) {
-        return makeRequest(url, model.getGson().toJsonTree(payload), "DELETE");
+    public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
+        return makeRequest(path, model.getGson().toJsonTree(payload), "DELETE");
     }
 
     @Override
-    public JsonElement post(String url, ImmutableMap<String, Object> payload) {
-        return makeRequest(url, model.getGson().toJsonTree(payload), "POST");
+    public JsonElement post(String path, ImmutableMap<String, Object> payload) {
+        return makeRequest(path, model.getGson().toJsonTree(payload), "POST");
     }
 
-    private JsonElement makeRequest(String url, JsonElement payload, String method) {
+    private JsonElement makeRequest(String path, JsonElement payload, String method) {
         RequestBody body = payload != null ? RequestBody.create(JSON, payload.toString()) : createEmptyRequestBody();
 
         Request.Builder builder = new Request.Builder()
-                .url(baseUrl.resolve(url));
+                .url(baseUrl.resolve(path));
 
         switch (method) {
             case "DELETE":

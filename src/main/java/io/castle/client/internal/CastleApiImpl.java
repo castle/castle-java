@@ -278,39 +278,39 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public JsonElement get(String url) {
+    public JsonElement get(String path) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.get(url);
+        return restApi.get(path);
     }
 
     @Override
-    public JsonElement post(String url, ImmutableMap<String, Object> payload) {
+    public JsonElement post(String path, ImmutableMap<String, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.post(url, payload);
+        return restApi.post(path, payload);
     }
 
     @Override
-    public JsonElement put(String url) {
+    public JsonElement put(String path) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.put(url);
+        return restApi.put(path);
     }
 
     @Override
-    public JsonElement put(String url, ImmutableMap<String, Object> payload) {
+    public JsonElement put(String path, ImmutableMap<String, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.put(url, payload);
+        return restApi.put(path, payload);
     }
 
     @Override
-    public JsonElement delete(String url) {
+    public JsonElement delete(String path) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.delete(url);
+        return restApi.delete(path);
     }
 
     @Override
-    public JsonElement delete(String url, ImmutableMap<String, Object> payload) {
+    public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
-        return restApi.delete(url, payload);
+        return restApi.delete(path, payload);
     }
 
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
