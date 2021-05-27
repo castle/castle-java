@@ -33,12 +33,12 @@ public class OkRestApiBackend implements RestApi {
         this.client = client;
         this.model = model;
         this.configuration = configuration;
-        this.track = baseUrl.resolve("/v1/track");
-        this.authenticate = baseUrl.resolve("/v1/authenticate");
-        this.deviceBase = baseUrl.resolve("/v1/devices/");
-        this.userBase = baseUrl.resolve("/v1/users/");
-        this.impersonateBase = baseUrl.resolve("/v1/impersonate");
-        this.privacyBase = baseUrl.resolve("/v1/privacy/");
+        this.track = baseUrl.resolve(Castle.URL_TRACK);
+        this.authenticate = baseUrl.resolve(Castle.URL_AUTHENTICATE);
+        this.deviceBase = baseUrl.resolve(Castle.URL_DEVICES);
+        this.userBase = baseUrl.resolve(Castle.URL_USERS);
+        this.impersonateBase = baseUrl.resolve(Castle.URL_IMPERSONATE);
+        this.privacyBase = baseUrl.resolve(Castle.URL_PRIVACY);
     }
 
     @Override

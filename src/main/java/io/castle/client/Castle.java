@@ -26,6 +26,16 @@ import javax.servlet.http.HttpServletRequest;
  * Once set the {@code this#instance()} method will return that instance
  */
 public class Castle {
+    public static final String URL_TRACK = "/v1/track";
+    public static final String URL_AUTHENTICATE = "/v1/authenticate";
+    public static final String URL_DEVICES = "/v1/devices/";
+    public static final String URL_USERS = "/v1/users/";
+    public static final String URL_IMPERSONATE = "/v1/impersonate";
+    public static final String URL_PRIVACY = "/v1/privacy/";
+    public static final String URL_RISK = "/v1/risk";
+    public static final String URL_FILTER = "/v1/filter";
+    public static final String URL_LOG = "/v1/log";
+
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
     private final CastleSdkInternalConfiguration internalConfiguration;
@@ -285,5 +295,4 @@ public class Castle {
     public JsonElement delete(String path, ImmutableMap<String, Object> payload) {
         return client().delete(path, payload);
     }
-
 }

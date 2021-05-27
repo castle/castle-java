@@ -7,12 +7,6 @@ import io.castle.client.model.*;
 import okhttp3.Response;
 
 public interface RestApi {
-    public final String URL_TRACK = "/v1/track";
-    public final String URL_AUTHENTICATE = "/v1/authenticate";
-    public final String URL_DEVICES = "/v1/devices/";
-    public final String URL_USERS = "/v1/users/";
-    public final String URL_IMPERSONATE = "/v1/impersonate";
-    public final String URL_PRIVACY = "/v1/privacy/";
 
     /**
      *
