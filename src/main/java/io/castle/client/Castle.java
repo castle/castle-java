@@ -36,6 +36,24 @@ public class Castle {
     public static final String URL_FILTER = "/v1/filter";
     public static final String URL_LOG = "/v1/log";
 
+    public static final String KEY_EVENT = "event";
+    public static final String KEY_USER = "user";
+    public static final String KEY_STATUS = "status";
+    public static final String KEY_FINGERPRINT = "fingerprint";
+    public static final String KEY_REGISTERED_AT = "registered_at";
+    public static final String KEY_CREATED_AT = "created_at";
+    public static final String KEY_PROPERTIES = "properties";
+    public static final String KEY_REQUEST_TOKEN = "request_token";
+
+    // Context
+    public static final String KEY_IP = "ip";
+    public static final String KEY_HEADERS = "headers";
+
+    // User
+    public static final String KEY_NAME = "name";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_TRAITS = "traits";
+
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
     private final CastleSdkInternalConfiguration internalConfiguration;
