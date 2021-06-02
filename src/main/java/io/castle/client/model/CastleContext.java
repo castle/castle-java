@@ -1,19 +1,28 @@
 package io.castle.client.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Complete model of a context object with all the fields the Castle API understands.
  */
 public class CastleContext {
     private boolean active = true;
     private CastleDevice device;
+    private Object clientId;
+    private String ip;
+    private String locale;
     private String timezone;
     private CastlePage page;
     private CastleReferrer referrer;
+    private CastleHeaders headers;
     private CastleSdkRef library = new CastleSdkRef();
     private CastleLocation location;
     private CastleNetwork network;
     private CastleOS os;
     private CastleScreen screen;
+
+    @SerializedName("user_agent")
+    private Object userAgent;
 
     public boolean isActive() {
         return active;
@@ -29,6 +38,26 @@ public class CastleContext {
 
     public void setDevice(CastleDevice device) {
         this.device = device;
+    }
+
+    public Object getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setClientId(Object clientId) {
+        if (clientId instanceof Boolean || clientId instanceof String) {
+            this.clientId = clientId;
+        } else {
+            throw new IllegalArgumentException("ClientId must be a string or boolean value");
+        }
+    }
+
+    public void setClientId(boolean clientId) {
+        this.clientId = clientId;
     }
 
     public CastlePage getPage() {
@@ -47,8 +76,32 @@ public class CastleContext {
         this.referrer = referrer;
     }
 
+    public CastleHeaders getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(CastleHeaders headers) {
+        this.headers = headers;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     public CastleSdkRef getLibrary() {
         return library;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     public CastleLocation getLocation() {
@@ -91,6 +144,26 @@ public class CastleContext {
         this.timezone = timezone;
     }
 
+    public Object getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(Object userAgent) {
+        if (userAgent instanceof Boolean || userAgent instanceof String) {
+            this.userAgent = userAgent;
+        } else {
+            throw new IllegalArgumentException("User Agent must be a string or boolean value");
+        }
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public void setUserAgent(boolean userAgent) {
+        this.userAgent = userAgent;
+    }
+
     /**
      * Produces a string representation of the context object.
      *
@@ -101,14 +174,19 @@ public class CastleContext {
         return "CastleContext{" +
                 "active=" + active +
                 ", device=" + device +
+                ", clientId='" + clientId + '\'' +
+                ", ip='" + ip + '\'' +
+                ", locale='" + locale + '\'' +
                 ", timezone='" + timezone + '\'' +
                 ", page=" + page +
                 ", referrer=" + referrer +
+                ", headers=" + headers +
                 ", library=" + library +
                 ", location=" + location +
                 ", network=" + network +
                 ", os=" + os +
                 ", screen=" + screen +
+                ", userAgent='" + userAgent + '\'' +
                 '}';
     }
 }

@@ -209,6 +209,16 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
+    public CastleUser sendArchiveUserDevicesRequestSync(String userId) {
+        Request request = createArchiveUserDevicesRequest(userId);
+        try (Response response = client.newCall(request).execute()) {
+            return extractUser(response);
+        } catch (IOException e) {
+            throw OkHttpExceptionUtil.handle(e);
+        }
+    }
+
+    @Override
     public CastleUserDevice sendGetUserDeviceRequestSync(String deviceToken) {
         Request request = createGetUserDeviceRequest(deviceToken);
         try (Response response = client.newCall(request).execute()) {
@@ -313,6 +323,14 @@ public class OkRestApiBackend implements RestApi {
         return new Request.Builder()
                 .url(getUserDeviceUrl)
                 .get()
+                .build();
+    }
+
+    private Request createArchiveUserDevicesRequest(String userId) {
+        HttpUrl archiveUserDevicesUrl = userBase.resolve(userId + "/archive_devices");
+        return new Request.Builder()
+                .url(archiveUserDevicesUrl)
+                .put(createEmptyRequestBody())
                 .build();
     }
 

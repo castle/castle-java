@@ -34,13 +34,17 @@ public class CastleContextTest {
     public void booleanContextValues() throws JSONException {
         //given
         CastleContext aContext = new CastleContext();
+        aContext.setClientId(true);
+        aContext.setUserAgent(true);
 
         //when
         String contextJson = model.getGson().toJson(aContext);
 
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
-                "" + SDKVersion.getLibraryString() +"}";
+                "\"client_id\":true," +
+                "" + SDKVersion.getLibraryString() +"," +
+                "\"user_agent\":true}";
 
         JSONAssert.assertEquals(expectedJson, contextJson, true);
     }
@@ -50,6 +54,7 @@ public class CastleContextTest {
 
         //given
         CastleContext aContext = new CastleContext();
+        aContext.setClientId("clientIDX");
 
         CastleDevice device = new CastleDevice();
         device.setId("d_id");
@@ -64,6 +69,10 @@ public class CastleContextTest {
                 new CastleHeader("key1", "value1"),
                 new CastleHeader("key2", "value2")
         ));
+        aContext.setHeaders(headers);
+
+        aContext.setIp("ip");
+        aContext.setLocale("locale");
 
         CastleNetwork network = new CastleNetwork();
         network.setBluetooth(true);
@@ -105,20 +114,26 @@ public class CastleContextTest {
         aContext.setReferrer(referrer);
 
         aContext.setTimezone("timezone");
+        aContext.setUserAgent("userAgent");
         //when
         String contextJson = model.getGson().toJson(aContext);
 
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
                 "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}," +
+                "\"client_id\":\"clientIDX\"," +
                 "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
+                "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
+                "\"ip\":\"ip\"," +
                 "" + SDKVersion.getLibraryString() +"," +
+                "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
                 "\"os\":{\"name\":\"o_name\",\"version\":\"0_version\"}," +
                 "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
-                "\"timezone\":\"timezone\"}";
+                "\"timezone\":\"timezone\"," +
+                "\"user_agent\":\"userAgent\"}";
         JSONAssert.assertEquals(expectedJson, contextJson, true);
 
         // And json to object create the same structure
@@ -127,10 +142,56 @@ public class CastleContextTest {
     }
 
     @Test
+    public void notMatchingHeadersJsonElementsAreIgnored() {
+
+        //Given a json with headers not matching the api contract
+        String notMatchingJson = "{\"active\":true," +
+                "\"device\":{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}," +
+                "\"client_id\":\"clientIDX\"," +
+                "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
+                "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
+                "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"," +
+                "\"badKey1\":[\"v1\",\"v2\"],\"badKey2\":{\"nested\":\"value\"}" + // Invalid headers fields
+                "}," +
+                "\"ip\":\"ip\"," +
+                SDKVersion.getLibraryString() +"," +
+                "\"locale\":\"locale\"," +
+                "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
+                "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +
+                "\"os\":{\"name\":\"o_name\",\"version\":\"0_version\"}," +
+                "\"screen\":{\"width\":10,\"height\":20,\"density\":2}," +
+                "\"timezone\":\"timezone\"," +
+                "\"userAgent\":\"userAgent\"}";
+
+        //When CastleContext is created
+        CastleContext created = model.getGson().fromJson(notMatchingJson, CastleContext.class);
+
+        //Then the bad headers are ignored
+        List<CastleHeader> headers = created.getHeaders().getHeaders();
+        Assertions.assertThat(headers)
+                .usingElementComparator(new Comparator<CastleHeader>() {
+                    @Override
+                    public int compare(CastleHeader castleHeader, CastleHeader that) {
+                        String key = castleHeader.getKey();
+                        String value = castleHeader.getValue();
+                        if (key != null ? !key.equals(that.getKey()) : that.getKey() != null) {
+                            return -1;
+                        }
+                        if (value != null ? !value.equals(that.getValue()) : that.getValue() != null) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                })
+                .containsExactlyInAnyOrder(new CastleHeader("key1", "value1"), new CastleHeader("key2", "value2"));
+
+    }
+
+    @Test
     public void toStringMethodCreatesAWellFormedStringFromAnEmptyContextInstance() {
 
         // given
-        String expected = "CastleContext{active=true, device=null, timezone='null', page=null, referrer=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null}";
+        String expected = "CastleContext{active=true, device=null, clientId='null', ip='null', locale='null', timezone='null', page=null, referrer=null, headers=null, library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, location=null, network=null, os=null, screen=null, userAgent='null'}";
         CastleContext context = new CastleContext();
 
         //when
@@ -156,6 +217,12 @@ public class CastleContextTest {
         device.setModel("d_model");
         aContext.setDevice(device);
 
+        aContext.setClientId("clientIDX");
+
+        aContext.setIp("ip");
+
+        aContext.setLocale("locale");
+
         aContext.setTimezone("timezone");
 
         CastlePage page = new CastlePage();
@@ -170,6 +237,13 @@ public class CastleContextTest {
         referrer.setId("r_id");
         referrer.setType("r_type");
         aContext.setReferrer(referrer);
+
+        CastleHeaders headers = new CastleHeaders();
+        headers.setHeaders(ImmutableList.of(
+                new CastleHeader("key1", "value1"),
+                new CastleHeader("key2", "value2")
+        ));
+        aContext.setHeaders(headers);
 
         CastleLocation location = new CastleLocation();
         location.setCity("l_city");
@@ -197,17 +271,23 @@ public class CastleContextTest {
         screen.setDensity(2);
         aContext.setScreen(screen);
 
+        aContext.setUserAgent("userAgent");
 
         String expected = "CastleContext{active=false, " +
                 "device=CastleDevice{id='d_id', manufacturer='d_manufacturer', model='d_model', name='d_name', type='d_type'}, " +
+                "clientId='clientIDX', " +
+                "ip='ip', " +
+                "locale='locale', " +
                 "timezone='timezone', " +
                 "page=CastlePage{path='p_path', referrer='p_referrer', search='p_search', title='p_title', url='p_url'}, " +
                 "referrer=CastleReferrer{id='r_id', type='r_type'}, " +
+                "headers=CastleHeaders{headers=[CastleHeader{key='key1', value='value1'}, CastleHeader{key='key2', value='value2'}]}, " +
                 "library=CastleSdkRef{name='castle-java', version='" + SDKVersion.getVersion() + "', platform='" + SDKVersion.getJavaPlatform() + "', platformVersion='" + SDKVersion.getJavaVersion() + "'}, " +
                 "location=CastleLocation{city='l_city', country='l_country', latitude=10, longitude=10, speed=0}, " +
                 "network=CastleNetwork{bluetooth=true, cellular=true, carrier='n_carrier', wifi=true}, " +
                 "os=CastleOS{name='o_name', version='0_version'}, " +
-                "screen=CastleScreen{width=10, height=20, density=2}}";
+                "screen=CastleScreen{width=10, height=20, density=2}, " +
+                "userAgent='userAgent'}";
 
 
         //when

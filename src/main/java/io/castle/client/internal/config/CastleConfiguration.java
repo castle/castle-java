@@ -30,14 +30,14 @@ public class CastleConfiguration {
     private final AuthenticateFailoverStrategy authenticateFailoverStrategy;
 
     /**
-     * List of headers that will get passed to the {@code CastleContext} unless they are denyListed.
+     * List of headers that will get passed to the {@code CastleContext} unless they are blacklisted.
      */
-    private final List<String> allowListHeaders;
+    private final List<String> whiteListHeaders;
 
     /**
      * List of headers that will never get passed to the {@code CastleContext} when built from an HTTP request.
      */
-    private final List<String> denyListHeaders;
+    private final List<String> blackListHeaders;
 
     /**
      * Secret associated to a Castle account.
@@ -66,12 +66,12 @@ public class CastleConfiguration {
      */
     private final int maxRequests;
 
-    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> allowListHeaders, List<String> denyListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests) {
+    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> whiteListHeaders, List<String> blackListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests) {
         this.apiBaseUrl = apiBaseUrl;
         this.timeout = timeout;
         this.authenticateFailoverStrategy = authenticateFailoverStrategy;
-        this.allowListHeaders = allowListHeaders;
-        this.denyListHeaders = denyListHeaders;
+        this.whiteListHeaders = whiteListHeaders;
+        this.blackListHeaders = blackListHeaders;
         this.apiSecret = apiSecret;
         this.castleAppId = castleAppId;
         this.backendProvider = backendProvider;
@@ -92,12 +92,12 @@ public class CastleConfiguration {
         return authenticateFailoverStrategy;
     }
 
-    public List<String> getAllowListHeaders() {
-        return allowListHeaders;
+    public List<String> getWhiteListHeaders() {
+        return whiteListHeaders;
     }
 
-    public List<String> getDenyListHeaders() {
-        return denyListHeaders;
+    public List<String> getBlackListHeaders() {
+        return blackListHeaders;
     }
 
     public String getApiSecret() {

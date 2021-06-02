@@ -6,16 +6,10 @@ import javax.annotation.Nonnull;
 
 public class CastleMessage {
     private transient CastleContext context;
-    private transient CastleOptions options;
     private String createdAt;
     private String timestamp;
     private String deviceToken;
     @Nonnull private String event;
-    private String status;
-    private String email;
-    private Object fingerprint;
-    private String ip;
-    private CastleHeaders headers;
     /**
      * Collect other attributes that haven't not explicit setters to accommodate for
      * future parameters
@@ -41,12 +35,6 @@ public class CastleMessage {
     public void setContext(CastleContext context) {
         this.context = context;
     }
-
-    public CastleOptions getOptions() {
-        return options;
-    }
-
-    public void setOptions(CastleOptions options) { this.options = options; }
 
     /**
      * @deprecated use {@link #getTimestamp()} instead.
@@ -88,42 +76,6 @@ public class CastleMessage {
     public void setEvent(@Nonnull String event) {
         this.event = event;
     }
-
-    public String getStatus() { return status; }
-
-    public void setStatus(String status) { this.status = status; }
-
-    public String getEmail() { return email; }
-
-    public void setEmail(String email) { this.email = email; }
-
-    public Object getFingerprint() {
-        return fingerprint;
-    }
-
-    public void setFingerprint(String fingerprint) {
-        this.fingerprint = fingerprint;
-    }
-
-    public void setFingerprint(Object fingerprint) {
-        if (fingerprint instanceof Boolean || fingerprint instanceof String) {
-            this.fingerprint = fingerprint;
-        } else {
-            throw new IllegalArgumentException("Fingerprint must be a string or boolean value");
-        }
-    }
-
-    public void setFingerprint(boolean fingerprint) {
-        this.fingerprint = fingerprint;
-    }
-
-    public CastleHeaders getHeaders() { return headers; }
-
-    public void setHeaders(CastleHeaders headers) { this.headers = headers; }
-
-    public String getIp() { return ip; }
-
-    public void setIp(String ip) { this.ip = ip; }
 
     public HashMap getOther() {
         if (other == null) {
@@ -232,21 +184,6 @@ public class CastleMessage {
 
         public Builder userId(String userId) {
             payload.setUserId(userId);
-            return this;
-        }
-
-        public Builder status(String status) {
-            payload.setStatus(status);
-            return this;
-        }
-
-        public Builder email(String email) {
-            payload.setEmail(email);
-            return this;
-        }
-
-        public Builder fingerprint(String fingerprint) {
-            payload.setFingerprint(fingerprint);
             return this;
         }
 
