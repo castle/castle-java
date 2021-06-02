@@ -16,13 +16,13 @@ public class CastleApiImpl implements CastleApi {
 
     private final boolean doNotTrack;
     private final CastleSdkInternalConfiguration configuration;
-    private final CastlePayload castlePayload;
+    private final CastleOptions castleOptions;
     private final JsonObject contextJson;
 
     public CastleApiImpl(HttpServletRequest request, boolean doNotTrack, CastleSdkInternalConfiguration configuration) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
-        this.castlePayload = buildPayload(request);
+        this.castleOptions = buildOptions(request);
         CastleContext castleContext = buildContext(request);
         this.contextJson = configuration.getModel().getGson().toJsonTree(castleContext).getAsJsonObject();
     }
@@ -30,14 +30,14 @@ public class CastleApiImpl implements CastleApi {
     public CastleApiImpl(CastleSdkInternalConfiguration configuration, boolean doNotTrack) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
-        this.castlePayload = null;
+        this.castleOptions = null;
         this.contextJson = null;
     }
 
     private CastleApiImpl(boolean doNotTrack, CastleSdkInternalConfiguration configuration, JsonObject contextJson) {
         this.doNotTrack = doNotTrack;
         this.configuration = configuration;
-        this.castlePayload = null;
+        this.castleOptions = null;
         this.contextJson = contextJson;
     }
 
@@ -48,12 +48,12 @@ public class CastleApiImpl implements CastleApi {
         return context;
     }
 
-    private CastlePayload buildPayload(HttpServletRequest request) {
-        CastlePayloadBuilder builder = new CastlePayloadBuilder(configuration.getConfiguration(), configuration.getModel());
-        CastlePayload payload = builder
+    private CastleOptions buildOptions(HttpServletRequest request) {
+        CastleOptionsBuilder builder = new CastleOptionsBuilder(configuration.getConfiguration(), configuration.getModel());
+        CastleOptions options = builder
                 .fromHttpServletRequest(request)
                 .build();
-        return payload;
+        return options;
     }
 
     @Override
@@ -390,15 +390,15 @@ public class CastleApiImpl implements CastleApi {
             contextJson = configuration.getModel().getGson().toJsonTree(context).getAsJsonObject();
         }
 
-        if (this.castlePayload != null) {
+        if (this.castleOptions != null) {
             if (message.getFingerprint() == null) {
-                message.setFingerprint(this.castlePayload.getFingerprint());
+                message.setFingerprint(this.castleOptions.getFingerprint());
             }
             if (message.getHeaders() == null) {
-                message.setHeaders(this.castlePayload.getHeaders());
+                message.setHeaders(this.castleOptions.getHeaders());
             }
             if (message.getIp() == null) {
-                message.setIp(this.castlePayload.getIp());
+                message.setIp(this.castleOptions.getIp());
             }
         }
 

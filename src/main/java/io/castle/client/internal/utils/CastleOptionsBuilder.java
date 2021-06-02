@@ -9,54 +9,54 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-public class CastlePayloadBuilder {
+public class CastleOptionsBuilder {
 
-    private CastlePayload payload;
+    private CastleOptions options;
     private CastleHeaders headers;
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
     private final HeaderNormalizer headerNormalizer = new HeaderNormalizer();
 
-    public CastlePayloadBuilder(CastleConfiguration configuration, CastleGsonModel model) {
+    public CastleOptionsBuilder(CastleConfiguration configuration, CastleGsonModel model) {
         this.configuration = configuration;
         this.model = model;
-        payload = new CastlePayload();
+        options = new CastleOptions();
     }
 
-    public CastlePayload build() {
-        payload.setHeaders(headers);
-        return payload;
+    public CastleOptions build() {
+        options.setHeaders(headers);
+        return options;
     }
 
-    public CastlePayloadBuilder fingerprint(String fingerprint) {
-        payload.setFingerprint(fingerprint);
+    public CastleOptionsBuilder fingerprint(String fingerprint) {
+        options.setFingerprint(fingerprint);
         return this;
     }
 
-    public CastlePayloadBuilder fingerprint(boolean fingerprint) {
-        payload.setFingerprint(fingerprint);
+    public CastleOptionsBuilder fingerprint(boolean fingerprint) {
+        options.setFingerprint(fingerprint);
         return this;
     }
 
-    public CastlePayloadBuilder ip(String ip) {
-        payload.setIp(ip);
+    public CastleOptionsBuilder ip(String ip) {
+        options.setIp(ip);
         return this;
     }
 
-    public CastlePayloadBuilder headers(CastleHeaders headers) {
+    public CastleOptionsBuilder headers(CastleHeaders headers) {
         this.headers = headers;
         return this;
     }
 
-    public CastlePayloadBuilder fromHttpServletRequest(HttpServletRequest request) {
-        payload.setFingerprint(setFingerprintFromHttpServletRequest(request));
+    public CastleOptionsBuilder fromHttpServletRequest(HttpServletRequest request) {
+        options.setFingerprint(setFingerprintFromHttpServletRequest(request));
         this.headers = setCastleHeadersFromHttpServletRequest(request);
 
-        payload.setIp(request.getRemoteAddr());
+        options.setIp(request.getRemoteAddr());
         if (configuration.getIpHeaders() != null) {
             for (String header : configuration.getIpHeaders()) {
                 if (request.getHeader(header) != null) {
-                    payload.setIp(request.getHeader(header));
+                    options.setIp(request.getHeader(header));
                     break;
                 }
             }
@@ -64,9 +64,9 @@ public class CastlePayloadBuilder {
         return this;
     }
 
-    public CastlePayloadBuilder fromJson(String optionsString) {
-        this.payload = model.getGson().fromJson(optionsString, CastlePayload.class);
-        this.headers = payload.getHeaders();
+    public CastleOptionsBuilder fromJson(String optionsString) {
+        this.options = model.getGson().fromJson(optionsString, CastleOptions.class);
+        this.headers = options.getHeaders();
         return this;
     }
 
