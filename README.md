@@ -139,48 +139,31 @@ CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(request)
     .build();
 
-CastleResponse response = castle.client().log(ImmutableMap.builder()
-    .put(Castle.KEY_EVENT, "$login")
-    .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
-        .put(Castle.KEY_IP, context.getIp())
-        .put(Castle.KEY_HEADERS, context.getHeaders())
-        build()
-    )
-    .put(Castle.KEY_USER, ImmutableMap.builder()
-        .put(Castle.KEY_USER_ID, user.getId())
-        .put(Castle.KEY_EMAIL, user.getEmail())
-        .put("username", user.getUsername())
+try {
+    CastleResponse response = castle.client().log(ImmutableMap.builder()
+        .put(Castle.KEY_EVENT, "$login")
+        .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
+            .put(Castle.KEY_IP, context.getIp())
+            .put(Castle.KEY_HEADERS, context.getHeaders())
+            .build()
+        )
+        .put(Castle.KEY_USER, ImmutableMap.builder()
+            .put(Castle.KEY_USER_ID, user.getId())
+            .put(Castle.KEY_EMAIL, user.getEmail())
+            .put("username", user.getUsername())
+            .build()
+        )
         .build()
-    )
-    .build()
-);
-```
-
-## Filter
-
-```java
-Castle castle = Castle.initialize();
-
-CastleContext context = castle.contextBuilder()
-    .fromHttpServletRequest(request)
-    .build();
-        
-CastleResponse response = castle.client().filter(ImmutableMap.builder()
-    .put(Castle.KEY_EVENT, "$login")
-    .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
-        .put(Castle.KEY_IP, context.getIp())
-        .put(Castle.KEY_HEADERS, context.getHeaders())
-        build()
-    )
-    .put(Castle.KEY_USER, ImmutableMap.builder()
-        .put(Castle.KEY_USER_ID, user.getId())
-        .put(Castle.KEY_EMAIL, user.getEmail())
-        .put("username", user.getUsername())
-        .build()
-    )
-    .put(Castle.KEY_REQUEST_TOKEN, "0af87174-37b4-4adc-a1a6-eb")
-    .build()
-);
+    );
+} catch (CastleApiTimeoutException apiTimeoutException) {
+    // Timeout
+} catch (CastleApiInternalServerErrorException apiInternalServerErrorException) {
+    // Internal Server error (500)
+} catch (CastleServerErrorException castleServerErrorException) {
+    // Server error
+} catch (CastleRuntimeException runtimeException) {
+    // Generic exception
+}
 ```
 
 ## Filter
@@ -192,22 +175,69 @@ CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(request)
     .build();
 
-CastleResponse response = castle.client().risk(ImmutableMap.builder()
-    .put(Castle.KEY_EVENT, "$login")
-    .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
-        .put(Castle.KEY_IP, context.getIp())
-        .put(Castle.KEY_HEADERS, context.getHeaders())
-        build()
-    )
-    .put(Castle.KEY_USER, ImmutableMap.builder()
-        .put(Castle.KEY_USER_ID, user.getId())
-        .put(Castle.KEY_EMAIL, user.getEmail())
-        .put("username", user.getUsername())
-        .build()
-    )
-    .put(Castle.KEY_REQUEST_TOKEN, "0af87174-37b4-4adc-a1a6-eb")
-    .build()
-);
+try {
+   CastleResponse response = castle.client().filter(ImmutableMap.builder()
+       .put(Castle.KEY_EVENT, "$login")
+       .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
+           .put(Castle.KEY_IP, context.getIp())
+           .put(Castle.KEY_HEADERS, context.getHeaders())
+           build()
+       )
+       .put(Castle.KEY_USER, ImmutableMap.builder()
+           .put(Castle.KEY_USER_ID, user.getId())
+           .put(Castle.KEY_EMAIL, user.getEmail())
+           .put("username", user.getUsername())
+           .build()
+       )
+       .put(Castle.KEY_REQUEST_TOKEN, "0af87174-37b4-4adc-a1a6-eb")
+       .build()
+   );
+} catch (CastleApiTimeoutException apiTimeoutException) {
+    // Timeout
+} catch (CastleApiInternalServerErrorException apiInternalServerErrorException) {
+    // Internal Server error (500)
+} catch (CastleServerErrorException castleServerErrorException) {
+    // Server error
+} catch (CastleRuntimeException runtimeException) {
+    // Generic exception
+}
+```
+
+## Filter
+
+```java
+Castle castle = Castle.initialize();
+
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .build();
+
+try {
+   CastleResponse response = castle.client().risk(ImmutableMap.builder()
+       .put(Castle.KEY_EVENT, "$login")
+       .put(Castle.KEY_CONTEXT, ImmutableMap.builder()
+           .put(Castle.KEY_IP, context.getIp())
+           .put(Castle.KEY_HEADERS, context.getHeaders())
+           build()
+       )
+       .put(Castle.KEY_USER, ImmutableMap.builder()
+           .put(Castle.KEY_USER_ID, user.getId())
+           .put(Castle.KEY_EMAIL, user.getEmail())
+           .put("username", user.getUsername())
+           .build()
+       )
+       .put(Castle.KEY_REQUEST_TOKEN, "0af87174-37b4-4adc-a1a6-eb")
+       .build()
+   );
+} catch (CastleApiTimeoutException apiTimeoutException) {
+    // Timeout
+} catch (CastleApiInternalServerErrorException apiInternalServerErrorException) {
+    // Internal Server error (500)
+} catch (CastleServerErrorException castleServerErrorException) {
+    // Server error
+} catch (CastleRuntimeException runtimeException) {
+    // Generic exception
+}
 ```
 
 ## The Context Object
