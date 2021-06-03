@@ -1,5 +1,6 @@
 package io.castle.client.internal.backend;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;
@@ -14,11 +15,17 @@ import java.io.IOException;
 
 public class OkRestApiBackend implements RestApi {
 
+    public static final String METHOD_DELETE = "DELETE";
+    public static final String METHOD_POST = "POST";
+    public static final String METHOD_PUT = "PUT";
+    public static final String METHOD_GET = "GET";
+
     private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient client;
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
 
+    private final HttpUrl baseUrl;
     private final HttpUrl track;
     private final HttpUrl authenticate;
     private final HttpUrl deviceBase;
@@ -27,16 +34,16 @@ public class OkRestApiBackend implements RestApi {
     private final HttpUrl privacyBase;
 
     public OkRestApiBackend(OkHttpClient client, CastleGsonModel model, CastleConfiguration configuration) {
-        HttpUrl baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
+        this.baseUrl = HttpUrl.parse(configuration.getApiBaseUrl());
         this.client = client;
         this.model = model;
         this.configuration = configuration;
-        this.track = baseUrl.resolve("/v1/track");
-        this.authenticate = baseUrl.resolve("/v1/authenticate");
-        this.deviceBase = baseUrl.resolve("/v1/devices/");
-        this.userBase = baseUrl.resolve("/v1/users/");
-        this.impersonateBase = baseUrl.resolve("/v1/impersonate");
-        this.privacyBase = baseUrl.resolve("/v1/privacy/");
+        this.track = baseUrl.resolve(Castle.URL_TRACK);
+        this.authenticate = baseUrl.resolve(Castle.URL_AUTHENTICATE);
+        this.deviceBase = baseUrl.resolve(Castle.URL_DEVICES);
+        this.userBase = baseUrl.resolve(Castle.URL_USERS);
+        this.impersonateBase = baseUrl.resolve(Castle.URL_IMPERSONATE);
+        this.privacyBase = baseUrl.resolve(Castle.URL_PRIVACY);
     }
 
     @Override
@@ -233,6 +240,65 @@ public class OkRestApiBackend implements RestApi {
         Request request = createImpersonateEndRequest(userId, impersonator, contextJson);
         try (Response response = client.newCall(request).execute()) {
             return extractSuccess(response);
+        } catch (IOException e) {
+            throw OkHttpExceptionUtil.handle(e);
+        }
+    }
+
+    public CastleResponse get(String path) {
+        return makeRequest(path, null, METHOD_GET);
+    }
+
+    @Override
+    public CastleResponse put(String path) {
+        return makeRequest(path, null, METHOD_PUT);
+    }
+
+    @Override
+    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
+        return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_PUT);
+    }
+
+    @Override
+    public CastleResponse delete(String path) {
+        return makeRequest(path, null, METHOD_DELETE);
+    }
+
+    @Override
+    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
+        return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_DELETE);
+    }
+
+    @Override
+    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
+        return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_POST);
+    }
+
+    private CastleResponse makeRequest(String path, JsonElement payload, String method) {
+        RequestBody body = payload != null ? RequestBody.create(JSON, payload.toString()) : createEmptyRequestBody();
+
+        Request.Builder builder = new Request.Builder()
+                .url(baseUrl.resolve(path));
+
+        switch (method) {
+            case METHOD_DELETE:
+                builder.delete(body);
+                break;
+            case METHOD_POST:
+                builder.post(body);
+                break;
+            case METHOD_PUT:
+                builder.put(body);
+                break;
+            case METHOD_GET:
+                builder.get();
+                break;
+        }
+
+        Request request = builder.build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return new CastleResponse(response);
         } catch (IOException e) {
             throw OkHttpExceptionUtil.handle(e);
         }

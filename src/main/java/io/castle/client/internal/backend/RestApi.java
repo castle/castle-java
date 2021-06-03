@@ -1,10 +1,13 @@
 package io.castle.client.internal.backend;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.model.*;
+import okhttp3.Response;
 
 public interface RestApi {
+
     /**
      *
      * @param payloadJson          JSON object containing the event properties
@@ -84,4 +87,55 @@ public interface RestApi {
      * @return a success message
      */
     CastleSuccess sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson);
+
+    /**
+     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    CastleResponse get(String path);
+
+    /**
+     * Make a POST request to a Castle API endpoint such as /v1/track
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    CastleResponse post(String path, ImmutableMap<String, Object> payload);
+
+    /**
+     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    CastleResponse put(String path);
+
+    /**
+     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    CastleResponse put(String path, ImmutableMap<String, Object> payload);
+
+    /**
+     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    CastleResponse delete(String path);
+
+    /**
+     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    CastleResponse delete(String path, ImmutableMap<String, Object> payload);
 }

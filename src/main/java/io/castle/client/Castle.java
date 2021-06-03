@@ -1,5 +1,6 @@
 package io.castle.client;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.HashFunction;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.CastleApiImpl;
@@ -8,6 +9,7 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.CastleContextBuilder;
+import io.castle.client.model.CastleResponse;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,36 @@ import javax.servlet.http.HttpServletRequest;
  * Once set the {@code this#instance()} method will return that instance
  */
 public class Castle {
+    public static final String URL_TRACK = "/v1/track";
+    public static final String URL_AUTHENTICATE = "/v1/authenticate";
+    public static final String URL_DEVICES = "/v1/devices/";
+    public static final String URL_USERS = "/v1/users/";
+    public static final String URL_IMPERSONATE = "/v1/impersonate";
+    public static final String URL_PRIVACY = "/v1/privacy/";
+    public static final String URL_RISK = "/v1/risk";
+    public static final String URL_FILTER = "/v1/filter";
+    public static final String URL_LOG = "/v1/log";
+
+    public static final String KEY_EVENT = "event";
+    public static final String KEY_USER = "user";
+    public static final String KEY_STATUS = "status";
+    public static final String KEY_FINGERPRINT = "fingerprint";
+    public static final String KEY_REGISTERED_AT = "registered_at";
+    public static final String KEY_CREATED_AT = "created_at";
+    public static final String KEY_PROPERTIES = "properties";
+    public static final String KEY_REQUEST_TOKEN = "request_token";
+    public static final String KEY_CONTEXT = "context";
+
+    // Context
+    public static final String KEY_IP = "ip";
+    public static final String KEY_HEADERS = "headers";
+
+    // User
+    public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_TRAITS = "traits";
+
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
     private final CastleSdkInternalConfiguration internalConfiguration;
@@ -220,5 +252,67 @@ public class Castle {
     public String secureUserID(String userId) {
         HashFunction hashFunction = internalConfiguration.getSecureHashFunction();
         return hashFunction.hashString(userId,com.google.common.base.Charsets.UTF_8).toString();
+    }
+
+    /**
+     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    public CastleResponse get(String path) {
+        return client().get(path);
+    }
+
+    /**
+     * Make a POST request to a Castle API endpoint such as /v1/track
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
+        return client().post(path, payload);
+    }
+    /**
+     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    public CastleResponse put(String path) {
+        return client().put(path);
+    }
+
+    /**
+     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
+        return client().put(path, payload);
+    }
+
+    /**
+     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     *
+     * @param path api path
+     * @return a decoded json response
+     */
+    public CastleResponse delete(String path) {
+        return client().delete(path);
+    }
+
+    /**
+     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     *
+     * @param path api path
+     * @param payload request payload
+     * @return a decoded json response
+     */
+    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
+        return client().delete(path, payload);
     }
 }

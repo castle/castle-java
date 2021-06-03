@@ -1,5 +1,6 @@
 package io.castle.client.api;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import io.castle.client.model.*;
 
@@ -285,4 +286,40 @@ public interface CastleApi {
      * @return
      */
     CastleSuccess impersonateEnd(String userId, String impersonator);
+
+    CastleResponse get(String path);
+
+    CastleResponse post(String path, ImmutableMap<String, Object> payload);
+
+    CastleResponse put(String path);
+
+    CastleResponse put(String path, ImmutableMap<String, Object> payload);
+
+    CastleResponse delete(String path);
+
+    CastleResponse delete(String path, ImmutableMap<String, Object> payload);
+
+    /**
+     * Makes a sync POST request to the risk endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse risk(ImmutableMap<String, Object> payload);
+
+    /**
+     * Makes a sync POST request to the filter endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse filter(ImmutableMap<String, Object> payload);
+
+    /**
+     * Makes a sync POST request to the log endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse log(ImmutableMap<String, Object> payload);
 }
