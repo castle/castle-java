@@ -47,7 +47,7 @@ public class CastleMergeHttpTest extends AbstractCastleHttpLayerTest {
         RecordedRequest recordedRequest = server.takeRequest();
         String body = recordedRequest.getBody().readUtf8();
 
-        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true," + SDKVersion.getLibraryString() +",\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"user_traits\":{\"x\":\"valueX\",\"y\":234567}}", body, false);
+        JSONAssert.assertEquals("{\"event\":\"any.valid.event\",\"context\":{\"active\":true,\"ip\":\"127.0.0.1\",\"headers\":{\"REMOTE_ADDR\":\"127.0.0.1\"}," + SDKVersion.getLibraryString() +",\"add_string\":\"String value\",\"condition\":true,\"value\":10},\"user_traits\":{\"x\":\"valueX\",\"y\":234567}}", body, false);
     }
 
     @Test

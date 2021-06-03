@@ -9,7 +9,7 @@ public class VerdictTransportModel {
     private RiskPolicyResult riskPolicy;
     private String userId;
     private String deviceToken;
-    private int risk;
+    private float risk;
 
     public AuthenticateAction getAction() {
         return action;
@@ -39,11 +39,11 @@ public class VerdictTransportModel {
         return deviceToken;
     }
 
-    public int getRisk() {
+    public float getRisk() {
         return risk;
     }
 
-    public void setRisk(int risk) {
+    public void setRisk(float risk) {
         this.risk = risk;
     }
 

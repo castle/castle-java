@@ -67,9 +67,15 @@ instance.
 **Example**
 
 ```java
+// Extract the request context, containing eg. the IP and UserAgent of the end-user
+// `req` is an instance of `HttpServletRequest`.
 Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .build();
 
 castle.client().track(CastleMessage.builder("$login.succeeded")
+    .context(context)
     .userId("1234")
     .userTraits(ImmutableMap.builder()
         .put("name", "Winston Smith")
@@ -82,13 +88,14 @@ castle.client().track(CastleMessage.builder("$login.succeeded")
     .build()
 );
 ```
-By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastlePayloadBuilder` method `ip`.
+By default `REMOTE_ADDR` is used for IP. To use another header or value use the `CastleContextBuilder` method `ip`.
 
 **Example**
 
 ```java
 Castle castle = Castle.initialize();
-CastlePayloadBuilder payload = castle.payloadBuilder()
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(req)
     .ip(req.getHeader("X-Forwarded-For"))
     .build();
 ```
@@ -101,9 +108,15 @@ is that a `Verdict` will be returned, indicating which action to take based on t
 **Example**
 
 ```java
+// Extract the request context, containing eg. the IP and UserAgent of the end-user
+// `req` is an instance of `HttpServletRequest`.
 Castle castle = Castle.initialize();
+CastleContext context = castle.contextBuilder()
+    .fromHttpServletRequest(req)
+    .build();
 
 Verdict verdict = castle.client().authenticate(CastleMessage.builder("$login.succeeded")
+    .context(context)
     .userId("1234")
     .build()
 );
@@ -117,32 +130,32 @@ Note that the `req` instance should be bound to the underlying request in order 
 It means that a safe place to create the `CastleApi` instance is the request handling thread. After creation the
 `CastleApi` instance can be passed to any thread independently of the original thread life cycle.
 
-## The Options Object
+## The Context Object
 
-The options object contains information about the request sent by the end-user,
-such as IP and headers
+The context object contains information about the request sent by the end-user,
+such as IP and UserAgent
 
 ```java
 
-// Quick way of building options through the incoming HttpServletRequest
-CastlePayload payload = castle.payloadBuilder()
+// Quick way of building context through the incoming HttpServletRequest
+CastleContext context = castle.contextBuilder()
     .fromHttpServletRequest(request)
     .build()
 
-// or build options manually
-CastlePayload payload = castle.payloadBuilder()
+// or build context manually
+CastleContext context = castle.contextBuilder()
     .ip("1.1.1.1")
+    .userAgent("Mozilla/5.0")
     .headers(CastleHeaders.builder()
         .add("User-Agent", "Mozilla/5.0")
         .add("Accept-Language", "sv-se")
         .build())
     .build();
 
-// Use Castle instance and track request
+// Use Castle insteance and track request
 Castle castle = Castle.initialize();
 castle.client().track(CastleMessage.builder("$login.failed")
-    .ip(options.ip)
-    .headers(options.headers)
+    .context(context)
     .userId("1234")
     .build()
 );
@@ -157,10 +170,16 @@ gets extracted and set automatically:
 ```JSON
     {
         "active": true,
+        "client_id": "B5682FA0-C21E-11E4-8DFC-CDF9AAEE34FF",
+        "headers": {
+            "Accept-Language": "en-US,en;q=0.8"
+          },
+        "ip": "8.8.8.8",
         "library": {
           "name": "Castle",
           "version": "1.0.1"
-        }
+        },
+        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
       }
 ```
 
@@ -231,17 +250,17 @@ Besides the aforementioned settings, the following are other application-level s
 that can be optionally configured:
 
  * **Denylisted Headers**: a comma-separated list of strings representing HTTP headers that will
- never get passed to the options object. See [The Options Object](#the-options-object).
+ never get passed to the context object. See [The Context Object](#the-context-object).
  * **Allowlisted Headers**: this is a comma-separated list of strings representing HTTP headers
- that will get passed to the options object with each call to the Castle API,
- unless they are denylisted. If not set or empty all headers will be sent. See [The Options Object](#the-options-object).
+ that will get passed to the context object with each call to the Castle API,
+ unless they are denylisted. If not set or empty all headers will be sent. See [The Context Object](#the-context-object).
  * **Authenticate Failover Strategy**: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
  See also [Authenticate](#authenticate)
  * **Timeout**: an integer that represents the time in milliseconds after which a request fails.
  * **Backend Provider**: The HTTP layer that will be used to make requests to the Castle API.
  Currently there is only one available and it uses [OkHttp](https://square.github.io/okhttp/).
  * **Base URL**: The base endpoint of the Castle API without any relative path.
- * **IP Headers**: The headers checked (in order) to use for the options IP.
+ * **IP Headers**: The headers checked (in order) to use for the context IP.
 
 Allowlist and Denylist are case-insensitive.
 
@@ -359,6 +378,7 @@ The following snippet provides an example of an async call to the authenticate e
         };
         castle.client().authenticateAsync(CastleMessage.builder(event)
             .userId(userId)
+            .context(context)
             .build()
         , handler);
         ...

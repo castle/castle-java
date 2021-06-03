@@ -22,7 +22,6 @@ public class CastleServerErrorExceptionTest {
 
         Assert.assertTrue(exception instanceof CastleServerErrorException);
         Assert.assertEquals(exception.getResponseCode(), 500);
-        Assert.assertEquals(exception.getResponseMessage(), "Message");
 
     }
 }

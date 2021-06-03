@@ -33,7 +33,7 @@ public class Verdict {
     private String deviceToken;
 
     /**
-     * Flott representing risk value associated with an authenticate call.
+     * Float representing risk value associated with an authenticate call.
      */
     private float risk;
 

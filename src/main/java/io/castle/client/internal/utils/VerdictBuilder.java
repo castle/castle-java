@@ -13,7 +13,7 @@ public class VerdictBuilder {
     private String failoverReason;
     private String deviceToken;
     private JsonElement internal;
-    private int risk;
+    private float risk;
 
     private VerdictBuilder() {
     }
@@ -50,7 +50,7 @@ public class VerdictBuilder {
         return this;
     }
 
-    public VerdictBuilder withRisk(final int risk) {
+    public VerdictBuilder withRisk(final float risk) {
         this.risk = risk;
         return this;
     }
