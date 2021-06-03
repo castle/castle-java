@@ -88,7 +88,6 @@ public interface RestApi {
      */
     CastleSuccess sendImpersonateEndRequestSync(String userId, String impersonator, JsonObject contextJson);
 
-
     /**
      * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
      *

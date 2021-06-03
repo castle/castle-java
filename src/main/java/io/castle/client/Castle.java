@@ -44,12 +44,14 @@ public class Castle {
     public static final String KEY_CREATED_AT = "created_at";
     public static final String KEY_PROPERTIES = "properties";
     public static final String KEY_REQUEST_TOKEN = "request_token";
+    public static final String KEY_CONTEXT = "context";
 
     // Context
     public static final String KEY_IP = "ip";
     public static final String KEY_HEADERS = "headers";
 
     // User
+    public static final String KEY_USER_ID = "user_id";
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_TRAITS = "traits";

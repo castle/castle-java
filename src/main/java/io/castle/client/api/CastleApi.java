@@ -298,4 +298,28 @@ public interface CastleApi {
     CastleResponse delete(String path);
 
     CastleResponse delete(String path, ImmutableMap<String, Object> payload);
+
+    /**
+     * Makes a sync POST request to the risk endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse risk(ImmutableMap<String, Object> payload);
+
+    /**
+     * Makes a sync POST request to the filter endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse filter(ImmutableMap<String, Object> payload);
+
+    /**
+     * Makes a sync POST request to the log endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse log(ImmutableMap<String, Object> payload);
 }

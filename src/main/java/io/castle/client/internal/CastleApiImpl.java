@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import io.castle.client.Castle;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
@@ -313,11 +314,35 @@ public class CastleApiImpl implements CastleApi {
         return restApi.delete(path, payload);
     }
 
+    public CastleResponse risk(ImmutableMap<String, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_RISK, payload);
+    }
+
+    @Override
+    public CastleResponse filter(ImmutableMap<String, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_FILTER, payload);
+    }
+
+    @Override
+    public CastleResponse log(ImmutableMap<String, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_LOG, payload);
+    }
+
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
         CastleMessage message = new CastleMessage(event);
 
         message.setUserId(userId);
 
+        return setTraitsAndProperties(message, properties, traits);
+    }
+
+    private CastleMessage setTraitsAndProperties(CastleMessage message, @Nullable Object properties, @Nullable Object traits) {
         if (properties != null) {
             JsonElement propertiesJson = configuration.getModel().getGson().toJsonTree(properties);
             message.setProperties(propertiesJson);
