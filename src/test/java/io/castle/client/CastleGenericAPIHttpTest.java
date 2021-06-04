@@ -55,7 +55,7 @@ public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
                 .build();
 
         // and an authenticate request is made
-        CastleResponse response = sdk.onRequest(request).post("/v1/authenticate", new ImmutableMap.Builder<String, Object>()
+        CastleResponse response = sdk.onRequest(request).post("/v1/authenticate", ImmutableMap.builder()
                 .put("event", "$login.succeeded")
                 .put("userId", "12345")
                 .put("context", payload)
@@ -85,7 +85,7 @@ public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // Request is made
-        CastleResponse response = sdk.onRequest(request).put("/v1/test", new ImmutableMap.Builder<String, Object>()
+        CastleResponse response = sdk.onRequest(request).put("/v1/test", ImmutableMap.builder()
                 .put("event", "test")
                 .put("userId", "12345")
                 .build());
@@ -135,7 +135,7 @@ public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         // Request is made
-        CastleResponse response = sdk.onRequest(request).delete("/v1/test", new ImmutableMap.Builder<String, Object>()
+        CastleResponse response = sdk.onRequest(request).delete("/v1/test", ImmutableMap.builder()
                 .put("event", "test")
                 .put("userId", "12345")
                 .build());
