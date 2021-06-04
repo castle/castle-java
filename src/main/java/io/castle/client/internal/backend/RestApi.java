@@ -103,7 +103,7 @@ public interface RestApi {
      * @param payload request payload
      * @return a decoded json response
      */
-    CastleResponse post(String path, ImmutableMap<String, Object> payload);
+    CastleResponse post(String path, ImmutableMap<Object, Object> payload);
 
     /**
      * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
@@ -120,7 +120,7 @@ public interface RestApi {
      * @param payload request payload
      * @return a decoded json response
      */
-    CastleResponse put(String path, ImmutableMap<String, Object> payload);
+    CastleResponse put(String path, ImmutableMap<Object, Object> payload);
 
     /**
      * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
@@ -137,5 +137,5 @@ public interface RestApi {
      * @param payload request payload
      * @return a decoded json response
      */
-    CastleResponse delete(String path, ImmutableMap<String, Object> payload);
+    CastleResponse delete(String path, ImmutableMap<Object, Object> payload);
 }

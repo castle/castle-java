@@ -285,7 +285,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse post(String path, ImmutableMap<Object, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(path, payload);
     }
@@ -297,7 +297,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse put(String path, ImmutableMap<Object, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.put(path, payload);
     }
@@ -309,26 +309,26 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse delete(String path, ImmutableMap<Object, Object> payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.delete(path, payload);
     }
 
-    public CastleResponse risk(ImmutableMap<String, Object> payload) {
+    public CastleResponse risk(ImmutableMap<Object, Object> payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(Castle.URL_RISK, payload);
     }
 
     @Override
-    public CastleResponse filter(ImmutableMap<String, Object> payload) {
+    public CastleResponse filter(ImmutableMap<Object, Object> payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(Castle.URL_FILTER, payload);
     }
 
     @Override
-    public CastleResponse log(ImmutableMap<String, Object> payload) {
+    public CastleResponse log(ImmutableMap<Object, Object> payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(Castle.URL_LOG, payload);

@@ -289,15 +289,15 @@ public interface CastleApi {
 
     CastleResponse get(String path);
 
-    CastleResponse post(String path, ImmutableMap<String, Object> payload);
+    CastleResponse post(String path, ImmutableMap<Object, Object> payload);
 
     CastleResponse put(String path);
 
-    CastleResponse put(String path, ImmutableMap<String, Object> payload);
+    CastleResponse put(String path, ImmutableMap<Object, Object> payload);
 
     CastleResponse delete(String path);
 
-    CastleResponse delete(String path, ImmutableMap<String, Object> payload);
+    CastleResponse delete(String path, ImmutableMap<Object, Object> payload);
 
     /**
      * Makes a sync POST request to the risk endpoint.
@@ -305,7 +305,7 @@ public interface CastleApi {
      * @param payload Event parameters
      * @return
      */
-    CastleResponse risk(ImmutableMap<String, Object> payload);
+    CastleResponse risk(ImmutableMap<Object, Object> payload);
 
     /**
      * Makes a sync POST request to the filter endpoint.
@@ -313,7 +313,7 @@ public interface CastleApi {
      * @param payload Event parameters
      * @return
      */
-    CastleResponse filter(ImmutableMap<String, Object> payload);
+    CastleResponse filter(ImmutableMap<Object, Object> payload);
 
     /**
      * Makes a sync POST request to the log endpoint.
@@ -321,5 +321,5 @@ public interface CastleApi {
      * @param payload Event parameters
      * @return
      */
-    CastleResponse log(ImmutableMap<String, Object> payload);
+    CastleResponse log(ImmutableMap<Object, Object> payload);
 }

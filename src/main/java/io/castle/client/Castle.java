@@ -271,7 +271,7 @@ public class Castle {
      * @param payload request payload
      * @return a decoded json response
      */
-    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse post(String path, ImmutableMap<Object, Object> payload) {
         return client().post(path, payload);
     }
     /**
@@ -291,7 +291,7 @@ public class Castle {
      * @param payload request payload
      * @return a decoded json response
      */
-    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse put(String path, ImmutableMap<Object, Object> payload) {
         return client().put(path, payload);
     }
 
@@ -312,7 +312,7 @@ public class Castle {
      * @param payload request payload
      * @return a decoded json response
      */
-    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse delete(String path, ImmutableMap<Object, Object> payload) {
         return client().delete(path, payload);
     }
 }

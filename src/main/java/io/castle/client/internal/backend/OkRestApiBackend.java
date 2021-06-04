@@ -255,7 +255,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public CastleResponse put(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse put(String path, ImmutableMap<Object, Object> payload) {
         return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_PUT);
     }
 
@@ -265,12 +265,12 @@ public class OkRestApiBackend implements RestApi {
     }
 
     @Override
-    public CastleResponse delete(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse delete(String path, ImmutableMap<Object, Object> payload) {
         return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_DELETE);
     }
 
     @Override
-    public CastleResponse post(String path, ImmutableMap<String, Object> payload) {
+    public CastleResponse post(String path, ImmutableMap<Object, Object> payload) {
         return makeRequest(path, model.getGson().toJsonTree(payload), METHOD_POST);
     }
 
