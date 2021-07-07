@@ -51,6 +51,7 @@ public class Castle {
     public static final String KEY_HEADERS = "headers";
 
     // User
+    public static final String KEY_ID = "id";
     public static final String KEY_USER_ID = "user_id";
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
