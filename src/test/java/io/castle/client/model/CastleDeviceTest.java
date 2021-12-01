@@ -1,6 +1,8 @@
 package io.castle.client.model;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import io.castle.client.internal.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -21,9 +23,14 @@ public class CastleDeviceTest {
 
         // When
         String payloadJson = model.getGson().toJson(device);
+        JsonObject convertedObject = new Gson().fromJson(payloadJson, JsonObject.class);
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}");
+        Assertions.assertThat(convertedObject.get("id").getAsString()).isEqualTo("d_id");
+        Assertions.assertThat(convertedObject.get("manufacturer").getAsString()).isEqualTo("d_manufacturer");
+        Assertions.assertThat(convertedObject.get("model").getAsString()).isEqualTo("d_model");
+        Assertions.assertThat(convertedObject.get("name").getAsString()).isEqualTo("d_name");
+        Assertions.assertThat(convertedObject.get("type").getAsString()).isEqualTo("d_type");
     }
 
     @Test
@@ -39,8 +46,13 @@ public class CastleDeviceTest {
 
         // When
         String payloadJson = model.getGson().toJson(device);
+        JsonObject convertedObject = new Gson().fromJson(payloadJson, JsonObject.class);
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}");
+        Assertions.assertThat(convertedObject.get("id").getAsString()).isEqualTo("d_id");
+        Assertions.assertThat(convertedObject.get("manufacturer").getAsString()).isEqualTo("d_manufacturer");
+        Assertions.assertThat(convertedObject.get("model").getAsString()).isEqualTo("d_model");
+        Assertions.assertThat(convertedObject.get("name").getAsString()).isEqualTo("d_name");
+        Assertions.assertThat(convertedObject.get("type").getAsString()).isEqualTo("d_type");
     }
 }

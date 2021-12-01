@@ -1,6 +1,8 @@
 package io.castle.client.model;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.utils.SDKVersion;
 import org.assertj.core.api.Assertions;
@@ -24,10 +26,17 @@ public class CastleContextTest {
 
         //when
         String contextJson = model.getGson().toJson(aContext);
+        JsonObject convertedObject = new Gson().fromJson(contextJson, JsonObject.class);
+        JsonObject libraryObject = new Gson().fromJson(convertedObject.get("library").toString(), JsonObject.class);
 
         //Then
-        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true," + SDKVersion.getLibraryString() +"}");
-
+        System.out.println("\"library\":" + convertedObject.get("library").toString());
+        System.out.println(SDKVersion.getLibraryString());
+        Assertions.assertThat(convertedObject.get("active").getAsString()).isEqualTo("true");
+        Assertions.assertThat(libraryObject.get("name").getAsString()).isEqualTo("castle-java");
+        Assertions.assertThat(libraryObject.get("version").getAsString()).isEqualTo("2.0.0");
+        Assertions.assertThat(libraryObject.get("platform").getAsString()).isEqualTo("OpenJDK 64-Bit Server VM");
+        Assertions.assertThat(libraryObject.get("platform_version").getAsString()).isEqualTo("25.292-b10");
     }
 
     @Test
