@@ -1,8 +1,8 @@
 package io.castle.client.model;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
@@ -32,17 +32,12 @@ public class CastleMessageTest {
 
         // When
         String payloadJson = model.getGson().toJson(message);
-        JsonObject convertedObject = new Gson().fromJson(payloadJson, JsonObject.class);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}";
 
         // Then
-        Assertions.assertThat(convertedObject.get("created_at").getAsString()).isEqualTo("2018-01-01");
-        Assertions.assertThat(convertedObject.get("timestamp").getAsString()).isEqualTo("2018-01-01");
-        Assertions.assertThat(convertedObject.get("device_token").getAsString()).isEqualTo("1234");
-        Assertions.assertThat(convertedObject.get("event").getAsString()).isEqualTo("event");
-        Assertions.assertThat(convertedObject.get("properties").toString()).isEqualTo("{\"key\":\"val\"}");
-        Assertions.assertThat(convertedObject.get("review_id").getAsString()).isEqualTo("2345");
-        Assertions.assertThat(convertedObject.get("user_id").getAsString()).isEqualTo("3456");
-        Assertions.assertThat(convertedObject.get("user_traits").toString()).isEqualTo("{\"key\":\"val\"}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
+
     }
 
     @Test
@@ -76,17 +71,11 @@ public class CastleMessageTest {
 
         // When
         String payloadJson = model.getGson().toJson(message);
-        JsonObject convertedObject = new Gson().fromJson(payloadJson, JsonObject.class);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"created_at\":\"2018-01-01\",\"timestamp\":\"2018-01-01\",\"device_token\":\"1234\",\"event\":\"event\",\"properties\":{\"key\":\"val\"},\"review_id\":\"2345\",\"user_id\":\"3456\",\"user_traits\":{\"key\":\"val\"}}";
 
         // Then
-        Assertions.assertThat(convertedObject.get("created_at").getAsString()).isEqualTo("2018-01-01");
-        Assertions.assertThat(convertedObject.get("timestamp").getAsString()).isEqualTo("2018-01-01");
-        Assertions.assertThat(convertedObject.get("device_token").getAsString()).isEqualTo("1234");
-        Assertions.assertThat(convertedObject.get("event").getAsString()).isEqualTo("event");
-        Assertions.assertThat(convertedObject.get("properties").toString()).isEqualTo("{\"key\":\"val\"}");
-        Assertions.assertThat(convertedObject.get("review_id").getAsString()).isEqualTo("2345");
-        Assertions.assertThat(convertedObject.get("user_id").getAsString()).isEqualTo("3456");
-        Assertions.assertThat(convertedObject.get("user_traits").toString()).isEqualTo("{\"key\":\"val\"}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
     }
 
     @Test
@@ -99,10 +88,10 @@ public class CastleMessageTest {
                 .build();
 
         String payloadJson = model.getGson().toJson(message);
-        JsonObject convertedObject = new Gson().fromJson(payloadJson, JsonObject.class);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"event\":\"event\",\"properties\":{\"key\":\"value\"}}";
 
-        Assertions.assertThat(convertedObject.get("event").getAsString()).isEqualTo("event");
-        Assertions.assertThat(convertedObject.get("properties").toString()).isEqualTo("{\"key\":\"value\"}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
     }
 
     @Test

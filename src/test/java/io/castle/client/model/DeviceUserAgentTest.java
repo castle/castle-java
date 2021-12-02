@@ -1,5 +1,6 @@
 package io.castle.client.model;
 
+import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.utils.DeviceUtils;
 import org.assertj.core.api.Assertions;
@@ -36,9 +37,10 @@ public class DeviceUserAgentTest {
 
         // When
         String payloadJson = model.getGson().toJson(userAgent);
-
+        JsonParser parser = new JsonParser();
+        String expected = "{\"raw\":\"Mac OS X\",\"browser\":\"Opera\",\"version\":\"Mac OS X\",\"os\":\"Mac OS X 10.13.6\",\"mobile\":false,\"platform\":\"Mac OS X\",\"device\":\"Unknown\",\"family\":\"Opera\"}";
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"raw\":\"Mac OS X\",\"browser\":\"Opera\",\"version\":\"Mac OS X\",\"os\":\"Mac OS X 10.13.6\",\"mobile\":false,\"platform\":\"Mac OS X\",\"device\":\"Unknown\",\"family\":\"Opera\"}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
 
         Assert.assertEquals(userAgent.getBrowser(), DeviceUtils.USER_AGENT_BROWSER);
         Assert.assertEquals(userAgent.getDevice(), DeviceUtils.USER_AGENT_DEVICE);

@@ -1,5 +1,6 @@
 package io.castle.client.model;
 
+import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -20,8 +21,10 @@ public class CastleUserAddressTest {
 
         // When
         String payloadJson = model.getGson().toJson(address);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"street\":\"street 1\",\"city\":\"city\",\"postal_code\":\"12345\",\"region\":\"region\",\"country\":\"country\"}";
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"street\":\"street 1\",\"city\":\"city\",\"postal_code\":\"12345\",\"region\":\"region\",\"country\":\"country\"}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
     }
 }

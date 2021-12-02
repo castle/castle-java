@@ -1,5 +1,6 @@
 package io.castle.client.model;
 
+import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -30,8 +31,10 @@ public class CastleUserTest {
 
         // When
         String payloadJson = model.getGson().toJson(user);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"id\":\"userId\",\"created_at\":\"2019-03-26T11:31:19.968Z\",\"updated_at\":\"2019-03-26T11:31:19.968Z\",\"last_seen_at\":\"d_model\",\"flagged_at\":\"2019-03-26T11:31:19.968Z\",\"risk\":1.1,\"leaks_count\":4,\"devices_count\":2,\"email\":\"test@example.com\",\"name\":\"name\",\"username\":\"username\",\"phone\":\"12345\",\"custom_attributes\":{}}";
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"id\":\"userId\",\"created_at\":\"2019-03-26T11:31:19.968Z\",\"updated_at\":\"2019-03-26T11:31:19.968Z\",\"last_seen_at\":\"d_model\",\"flagged_at\":\"2019-03-26T11:31:19.968Z\",\"risk\":1.1,\"leaks_count\":4,\"devices_count\":2,\"email\":\"test@example.com\",\"name\":\"name\",\"username\":\"username\",\"phone\":\"12345\",\"custom_attributes\":{}}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
     }
 }
