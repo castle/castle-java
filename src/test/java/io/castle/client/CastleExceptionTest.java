@@ -1,20 +1,13 @@
 package io.castle.client;
 
-import com.sun.tools.internal.xjc.util.MimeTypeRange;
 import io.castle.client.internal.utils.OkHttpExceptionUtil;
-import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.model.*;
 import okhttp3.*;
-import okhttp3.mockwebserver.MockResponse;
-import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class CastleExceptionTest {
 
