@@ -1,8 +1,6 @@
 package io.castle.client.internal.utils;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import io.castle.client.model.*;
 import okhttp3.Response;
 
@@ -33,7 +31,7 @@ public class OkHttpExceptionUtil {
                     if (type.equals("invalid_request_token")) {
                         throw new CastleApiInvalidRequestTokenErrorException(response);
                     }
-                } catch (IOException ignored) {}
+                } catch (IOException | JsonSyntaxException |JsonIOException ignored) {}
                 throw new CastleApiInvalidParametersErrorException(response);
             }
             throw new CastleServerErrorException(response);

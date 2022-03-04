@@ -74,4 +74,18 @@ public class CastleExceptionTest {
 
         OkHttpExceptionUtil.handle(response);
     }
+
+    @Test(expected = CastleApiInvalidParametersErrorException.class)
+    public void invalidJsonError() {
+        //Given
+        Response response = new Response.Builder()
+                .code(422)
+                .request(new Request.Builder().url("http://localhost").build())
+                .protocol(Protocol.HTTP_1_1)
+                .message("Message")
+                .body(ResponseBody.create(JsonMediaType, "invalid json"))
+                .build();
+
+        OkHttpExceptionUtil.handle(response);
+    }
 }
