@@ -1,9 +1,9 @@
 package io.castle.client.internal.utils;
 
-import io.castle.client.model.CastleApiInternalServerErrorException;
-import io.castle.client.model.CastleApiTimeoutException;
-import io.castle.client.model.CastleRuntimeException;
-import io.castle.client.model.CastleServerErrorException;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import io.castle.client.model.*;
 import okhttp3.Response;
 
 import java.io.IOException;
@@ -22,6 +22,19 @@ public class OkHttpExceptionUtil {
         if (!response.isSuccessful() && !response.isRedirect()) {
             if (response.code() == 500) {
                 throw new CastleApiInternalServerErrorException(response);
+            }
+            if (response.code() == 422) {
+                try {
+                    String body = response.peekBody(Long.MAX_VALUE).string();
+                    JsonParser jsonParser = new JsonParser();
+                    JsonObject json = (JsonObject) jsonParser.parse(body);
+                    String type = json.get("type").getAsString();
+
+                    if (type.equals("invalid_request_token")) {
+                        throw new CastleApiInvalidRequestTokenErrorException(response);
+                    }
+                } catch (IOException ignored) {}
+                throw new CastleApiInvalidParametersErrorException(response);
             }
             throw new CastleServerErrorException(response);
         }
