@@ -2,6 +2,11 @@
 
 ## master
 
+## 2.1.0 (2022-03-07)
+
+- [#108](https://github.com/castle/castle-java/pull/108) Add exception for handling invalid request token
+- [#102](https://github.com/castle/castle-java/pull/102) Add id key that was missing
+
 ## 2.0.0 (2021-06-03)
 
 - [#87](https://github.com/castle/castle-java/pull/87) Add configuration for max number of simultaneous api requests
