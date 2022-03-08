@@ -29,10 +29,10 @@ public class OkHttpExceptionUtil {
                     String type = json.get("type").getAsString();
 
                     if (type.equals("invalid_request_token")) {
-                        throw new CastleApiInvalidRequestTokenErrorException(response);
+                        throw new CastleApiInvalidRequestTokenException(response);
                     }
                 } catch (IOException | JsonSyntaxException |JsonIOException ignored) {}
-                throw new CastleApiInvalidParametersErrorException(response);
+                throw new CastleApiInvalidParametersException(response);
             }
             throw new CastleServerErrorException(response);
         }
