@@ -1,6 +1,7 @@
 package io.castle.client.model;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -21,9 +22,11 @@ public class CastleDeviceTest {
 
         // When
         String payloadJson = model.getGson().toJson(device);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}";
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}");
+        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
     }
 
     @Test
@@ -39,8 +42,10 @@ public class CastleDeviceTest {
 
         // When
         String payloadJson = model.getGson().toJson(device);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}";
 
         // Then
-        Assertions.assertThat(payloadJson).isEqualTo("{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}");
+    Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
     }
 }

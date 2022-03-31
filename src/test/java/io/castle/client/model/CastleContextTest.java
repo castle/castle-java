@@ -1,6 +1,7 @@
 package io.castle.client.model;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.utils.SDKVersion;
 import org.assertj.core.api.Assertions;
@@ -24,10 +25,11 @@ public class CastleContextTest {
 
         //when
         String contextJson = model.getGson().toJson(aContext);
+        JsonParser parser = new JsonParser();
+        String expected = "{\"active\":true," + SDKVersion.getLibraryString() +"}";
 
         //Then
-        Assertions.assertThat(contextJson).isEqualTo("{\"active\":true," + SDKVersion.getLibraryString() +"}");
-
+        Assertions.assertThat(parser.parse(contextJson)).isEqualTo(parser.parse(expected));
     }
 
     @Test
