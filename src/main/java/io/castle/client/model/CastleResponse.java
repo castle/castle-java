@@ -14,8 +14,7 @@ public class CastleResponse {
     public CastleResponse(Response response) throws IOException {
         code = response.code();
         String body = response.body().string();
-        JsonParser gson = new JsonParser();
-        json = gson.parse(body);
+        json = JsonParser.parseString(body);
 
         OkHttpExceptionUtil.handle(response);
     }

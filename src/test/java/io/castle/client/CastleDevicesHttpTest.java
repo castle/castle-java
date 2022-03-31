@@ -40,7 +40,7 @@ public class CastleDevicesHttpTest extends AbstractCastleHttpLayerTest {
         // and the correct CastleUserDevice model object is extracted
         CastleUserDevices expected = DeviceUtils.createExpectedDevices();
 
-        Assertions.assertThat(devices).isEqualToComparingFieldByFieldRecursively(expected);
+        Assertions.assertThat(devices).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @Test(expected = CastleApiTimeoutException.class)

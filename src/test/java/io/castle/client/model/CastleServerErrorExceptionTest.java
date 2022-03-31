@@ -11,8 +11,8 @@ public class CastleServerErrorExceptionTest {
         Response response = new Response.Builder()
                 .code(500)
                 .body(ResponseBody.create(
-                        MediaType.get("application/json; charset=utf-8"),
-                        "{}"
+                        "{}",
+                        MediaType.get("application/json; charset=utf-8")
                 ))
                 .request(new Request.Builder().url("http://localhost").build())
                 .protocol(Protocol.HTTP_1_1)

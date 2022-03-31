@@ -13,7 +13,6 @@ import io.castle.client.model.CastleMessage;
 public class CastleGsonModel {
 
     private final Gson gson;
-    private final JsonParser jsonParser;
 
     public CastleGsonModel() {
         GsonBuilder builder = createGsonBuilder();
@@ -24,16 +23,10 @@ public class CastleGsonModel {
         builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         builder.registerTypeAdapter(RiskPolicyType.class, new RiskPolicyTypeDeserializer());
         this.gson = builder.create();
-
-        this.jsonParser = new JsonParser();
     }
 
     public Gson getGson() {
         return gson;
-    }
-
-    public JsonParser getJsonParser() {
-        return jsonParser;
     }
 
     public static GsonBuilder createGsonBuilder() {

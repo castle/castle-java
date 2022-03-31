@@ -125,6 +125,6 @@ public class CastleTest {
         CastleConfiguration sdkConfiguration = sdk.getSdkConfiguration();
         Assertions.assertThat(sdkConfiguration)
                 .extracting("apiSecret")
-                .containsExactly("abcd");
+                .isEqualTo("abcd");
     }
 }

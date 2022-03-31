@@ -140,7 +140,7 @@ public class OkRestApiBackend implements RestApi {
 
     private RequestBody buildRequestBody(JsonElement payloadJson) {
         JsonObject json = payloadJson.getAsJsonObject();
-        return RequestBody.create(JSON, json.toString());
+        return RequestBody.create(json.toString(), JSON);
     }
 
     private Verdict extractAuthenticationAction(Response response, String userId) throws IOException {
@@ -149,10 +149,9 @@ public class OkRestApiBackend implements RestApi {
 
         if (response.isSuccessful()) {
             Gson gson = model.getGson();
-            JsonParser jsonParser = model.getJsonParser();
             VerdictTransportModel transport = gson.fromJson(jsonResponse, VerdictTransportModel.class);
             if (transport != null && transport.getAction() != null) {
-                return VerdictBuilder.fromTransport(transport, jsonParser.parse(jsonResponse));
+                return VerdictBuilder.fromTransport(transport, JsonParser.parseString(jsonResponse));
             } else {
                 errorReason = "Invalid JSON in response";
             }
@@ -275,7 +274,7 @@ public class OkRestApiBackend implements RestApi {
     }
 
     private CastleResponse makeRequest(String path, JsonElement payload, String method) {
-        RequestBody body = payload != null ? RequestBody.create(JSON, payload.toString()) : createEmptyRequestBody();
+        RequestBody body = payload != null ? RequestBody.create(payload.toString(), JSON) : createEmptyRequestBody();
 
         Request.Builder builder = new Request.Builder()
                 .url(baseUrl.resolve(path));
@@ -387,7 +386,7 @@ public class OkRestApiBackend implements RestApi {
 
         ImpersonatePayload payload = new ImpersonatePayload(userId, impersonator, contextJson);
 
-        RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
+        RequestBody body = RequestBody.create(model.getGson().toJson(payload), JSON);
 
         return new Request.Builder()
                 .url(impersonateUrl)
@@ -400,7 +399,7 @@ public class OkRestApiBackend implements RestApi {
 
         ImpersonatePayload payload = new ImpersonatePayload(userId, impersonator, contextJson);
 
-        RequestBody body = RequestBody.create(JSON, model.getGson().toJson(payload));
+        RequestBody body = RequestBody.create(model.getGson().toJson(payload), JSON);
 
         return new Request.Builder()
                 .url(impersonateUrl)
@@ -417,6 +416,6 @@ public class OkRestApiBackend implements RestApi {
     }
 
     private RequestBody createEmptyRequestBody() {
-        return RequestBody.create(null, new byte[0]);
+        return RequestBody.create(new byte[0], null);
     }
 }

@@ -140,7 +140,7 @@ public class CastleContextTest {
 
         // And json to object create the same structure
         CastleContext fromJson = model.getGson().fromJson(expectedJson, CastleContext.class);
-        Assertions.assertThat(fromJson).isEqualToComparingFieldByFieldRecursively(aContext);
+        Assertions.assertThat(fromJson).usingRecursiveComparison().isEqualTo(aContext);
     }
 
     @Test
