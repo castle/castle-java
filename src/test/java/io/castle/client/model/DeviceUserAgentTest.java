@@ -37,10 +37,9 @@ public class DeviceUserAgentTest {
 
         // When
         String payloadJson = model.getGson().toJson(userAgent);
-        JsonParser parser = new JsonParser();
         String expected = "{\"raw\":\"Mac OS X\",\"browser\":\"Opera\",\"version\":\"Mac OS X\",\"os\":\"Mac OS X 10.13.6\",\"mobile\":false,\"platform\":\"Mac OS X\",\"device\":\"Unknown\",\"family\":\"Opera\"}";
         // Then
-        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
+        Assertions.assertThat(JsonParser.parseString(payloadJson)).isEqualTo(JsonParser.parseString(expected));
 
         Assert.assertEquals(userAgent.getBrowser(), DeviceUtils.USER_AGENT_BROWSER);
         Assert.assertEquals(userAgent.getDevice(), DeviceUtils.USER_AGENT_DEVICE);

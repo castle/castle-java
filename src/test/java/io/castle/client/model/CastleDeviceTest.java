@@ -22,11 +22,10 @@ public class CastleDeviceTest {
 
         // When
         String payloadJson = model.getGson().toJson(device);
-        JsonParser parser = new JsonParser();
         String expected = "{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}";
 
         // Then
-        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
+        Assertions.assertThat(JsonParser.parseString(payloadJson)).isEqualTo(JsonParser.parseString(expected));
     }
 
     @Test
@@ -42,10 +41,9 @@ public class CastleDeviceTest {
 
         // When
         String payloadJson = model.getGson().toJson(device);
-        JsonParser parser = new JsonParser();
         String expected = "{\"id\":\"d_id\",\"manufacturer\":\"d_manufacturer\",\"model\":\"d_model\",\"name\":\"d_name\",\"type\":\"d_type\"}";
 
         // Then
-    Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
+    Assertions.assertThat(JsonParser.parseString(payloadJson)).isEqualTo(JsonParser.parseString(expected));
     }
 }
