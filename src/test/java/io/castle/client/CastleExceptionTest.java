@@ -47,7 +47,7 @@ public class CastleExceptionTest {
         Assert.assertFalse(castleException instanceof CastleApiInternalServerErrorException);
     }
 
-    @Test(expected = CastleApiInvalidRequestTokenErrorException.class)
+    @Test(expected = CastleApiInvalidRequestTokenException.class)
     public void invalidRequestTokenError() {
         //Given
         Response response = new Response.Builder()
@@ -61,7 +61,7 @@ public class CastleExceptionTest {
         OkHttpExceptionUtil.handle(response);
     }
 
-    @Test(expected = CastleApiInvalidParametersErrorException.class)
+    @Test(expected = CastleApiInvalidParametersException.class)
     public void invalidParametersError() {
         //Given
         Response response = new Response.Builder()
@@ -75,7 +75,7 @@ public class CastleExceptionTest {
         OkHttpExceptionUtil.handle(response);
     }
 
-    @Test(expected = CastleApiInvalidParametersErrorException.class)
+    @Test(expected = CastleApiInvalidParametersException.class)
     public void invalidJsonError() {
         //Given
         Response response = new Response.Builder()
