@@ -322,4 +322,12 @@ public interface CastleApi {
      * @return
      */
     CastleResponse log(ImmutableMap<Object, Object> payload);
+
+    /**
+     * Makes a sync PUT request to the recover endpoint.
+     *
+     * @param userId User ID
+     * @return
+     */
+    CastleResponse recover(String userId);
 }

@@ -36,6 +36,8 @@ public class Castle {
     public static final String URL_FILTER = "/v1/filter";
     public static final String URL_LOG = "/v1/log";
 
+    public static final String URL_RECOVER = "/v1/users/%s/recover";
+
     public static final String KEY_EVENT = "event";
     public static final String KEY_USER = "user";
     public static final String KEY_STATUS = "status";
