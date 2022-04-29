@@ -334,6 +334,15 @@ public class CastleApiImpl implements CastleApi {
         return restApi.post(Castle.URL_LOG, payload);
     }
 
+    @Override
+    public CastleResponse recover(String userId) {
+        Preconditions.checkNotNull(userId, "UserId can not be null");
+        Preconditions.checkArgument(!userId.isEmpty());
+
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.put(String.format(Castle.URL_RECOVER, userId));
+    }
+
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
         CastleMessage message = new CastleMessage(event);
 
