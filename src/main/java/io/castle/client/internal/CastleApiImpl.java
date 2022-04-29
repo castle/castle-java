@@ -336,6 +336,9 @@ public class CastleApiImpl implements CastleApi {
 
     @Override
     public CastleResponse recover(String userId) {
+        Preconditions.checkNotNull(userId, "UserId can not be null");
+        Preconditions.checkArgument(!userId.isEmpty());
+
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.put(String.format(Castle.URL_RECOVER, userId));
     }
