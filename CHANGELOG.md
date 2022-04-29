@@ -2,6 +2,13 @@
 
 ## master
 
+## 2.2.0 (2022-04-29)
+
+- [#112](https://github.com/castle/castle-java/pull/112) Add recover api support
+- [#111](https://github.com/castle/castle-java/pull/111) Update dependencies
+- [#110](https://github.com/castle/castle-java/pull/110) Rename parameter exception classes
+- [#107](https://github.com/castle/castle-java/pull/107) Fixed flaky tests
+
 ## 2.1.0 (2022-03-07)
 
 - [#108](https://github.com/castle/castle-java/pull/108) Add exception for handling invalid request token
