@@ -36,7 +36,7 @@ public class ConfigurationLoaderTest {
         CastleConfiguration castleConfiguration = loader.loadConfiguration();
 
         //Then the configuration should use the defaults
-        Assertions.assertThat(castleConfiguration).isEqualToComparingFieldByFieldRecursively(expectedConfiguration);
+        Assertions.assertThat(castleConfiguration).usingRecursiveComparison().isEqualTo(expectedConfiguration);
 
     }
 
@@ -287,7 +287,7 @@ public class ConfigurationLoaderTest {
         ConfigurationLoader loader = new ConfigurationLoader();
         //then the loaded configuration should equal field to field with the expected.
         Assertions.assertThat(loader.loadConfiguration())
-                .isEqualToComparingFieldByFieldRecursively(expected);
+                .usingRecursiveComparison().isEqualTo(expected);
     }
 
 

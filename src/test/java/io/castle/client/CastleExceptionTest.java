@@ -55,7 +55,7 @@ public class CastleExceptionTest {
                 .request(new Request.Builder().url("http://localhost").build())
                 .protocol(Protocol.HTTP_1_1)
                 .message("Message")
-                .body(ResponseBody.create(JsonMediaType, "{\"type\": \"invalid_request_token\"}"))
+                .body(ResponseBody.create("{\"type\": \"invalid_request_token\"}", JsonMediaType))
                 .build();
 
         OkHttpExceptionUtil.handle(response);
@@ -69,7 +69,7 @@ public class CastleExceptionTest {
                 .request(new Request.Builder().url("http://localhost").build())
                 .protocol(Protocol.HTTP_1_1)
                 .message("Message")
-                .body(ResponseBody.create(JsonMediaType, "{\"type\": \"unknown\"}"))
+                .body(ResponseBody.create("{\"type\": \"unknown\"}", JsonMediaType))
                 .build();
 
         OkHttpExceptionUtil.handle(response);
@@ -83,7 +83,7 @@ public class CastleExceptionTest {
                 .request(new Request.Builder().url("http://localhost").build())
                 .protocol(Protocol.HTTP_1_1)
                 .message("Message")
-                .body(ResponseBody.create(JsonMediaType, "invalid json"))
+                .body(ResponseBody.create("invalid json", JsonMediaType))
                 .build();
 
         OkHttpExceptionUtil.handle(response);

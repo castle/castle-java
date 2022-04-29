@@ -25,11 +25,10 @@ public class CastleContextTest {
 
         //when
         String contextJson = model.getGson().toJson(aContext);
-        JsonParser parser = new JsonParser();
         String expected = "{\"active\":true," + SDKVersion.getLibraryString() +"}";
 
         //Then
-        Assertions.assertThat(parser.parse(contextJson)).isEqualTo(parser.parse(expected));
+        Assertions.assertThat(JsonParser.parseString(contextJson)).isEqualTo(JsonParser.parseString(expected));
     }
 
     @Test
@@ -140,7 +139,7 @@ public class CastleContextTest {
 
         // And json to object create the same structure
         CastleContext fromJson = model.getGson().fromJson(expectedJson, CastleContext.class);
-        Assertions.assertThat(fromJson).isEqualToComparingFieldByFieldRecursively(aContext);
+        Assertions.assertThat(fromJson).usingRecursiveComparison().isEqualTo(aContext);
     }
 
     @Test

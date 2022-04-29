@@ -41,7 +41,7 @@ public class CastleContextBuilderTest {
                 .build();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class CastleContextBuilderTest {
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class CastleContextBuilderTest {
                 .build();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -139,7 +139,7 @@ public class CastleContextBuilderTest {
         CastleContext context = builder.fromHttpServletRequest(standardRequest).build();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -162,7 +162,7 @@ public class CastleContextBuilderTest {
         standardRequest.addHeader(customClientIdHeader, "valueFromHeaders");
 
         //And a expected context value with matching clientId
-        CastleContext standardContext = getStandardContextWithClientId("valueFromHeaders");
+        CastleContext standardContext = getStandardContextWithClientIdAndCookie("valueFromHeaders");
 
         //When
         CastleContext context = builder.fromHttpServletRequest(standardRequest)
@@ -170,7 +170,7 @@ public class CastleContextBuilderTest {
                 .build();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -198,7 +198,7 @@ public class CastleContextBuilderTest {
                 .build();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -221,7 +221,7 @@ public class CastleContextBuilderTest {
         CastleContext standardContext = getStandardContext();
 
         //Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -245,7 +245,7 @@ public class CastleContextBuilderTest {
             .build();
 
         // Then
-        Assertions.assertThat(context).isEqualToComparingFieldByFieldRecursively(standardContext);
+        Assertions.assertThat(context).usingRecursiveComparison().isEqualTo(standardContext);
     }
 
     @Test
@@ -394,6 +394,17 @@ public class CastleContextBuilderTest {
         CastleContext expectedContext = getStandardContext();
         expectedContext.setClientId(clientId);
         List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
+        listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, clientId));
+        expectedContext.getHeaders().setHeaders(listOfHeaders);
+
+        return expectedContext;
+    }
+
+    public CastleContext getStandardContextWithClientIdAndCookie(String clientId) {
+        CastleContext expectedContext = getStandardContext();
+        expectedContext.setClientId(clientId);
+        List<CastleHeader> listOfHeaders = expectedContext.getHeaders().getHeaders();
+        listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader("Cookie", "true"));
         listOfHeaders.add(listOfHeaders.size()-1, new CastleHeader(customClientIdHeader, clientId));
         expectedContext.getHeaders().setHeaders(listOfHeaders);
 

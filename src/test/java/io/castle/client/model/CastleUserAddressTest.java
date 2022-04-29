@@ -21,10 +21,9 @@ public class CastleUserAddressTest {
 
         // When
         String payloadJson = model.getGson().toJson(address);
-        JsonParser parser = new JsonParser();
         String expected = "{\"street\":\"street 1\",\"city\":\"city\",\"postal_code\":\"12345\",\"region\":\"region\",\"country\":\"country\"}";
 
         // Then
-        Assertions.assertThat(parser.parse(payloadJson)).isEqualTo(parser.parse(expected));
+        Assertions.assertThat(JsonParser.parseString(payloadJson)).isEqualTo(JsonParser.parseString(expected));
     }
 }

@@ -24,8 +24,7 @@ public class OkHttpExceptionUtil {
             if (response.code() == 422) {
                 try {
                     String body = response.peekBody(Long.MAX_VALUE).string();
-                    JsonParser jsonParser = new JsonParser();
-                    JsonObject json = (JsonObject) jsonParser.parse(body);
+                    JsonObject json = (JsonObject) JsonParser.parseString(body);
                     String type = json.get("type").getAsString();
 
                     if (type.equals("invalid_request_token")) {

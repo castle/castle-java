@@ -126,11 +126,10 @@ public class ContextMergeTest {
 
     private void runTestCase(String targetJson, String sourceJson, String expectedResult) throws JSONException {
         //Given
-        JsonParser jsonParser = new JsonParser();
         ContextMerge contextMerge = new ContextMerge();
 
-        JsonObject target = jsonParser.parse(targetJson).getAsJsonObject();
-        JsonObject source = jsonParser.parse(sourceJson).getAsJsonObject();
+        JsonObject target = JsonParser.parseString(targetJson).getAsJsonObject();
+        JsonObject source = JsonParser.parseString(sourceJson).getAsJsonObject();
 
         //When
         String mergeJson = contextMerge.merge(target, source).toString();

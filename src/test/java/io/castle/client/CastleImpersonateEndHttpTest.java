@@ -39,7 +39,7 @@ public class CastleImpersonateEndHttpTest extends AbstractCastleHttpLayerTest {
         CastleSuccess expected = new CastleSuccess();
         expected.setSuccess(true);
 
-        Assertions.assertThat(result).isEqualToComparingFieldByFieldRecursively(expected);
+        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @Test(expected = CastleApiTimeoutException.class)
