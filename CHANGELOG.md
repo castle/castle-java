@@ -2,6 +2,10 @@
 
 ## master
 
+## 2.2.1 (2022-05-02)
+
+- [#114](https://github.com/castle/castle-java/pull/114) Handle closed response in OkHttpExceptionUtil
+
 ## 2.2.0 (2022-04-29)
 
 - [#112](https://github.com/castle/castle-java/pull/112) Add recover api support
