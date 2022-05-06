@@ -61,6 +61,20 @@ public class CastleExceptionTest {
         OkHttpExceptionUtil.handle(response);
     }
 
+    @Test(expected = CastleApiInvalidRequestTokenException.class)
+    public void invalidRequestTokenCasleResponseResponseError() throws IOException {
+        //Given
+        Response response = new Response.Builder()
+                .code(422)
+                .request(new Request.Builder().url("http://localhost").build())
+                .protocol(Protocol.HTTP_1_1)
+                .message("Message")
+                .body(ResponseBody.create("{\"type\": \"invalid_request_token\"}", JsonMediaType))
+                .build();
+
+        new CastleResponse(response);
+    }
+
     @Test(expected = CastleApiInvalidParametersException.class)
     public void invalidParametersError() {
         //Given
