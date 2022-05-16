@@ -12,11 +12,11 @@ public class CastleResponse {
     private final JsonElement json;
 
     public CastleResponse(Response response) throws IOException {
+        OkHttpExceptionUtil.handle(response);
+
         code = response.code();
         String body = response.body().string();
         json = JsonParser.parseString(body);
-
-        OkHttpExceptionUtil.handle(response);
     }
 
     public boolean isSuccessful() {
