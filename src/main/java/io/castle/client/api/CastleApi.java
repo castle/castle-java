@@ -3,6 +3,7 @@ package io.castle.client.api;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import io.castle.client.model.*;
+import io.castle.client.model.generated.*;
 
 import javax.annotation.Nullable;
 
@@ -289,15 +290,15 @@ public interface CastleApi {
 
     CastleResponse get(String path);
 
-    CastleResponse post(String path, ImmutableMap<Object, Object> payload);
+    CastleResponse post(String path, Object payload);
 
     CastleResponse put(String path);
 
-    CastleResponse put(String path, ImmutableMap<Object, Object> payload);
+    CastleResponse put(String path, Object payload);
 
     CastleResponse delete(String path);
 
-    CastleResponse delete(String path, ImmutableMap<Object, Object> payload);
+    CastleResponse delete(String path, Object payload);
 
     /**
      * Makes a sync POST request to the risk endpoint.
@@ -308,6 +309,14 @@ public interface CastleApi {
     CastleResponse risk(ImmutableMap<Object, Object> payload);
 
     /**
+     * Makes a sync POST request to the risk endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    RiskResponse risk(Risk payload);
+
+    /**
      * Makes a sync POST request to the filter endpoint.
      *
      * @param payload Event parameters
@@ -316,12 +325,28 @@ public interface CastleApi {
     CastleResponse filter(ImmutableMap<Object, Object> payload);
 
     /**
+     * Makes a sync POST request to the filter endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    FilterResponse filter(Filter payload);
+
+    /**
      * Makes a sync POST request to the log endpoint.
      *
      * @param payload Event parameters
      * @return
      */
     CastleResponse log(ImmutableMap<Object, Object> payload);
+
+    /**
+     * Makes a sync POST request to the log endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    CastleResponse log(Log payload);
 
     /**
      * Makes a sync PUT request to the recover endpoint.

@@ -13,6 +13,7 @@ import io.castle.client.internal.utils.ContextMerge;
 import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
+import io.castle.client.model.generated.*;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -285,7 +286,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleResponse post(String path, ImmutableMap<Object, Object> payload) {
+    public CastleResponse post(String path, Object payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(path, payload);
     }
@@ -297,7 +298,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleResponse put(String path, ImmutableMap<Object, Object> payload) {
+    public CastleResponse put(String path, Object payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.put(path, payload);
     }
@@ -309,7 +310,7 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public CastleResponse delete(String path, ImmutableMap<Object, Object> payload) {
+    public CastleResponse delete(String path, Object payload) {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.delete(path, payload);
     }
@@ -321,6 +322,14 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public RiskResponse risk(Risk payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(Castle.URL_RISK, payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), RiskResponse.class);
+    }
+
+    @Override
     public CastleResponse filter(ImmutableMap<Object, Object> payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
@@ -328,7 +337,22 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public FilterResponse filter(Filter payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(Castle.URL_FILTER, payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), FilterResponse.class);
+    }
+
+    @Override
     public CastleResponse log(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_LOG, payload);
+    }
+
+    @Override
+    public CastleResponse log(Log payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.post(Castle.URL_LOG, payload);
