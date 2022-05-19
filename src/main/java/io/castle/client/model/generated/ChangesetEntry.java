@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 @ApiModel(description = "Information that the attribute changed along with the changed values. Examples: `{ \"email\": { \"from\": \"a@example.com\", \"to\": \"b@example.com\" }`, `{ \"authentication_method.type\": { \"from\": null, \"to\": \"$push\" }`")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
-public class ChangesetEntry {
+public class ChangesetEntry extends BaseChangesetEntry {
   public static final String SERIALIZED_NAME_FROM = "from";
   @SerializedName(SERIALIZED_NAME_FROM)
   private String from;

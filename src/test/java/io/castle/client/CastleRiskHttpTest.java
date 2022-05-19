@@ -1,11 +1,13 @@
 package io.castle.client;
 
+import com.google.gson.JsonParser;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleResponse;
 import io.castle.client.model.generated.*;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -45,19 +47,30 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
         // And a mock Request
         HttpServletRequest request = new MockHttpServletRequest();
 
-        Risk risk = new Risk();
-        risk.type(Risk.TypeEnum.CHALLENGE);
-        risk.status(Risk.StatusEnum.REQUESTED);
-        risk.requestToken("test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4");
+        Risk risk = new Risk().type(Risk.TypeEnum.CHALLENGE)
+                .status(Risk.StatusEnum.REQUESTED)
+                .requestToken("test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4");
 
-        User user = new User();
-        user.id("12345");
+        User user = new User()
+                .id("12345");
         risk.user(user);
 
-        Context context = new Context();
-        context.ip("211.96.77.55");
-        context.addHeadersItem("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15");
+        Context context = new Context()
+                .ip("211.96.77.55")
+                .addHeadersItem("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15");
         risk.context(context);
+
+        Changeset changeSet = new Changeset()
+                .email(new ChangesetEntry()
+                        .from("before@exmaple.com")
+                        .to("after@example.com"))
+                .password(new ChangedChangesetEntry())
+                .authenticationMethodType(new ChangesetEntry()
+                        .from("$authenticator")
+                        .to("$email"))
+                .name(new ChangesetEntry()
+                        .to("John Snow"));
+        risk.changeset(changeSet);
 
         RiskResponse response = sdk.onRequest(request).risk(risk);
 
@@ -74,5 +87,10 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
         RecordedRequest recordedRequest = server.takeRequest();
         Assert.assertEquals(testServerBaseUrl.resolve("v1/risk"), recordedRequest.getRequestUrl());
         Assert.assertEquals("POST", recordedRequest.getMethod());
+
+        String body = recordedRequest.getBody().readUtf8();
+
+        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"request_token\":\"test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4\",\"user\":{\"id\":\"12345\"},\"type\":\"$challenge\",\"status\":\"$requested\",\"changeset\":{\"password\":{\"changed\":true},\"email\":{\"from\":\"before@exmaple.com\",\"to\":\"after@example.com\"},\"authentication_method.type\":{\"from\":\"$authenticator\",\"to\":\"$email\"},\"name\":{\"to\":\"John Snow\"}}}";
+        Assertions.assertThat(JsonParser.parseString(body)).isEqualTo(JsonParser.parseString(expected));
     }
 }

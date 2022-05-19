@@ -29,79 +29,10 @@ import java.util.Objects;
  */
 @ApiModel(description = "Information that the attribute changed along with the changed values. Examples: `{ \"password\": { \"changed\": true } }`")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
-public class ChangedChangesetEntry {
-  /**
-   * Gets or Sets changed
-   */
-  @JsonAdapter(ChangedEnum.Adapter.class)
-  public enum ChangedEnum {
-    TRUE(true);
-
-    private Boolean value;
-
-    ChangedEnum(Boolean value) {
-      this.value = value;
-    }
-
-    public Boolean getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static ChangedEnum fromValue(Boolean value) {
-      for (ChangedEnum b : ChangedEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-
-    public static class Adapter extends TypeAdapter<ChangedEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final ChangedEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public ChangedEnum read(final JsonReader jsonReader) throws IOException {
-        Boolean value =  jsonReader.nextBoolean();
-        return ChangedEnum.fromValue(value);
-      }
-    }
-  }
-
+public class ChangedChangesetEntry extends BaseChangesetEntry {
   public static final String SERIALIZED_NAME_CHANGED = "changed";
   @SerializedName(SERIALIZED_NAME_CHANGED)
-  private ChangedEnum changed;
-
-
-  public ChangedChangesetEntry changed(ChangedEnum changed) {
-    
-    this.changed = changed;
-    return this;
-  }
-
-   /**
-   * Get changed
-   * @return changed
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
-
-  public ChangedEnum getChanged() {
-    return changed;
-  }
-
-
-  public void setChanged(ChangedEnum changed) {
-    this.changed = changed;
-  }
-
+  private boolean changed = true;
 
   @Override
   public boolean equals(Object o) {

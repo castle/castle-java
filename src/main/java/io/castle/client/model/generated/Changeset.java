@@ -25,29 +25,29 @@ import java.util.Objects;
  */
 @ApiModel(description = "An object containing information about attributes that changed due to the event. You can send either anonymous attributes (eg. to track password changes) or full attributes (eg. email changes). To simplify your implementation, Castle *automatically* tracks changes to name, email, and phone, however, if you have the `from` and `to` values at hand, you can also send the changeset yourself, which also allows you to specify changes a user’s password as well as any other custom attributes. Changes to custom attributes won’t be searchable in the dashboard, but they will appear in the event stream.")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
-public class Changeset extends HashMap<String, String> {
+public class Changeset {
   public static final String SERIALIZED_NAME_PASSWORD = "password";
   @SerializedName(SERIALIZED_NAME_PASSWORD)
-  private ChangedChangesetEntry password;
+  private BaseChangesetEntry password;
 
   public static final String SERIALIZED_NAME_EMAIL = "email";
   @SerializedName(SERIALIZED_NAME_EMAIL)
-  private String email;
+  private BaseChangesetEntry email;
 
   public static final String SERIALIZED_NAME_PHONE = "phone";
   @SerializedName(SERIALIZED_NAME_PHONE)
-  private String phone;
+  private BaseChangesetEntry phone;
 
   public static final String SERIALIZED_NAME_AUTHENTICATION_METHOD_TYPE = "authentication_method.type";
   @SerializedName(SERIALIZED_NAME_AUTHENTICATION_METHOD_TYPE)
-  private String authenticationMethodType;
+  private BaseChangesetEntry authenticationMethodType;
 
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
-  private String name;
+  private BaseChangesetEntry name;
 
 
-  public Changeset password(ChangedChangesetEntry password) {
+  public Changeset password(BaseChangesetEntry password) {
     
     this.password = password;
     return this;
@@ -60,17 +60,17 @@ public class Changeset extends HashMap<String, String> {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public ChangedChangesetEntry getPassword() {
+  public BaseChangesetEntry getPassword() {
     return password;
   }
 
 
-  public void setPassword(ChangedChangesetEntry password) {
+  public void setPassword(BaseChangesetEntry password) {
     this.password = password;
   }
 
 
-  public Changeset email(String email) {
+  public Changeset email(BaseChangesetEntry email) {
     
     this.email = email;
     return this;
@@ -83,17 +83,17 @@ public class Changeset extends HashMap<String, String> {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "Email address change. Both from and to must be valid emails if provided. You can also inform Castle that the email changed without sending the values explicitly: `{ \"email\": { \"changed\": true } }`")
 
-  public String getEmail() {
+  public BaseChangesetEntry getEmail() {
     return email;
   }
 
 
-  public void setEmail(String email) {
+  public void setEmail(BaseChangesetEntry email) {
     this.email = email;
   }
 
 
-  public Changeset phone(String phone) {
+  public Changeset phone(BaseChangesetEntry phone) {
     
     this.phone = phone;
     return this;
@@ -106,17 +106,17 @@ public class Changeset extends HashMap<String, String> {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "Phone number change. Both from and to must be valid phone numbers if provided. You can also inform Castle that the phone changed without sending the values explicitly: `{ \"phone\": { \"changed\": true } }`")
 
-  public String getPhone() {
+  public BaseChangesetEntry getPhone() {
     return phone;
   }
 
 
-  public void setPhone(String phone) {
+  public void setPhone(BaseChangesetEntry phone) {
     this.phone = phone;
   }
 
 
-  public Changeset authenticationMethodType(String authenticationMethodType) {
+  public Changeset authenticationMethodType(BaseChangesetEntry authenticationMethodType) {
     
     this.authenticationMethodType = authenticationMethodType;
     return this;
@@ -129,17 +129,17 @@ public class Changeset extends HashMap<String, String> {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public String getAuthenticationMethodType() {
+  public BaseChangesetEntry getAuthenticationMethodType() {
     return authenticationMethodType;
   }
 
 
-  public void setAuthenticationMethodType(String authenticationMethodType) {
+  public void setAuthenticationMethodType(BaseChangesetEntry authenticationMethodType) {
     this.authenticationMethodType = authenticationMethodType;
   }
 
 
-  public Changeset name(String name) {
+  public Changeset name(BaseChangesetEntry name) {
     
     this.name = name;
     return this;
@@ -152,12 +152,12 @@ public class Changeset extends HashMap<String, String> {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public String getName() {
+  public BaseChangesetEntry getName() {
     return name;
   }
 
 
-  public void setName(String name) {
+  public void setName(BaseChangesetEntry name) {
     this.name = name;
   }
 
