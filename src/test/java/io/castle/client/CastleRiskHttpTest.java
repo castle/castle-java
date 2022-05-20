@@ -11,8 +11,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.threeten.bp.OffsetDateTime;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
 
@@ -72,6 +74,15 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
                         .to("John Snow"));
         risk.changeset(changeSet);
 
+        Product product = new Product()
+                .id("1234");
+        risk.product(product);
+
+        risk.putPropertiesItem("property1", new HashMap<String, Object>());
+        risk.putPropertiesItem("property2", new HashMap<String, Object>());
+
+        risk.createdAt(OffsetDateTime.parse("2022-05-20T09:03:27.468+02:00"));
+
         RiskResponse response = sdk.onRequest(request).risk(risk);
 
         // Check response object
@@ -90,7 +101,7 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
 
         String body = recordedRequest.getBody().readUtf8();
 
-        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"request_token\":\"test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4\",\"user\":{\"id\":\"12345\"},\"type\":\"$challenge\",\"status\":\"$requested\",\"changeset\":{\"password\":{\"changed\":true},\"email\":{\"from\":\"before@exmaple.com\",\"to\":\"after@example.com\"},\"authentication_method.type\":{\"from\":\"$authenticator\",\"to\":\"$email\"},\"name\":{\"to\":\"John Snow\"}}}";
+        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"properties\":{\"property2\":{},\"property1\":{}},\"product\":{\"id\":\"1234\"},\"created_at\":\"2022-05-20T09:03:27.468+02:00\",\"request_token\":\"test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4\",\"user\":{\"id\":\"12345\"},\"type\":\"$challenge\",\"status\":\"$requested\",\"changeset\":{\"password\":{\"changed\":true},\"email\":{\"from\":\"before@exmaple.com\",\"to\":\"after@example.com\"},\"authentication_method.type\":{\"from\":\"$authenticator\",\"to\":\"$email\"},\"name\":{\"to\":\"John Snow\"}}}";
         Assertions.assertThat(JsonParser.parseString(body)).isEqualTo(JsonParser.parseString(expected));
     }
 }
