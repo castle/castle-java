@@ -34,4 +34,12 @@ public class CastleServerErrorException extends CastleRuntimeException {
     public String getResponse() {
         return response;
     }
+
+    @Override
+    public String getMessage() {
+        if (this.response != null) {
+            return super.getMessage() + " body: " + this.response;
+        }
+        return super.getMessage();
+    }
 }
