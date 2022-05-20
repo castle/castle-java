@@ -48,7 +48,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
         Filter filter = new Filter()
                 .type(Filter.TypeEnum.CHALLENGE)
                 .status(Filter.StatusEnum.REQUESTED)
-                .requestToken("test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4");
+                .requestToken("4-ugt5CFooaxt5KbpISi1Kurm5KTpqawlYmFs5PXsqKootPgRB3z12OpvPOWOQ9PkztagtqicAnk9Qowu7FlU9qabyi4k2QR6KUUL5p3gr-A2w8Ju8gWe0XyRi_OkmFj2oZiU9OTPAjijjIK4sA-a7f19GC_xzhYurdkWM-ZY1jR_l4R8JloVdGTfj7IhXY6_pd5SNGThjmM2DoSjWNup74xC3v-l3lI0ZMlDZPGJAyd3jsVnd5JXc6CZlmdxSQMk8UxHPyYbk7Sn24cjMQxHPqZZVvRkypP2Z1VW82eZVLYwD5jxc48Y4vCI4C1gDJWiIVMXssRDTmrPME9aeZPSc-ZelmSpX5T3p1iU9Gb1jnYmCdp7gnJ");
 
         User user = new User()
                 .id("12345");

@@ -59,6 +59,7 @@ public class CastleLogHttpTest extends AbstractCastleHttpLayerTest {
                 .id("900b183a-9f6d-4579-8c47-9ddcccf637b4")
                 .amount(new Amount()
                         .type(Amount.TypeEnum.FIAT)
+                        .value("100")
                         .currency("USD"))
                 .paymentMethod(new PaymentMethod()
                         .type(PaymentMethod.TypeEnum.ABA)
@@ -74,8 +75,8 @@ public class CastleLogHttpTest extends AbstractCastleHttpLayerTest {
                                 .regionCode("CA")
                                 .postalCode("94103"))
                         .card(new PaymentMethodCard()
-                                .bin("string")
-                                .last4("string")
+                                .bin("123456")
+                                .last4("1234")
                                 .expMonth(1)
                                 .expYear(2000)
                                 .network(PaymentMethodCard.NetworkEnum.AMEX)
@@ -93,7 +94,7 @@ public class CastleLogHttpTest extends AbstractCastleHttpLayerTest {
 
         String body = recordedRequest.getBody().readUtf8();
 
-        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"properties\":{\"property2\":{},\"property1\":{}},\"product\":{\"id\":\"1234\"},\"created_at\":\"2022-05-20T09:03:27.468+02:00\",\"user\":{\"id\":\"12345\"},\"type\":\"$transaction\",\"status\":\"$attempted\",\"transaction\":{\"type\":\"$purchase\",\"id\":\"900b183a-9f6d-4579-8c47-9ddcccf637b4\",\"amount\":{\"type\":\"$fiat\",\"currency\":\"USD\"},\"payment_method\":{\"type\":\"$aba\",\"fingerprint\":\"string\",\"holder_name\":\"string\",\"bank_name\":\"string\",\"country_code\":\"str\",\"billing_address\":{\"line1\":\"60 Rausch Street\",\"line2\":\"string\",\"city\":\"San Francisco\",\"country_code\":\"US\",\"region_code\":\"CA\",\"postal_code\":\"94103\"},\"card\":{\"bin\":\"string\",\"last4\":\"string\",\"exp_month\":1,\"exp_year\":2000,\"network\":\"$amex\",\"funding\":\"$credit\"}}}}";
+        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"properties\":{\"property2\":{},\"property1\":{}},\"product\":{\"id\":\"1234\"},\"created_at\":\"2022-05-20T09:03:27.468+02:00\",\"user\":{\"id\":\"12345\"},\"type\":\"$transaction\",\"status\":\"$attempted\",\"transaction\":{\"type\":\"$purchase\",\"id\":\"900b183a-9f6d-4579-8c47-9ddcccf637b4\",\"amount\":{\"type\":\"$fiat\",\"value\":\"100\",\"currency\":\"USD\"},\"payment_method\":{\"type\":\"$aba\",\"fingerprint\":\"string\",\"holder_name\":\"string\",\"bank_name\":\"string\",\"country_code\":\"str\",\"billing_address\":{\"line1\":\"60 Rausch Street\",\"line2\":\"string\",\"city\":\"San Francisco\",\"country_code\":\"US\",\"region_code\":\"CA\",\"postal_code\":\"94103\"},\"card\":{\"bin\":\"123456\",\"last4\":\"1234\",\"exp_month\":1,\"exp_year\":2000,\"network\":\"$amex\",\"funding\":\"$credit\"}}}}";
         Assertions.assertThat(JsonParser.parseString(body)).isEqualTo(JsonParser.parseString(expected));
     }
 }
