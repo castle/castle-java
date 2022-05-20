@@ -2,6 +2,13 @@
 
 ## master
 
+## 2.3.0 (2022-05-020)
+
+- [#119](https://github.com/castle/castle-java/pull/119) Add response body to api exception message
+- [#118](https://github.com/castle/castle-java/pull/118) Add not found exception
+- [#117](https://github.com/castle/castle-java/pull/117) Add model classes for payload and response for risk, log and filter
+- [#116](https://github.com/castle/castle-java/pull/116) Handle prematurely closed response body
+
 ## 2.2.1 (2022-05-02)
 
 - [#114](https://github.com/castle/castle-java/pull/114) Handle closed response in OkHttpExceptionUtil
