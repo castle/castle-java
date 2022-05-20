@@ -33,8 +33,8 @@ public class Amount {
    */
   @JsonAdapter(TypeEnum.Adapter.class)
   public enum TypeEnum {
-    _CRYPTO("$crypto"),
-    _FIAT("$fiat");
+    CRYPTO("$crypto"),
+    FIAT("$fiat");
 
     private String value;
 

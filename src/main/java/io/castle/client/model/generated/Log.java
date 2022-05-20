@@ -13,8 +13,8 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
+import java.util.*;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -58,15 +58,15 @@ public class Log {
    */
   @JsonAdapter(TypeEnum.Adapter.class)
   public enum TypeEnum {
-    _CHALLENGE("$challenge"),
-    _CUSTOM("$custom"),
-    _LOGIN("$login"),
-    _PASSWORD_RESET_REQUEST("$password_reset_request"),
-    _PROFILE_RESET("$profile_reset"),
-    _PROFILE_UPDATE("$profile_update"),
-    _REGISTRATION("$registration"),
-    _LOGOUT("$logout"),
-    _TRANSACTION("$transaction");
+    CHALLENGE("$challenge"),
+    CUSTOM("$custom"),
+    LOGIN("$login"),
+    PASSWORD_RESET_REQUEST("$password_reset_request"),
+    PROFILE_RESET("$profile_reset"),
+    PROFILE_UPDATE("$profile_update"),
+    REGISTRATION("$registration"),
+    LOGOUT("$logout"),
+    TRANSACTION("$transaction");
 
     private String value;
 
