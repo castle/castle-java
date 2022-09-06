@@ -24,13 +24,12 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.threeten.bp.OffsetDateTime;
 
 /**
  * Filter
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
 public class Filter {
   public static final String SERIALIZED_NAME_CONTEXT = "context";
   @SerializedName(SERIALIZED_NAME_CONTEXT)
@@ -55,6 +54,14 @@ public class Filter {
   public static final String SERIALIZED_NAME_USER = "user";
   @SerializedName(SERIALIZED_NAME_USER)
   private User user;
+
+  public static final String SERIALIZED_NAME_PARAMS = "params";
+  @SerializedName(SERIALIZED_NAME_PARAMS)
+  private FilterRequestParams params;
+
+  public static final String SERIALIZED_NAME_MATCHING_USER_ID = "matching_user_id";
+  @SerializedName(SERIALIZED_NAME_MATCHING_USER_ID)
+  private String matchingUserId;
 
   /**
    * Gets or Sets type
@@ -279,11 +286,11 @@ public class Filter {
   }
 
    /**
-   * Token generated from a client. Check out our [quick start guide](/v1/getting-started) to generate a &#x60;request_token&#x60; 
+   * Token generated from a client. Check out our [quick start guide](https://docs.castle.io/docs/quickstart) to generate a &#x60;request_token&#x60; 
    * @return requestToken
   **/
   @javax.annotation.Nonnull
-  @ApiModelProperty(example = "test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4", required = true, value = "Token generated from a client. Check out our [quick start guide](/v1/getting-started) to generate a `request_token` ")
+  @ApiModelProperty(example = "test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4", required = true, value = "Token generated from a client. Check out our [quick start guide](https://docs.castle.io/docs/quickstart) to generate a `request_token` ")
 
   public String getRequestToken() {
     return requestToken;
@@ -315,6 +322,52 @@ public class Filter {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+
+  public Filter params(FilterRequestParams params) {
+    
+    this.params = params;
+    return this;
+  }
+
+   /**
+   * Get params
+   * @return params
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public FilterRequestParams getParams() {
+    return params;
+  }
+
+
+  public void setParams(FilterRequestParams params) {
+    this.params = params;
+  }
+
+
+  public Filter matchingUserId(String matchingUserId) {
+    
+    this.matchingUserId = matchingUserId;
+    return this;
+  }
+
+   /**
+   * User id related connected with the request
+   * @return matchingUserId
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "123", value = "User id related connected with the request")
+
+  public String getMatchingUserId() {
+    return matchingUserId;
+  }
+
+
+  public void setMatchingUserId(String matchingUserId) {
+    this.matchingUserId = matchingUserId;
   }
 
 
@@ -425,6 +478,8 @@ public class Filter {
         Objects.equals(this.createdAt, filter.createdAt) &&
         Objects.equals(this.requestToken, filter.requestToken) &&
         Objects.equals(this.user, filter.user) &&
+        Objects.equals(this.params, filter.params) &&
+        Objects.equals(this.matchingUserId, filter.matchingUserId) &&
         Objects.equals(this.type, filter.type) &&
         Objects.equals(this.status, filter.status) &&
         Objects.equals(this.authenticationMethod, filter.authenticationMethod) &&
@@ -433,7 +488,7 @@ public class Filter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, properties, product, createdAt, requestToken, user, type, status, authenticationMethod, name);
+    return Objects.hash(context, properties, product, createdAt, requestToken, user, params, matchingUserId, type, status, authenticationMethod, name);
   }
 
   @Override
@@ -446,6 +501,8 @@ public class Filter {
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    requestToken: ").append(toIndentedString(requestToken)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    params: ").append(toIndentedString(params)).append("\n");
+    sb.append("    matchingUserId: ").append(toIndentedString(matchingUserId)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    authenticationMethod: ").append(toIndentedString(authenticationMethod)).append("\n");

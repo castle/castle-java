@@ -13,15 +13,12 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.annotations.SerializedName;
-
-import java.io.IOException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Gets or Sets AuthenticationMethodType
@@ -47,7 +44,17 @@ public enum AuthenticationMethodType {
   
   SSO("$sso"),
   
-  KBA("$kba");
+  KBA("$kba"),
+  
+  ELECTRONIC_ID("$electronic_id"),
+  
+  PHYSICAL_ID("$physical_id"),
+  
+  DOCUMENT("$document"),
+  
+  VIDEO("$video"),
+  
+  OTHER("$other");
 
   private String value;
 

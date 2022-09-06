@@ -13,23 +13,25 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * RiskResponse
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
 public class RiskResponse {
   public static final String SERIALIZED_NAME_RISK = "risk";
   @SerializedName(SERIALIZED_NAME_RISK)
   private double risk;
+
+  public static final String SERIALIZED_NAME_SCORES = "scores";
+  @SerializedName(SERIALIZED_NAME_SCORES)
+  private Scores scores;
 
   public static final String SERIALIZED_NAME_POLICY = "policy";
   @SerializedName(SERIALIZED_NAME_POLICY)
@@ -45,19 +47,39 @@ public class RiskResponse {
 
 
    /**
-   * Calculated Risk.
+   * Calculated Risk Score.
    * minimum: 0
    * maximum: 1
    * @return risk
   **/
   @javax.annotation.Nonnull
-  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk.")
+  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
 
   public double getRisk() {
     return risk;
   }
 
+  public RiskResponse scores(Scores scores) {
+    
+    this.scores = scores;
+    return this;
+  }
 
+   /**
+   * Get scores
+   * @return scores
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public Scores getScores() {
+    return scores;
+  }
+
+
+  public void setScores(Scores scores) {
+    this.scores = scores;
+  }
 
 
   public RiskResponse policy(Policy policy) {
@@ -130,6 +152,7 @@ public class RiskResponse {
     }
     RiskResponse riskResponse = (RiskResponse) o;
     return Objects.equals(this.risk, riskResponse.risk) &&
+        Objects.equals(this.scores, riskResponse.scores) &&
         Objects.equals(this.policy, riskResponse.policy) &&
         Objects.equals(this.signals, riskResponse.signals) &&
         Objects.equals(this.device, riskResponse.device);
@@ -137,7 +160,7 @@ public class RiskResponse {
 
   @Override
   public int hashCode() {
-    return Objects.hash(risk, policy, signals, device);
+    return Objects.hash(risk, scores, policy, signals, device);
   }
 
   @Override
@@ -145,6 +168,7 @@ public class RiskResponse {
     StringBuilder sb = new StringBuilder();
     sb.append("class RiskResponse {\n");
     sb.append("    risk: ").append(toIndentedString(risk)).append("\n");
+    sb.append("    scores: ").append(toIndentedString(scores)).append("\n");
     sb.append("    policy: ").append(toIndentedString(policy)).append("\n");
     sb.append("    signals: ").append(toIndentedString(signals)).append("\n");
     sb.append("    device: ").append(toIndentedString(device)).append("\n");

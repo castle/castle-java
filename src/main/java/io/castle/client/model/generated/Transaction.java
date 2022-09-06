@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * Transaction
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
 public class Transaction {
   /**
    * Gets or Sets type
@@ -98,6 +98,10 @@ public class Transaction {
   public static final String SERIALIZED_NAME_PAYMENT_METHOD = "payment_method";
   @SerializedName(SERIALIZED_NAME_PAYMENT_METHOD)
   private PaymentMethod paymentMethod;
+
+  public static final String SERIALIZED_NAME_SHIPPING_ADDRESS = "shipping_address";
+  @SerializedName(SERIALIZED_NAME_SHIPPING_ADDRESS)
+  private Address shippingAddress;
 
 
   public Transaction type(TypeEnum type) {
@@ -192,6 +196,29 @@ public class Transaction {
   }
 
 
+  public Transaction shippingAddress(Address shippingAddress) {
+    
+    this.shippingAddress = shippingAddress;
+    return this;
+  }
+
+   /**
+   * Get shippingAddress
+   * @return shippingAddress
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Address getShippingAddress() {
+    return shippingAddress;
+  }
+
+
+  public void setShippingAddress(Address shippingAddress) {
+    this.shippingAddress = shippingAddress;
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -204,12 +231,13 @@ public class Transaction {
     return Objects.equals(this.type, transaction.type) &&
         Objects.equals(this.id, transaction.id) &&
         Objects.equals(this.amount, transaction.amount) &&
-        Objects.equals(this.paymentMethod, transaction.paymentMethod);
+        Objects.equals(this.paymentMethod, transaction.paymentMethod) &&
+        Objects.equals(this.shippingAddress, transaction.shippingAddress);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, id, amount, paymentMethod);
+    return Objects.hash(type, id, amount, paymentMethod, shippingAddress);
   }
 
   @Override
@@ -220,6 +248,7 @@ public class Transaction {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    paymentMethod: ").append(toIndentedString(paymentMethod)).append("\n");
+    sb.append("    shippingAddress: ").append(toIndentedString(shippingAddress)).append("\n");
     sb.append("}");
     return sb.toString();
   }

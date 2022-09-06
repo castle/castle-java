@@ -13,24 +13,16 @@
 
 package io.castle.client.model.generated;
 
+import java.util.Objects;
+
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
-
 /**
- * AuthenticationMethod
+ * FilterRequestAllOfParams
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
-public class AuthenticationMethod {
-  public static final String SERIALIZED_NAME_TYPE = "type";
-  @SerializedName(SERIALIZED_NAME_TYPE)
-  private AuthenticationMethodType type;
-
-  public static final String SERIALIZED_NAME_VARIANT = "variant";
-  @SerializedName(SERIALIZED_NAME_VARIANT)
-  private String variant;
-
+public class FilterRequestParams {
   public static final String SERIALIZED_NAME_EMAIL = "email";
   @SerializedName(SERIALIZED_NAME_EMAIL)
   private String email;
@@ -39,65 +31,23 @@ public class AuthenticationMethod {
   @SerializedName(SERIALIZED_NAME_PHONE)
   private String phone;
 
-
-  public AuthenticationMethod type(AuthenticationMethodType type) {
-    
-    this.type = type;
-    return this;
-  }
-
-   /**
-   * Get type
-   * @return type
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
-
-  public AuthenticationMethodType getType() {
-    return type;
-  }
+  public static final String SERIALIZED_NAME_USERNAME = "username";
+  @SerializedName(SERIALIZED_NAME_USERNAME)
+  private String username;
 
 
-  public void setType(AuthenticationMethodType type) {
-    this.type = type;
-  }
-
-
-  public AuthenticationMethod variant(String variant) {
-    
-    this.variant = variant;
-    return this;
-  }
-
-   /**
-   * Get variant
-   * @return variant
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
-
-  public String getVariant() {
-    return variant;
-  }
-
-
-  public void setVariant(String variant) {
-    this.variant = variant;
-  }
-
-
-  public AuthenticationMethod email(String email) {
+  public FilterRequestParams email(String email) {
     
     this.email = email;
     return this;
   }
 
    /**
-   * Used when &#x60;type&#x60; is &#x60;$email&#x60;
+   * The email address sent by the user
    * @return email
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "Used when `type` is `$email`")
+  @ApiModelProperty(example = "Rhea.Franecki@example.org", value = "The email address sent by the user")
 
   public String getEmail() {
     return email;
@@ -109,18 +59,18 @@ public class AuthenticationMethod {
   }
 
 
-  public AuthenticationMethod phone(String phone) {
+  public FilterRequestParams phone(String phone) {
     
     this.phone = phone;
     return this;
   }
 
    /**
-   * Used when &#x60;type&#x60; is &#x60;$phone&#x60;
+   * The phone number sent by the user
    * @return phone
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "Used when `type` is `$phone`")
+  @ApiModelProperty(example = "+16175551212", value = "The phone number sent by the user")
 
   public String getPhone() {
     return phone;
@@ -132,6 +82,29 @@ public class AuthenticationMethod {
   }
 
 
+  public FilterRequestParams username(String username) {
+    
+    this.username = username;
+    return this;
+  }
+
+   /**
+   * The username sent by the user
+   * @return username
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "superhero123", value = "The username sent by the user")
+
+  public String getUsername() {
+    return username;
+  }
+
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -140,26 +113,24 @@ public class AuthenticationMethod {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AuthenticationMethod authenticationMethod = (AuthenticationMethod) o;
-    return Objects.equals(this.type, authenticationMethod.type) &&
-        Objects.equals(this.variant, authenticationMethod.variant) &&
-        Objects.equals(this.email, authenticationMethod.email) &&
-        Objects.equals(this.phone, authenticationMethod.phone);
+    FilterRequestParams filterRequestAllOfParams = (FilterRequestParams) o;
+    return Objects.equals(this.email, filterRequestAllOfParams.email) &&
+        Objects.equals(this.phone, filterRequestAllOfParams.phone) &&
+        Objects.equals(this.username, filterRequestAllOfParams.username);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, variant, email, phone);
+    return Objects.hash(email, phone, username);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AuthenticationMethod {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    variant: ").append(toIndentedString(variant)).append("\n");
+    sb.append("class FilterRequestAllOfParams {\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
+    sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("}");
     return sb.toString();
   }
