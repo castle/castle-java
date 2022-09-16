@@ -14,29 +14,25 @@
 package io.castle.client.model.generated;
 
 import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
+
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
-import java.math.BigDecimal;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import io.castle.client.model.generated.Policy;
 
 /**
  * FilterResponse
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
 public class FilterResponse {
   public static final String SERIALIZED_NAME_RISK = "risk";
   @SerializedName(SERIALIZED_NAME_RISK)
   private double risk;
+
+  public static final String SERIALIZED_NAME_SCORES = "scores";
+  @SerializedName(SERIALIZED_NAME_SCORES)
+  private Scores scores;
 
   public static final String SERIALIZED_NAME_POLICY = "policy";
   @SerializedName(SERIALIZED_NAME_POLICY)
@@ -48,19 +44,43 @@ public class FilterResponse {
 
 
    /**
-   * Calculated Risk.
-   * minimum: 0
-   * maximum: 1
-   * @return risk
-  **/
+    * Calculated Risk Score.
+    * minimum: 0
+    * maximum: 1
+    *
+    * @return risk
+    **/
   @javax.annotation.Nonnull
-  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk.")
+  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
 
   public double getRisk() {
     return risk;
   }
 
 
+
+
+  public FilterResponse scores(Scores scores) {
+    
+    this.scores = scores;
+    return this;
+  }
+
+   /**
+   * Get scores
+   * @return scores
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public Scores getScores() {
+    return scores;
+  }
+
+
+  public void setScores(Scores scores) {
+    this.scores = scores;
+  }
 
 
   public FilterResponse policy(Policy policy) {
@@ -110,13 +130,14 @@ public class FilterResponse {
     }
     FilterResponse filterResponse = (FilterResponse) o;
     return Objects.equals(this.risk, filterResponse.risk) &&
+        Objects.equals(this.scores, filterResponse.scores) &&
         Objects.equals(this.policy, filterResponse.policy) &&
         Objects.equals(this.signals, filterResponse.signals);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(risk, policy, signals);
+    return Objects.hash(risk, scores, policy, signals);
   }
 
   @Override
@@ -124,6 +145,7 @@ public class FilterResponse {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterResponse {\n");
     sb.append("    risk: ").append(toIndentedString(risk)).append("\n");
+    sb.append("    scores: ").append(toIndentedString(scores)).append("\n");
     sb.append("    policy: ").append(toIndentedString(policy)).append("\n");
     sb.append("    signals: ").append(toIndentedString(signals)).append("\n");
     sb.append("}");

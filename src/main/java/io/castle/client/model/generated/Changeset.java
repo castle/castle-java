@@ -17,15 +17,14 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 /**
  * An object containing information about attributes that changed due to the event. You can send either anonymous attributes (eg. to track password changes) or full attributes (eg. email changes). To simplify your implementation, Castle *automatically* tracks changes to name, email, and phone, however, if you have the &#x60;from&#x60; and &#x60;to&#x60; values at hand, you can also send the changeset yourself, which also allows you to specify changes a user’s password as well as any other custom attributes. Changes to custom attributes won’t be searchable in the dashboard, but they will appear in the event stream.
  */
 @ApiModel(description = "An object containing information about attributes that changed due to the event. You can send either anonymous attributes (eg. to track password changes) or full attributes (eg. email changes). To simplify your implementation, Castle *automatically* tracks changes to name, email, and phone, however, if you have the `from` and `to` values at hand, you can also send the changeset yourself, which also allows you to specify changes a user’s password as well as any other custom attributes. Changes to custom attributes won’t be searchable in the dashboard, but they will appear in the event stream.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-05-16T17:44:30.591898+02:00[Europe/Stockholm]")
 public class Changeset {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
   public static final String SERIALIZED_NAME_PASSWORD = "password";
   @SerializedName(SERIALIZED_NAME_PASSWORD)
   private BaseChangesetEntry password;
@@ -77,11 +76,11 @@ public class Changeset {
   }
 
    /**
-   * Email address change. Both from and to must be valid emails if provided. You can also inform Castle that the email changed without sending the values explicitly: &#x60;{ \&quot;email\&quot;: { \&quot;changed\&quot;: true } }&#x60;
+   * Email address change. You can also inform Castle that the email changed without sending the values explicitly: &#x60;{ \&quot;email\&quot;: { \&quot;changed\&quot;: true } }&#x60;
    * @return email
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "Email address change. Both from and to must be valid emails if provided. You can also inform Castle that the email changed without sending the values explicitly: `{ \"email\": { \"changed\": true } }`")
+  @ApiModelProperty(value = "Email address change. You can also inform Castle that the email changed without sending the values explicitly: `{ \"email\": { \"changed\": true } }`")
 
   public BaseChangesetEntry getEmail() {
     return email;
@@ -100,11 +99,11 @@ public class Changeset {
   }
 
    /**
-   * Phone number change. Both from and to must be valid phone numbers if provided. You can also inform Castle that the phone changed without sending the values explicitly: &#x60;{ \&quot;phone\&quot;: { \&quot;changed\&quot;: true } }&#x60;
+   * Phone number change. You can also inform Castle that the phone changed without sending the values explicitly: &#x60;{ \&quot;phone\&quot;: { \&quot;changed\&quot;: true } }&#x60;
    * @return phone
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "Phone number change. Both from and to must be valid phone numbers if provided. You can also inform Castle that the phone changed without sending the values explicitly: `{ \"phone\": { \"changed\": true } }`")
+  @ApiModelProperty(value = "Phone number change. You can also inform Castle that the phone changed without sending the values explicitly: `{ \"phone\": { \"changed\": true } }`")
 
   public BaseChangesetEntry getPhone() {
     return phone;

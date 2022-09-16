@@ -13,54 +13,96 @@
 
 package io.castle.client.model.generated;
 
+import java.util.Objects;
+
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 /**
- * Devices
+ * FilterResponseScores
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
-public class Devices {
-  public static final String SERIALIZED_NAME_TOTAL_COUNT = "total_count";
-  @SerializedName(SERIALIZED_NAME_TOTAL_COUNT)
-  private Integer totalCount;
+public class Scores {
+  public static final String SERIALIZED_NAME_ACCOUNT_ABUSE = "account_abuse";
+  @SerializedName(SERIALIZED_NAME_ACCOUNT_ABUSE)
+  private Score accountAbuse;
 
-  public static final String SERIALIZED_NAME_DATA = "data";
-  @SerializedName(SERIALIZED_NAME_DATA)
-  private List<Device> data = new ArrayList<Device>();
+  public static final String SERIALIZED_NAME_ACCOUNT_TAKEOVER = "account_takeover";
+  @SerializedName(SERIALIZED_NAME_ACCOUNT_TAKEOVER)
+  private Score accountTakeover;
+
+  public static final String SERIALIZED_NAME_BOT = "bot";
+  @SerializedName(SERIALIZED_NAME_BOT)
+  private Score bot;
 
 
-   /**
-   * The total number of devices
-   * minimum: 0
-   * @return totalCount
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "The total number of devices")
-
-  public Integer getTotalCount() {
-    return totalCount;
+  public Scores accountAbuse(Score accountAbuse) {
+    
+    this.accountAbuse = accountAbuse;
+    return this;
   }
 
-
-
-
    /**
-   * Get data
-   * @return data
+   * Get accountAbuse
+   * @return accountAbuse
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public List<Device> getData() {
-    return data;
+  public Score getAccountAbuse() {
+    return accountAbuse;
   }
 
 
+  public void setAccountAbuse(Score accountAbuse) {
+    this.accountAbuse = accountAbuse;
+  }
+
+
+  public Scores accountTakeover(Score accountTakeover) {
+    
+    this.accountTakeover = accountTakeover;
+    return this;
+  }
+
+   /**
+   * Get accountTakeover
+   * @return accountTakeover
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public Score getAccountTakeover() {
+    return accountTakeover;
+  }
+
+
+  public void setAccountTakeover(Score accountTakeover) {
+    this.accountTakeover = accountTakeover;
+  }
+
+
+  public Scores bot(Score bot) {
+    
+    this.bot = bot;
+    return this;
+  }
+
+   /**
+   * Get bot
+   * @return bot
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public Score getBot() {
+    return bot;
+  }
+
+
+  public void setBot(Score bot) {
+    this.bot = bot;
+  }
 
 
   @Override
@@ -71,22 +113,24 @@ public class Devices {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Devices devices = (Devices) o;
-    return Objects.equals(this.totalCount, devices.totalCount) &&
-        Objects.equals(this.data, devices.data);
+    Scores scores = (Scores) o;
+    return Objects.equals(this.accountAbuse, scores.accountAbuse) &&
+        Objects.equals(this.accountTakeover, scores.accountTakeover) &&
+        Objects.equals(this.bot, scores.bot);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalCount, data);
+    return Objects.hash(accountAbuse, accountTakeover, bot);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Devices {\n");
-    sb.append("    totalCount: ").append(toIndentedString(totalCount)).append("\n");
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("class FilterResponseScores {\n");
+    sb.append("    accountAbuse: ").append(toIndentedString(accountAbuse)).append("\n");
+    sb.append("    accountTakeover: ").append(toIndentedString(accountTakeover)).append("\n");
+    sb.append("    bot: ").append(toIndentedString(bot)).append("\n");
     sb.append("}");
     return sb.toString();
   }

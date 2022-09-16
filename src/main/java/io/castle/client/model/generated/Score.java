@@ -13,22 +13,33 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.Objects;
 
+import com.google.gson.annotations.SerializedName;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
- * Information that the attribute changed along with the changed values. Examples: &#x60;{ \&quot;password\&quot;: { \&quot;changed\&quot;: true } }&#x60;
+ * Score
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
-@ApiModel(description = "Information that the attribute changed along with the changed values. Examples: `{ \"password\": { \"changed\": true } }`")
-public class ChangedChangesetEntry extends BaseChangesetEntry {
+public class Score {
+  public static final String SERIALIZED_NAME_SCORE = "score";
+  @SerializedName(SERIALIZED_NAME_SCORE)
+  private double score;
 
-  public static final String SERIALIZED_NAME_CHANGED = "changed";
-  @SerializedName(SERIALIZED_NAME_CHANGED)
-  private boolean changed = true;
+
+   /**
+   * Calculated Risk Score.
+   * minimum: 0
+   * maximum: 1
+   * @return score
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
+
+  public double getScore() {
+    return score;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -38,20 +49,20 @@ public class ChangedChangesetEntry extends BaseChangesetEntry {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ChangedChangesetEntry changedChangesetEntry = (ChangedChangesetEntry) o;
-    return Objects.equals(this.changed, changedChangesetEntry.changed);
+    Score score = (Score) o;
+    return Objects.equals(this.score, score.score);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(changed);
+    return Objects.hash(score);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ChangedChangesetEntry {\n");
-    sb.append("    changed: ").append(toIndentedString(changed)).append("\n");
+    sb.append("class Score {\n");
+    sb.append("    score: ").append(toIndentedString(score)).append("\n");
     sb.append("}");
     return sb.toString();
   }
