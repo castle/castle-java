@@ -45,8 +45,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdkVersion>1.7</jdkVersion>
-        <targetJdk>1.7</targetJdk>
+        <jdkVersion>1.8</jdkVersion>
+        <targetJdk>1.8</targetJdk>
         <jacoco.version>0.8.3</jacoco.version>
     </properties>
 
@@ -207,8 +207,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <optimize>true</optimize>
                     <debug>true</debug>
                 </configuration>
