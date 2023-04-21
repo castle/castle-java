@@ -2,7 +2,13 @@
 
 ## master
 
-## 2.3.0 (2022-05-020)
+## 2.3.1 (2023-04-21)
+
+- [#123](https://github.com/castle/castle-java/pull/123) Update dependencies
+- [#121](https://github.com/castle/castle-java/pull/121) Update generated classes to add score field
+
+
+## 2.3.0 (2022-05-20)
 
 - [#119](https://github.com/castle/castle-java/pull/119) Add response body to api exception message
 - [#118](https://github.com/castle/castle-java/pull/118) Add not found exception
