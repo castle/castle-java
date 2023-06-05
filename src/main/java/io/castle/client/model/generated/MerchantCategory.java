@@ -25,116 +25,62 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 /**
- * AuthenticationMethod
+ * MerchantCategory
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
-public class AuthenticationMethod {
-  public static final String SERIALIZED_NAME_TYPE = "type";
-  @SerializedName(SERIALIZED_NAME_TYPE)
-  private AuthenticationMethodType type;
+public class MerchantCategory {
+  public static final String SERIALIZED_NAME_CODE = "code";
+  @SerializedName(SERIALIZED_NAME_CODE)
+  private String code;
 
-  public static final String SERIALIZED_NAME_VARIANT = "variant";
-  @SerializedName(SERIALIZED_NAME_VARIANT)
-  private String variant;
-
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  private String email;
-
-  public static final String SERIALIZED_NAME_PHONE = "phone";
-  @SerializedName(SERIALIZED_NAME_PHONE)
-  private String phone;
+  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+  private String description;
 
 
-  public AuthenticationMethod type(AuthenticationMethodType type) {
+  public MerchantCategory code(String code) {
     
-    this.type = type;
+    this.code = code;
     return this;
   }
 
    /**
-   * Get type
-   * @return type
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
-
-  public AuthenticationMethodType getType() {
-    return type;
-  }
-
-
-  public void setType(AuthenticationMethodType type) {
-    this.type = type;
-  }
-
-
-  public AuthenticationMethod variant(String variant) {
-    
-    this.variant = variant;
-    return this;
-  }
-
-   /**
-   * Get variant
-   * @return variant
+   * Merchant Category Code (MCC) in ISO 18245 four-digit format
+   * @return code
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "3000", value = "Merchant Category Code (MCC) in ISO 18245 four-digit format")
 
-  public String getVariant() {
-    return variant;
+  public String getCode() {
+    return code;
   }
 
 
-  public void setVariant(String variant) {
-    this.variant = variant;
+  public void setCode(String code) {
+    this.code = code;
   }
 
 
-  public AuthenticationMethod email(String email) {
+  public MerchantCategory description(String description) {
     
-    this.email = email;
+    this.description = description;
     return this;
   }
 
    /**
-   * Used when &#x60;type&#x60; is &#x60;$email&#x60;
-   * @return email
+   * Merchant Category Description
+   * @return description
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "Used when `type` is `$email`")
+  @ApiModelProperty(example = "Airlines", value = "Merchant Category Description")
 
-  public String getEmail() {
-    return email;
+  public String getDescription() {
+    return description;
   }
 
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-
-  public AuthenticationMethod phone(String phone) {
-    
-    this.phone = phone;
-    return this;
-  }
-
-   /**
-   * Used when &#x60;type&#x60; is &#x60;$phone&#x60;
-   * @return phone
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "Used when `type` is `$phone`")
-
-  public String getPhone() {
-    return phone;
-  }
-
-
-  public void setPhone(String phone) {
-    this.phone = phone;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
 
@@ -146,26 +92,22 @@ public class AuthenticationMethod {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AuthenticationMethod authenticationMethod = (AuthenticationMethod) o;
-    return Objects.equals(this.type, authenticationMethod.type) &&
-        Objects.equals(this.variant, authenticationMethod.variant) &&
-        Objects.equals(this.email, authenticationMethod.email) &&
-        Objects.equals(this.phone, authenticationMethod.phone);
+    MerchantCategory merchantCategory = (MerchantCategory) o;
+    return Objects.equals(this.code, merchantCategory.code) &&
+        Objects.equals(this.description, merchantCategory.description);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, variant, email, phone);
+    return Objects.hash(code, description);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AuthenticationMethod {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    variant: ").append(toIndentedString(variant)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
+    sb.append("class MerchantCategory {\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("}");
     return sb.toString();
   }

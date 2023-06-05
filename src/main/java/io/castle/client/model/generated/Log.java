@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).   ## Rate limits  Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * Log
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
 public class Log {
   public static final String SERIALIZED_NAME_CONTEXT = "context";
   @SerializedName(SERIALIZED_NAME_CONTEXT)
@@ -45,9 +45,17 @@ public class Log {
   @SerializedName(SERIALIZED_NAME_PRODUCT)
   private Product product;
 
+  public static final String SERIALIZED_NAME_SESSION = "session";
+  @SerializedName(SERIALIZED_NAME_SESSION)
+  private Session session;
+
   public static final String SERIALIZED_NAME_CREATED_AT = "created_at";
   @SerializedName(SERIALIZED_NAME_CREATED_AT)
   private OffsetDateTime createdAt;
+
+  public static final String SERIALIZED_NAME_REQUEST_TOKEN = "request_token";
+  @SerializedName(SERIALIZED_NAME_REQUEST_TOKEN)
+  private String requestToken;
 
   public static final String SERIALIZED_NAME_USER = "user";
   @SerializedName(SERIALIZED_NAME_USER)
@@ -119,9 +127,7 @@ public class Log {
     
     SUCCEEDED("$succeeded"),
     
-    FAILED("$failed"),
-
-    REQUESTED("$requested");
+    FAILED("$failed");
 
     private String value;
 
@@ -176,7 +182,6 @@ public class Log {
   public static final String SERIALIZED_NAME_TRANSACTION = "transaction";
   @SerializedName(SERIALIZED_NAME_TRANSACTION)
   private Transaction transaction;
-
 
   public Log context(Context context) {
     
@@ -255,6 +260,29 @@ public class Log {
   }
 
 
+  public Log session(Session session) {
+    
+    this.session = session;
+    return this;
+  }
+
+   /**
+   * Get session
+   * @return session
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Session getSession() {
+    return session;
+  }
+
+
+  public void setSession(Session session) {
+    this.session = session;
+  }
+
+
   public Log createdAt(OffsetDateTime createdAt) {
     
     this.createdAt = createdAt;
@@ -275,6 +303,29 @@ public class Log {
 
   public void setCreatedAt(OffsetDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+
+  public Log requestToken(String requestToken) {
+    
+    this.requestToken = requestToken;
+    return this;
+  }
+
+   /**
+   * Token generated from a client. Check out our [quick start guide](https://docs.castle.io/docs/quickstart) to generate a &#x60;request_token&#x60; 
+   * @return requestToken
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "test_lZWva9rsNe3u0_EIc6R8V3t5beV38piPAQbhgREGygYCAo2FRSv1tAQ4-cb6ArKHOWK_zG18hO1uZ8K0LDbNqU9njuhscoLyaj3NyGxyiO0iS4ziIkm-oVom3LEsN9i6InSbuzo-w7ErJqrkYW2CrjA23LEyN92wIkCE82dggvktPtWvMmrl42Bj2uM7Zdn2AQGXC6qGTIECRlwaAgZcgcAGeX4", value = "Token generated from a client. Check out our [quick start guide](https://docs.castle.io/docs/quickstart) to generate a `request_token` ")
+
+  public String getRequestToken() {
+    return requestToken;
+  }
+
+
+  public void setRequestToken(String requestToken) {
+    this.requestToken = requestToken;
   }
 
 
@@ -428,7 +479,9 @@ public class Log {
     return Objects.equals(this.context, log.context) &&
         Objects.equals(this.properties, log.properties) &&
         Objects.equals(this.product, log.product) &&
+        Objects.equals(this.session, log.session) &&
         Objects.equals(this.createdAt, log.createdAt) &&
+        Objects.equals(this.requestToken, log.requestToken) &&
         Objects.equals(this.user, log.user) &&
         Objects.equals(this.type, log.type) &&
         Objects.equals(this.status, log.status) &&
@@ -443,7 +496,7 @@ public class Log {
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, properties, product, createdAt, user, type, status, authenticationMethod, name, transaction);
+    return Objects.hash(context, properties, product, session, createdAt, requestToken, user, type, status, authenticationMethod, name, transaction);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -462,7 +515,9 @@ public class Log {
     sb.append("    context: ").append(toIndentedString(context)).append("\n");
     sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
     sb.append("    product: ").append(toIndentedString(product)).append("\n");
+    sb.append("    session: ").append(toIndentedString(session)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    requestToken: ").append(toIndentedString(requestToken)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");

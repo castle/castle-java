@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).   ## Rate limits  Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -13,17 +13,22 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModelProperty;
-import org.openapitools.jackson.nullable.JsonNullable;
-
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.Arrays;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.io.IOException;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 /**
  * Address
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
 public class Address {
   public static final String SERIALIZED_NAME_LINE1 = "line1";
   @SerializedName(SERIALIZED_NAME_LINE1)
@@ -48,6 +53,10 @@ public class Address {
   public static final String SERIALIZED_NAME_POSTAL_CODE = "postal_code";
   @SerializedName(SERIALIZED_NAME_POSTAL_CODE)
   private String postalCode;
+
+  public static final String SERIALIZED_NAME_FINGERPRINT = "fingerprint";
+  @SerializedName(SERIALIZED_NAME_FINGERPRINT)
+  private String fingerprint;
 
 
   public Address line1(String line1) {
@@ -188,6 +197,29 @@ public class Address {
   }
 
 
+  public Address fingerprint(String fingerprint) {
+    
+    this.fingerprint = fingerprint;
+    return this;
+  }
+
+   /**
+   * Get fingerprint
+   * @return fingerprint
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "8a33j2lir9", value = "")
+
+  public String getFingerprint() {
+    return fingerprint;
+  }
+
+
+  public void setFingerprint(String fingerprint) {
+    this.fingerprint = fingerprint;
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -202,7 +234,8 @@ public class Address {
         Objects.equals(this.city, address.city) &&
         Objects.equals(this.countryCode, address.countryCode) &&
         Objects.equals(this.regionCode, address.regionCode) &&
-        Objects.equals(this.postalCode, address.postalCode);
+        Objects.equals(this.postalCode, address.postalCode) &&
+        Objects.equals(this.fingerprint, address.fingerprint);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -211,7 +244,7 @@ public class Address {
 
   @Override
   public int hashCode() {
-    return Objects.hash(line1, line2, city, countryCode, regionCode, postalCode);
+    return Objects.hash(line1, line2, city, countryCode, regionCode, postalCode, fingerprint);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -233,6 +266,7 @@ public class Address {
     sb.append("    countryCode: ").append(toIndentedString(countryCode)).append("\n");
     sb.append("    regionCode: ").append(toIndentedString(regionCode)).append("\n");
     sb.append("    postalCode: ").append(toIndentedString(postalCode)).append("\n");
+    sb.append("    fingerprint: ").append(toIndentedString(fingerprint)).append("\n");
     sb.append("}");
     return sb.toString();
   }

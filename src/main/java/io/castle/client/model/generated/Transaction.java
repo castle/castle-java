@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).   ## Rate limits  Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -13,20 +13,21 @@
 
 package io.castle.client.model.generated;
 
+import java.util.Objects;
+import java.util.Arrays;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Transaction
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
 public class Transaction {
   /**
    * Gets or Sets type
@@ -91,6 +92,10 @@ public class Transaction {
   @SerializedName(SERIALIZED_NAME_ID)
   private String id;
 
+  public static final String SERIALIZED_NAME_BASE_AMOUNT = "base_amount";
+  @SerializedName(SERIALIZED_NAME_BASE_AMOUNT)
+  private String baseAmount;
+
   public static final String SERIALIZED_NAME_AMOUNT = "amount";
   @SerializedName(SERIALIZED_NAME_AMOUNT)
   private Amount amount;
@@ -102,6 +107,10 @@ public class Transaction {
   public static final String SERIALIZED_NAME_SHIPPING_ADDRESS = "shipping_address";
   @SerializedName(SERIALIZED_NAME_SHIPPING_ADDRESS)
   private Address shippingAddress;
+
+  public static final String SERIALIZED_NAME_MERCHANT = "merchant";
+  @SerializedName(SERIALIZED_NAME_MERCHANT)
+  private Merchant merchant;
 
 
   public Transaction type(TypeEnum type) {
@@ -150,6 +159,29 @@ public class Transaction {
   }
 
 
+  public Transaction baseAmount(String baseAmount) {
+    
+    this.baseAmount = baseAmount;
+    return this;
+  }
+
+   /**
+   * Monetary amount of the transaction in your system&#39;s home currency, with two decimals
+   * @return baseAmount
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "499.99", value = "Monetary amount of the transaction in your system's home currency, with two decimals")
+
+  public String getBaseAmount() {
+    return baseAmount;
+  }
+
+
+  public void setBaseAmount(String baseAmount) {
+    this.baseAmount = baseAmount;
+  }
+
+
   public Transaction amount(Amount amount) {
     
     this.amount = amount;
@@ -160,8 +192,8 @@ public class Transaction {
    * Get amount
    * @return amount
   **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
 
   public Amount getAmount() {
     return amount;
@@ -219,6 +251,29 @@ public class Transaction {
   }
 
 
+  public Transaction merchant(Merchant merchant) {
+    
+    this.merchant = merchant;
+    return this;
+  }
+
+   /**
+   * Get merchant
+   * @return merchant
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Merchant getMerchant() {
+    return merchant;
+  }
+
+
+  public void setMerchant(Merchant merchant) {
+    this.merchant = merchant;
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -230,14 +285,16 @@ public class Transaction {
     Transaction transaction = (Transaction) o;
     return Objects.equals(this.type, transaction.type) &&
         Objects.equals(this.id, transaction.id) &&
+        Objects.equals(this.baseAmount, transaction.baseAmount) &&
         Objects.equals(this.amount, transaction.amount) &&
         Objects.equals(this.paymentMethod, transaction.paymentMethod) &&
-        Objects.equals(this.shippingAddress, transaction.shippingAddress);
+        Objects.equals(this.shippingAddress, transaction.shippingAddress) &&
+        Objects.equals(this.merchant, transaction.merchant);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, id, amount, paymentMethod, shippingAddress);
+    return Objects.hash(type, id, baseAmount, amount, paymentMethod, shippingAddress, merchant);
   }
 
   @Override
@@ -246,9 +303,11 @@ public class Transaction {
     sb.append("class Transaction {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    baseAmount: ").append(toIndentedString(baseAmount)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    paymentMethod: ").append(toIndentedString(paymentMethod)).append("\n");
     sb.append("    shippingAddress: ").append(toIndentedString(shippingAddress)).append("\n");
+    sb.append("    merchant: ").append(toIndentedString(merchant)).append("\n");
     sb.append("}");
     return sb.toString();
   }
