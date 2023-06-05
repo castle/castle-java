@@ -56,15 +56,12 @@ public class FilterResponse {
    * maximum: 1
    * @return risk
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
 
   public double getRisk() {
     return risk;
   }
-
-
-
 
   public FilterResponse scores(Scores scores) {
     
