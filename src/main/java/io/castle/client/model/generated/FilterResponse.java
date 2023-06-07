@@ -73,7 +73,7 @@ public class FilterResponse {
    * Get scores
    * @return scores
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @ApiModelProperty(required = true, value = "")
 
   public Scores getScores() {
