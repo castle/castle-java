@@ -53,7 +53,7 @@ public class RiskResponse {
    * @return risk
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
+  @ApiModelProperty(example = "0.65", required = false, value = "Calculated Risk Score.")
 
   public Double getRisk() {
     return risk;
@@ -70,17 +70,15 @@ public class RiskResponse {
    * @return scores
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(required = false, value = "")
 
   public Scores getScores() {
     return scores;
   }
 
-
   public void setScores(Scores scores) {
     this.scores = scores;
   }
-
 
   public RiskResponse policy(Policy policy) {
     
