@@ -27,7 +27,7 @@ import java.util.Objects;
 public class RiskResponse {
   public static final String SERIALIZED_NAME_RISK = "risk";
   @SerializedName(SERIALIZED_NAME_RISK)
-  private double risk;
+  private Double risk;
 
   public static final String SERIALIZED_NAME_SCORES = "scores";
   @SerializedName(SERIALIZED_NAME_SCORES)
@@ -55,7 +55,7 @@ public class RiskResponse {
   @javax.annotation.Nullable
   @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
 
-  public double getRisk() {
+  public Double getRisk() {
     return risk;
   }
 
