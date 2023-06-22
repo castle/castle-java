@@ -27,7 +27,7 @@ import java.util.Objects;
 public class RiskResponse {
   public static final String SERIALIZED_NAME_RISK = "risk";
   @SerializedName(SERIALIZED_NAME_RISK)
-  private double risk;
+  private Double risk;
 
   public static final String SERIALIZED_NAME_SCORES = "scores";
   @SerializedName(SERIALIZED_NAME_SCORES)
@@ -52,10 +52,10 @@ public class RiskResponse {
    * maximum: 1
    * @return risk
   **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "0.65", required = false, value = "Calculated Risk Score.")
 
-  public double getRisk() {
+  public Double getRisk() {
     return risk;
   }
 
@@ -69,18 +69,16 @@ public class RiskResponse {
    * Get scores
    * @return scores
   **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(required = false, value = "")
 
   public Scores getScores() {
     return scores;
   }
 
-
   public void setScores(Scores scores) {
     this.scores = scores;
   }
-
 
   public RiskResponse policy(Policy policy) {
     

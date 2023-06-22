@@ -13,75 +13,122 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
+
+import java.util.Objects;
 
 /**
- * Information that the attribute changed along with the changed values. Examples: &#x60;{ \&quot;email\&quot;: { \&quot;from\&quot;: \&quot;a@example.com\&quot;, \&quot;to\&quot;: \&quot;b@example.com\&quot; }&#x60;, &#x60;{ \&quot;authentication_method.type\&quot;: { \&quot;from\&quot;: null, \&quot;to\&quot;: \&quot;$push\&quot; }&#x60;
+ * Merchant
  */
-@ApiModel(description = "Information that the attribute changed along with the changed values. Examples: `{ \"email\": { \"from\": \"a@example.com\", \"to\": \"b@example.com\" }`, `{ \"authentication_method.type\": { \"from\": null, \"to\": \"$push\" }`")
-public class ChangesetEntry extends BaseChangesetEntry {
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
-  public static final String SERIALIZED_NAME_FROM = "from";
-  @SerializedName(SERIALIZED_NAME_FROM)
-  private String from;
+public class Merchant {
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  private String id;
 
-  public static final String SERIALIZED_NAME_TO = "to";
-  @SerializedName(SERIALIZED_NAME_TO)
-  private String to;
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  private String name;
+
+  public static final String SERIALIZED_NAME_CATEGORY = "category";
+  @SerializedName(SERIALIZED_NAME_CATEGORY)
+  private MerchantCategory category;
+
+  public static final String SERIALIZED_NAME_ADDRESS = "address";
+  @SerializedName(SERIALIZED_NAME_ADDRESS)
+  private Address address;
 
 
-  public ChangesetEntry from(String from) {
+  public Merchant id(String id) {
     
-    this.from = from;
+    this.id = id;
     return this;
   }
 
    /**
-   * Attribute value before the event
-   * @return from
+   * Merchant Identifier
+   * @return id
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(required = true, value = "Attribute value before the event")
+  @ApiModelProperty(example = "a2c8e7ef-40da-42f2-9b7d-cd928e5f8279", value = "Merchant Identifier")
 
-  public String getFrom() {
-    return from;
+  public String getId() {
+    return id;
   }
 
 
-  public void setFrom(String from) {
-    this.from = from;
+  public void setId(String id) {
+    this.id = id;
   }
 
 
-  public ChangesetEntry to(String to) {
+  public Merchant name(String name) {
     
-    this.to = to;
+    this.name = name;
     return this;
   }
 
    /**
-   * Attribute value after the event
-   * @return to
+   * Merchant Name
+   * @return name
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(required = true, value = "Attribute value after the event")
+  @ApiModelProperty(example = "United Airlines", value = "Merchant Name")
 
-  public String getTo() {
-    return to;
+  public String getName() {
+    return name;
   }
 
 
-  public void setTo(String to) {
-    this.to = to;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
+  public Merchant category(MerchantCategory category) {
+    
+    this.category = category;
+    return this;
+  }
+
+   /**
+   * Get category
+   * @return category
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public MerchantCategory getCategory() {
+    return category;
+  }
+
+
+  public void setCategory(MerchantCategory category) {
+    this.category = category;
+  }
+
+
+  public Merchant address(Address address) {
+    
+    this.address = address;
+    return this;
+  }
+
+   /**
+   * Get address
+   * @return address
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Address getAddress() {
+    return address;
+  }
+
+
+  public void setAddress(Address address) {
+    this.address = address;
   }
 
 
@@ -93,22 +140,26 @@ public class ChangesetEntry extends BaseChangesetEntry {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ChangesetEntry changesetEntry = (ChangesetEntry) o;
-    return Objects.equals(this.from, changesetEntry.from) &&
-        Objects.equals(this.to, changesetEntry.to);
+    Merchant merchant = (Merchant) o;
+    return Objects.equals(this.id, merchant.id) &&
+        Objects.equals(this.name, merchant.name) &&
+        Objects.equals(this.category, merchant.category) &&
+        Objects.equals(this.address, merchant.address);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(from, to);
+    return Objects.hash(id, name, category, address);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ChangesetEntry {\n");
-    sb.append("    from: ").append(toIndentedString(from)).append("\n");
-    sb.append("    to: ").append(toIndentedString(to)).append("\n");
+    sb.append("class Merchant {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("}");
     return sb.toString();
   }

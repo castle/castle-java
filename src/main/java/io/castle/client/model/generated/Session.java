@@ -23,118 +23,66 @@ import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
+import org.threeten.bp.OffsetDateTime;
 
 /**
- * AuthenticationMethod
+ * Additional session information from your system
  */
+@ApiModel(description = "Additional session information from your system")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
-public class AuthenticationMethod {
-  public static final String SERIALIZED_NAME_TYPE = "type";
-  @SerializedName(SERIALIZED_NAME_TYPE)
-  private AuthenticationMethodType type;
+public class Session {
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  private String id;
 
-  public static final String SERIALIZED_NAME_VARIANT = "variant";
-  @SerializedName(SERIALIZED_NAME_VARIANT)
-  private String variant;
-
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  private String email;
-
-  public static final String SERIALIZED_NAME_PHONE = "phone";
-  @SerializedName(SERIALIZED_NAME_PHONE)
-  private String phone;
+  public static final String SERIALIZED_NAME_CREATED_AT = "created_at";
+  @SerializedName(SERIALIZED_NAME_CREATED_AT)
+  private OffsetDateTime createdAt;
 
 
-  public AuthenticationMethod type(AuthenticationMethodType type) {
+  public Session id(String id) {
     
-    this.type = type;
+    this.id = id;
     return this;
   }
 
    /**
-   * Get type
-   * @return type
+   * A unique session identifier from your system. You should hash the value before sending it to Castle
+   * @return id
   **/
   @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(required = true, value = "A unique session identifier from your system. You should hash the value before sending it to Castle")
 
-  public AuthenticationMethodType getType() {
-    return type;
+  public String getId() {
+    return id;
   }
 
 
-  public void setType(AuthenticationMethodType type) {
-    this.type = type;
+  public void setId(String id) {
+    this.id = id;
   }
 
 
-  public AuthenticationMethod variant(String variant) {
+  public Session createdAt(OffsetDateTime createdAt) {
     
-    this.variant = variant;
+    this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Get variant
-   * @return variant
+   * Timestamp when the session was created
+   * @return createdAt
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(value = "Timestamp when the session was created")
 
-  public String getVariant() {
-    return variant;
+  public OffsetDateTime getCreatedAt() {
+    return createdAt;
   }
 
 
-  public void setVariant(String variant) {
-    this.variant = variant;
-  }
-
-
-  public AuthenticationMethod email(String email) {
-    
-    this.email = email;
-    return this;
-  }
-
-   /**
-   * Used when &#x60;type&#x60; is &#x60;$email&#x60;
-   * @return email
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "Used when `type` is `$email`")
-
-  public String getEmail() {
-    return email;
-  }
-
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-
-  public AuthenticationMethod phone(String phone) {
-    
-    this.phone = phone;
-    return this;
-  }
-
-   /**
-   * Used when &#x60;type&#x60; is &#x60;$phone&#x60;
-   * @return phone
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(value = "Used when `type` is `$phone`")
-
-  public String getPhone() {
-    return phone;
-  }
-
-
-  public void setPhone(String phone) {
-    this.phone = phone;
+  public void setCreatedAt(OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
 
@@ -146,26 +94,22 @@ public class AuthenticationMethod {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AuthenticationMethod authenticationMethod = (AuthenticationMethod) o;
-    return Objects.equals(this.type, authenticationMethod.type) &&
-        Objects.equals(this.variant, authenticationMethod.variant) &&
-        Objects.equals(this.email, authenticationMethod.email) &&
-        Objects.equals(this.phone, authenticationMethod.phone);
+    Session session = (Session) o;
+    return Objects.equals(this.id, session.id) &&
+        Objects.equals(this.createdAt, session.createdAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, variant, email, phone);
+    return Objects.hash(id, createdAt);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AuthenticationMethod {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    variant: ").append(toIndentedString(variant)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
+    sb.append("class Session {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("}");
     return sb.toString();
   }

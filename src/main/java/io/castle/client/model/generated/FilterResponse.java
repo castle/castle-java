@@ -14,11 +14,18 @@
 package io.castle.client.model.generated;
 
 import java.util.Objects;
-
+import java.util.Arrays;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +35,7 @@ import java.util.Map;
 public class FilterResponse {
   public static final String SERIALIZED_NAME_RISK = "risk";
   @SerializedName(SERIALIZED_NAME_RISK)
-  private double risk;
+  private Double risk;
 
   public static final String SERIALIZED_NAME_SCORES = "scores";
   @SerializedName(SERIALIZED_NAME_SCORES)
@@ -44,21 +51,17 @@ public class FilterResponse {
 
 
    /**
-    * Calculated Risk Score.
-    * minimum: 0
-    * maximum: 1
-    *
-    * @return risk
-    **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Risk Score.")
+   * Calculated Risk Score.
+   * minimum: 0
+   * maximum: 1
+   * @return risk
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "0.65", required = false, value = "Calculated Risk Score.")
 
-  public double getRisk() {
+  public Double getRisk() {
     return risk;
   }
-
-
-
 
   public FilterResponse scores(Scores scores) {
     
@@ -70,8 +73,8 @@ public class FilterResponse {
    * Get scores
    * @return scores
   **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
+  @javax.annotation.Nullable
+  @ApiModelProperty(required = false, value = "")
 
   public Scores getScores() {
     return scores;

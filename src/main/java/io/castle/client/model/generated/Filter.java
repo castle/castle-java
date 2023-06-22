@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).   ## Rate limits  Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -13,23 +13,23 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModelProperty;
+import org.threeten.bp.OffsetDateTime;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.threeten.bp.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Filter
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
 public class Filter {
   public static final String SERIALIZED_NAME_CONTEXT = "context";
   @SerializedName(SERIALIZED_NAME_CONTEXT)
@@ -42,6 +42,10 @@ public class Filter {
   public static final String SERIALIZED_NAME_PRODUCT = "product";
   @SerializedName(SERIALIZED_NAME_PRODUCT)
   private Product product;
+
+  public static final String SERIALIZED_NAME_SESSION = "session";
+  @SerializedName(SERIALIZED_NAME_SESSION)
+  private Session session;
 
   public static final String SERIALIZED_NAME_CREATED_AT = "created_at";
   @SerializedName(SERIALIZED_NAME_CREATED_AT)
@@ -63,8 +67,16 @@ public class Filter {
   @SerializedName(SERIALIZED_NAME_MATCHING_USER_ID)
   private String matchingUserId;
 
+  public static final String SERIALIZED_NAME_SKIP_REQUEST_TOKEN_VALIDATION = "skip_request_token_validation";
+  @SerializedName(SERIALIZED_NAME_SKIP_REQUEST_TOKEN_VALIDATION)
+  private Boolean skipRequestTokenValidation = false;
+
+  public static final String SERIALIZED_NAME_SKIP_CONTEXT_VALIDATION = "skip_context_validation";
+  @SerializedName(SERIALIZED_NAME_SKIP_CONTEXT_VALIDATION)
+  private Boolean skipContextValidation = false;
+
   /**
-   * Gets or Sets type
+   * Castle supported events available for this endpoint
    */
   @JsonAdapter(TypeEnum.Adapter.class)
   public enum TypeEnum {
@@ -256,6 +268,29 @@ public class Filter {
   }
 
 
+  public Filter session(Session session) {
+    
+    this.session = session;
+    return this;
+  }
+
+   /**
+   * Get session
+   * @return session
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Session getSession() {
+    return session;
+  }
+
+
+  public void setSession(Session session) {
+    this.session = session;
+  }
+
+
   public Filter createdAt(OffsetDateTime createdAt) {
     
     this.createdAt = createdAt;
@@ -267,7 +302,7 @@ public class Filter {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-  @ApiModelProperty(example = "2021-09-27T16:46:38.313Z", value = "The default value is the time of which the event was received by Castle. If you’re passing events in a delayed fashion, such as via an event queue, you should make sure to set this field to the time of which the event was tracked and put into the queue.")
+  @ApiModelProperty(value = "The default value is the time of which the event was received by Castle. If you’re passing events in a delayed fashion, such as via an event queue, you should make sure to set this field to the time of which the event was tracked and put into the queue.")
 
   public OffsetDateTime getCreatedAt() {
     return createdAt;
@@ -371,6 +406,52 @@ public class Filter {
   }
 
 
+  public Filter skipRequestTokenValidation(Boolean skipRequestTokenValidation) {
+    
+    this.skipRequestTokenValidation = skipRequestTokenValidation;
+    return this;
+  }
+
+   /**
+   * Skip &#x60;request_token&#x60; validation. Enable when it&#39;s impossible to obtain Castle request_token (e.g., third-party API calls). When enabled, Castle risk scores are not calculated. 
+   * @return skipRequestTokenValidation
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "Skip `request_token` validation. Enable when it's impossible to obtain Castle request_token (e.g., third-party API calls). When enabled, Castle risk scores are not calculated. ")
+
+  public Boolean getSkipRequestTokenValidation() {
+    return skipRequestTokenValidation;
+  }
+
+
+  public void setSkipRequestTokenValidation(Boolean skipRequestTokenValidation) {
+    this.skipRequestTokenValidation = skipRequestTokenValidation;
+  }
+
+
+  public Filter skipContextValidation(Boolean skipContextValidation) {
+    
+    this.skipContextValidation = skipContextValidation;
+    return this;
+  }
+
+   /**
+   * Skip &#x60;context&#x60; validation. Enable when HTTP request context is not providing useful insight (e.g., third-party API calls from Data Center IP). 
+   * @return skipContextValidation
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "Skip `context` validation. Enable when HTTP request context is not providing useful insight (e.g., third-party API calls from Data Center IP). ")
+
+  public Boolean getSkipContextValidation() {
+    return skipContextValidation;
+  }
+
+
+  public void setSkipContextValidation(Boolean skipContextValidation) {
+    this.skipContextValidation = skipContextValidation;
+  }
+
+
   public Filter type(TypeEnum type) {
     
     this.type = type;
@@ -378,11 +459,11 @@ public class Filter {
   }
 
    /**
-   * Get type
+   * Castle supported events available for this endpoint
    * @return type
   **/
   @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(required = true, value = "Castle supported events available for this endpoint")
 
   public TypeEnum getType() {
     return type;
@@ -475,11 +556,14 @@ public class Filter {
     return Objects.equals(this.context, filter.context) &&
         Objects.equals(this.properties, filter.properties) &&
         Objects.equals(this.product, filter.product) &&
+        Objects.equals(this.session, filter.session) &&
         Objects.equals(this.createdAt, filter.createdAt) &&
         Objects.equals(this.requestToken, filter.requestToken) &&
         Objects.equals(this.user, filter.user) &&
         Objects.equals(this.params, filter.params) &&
         Objects.equals(this.matchingUserId, filter.matchingUserId) &&
+        Objects.equals(this.skipRequestTokenValidation, filter.skipRequestTokenValidation) &&
+        Objects.equals(this.skipContextValidation, filter.skipContextValidation) &&
         Objects.equals(this.type, filter.type) &&
         Objects.equals(this.status, filter.status) &&
         Objects.equals(this.authenticationMethod, filter.authenticationMethod) &&
@@ -488,7 +572,7 @@ public class Filter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, properties, product, createdAt, requestToken, user, params, matchingUserId, type, status, authenticationMethod, name);
+    return Objects.hash(context, properties, product, session, createdAt, requestToken, user, params, matchingUserId, skipRequestTokenValidation, skipContextValidation, type, status, authenticationMethod, name);
   }
 
   @Override
@@ -498,11 +582,14 @@ public class Filter {
     sb.append("    context: ").append(toIndentedString(context)).append("\n");
     sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
     sb.append("    product: ").append(toIndentedString(product)).append("\n");
+    sb.append("    session: ").append(toIndentedString(session)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    requestToken: ").append(toIndentedString(requestToken)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    params: ").append(toIndentedString(params)).append("\n");
     sb.append("    matchingUserId: ").append(toIndentedString(matchingUserId)).append("\n");
+    sb.append("    skipRequestTokenValidation: ").append(toIndentedString(skipRequestTokenValidation)).append("\n");
+    sb.append("    skipContextValidation: ").append(toIndentedString(skipContextValidation)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    authenticationMethod: ").append(toIndentedString(authenticationMethod)).append("\n");

@@ -13,28 +13,75 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.math.BigDecimal;
 import java.util.Objects;
-import java.io.IOException;
 
 /**
- * Information that the attribute changed along with the changed values. Examples: &#x60;{ \&quot;password\&quot;: { \&quot;changed\&quot;: true } }&#x60;
+ * Coordinates
  */
-@ApiModel(description = "Information that the attribute changed along with the changed values. Examples: `{ \"password\": { \"changed\": true } }`")
-public class ChangedChangesetEntry extends BaseChangesetEntry {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
+public class Coordinates {
+  public static final String SERIALIZED_NAME_LAT = "lat";
+  @SerializedName(SERIALIZED_NAME_LAT)
+  private BigDecimal lat;
 
-  public static final String SERIALIZED_NAME_CHANGED = "changed";
-  @SerializedName(SERIALIZED_NAME_CHANGED)
-  private boolean changed = true;
+  public static final String SERIALIZED_NAME_LON = "lon";
+  @SerializedName(SERIALIZED_NAME_LON)
+  private BigDecimal lon;
+
+
+  public Coordinates lat(BigDecimal lat) {
+    
+    this.lat = lat;
+    return this;
+  }
+
+   /**
+   * Latitude coordinate
+   * minimum: -90
+   * maximum: 90
+   * @return lat
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "Latitude coordinate")
+
+  public BigDecimal getLat() {
+    return lat;
+  }
+
+
+  public void setLat(BigDecimal lat) {
+    this.lat = lat;
+  }
+
+
+  public Coordinates lon(BigDecimal lon) {
+    
+    this.lon = lon;
+    return this;
+  }
+
+   /**
+   * Longitude coordinate
+   * minimum: -180
+   * maximum: 180
+   * @return lon
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "Longitude coordinate")
+
+  public BigDecimal getLon() {
+    return lon;
+  }
+
+
+  public void setLon(BigDecimal lon) {
+    this.lon = lon;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -44,20 +91,22 @@ public class ChangedChangesetEntry extends BaseChangesetEntry {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ChangedChangesetEntry changedChangesetEntry = (ChangedChangesetEntry) o;
-    return Objects.equals(this.changed, changedChangesetEntry.changed);
+    Coordinates coordinates = (Coordinates) o;
+    return Objects.equals(this.lat, coordinates.lat) &&
+        Objects.equals(this.lon, coordinates.lon);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(changed);
+    return Objects.hash(lat, lon);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ChangedChangesetEntry {\n");
-    sb.append("    changed: ").append(toIndentedString(changed)).append("\n");
+    sb.append("class Coordinates {\n");
+    sb.append("    lat: ").append(toIndentedString(lat)).append("\n");
+    sb.append("    lon: ").append(toIndentedString(lon)).append("\n");
     sb.append("}");
     return sb.toString();
   }
