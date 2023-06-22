@@ -2,6 +2,10 @@
 
 ## master
 
+## 2.3.2 (2023-06-22)
+
+- [#125](https://github.com/castle/castle-java/pull/125) Update generated classes to add scores, skip_request_token_validation, skip_context_validation fields, mark risk field as nullable
+
 ## 2.3.1 (2023-04-21)
 
 - [#123](https://github.com/castle/castle-java/pull/123) Update dependencies
