@@ -168,7 +168,7 @@ public class ConfigurationLoaderTest {
                 "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
                 "throw"
         );
-        // and a expected config is the default configuration with the throw strategy
+        // and an expected config is the default configuration with the throw strategy
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("1234")
