@@ -48,10 +48,8 @@ public abstract class AbstractCastleHttpLayerTest {
                 .withAuthenticateFailoverStrategy(testAuthenticateFailoverStrategy)
                 .withTimeout(configuration.getTimeout())
                 .build();
-        OkHttpFactory mockedFactory = new OkHttpFactory(mockedApiConfiguration, sdk.getInternalConfiguration().getModel());
 
-        //When the utils are used to override the internal backend factory
-        SdkMockUtil.modifyInternalBackendFactory(sdk, mockedFactory);
+        sdk = Castle.initialize(mockedApiConfiguration);
     }
 
     @After

@@ -73,18 +73,6 @@ public class CastleTest {
         Assertions.assertThat(sdk1).isSameAs(sdk2);
     }
 
-
-    @Test
-    public void sdkInstanceCanBeModifiedForTestProposes() throws CastleSdkConfigurationException, NoSuchFieldException, IllegalAccessException {
-        //Given a SDK instance
-        Castle sdk = Castle.verifySdkConfigurationAndInitialize();
-        RestApiFactory mockFactory = Mockito.mock(RestApiFactory.class);
-        //When the utils are used to override the internal backend factory
-        SdkMockUtil.modifyInternalBackendFactory(sdk, mockFactory);
-        //Then the internal rest factory is mocked
-        Assertions.assertThat(sdk.getInternalConfiguration().getRestApiFactory()).isSameAs(mockFactory);
-    }
-
     @Test
     public void sdkOnConfigureLoadsDefault() throws CastleSdkConfigurationException {
 
