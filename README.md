@@ -128,16 +128,16 @@ It also shows the key that can be used to set its value in a Properties file.
 Finally, it also contains the environmental variable that can be used instead of the key in the Java Properties file:
 
 Setting | Default values, when they exist | Properties file key | Environment variable |
---- | --- | --- | --- |
-API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
-Allowlisted Headers |   | `allow_list` | `CASTLE_SDK_ALLOWLIST_HEADERS` |
-Denylisted Headers | `Cookie` | `deny_list` | `CASTLE_SDK_DENYLIST_HEADERS` |
-Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
+--- | --- |---------------------| --- |
+API Secret |   | `api_secret`        | `CASTLE_API_SECRET` |
+Allowlisted Headers |   | `allow_list`        | `CASTLE_SDK_ALLOWLIST_HEADERS` |
+Denylisted Headers | `Cookie` | `deny_list`         | `CASTLE_SDK_DENYLIST_HEADERS` |
+Timeout | `500` | `timeout`           | `CASTLE_SDK_TIMEOUT` |
 Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
-Backend Provider | `OKHTTP` | `backend_provide` | `CASTLE_SDK_BACKEND_PROVIDER` |
-Base URL | `https://api.castle.io/` | `base_url` | `CASTLE_SDK_BASE_URL` |
-Log HTTP | false | `log_http` | `CASTLE_SDK_LOG_HTTP` |
-IP Headers |  | `ip_headers` | `CASTLE_SDK_IP_HEADERS` |
+Backend Provider | `OKHTTP` | `backend_provider`  | `CASTLE_SDK_BACKEND_PROVIDER` |
+Base URL | `https://api.castle.io/` | `base_url`          | `CASTLE_SDK_BASE_URL` |
+Log HTTP | false | `log_http`          | `CASTLE_SDK_LOG_HTTP` |
+IP Headers |  | `ip_headers`        | `CASTLE_SDK_IP_HEADERS` |
 
 By default, the SDK will look in the classpath for the Java Properties file named `castle_sdk.properties`.
 An alternative file can be chosen by setting the `CASTLE_PROPERTIES_FILE` environment variable to a different value.
