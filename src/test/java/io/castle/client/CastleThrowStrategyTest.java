@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static okhttp3.mockwebserver.SocketPolicy.NO_RESPONSE;

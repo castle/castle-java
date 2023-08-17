@@ -20,7 +20,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CastleTrackHttpTest extends AbstractCastleHttpLayerTest {

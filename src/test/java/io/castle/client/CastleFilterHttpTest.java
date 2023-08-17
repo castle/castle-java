@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.threeten.bp.OffsetDateTime;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
