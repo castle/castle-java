@@ -12,7 +12,7 @@ public class CastleSeparateClassLoaderTest {
         //When the sdk is called without initialization
         Castle.instance();
 
-        //Then exception is throw
+        //Then exception is thrown
     }
 
 }
