@@ -2,6 +2,12 @@
 
 ## master
 
+## 2.4.0 (2023-08-31)
+
+- [#129](https://github.com/castle/castle-java/pull/129) Update to spring boot 6.0.1 and servlets 6.0.0
+- [#127](https://github.com/castle/castle-java/pull/127) Bump com.google.guava:guava from 31.1-jre to 32.0.0-jre
+
+
 ## 2.3.2 (2023-06-22)
 
 - [#125](https://github.com/castle/castle-java/pull/125) Update generated classes to add scores, skip_request_token_validation, skip_context_validation fields, mark risk field as nullable
