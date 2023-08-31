@@ -16,7 +16,7 @@ import io.castle.client.model.*;
 import io.castle.client.model.generated.*;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class CastleApiImpl implements CastleApi {
 

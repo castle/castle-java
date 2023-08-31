@@ -5,18 +5,38 @@ import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleRuntimeException;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.EnvironmentVariables;
+import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
+import uk.org.webcompere.systemstubs.jupiter.SystemStub;
+import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
+import uk.org.webcompere.systemstubs.properties.SystemProperties;
 
 import java.util.Properties;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(SystemStubsExtension.class)
 public class ConfigurationLoaderTest {
 
-    @Rule
-    public final EnvironmentVariables environmentVariables
-            = new EnvironmentVariables();
+    @SystemStub
+    private static EnvironmentVariables environmentVariables;
+
+    @Before
+    public void before() {
+        try {
+            if (environmentVariables != null) {
+                environmentVariables.teardown();
+            }
+            environmentVariables = new EnvironmentVariables();
+            environmentVariables.setup();
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
 
     @Test
     public void loadConfigWithNullValuesExceptForAppIDAndPISecret() throws CastleSdkConfigurationException {
@@ -168,7 +188,7 @@ public class ConfigurationLoaderTest {
                 "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
                 "throw"
         );
-        // and a expected config is the default configuration with the throw strategy
+        // and an expected config is the default configuration with the throw strategy
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("1234")
@@ -278,9 +298,14 @@ public class ConfigurationLoaderTest {
 
     private void setEnvAndTestCorrectness(String variable, String value) throws CastleSdkConfigurationException {
         //given
-        environmentVariables.set(variable, value);
-        // then the value for the configuration should be the one set in the environmental variable.
-        Assert.assertEquals(value, System.getenv(variable));
+        try {
+            environmentVariables.set(variable, value);
+
+            // then the value for the configuration should be the one set in the environmental variable.
+            Assert.assertEquals(value, System.getenv(variable));
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
 
     private void testLoad(CastleConfiguration expected) throws CastleSdkConfigurationException {
