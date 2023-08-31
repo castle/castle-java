@@ -14,7 +14,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>2.3.2</version>
+            <version>2.4.0</version>
         </dependency>
 ```
 
@@ -60,28 +60,6 @@ Castle.setSingletonInstance(castle);
 
 // Use the singleton
 Castle.instance().client().filter(...);
-```
-
-## Java 7 configuration
-
-To use the library on a java 7 environment, switch the guava library to the following version:
-```xml
-        <dependency>
-            <groupId>io.castle</groupId>
-            <artifactId>castle-java</artifactId>
-            <version>1.0.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>23.0-android</version>
-        </dependency>
 ```
 
 # Configuring the SDK
