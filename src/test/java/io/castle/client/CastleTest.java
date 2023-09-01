@@ -58,6 +58,17 @@ public class CastleTest {
                 );
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void sdkWithoutInitializationThrowAIllegalStateException() {
+
+        //Given
+
+        //When the sdk is called without initialization
+        Castle.instance();
+
+        //Then exception is thrown
+    }
+
     @Test
     public void sdkProvideASingleton() throws CastleSdkConfigurationException {
 
