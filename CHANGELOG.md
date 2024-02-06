@@ -2,6 +2,13 @@
 
 ## master
 
+## 2.4.1 (2024-02-06)
+
+- [#135](https://github.com/castle/castle-java/pull/135) Serialize null values in ChangesetEntry 
+- [#134](https://github.com/castle/castle-java/pull/134) Bump ch.qos.logback:logback-classic from 1.4.11 to 1.4.12
+- [#132](https://github.com/castle/castle-java/pull/132) Update nexus staging plugin
+- [#131](https://github.com/castle/castle-java/pull/131) Fix singleton tests
+
 ## 2.4.0 (2023-08-31)
 
 - [#129](https://github.com/castle/castle-java/pull/129) Update to spring boot 6.0.1 and servlets 6.0.0
