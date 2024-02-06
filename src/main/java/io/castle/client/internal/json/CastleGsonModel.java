@@ -31,6 +31,7 @@ public class CastleGsonModel {
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersDeserializer());
         builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         builder.registerTypeAdapter(RiskPolicyType.class, new RiskPolicyTypeDeserializer());
+        builder.registerTypeAdapterFactory(ChangesetEntryTypeAdapter.FACTORY);
 
         builder.registerTypeAdapter(Date.class, new DateTypeAdapter());
         builder.registerTypeAdapter(java.sql.Date.class, new SqlDateTypeAdapter());
