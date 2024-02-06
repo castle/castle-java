@@ -101,7 +101,7 @@ public class CastleMessageTest {
 
         Assertions.assertThat(payloadJson).isEqualTo("{\"event\":\"event\",\"key\":\"value\"}");
 
-        HashMap other = new HashMap();
+        HashMap<String, String> other = new HashMap<String, String>();
         other.put("key", "value");
 
         message = CastleMessage.builder("event")

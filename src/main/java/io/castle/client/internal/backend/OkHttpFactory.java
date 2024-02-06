@@ -7,7 +7,6 @@ import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpFactory implements RestApiFactory {
