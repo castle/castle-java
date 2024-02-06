@@ -1,6 +1,5 @@
 package io.castle.client.internal.backend;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.*;
 import io.castle.client.Castle;
 import io.castle.client.internal.config.CastleConfiguration;

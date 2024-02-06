@@ -1,7 +1,6 @@
 package io.castle.client.internal.json;
 
 import com.google.gson.*;
-import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -32,6 +31,7 @@ public class CastleGsonModel {
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersDeserializer());
         builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         builder.registerTypeAdapter(RiskPolicyType.class, new RiskPolicyTypeDeserializer());
+        builder.registerTypeAdapterFactory(ChangesetEntryTypeAdapter.FACTORY);
 
         builder.registerTypeAdapter(Date.class, new DateTypeAdapter());
         builder.registerTypeAdapter(java.sql.Date.class, new SqlDateTypeAdapter());

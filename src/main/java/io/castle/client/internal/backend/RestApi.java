@@ -1,10 +1,8 @@
 package io.castle.client.internal.backend;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.castle.client.model.*;
-import okhttp3.Response;
 
 public interface RestApi {
 
