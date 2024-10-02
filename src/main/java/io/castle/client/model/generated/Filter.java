@@ -138,7 +138,9 @@ public class Filter {
     
     SUCCEEDED("$succeeded"),
     
-    FAILED("$failed");
+    FAILED("$failed"),
+
+    ATTEMPTED("$attempted");
 
     private String value;
 
