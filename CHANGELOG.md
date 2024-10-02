@@ -2,6 +2,12 @@
 
 ## master
 
+## 2.4.2 (2024-10-02)
+
+- [#140](https://github.com/castle/castle-java/pull/140) Add attempted to filter status enum
+- [#139](https://github.com/castle/castle-java/pull/139) Bump org.springframework:spring-web from 6.0.18 to 6.0.23
+- [#138](https://github.com/castle/castle-java/pull/138) Bump org.springframework:spring-web from 6.0.11 to 6.0.18
+
 ## 2.4.1 (2024-02-06)
 
 - [#135](https://github.com/castle/castle-java/pull/135) Serialize null values in ChangesetEntry 
