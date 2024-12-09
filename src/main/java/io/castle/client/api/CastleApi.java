@@ -314,7 +314,7 @@ public interface CastleApi {
      * @param payload Event parameters
      * @return
      */
-    RiskResponse risk(Risk payload);
+    FilterAndRiskResponse risk(Risk payload);
 
     /**
      * Makes a sync POST request to the filter endpoint.
@@ -330,7 +330,7 @@ public interface CastleApi {
      * @param payload Event parameters
      * @return
      */
-    FilterResponse filter(Filter payload);
+    FilterAndRiskResponse filter(Filter payload);
 
     /**
      * Makes a sync POST request to the log endpoint.

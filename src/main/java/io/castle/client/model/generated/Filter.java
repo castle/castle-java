@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Filter (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -22,14 +22,12 @@ import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.OffsetDateTime;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Filter
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
 public class Filter {
   public static final String SERIALIZED_NAME_CONTEXT = "context";
   @SerializedName(SERIALIZED_NAME_CONTEXT)
@@ -57,7 +55,7 @@ public class Filter {
 
   public static final String SERIALIZED_NAME_USER = "user";
   @SerializedName(SERIALIZED_NAME_USER)
-  private User user;
+  private FilterUser user;
 
   public static final String SERIALIZED_NAME_PARAMS = "params";
   @SerializedName(SERIALIZED_NAME_PARAMS)
@@ -75,6 +73,10 @@ public class Filter {
   @SerializedName(SERIALIZED_NAME_SKIP_CONTEXT_VALIDATION)
   private Boolean skipContextValidation = false;
 
+  public static final String SERIALIZED_NAME_EXPAND = "expand";
+  @SerializedName(SERIALIZED_NAME_EXPAND)
+  private List<String> expand = null;
+
   /**
    * Castle supported events available for this endpoint
    */
@@ -85,7 +87,8 @@ public class Filter {
     LOGIN("$login"),
     PASSWORD_RESET_REQUEST("$password_reset_request"),
     CUSTOM("$custom"),
-    CHALLENGE("$challenge");
+    CHALLENGE("$challenge"),
+    TRANSACTION("$transaction");
 
     private String value;
 
@@ -134,13 +137,11 @@ public class Filter {
    */
   @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
-    REQUESTED("$requested"),
+    ATTEMPTED("$attempted"),
     
     SUCCEEDED("$succeeded"),
     
-    FAILED("$failed"),
-
-    ATTEMPTED("$attempted");
+    FAILED("$failed");
 
     private String value;
 
@@ -182,7 +183,7 @@ public class Filter {
 
   public static final String SERIALIZED_NAME_STATUS = "status";
   @SerializedName(SERIALIZED_NAME_STATUS)
-  private StatusEnum status;
+  private StatusEnum status = StatusEnum.ATTEMPTED;
 
   public static final String SERIALIZED_NAME_AUTHENTICATION_METHOD = "authentication_method";
   @SerializedName(SERIALIZED_NAME_AUTHENTICATION_METHOD)
@@ -191,6 +192,10 @@ public class Filter {
   public static final String SERIALIZED_NAME_NAME = "name";
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name;
+
+  public static final String SERIALIZED_NAME_TRANSACTION = "transaction";
+  @SerializedName(SERIALIZED_NAME_TRANSACTION)
+  private Transaction transaction;
 
 
   public Filter context(Context context) {
@@ -339,7 +344,7 @@ public class Filter {
   }
 
 
-  public Filter user(User user) {
+  public Filter user(FilterUser user) {
     
     this.user = user;
     return this;
@@ -352,12 +357,12 @@ public class Filter {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public User getUser() {
+  public FilterUser getUser() {
     return user;
   }
 
 
-  public void setUser(User user) {
+  public void setUser(FilterUser user) {
     this.user = user;
   }
 
@@ -454,6 +459,37 @@ public class Filter {
   }
 
 
+  public Filter expand(List<String> expand) {
+    
+    this.expand = expand;
+    return this;
+  }
+
+  public Filter addExpandItem(String expandItem) {
+    if (this.expand == null) {
+      this.expand = new ArrayList<String>();
+    }
+    this.expand.add(expandItem);
+    return this;
+  }
+
+   /**
+   * Include additional properties into API response. *This option is currently in beta and available only to select customers.* 
+   * @return expand
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "[\"all\"]", value = "Include additional properties into API response. *This option is currently in beta and available only to select customers.* ")
+
+  public List<String> getExpand() {
+    return expand;
+  }
+
+
+  public void setExpand(List<String> expand) {
+    this.expand = expand;
+  }
+
+
   public Filter type(TypeEnum type) {
     
     this.type = type;
@@ -546,6 +582,29 @@ public class Filter {
   }
 
 
+  public Filter transaction(Transaction transaction) {
+    
+    this.transaction = transaction;
+    return this;
+  }
+
+   /**
+   * Get transaction
+   * @return transaction
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public Transaction getTransaction() {
+    return transaction;
+  }
+
+
+  public void setTransaction(Transaction transaction) {
+    this.transaction = transaction;
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -566,15 +625,17 @@ public class Filter {
         Objects.equals(this.matchingUserId, filter.matchingUserId) &&
         Objects.equals(this.skipRequestTokenValidation, filter.skipRequestTokenValidation) &&
         Objects.equals(this.skipContextValidation, filter.skipContextValidation) &&
+        Objects.equals(this.expand, filter.expand) &&
         Objects.equals(this.type, filter.type) &&
         Objects.equals(this.status, filter.status) &&
         Objects.equals(this.authenticationMethod, filter.authenticationMethod) &&
-        Objects.equals(this.name, filter.name);
+        Objects.equals(this.name, filter.name) &&
+        Objects.equals(this.transaction, filter.transaction);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, properties, product, session, createdAt, requestToken, user, params, matchingUserId, skipRequestTokenValidation, skipContextValidation, type, status, authenticationMethod, name);
+    return Objects.hash(context, properties, product, session, createdAt, requestToken, user, params, matchingUserId, skipRequestTokenValidation, skipContextValidation, expand, type, status, authenticationMethod, name, transaction);
   }
 
   @Override
@@ -592,10 +653,12 @@ public class Filter {
     sb.append("    matchingUserId: ").append(toIndentedString(matchingUserId)).append("\n");
     sb.append("    skipRequestTokenValidation: ").append(toIndentedString(skipRequestTokenValidation)).append("\n");
     sb.append("    skipContextValidation: ").append(toIndentedString(skipContextValidation)).append("\n");
+    sb.append("    expand: ").append(toIndentedString(expand)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    authenticationMethod: ").append(toIndentedString(authenticationMethod)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    transaction: ").append(toIndentedString(transaction)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Filter (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -22,14 +22,12 @@ import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.OffsetDateTime;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Risk
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
 public class Risk {
   public static final String SERIALIZED_NAME_CONTEXT = "context";
   @SerializedName(SERIALIZED_NAME_CONTEXT)
@@ -57,7 +55,7 @@ public class Risk {
 
   public static final String SERIALIZED_NAME_USER = "user";
   @SerializedName(SERIALIZED_NAME_USER)
-  private User user;
+  private RiskUser user;
 
   public static final String SERIALIZED_NAME_SKIP_REQUEST_TOKEN_VALIDATION = "skip_request_token_validation";
   @SerializedName(SERIALIZED_NAME_SKIP_REQUEST_TOKEN_VALIDATION)
@@ -66,6 +64,10 @@ public class Risk {
   public static final String SERIALIZED_NAME_SKIP_CONTEXT_VALIDATION = "skip_context_validation";
   @SerializedName(SERIALIZED_NAME_SKIP_CONTEXT_VALIDATION)
   private Boolean skipContextValidation = false;
+
+  public static final String SERIALIZED_NAME_EXPAND = "expand";
+  @SerializedName(SERIALIZED_NAME_EXPAND)
+  private List<String> expand = null;
 
   /**
    * Castle supported events available for this endpoint
@@ -129,12 +131,12 @@ public class Risk {
   @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
     ATTEMPTED("$attempted"),
-
+    
     SUCCEEDED("$succeeded"),
-
+    
     FAILED("$failed"),
-
-    REQUESTED("$requested");
+    
+    NULL("null");
 
     private String value;
 
@@ -157,7 +159,7 @@ public class Risk {
           return b;
         }
       }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+      return null;
     }
 
     public static class Adapter extends TypeAdapter<StatusEnum> {
@@ -176,7 +178,7 @@ public class Risk {
 
   public static final String SERIALIZED_NAME_STATUS = "status";
   @SerializedName(SERIALIZED_NAME_STATUS)
-  private StatusEnum status = StatusEnum.SUCCEEDED;
+  private StatusEnum status;
 
   public static final String SERIALIZED_NAME_AUTHENTICATION_METHOD = "authentication_method";
   @SerializedName(SERIALIZED_NAME_AUTHENTICATION_METHOD)
@@ -341,7 +343,7 @@ public class Risk {
   }
 
 
-  public Risk user(User user) {
+  public Risk user(RiskUser user) {
     
     this.user = user;
     return this;
@@ -354,12 +356,12 @@ public class Risk {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public User getUser() {
+  public RiskUser getUser() {
     return user;
   }
 
 
-  public void setUser(User user) {
+  public void setUser(RiskUser user) {
     this.user = user;
   }
 
@@ -410,6 +412,37 @@ public class Risk {
   }
 
 
+  public Risk expand(List<String> expand) {
+    
+    this.expand = expand;
+    return this;
+  }
+
+  public Risk addExpandItem(String expandItem) {
+    if (this.expand == null) {
+      this.expand = new ArrayList<String>();
+    }
+    this.expand.add(expandItem);
+    return this;
+  }
+
+   /**
+   * Include additional properties into API response. *This option is currently in beta and available only to select customers.* 
+   * @return expand
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "[\"all\"]", value = "Include additional properties into API response. *This option is currently in beta and available only to select customers.* ")
+
+  public List<String> getExpand() {
+    return expand;
+  }
+
+
+  public void setExpand(List<String> expand) {
+    this.expand = expand;
+  }
+
+
   public Risk type(TypeEnum type) {
     
     this.type = type;
@@ -443,7 +476,7 @@ public class Risk {
    * Get status
    * @return status
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @ApiModelProperty(required = true, value = "")
 
   public StatusEnum getStatus() {
@@ -566,6 +599,7 @@ public class Risk {
         Objects.equals(this.user, risk.user) &&
         Objects.equals(this.skipRequestTokenValidation, risk.skipRequestTokenValidation) &&
         Objects.equals(this.skipContextValidation, risk.skipContextValidation) &&
+        Objects.equals(this.expand, risk.expand) &&
         Objects.equals(this.type, risk.type) &&
         Objects.equals(this.status, risk.status) &&
         Objects.equals(this.authenticationMethod, risk.authenticationMethod) &&
@@ -576,7 +610,7 @@ public class Risk {
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, properties, product, session, createdAt, requestToken, user, skipRequestTokenValidation, skipContextValidation, type, status, authenticationMethod, changeset, transaction, name);
+    return Objects.hash(context, properties, product, session, createdAt, requestToken, user, skipRequestTokenValidation, skipContextValidation, expand, type, status, authenticationMethod, changeset, transaction, name);
   }
 
   @Override
@@ -592,6 +626,7 @@ public class Risk {
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    skipRequestTokenValidation: ").append(toIndentedString(skipRequestTokenValidation)).append("\n");
     sb.append("    skipContextValidation: ").append(toIndentedString(skipContextValidation)).append("\n");
+    sb.append("    expand: ").append(toIndentedString(expand)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    authenticationMethod: ").append(toIndentedString(authenticationMethod)).append("\n");
