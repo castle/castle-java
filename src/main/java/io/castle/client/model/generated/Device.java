@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Filter (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -15,184 +15,174 @@ package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
-import org.threeten.bp.OffsetDateTime;
 
 import java.util.Objects;
 
 /**
  * Device
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
 public class Device {
-  public static final String SERIALIZED_NAME_TOKEN = "token";
-  @SerializedName(SERIALIZED_NAME_TOKEN)
-  private String token;
+  public static final String SERIALIZED_NAME_USER_AGENT = "user_agent";
+  @SerializedName(SERIALIZED_NAME_USER_AGENT)
+  private String userAgent;
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  private String userId;
+  public static final String SERIALIZED_NAME_FINGERPRINT = "fingerprint";
+  @SerializedName(SERIALIZED_NAME_FINGERPRINT)
+  private String fingerprint;
 
-  public static final String SERIALIZED_NAME_CREATED_AT = "created_at";
-  @SerializedName(SERIALIZED_NAME_CREATED_AT)
-  private OffsetDateTime createdAt;
+  public static final String SERIALIZED_NAME_HARDWARE = "hardware";
+  @SerializedName(SERIALIZED_NAME_HARDWARE)
+  private DeviceHardware hardware;
 
-  public static final String SERIALIZED_NAME_LAST_SEEN_AT = "last_seen_at";
-  @SerializedName(SERIALIZED_NAME_LAST_SEEN_AT)
-  private OffsetDateTime lastSeenAt;
+  public static final String SERIALIZED_NAME_OS = "os";
+  @SerializedName(SERIALIZED_NAME_OS)
+  private DeviceOs os;
 
-  public static final String SERIALIZED_NAME_APPROVED_AT = "approved_at";
-  @SerializedName(SERIALIZED_NAME_APPROVED_AT)
-  private OffsetDateTime approvedAt;
+  public static final String SERIALIZED_NAME_SOFTWARE = "software";
+  @SerializedName(SERIALIZED_NAME_SOFTWARE)
+  private DeviceSoftware software;
 
-  public static final String SERIALIZED_NAME_ESCALATED_AT = "escalated_at";
-  @SerializedName(SERIALIZED_NAME_ESCALATED_AT)
-  private OffsetDateTime escalatedAt;
-
-  public static final String SERIALIZED_NAME_MITIGATED_AT = "mitigated_at";
-  @SerializedName(SERIALIZED_NAME_MITIGATED_AT)
-  private OffsetDateTime mitigatedAt;
-
-  public static final String SERIALIZED_NAME_IS_CURRENT_DEVICE = "is_current_device";
-  @SerializedName(SERIALIZED_NAME_IS_CURRENT_DEVICE)
-  private Boolean isCurrentDevice;
-
-  public static final String SERIALIZED_NAME_CONTEXT = "context";
-  @SerializedName(SERIALIZED_NAME_CONTEXT)
-  private DeviceContext context;
+  public static final String SERIALIZED_NAME_TIMEZONE = "timezone";
+  @SerializedName(SERIALIZED_NAME_TIMEZONE)
+  private DeviceTimezone timezone;
 
 
-   /**
-   * Unique identifier for a user&#39;s device. This value may change over time and **should not** be used as a stable reference to the device
-   * @return token
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(example = "eyJhbGciOiJIUzI1NiJ9.eyJhIjoxfQ.CLqLzOmK8uYmIXNlhPXhrWCTQOT-XO2Vx8pB2Xqol4g", required = true, value = "Unique identifier for a user's device. This value may change over time and **should not** be used as a stable reference to the device")
-
-  public String getToken() {
-    return token;
-  }
-
-
-
-
-   /**
-   * Get userId
-   * @return userId
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(example = "262ad900-b126-44df-9564-689f30391c57", required = true, value = "")
-
-  public String getUserId() {
-    return userId;
-  }
-
-
-
-
-   /**
-   * The time and date on which the device was created
-   * @return createdAt
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(example = "2012-12-02T00:30:08.276Z", required = true, value = "The time and date on which the device was created")
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-
-
-
-   /**
-   * The time and date on which the device was last used
-   * @return lastSeenAt
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(example = "2012-12-02T00:30:08.276Z", required = true, value = "The time and date on which the device was last used")
-
-  public OffsetDateTime getLastSeenAt() {
-    return lastSeenAt;
-  }
-
-
-
-
-   /**
-   * The time and date on which the device was approved
-   * @return approvedAt
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(example = "2012-12-02T00:30:08.276Z", required = true, value = "The time and date on which the device was approved")
-
-  public OffsetDateTime getApprovedAt() {
-    return approvedAt;
-  }
-
-
-
-
-   /**
-   * The time and date on which the device was escalated
-   * @return escalatedAt
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(example = "2012-12-02T00:30:08.276Z", required = true, value = "The time and date on which the device was escalated")
-
-  public OffsetDateTime getEscalatedAt() {
-    return escalatedAt;
-  }
-
-
-
-
-   /**
-   * Get mitigatedAt
-   * @return mitigatedAt
-  **/
-  @javax.annotation.Nullable
-  @ApiModelProperty(required = true, value = "")
-
-  public OffsetDateTime getMitigatedAt() {
-    return mitigatedAt;
-  }
-
-
-
-
-   /**
-   * Get isCurrentDevice
-   * @return isCurrentDevice
-  **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "")
-
-  public Boolean getIsCurrentDevice() {
-    return isCurrentDevice;
-  }
-
-
-
-
-  public Device context(DeviceContext context) {
+  public Device userAgent(String userAgent) {
     
-    this.context = context;
+    this.userAgent = userAgent;
     return this;
   }
 
    /**
-   * Get context
-   * @return context
+   * Get userAgent
+   * @return userAgent
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(example = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36", required = true, value = "")
+
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+  }
+
+
+  public Device fingerprint(String fingerprint) {
+    
+    this.fingerprint = fingerprint;
+    return this;
+  }
+
+   /**
+   * Get fingerprint
+   * @return fingerprint
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(example = "ohvjn8adSnetYTzZ8B7bOP", required = true, value = "")
+
+  public String getFingerprint() {
+    return fingerprint;
+  }
+
+
+  public void setFingerprint(String fingerprint) {
+    this.fingerprint = fingerprint;
+  }
+
+
+  public Device hardware(DeviceHardware hardware) {
+    
+    this.hardware = hardware;
+    return this;
+  }
+
+   /**
+   * Get hardware
+   * @return hardware
   **/
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public DeviceContext getContext() {
-    return context;
+  public DeviceHardware getHardware() {
+    return hardware;
   }
 
 
-  public void setContext(DeviceContext context) {
-    this.context = context;
+  public void setHardware(DeviceHardware hardware) {
+    this.hardware = hardware;
+  }
+
+
+  public Device os(DeviceOs os) {
+    
+    this.os = os;
+    return this;
+  }
+
+   /**
+   * Get os
+   * @return os
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public DeviceOs getOs() {
+    return os;
+  }
+
+
+  public void setOs(DeviceOs os) {
+    this.os = os;
+  }
+
+
+  public Device software(DeviceSoftware software) {
+    
+    this.software = software;
+    return this;
+  }
+
+   /**
+   * Get software
+   * @return software
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+
+  public DeviceSoftware getSoftware() {
+    return software;
+  }
+
+
+  public void setSoftware(DeviceSoftware software) {
+    this.software = software;
+  }
+
+
+  public Device timezone(DeviceTimezone timezone) {
+    
+    this.timezone = timezone;
+    return this;
+  }
+
+   /**
+   * Get timezone
+   * @return timezone
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "")
+
+  public DeviceTimezone getTimezone() {
+    return timezone;
+  }
+
+
+  public void setTimezone(DeviceTimezone timezone) {
+    this.timezone = timezone;
   }
 
 
@@ -205,35 +195,29 @@ public class Device {
       return false;
     }
     Device device = (Device) o;
-    return Objects.equals(this.token, device.token) &&
-        Objects.equals(this.userId, device.userId) &&
-        Objects.equals(this.createdAt, device.createdAt) &&
-        Objects.equals(this.lastSeenAt, device.lastSeenAt) &&
-        Objects.equals(this.approvedAt, device.approvedAt) &&
-        Objects.equals(this.escalatedAt, device.escalatedAt) &&
-        Objects.equals(this.mitigatedAt, device.mitigatedAt) &&
-        Objects.equals(this.isCurrentDevice, device.isCurrentDevice) &&
-        Objects.equals(this.context, device.context);
+    return Objects.equals(this.userAgent, device.userAgent) &&
+        Objects.equals(this.fingerprint, device.fingerprint) &&
+        Objects.equals(this.hardware, device.hardware) &&
+        Objects.equals(this.os, device.os) &&
+        Objects.equals(this.software, device.software) &&
+        Objects.equals(this.timezone, device.timezone);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(token, userId, createdAt, lastSeenAt, approvedAt, escalatedAt, mitigatedAt, isCurrentDevice, context);
+    return Objects.hash(userAgent, fingerprint, hardware, os, software, timezone);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Device {\n");
-    sb.append("    token: ").append(toIndentedString(token)).append("\n");
-    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-    sb.append("    lastSeenAt: ").append(toIndentedString(lastSeenAt)).append("\n");
-    sb.append("    approvedAt: ").append(toIndentedString(approvedAt)).append("\n");
-    sb.append("    escalatedAt: ").append(toIndentedString(escalatedAt)).append("\n");
-    sb.append("    mitigatedAt: ").append(toIndentedString(mitigatedAt)).append("\n");
-    sb.append("    isCurrentDevice: ").append(toIndentedString(isCurrentDevice)).append("\n");
-    sb.append("    context: ").append(toIndentedString(context)).append("\n");
+    sb.append("    userAgent: ").append(toIndentedString(userAgent)).append("\n");
+    sb.append("    fingerprint: ").append(toIndentedString(fingerprint)).append("\n");
+    sb.append("    hardware: ").append(toIndentedString(hardware)).append("\n");
+    sb.append("    os: ").append(toIndentedString(os)).append("\n");
+    sb.append("    software: ").append(toIndentedString(software)).append("\n");
+    sb.append("    timezone: ").append(toIndentedString(timezone)).append("\n");
     sb.append("}");
     return sb.toString();
   }

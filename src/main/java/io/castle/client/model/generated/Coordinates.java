@@ -16,7 +16,6 @@ package io.castle.client.model.generated;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -26,14 +25,14 @@ import java.util.Objects;
 public class Coordinates {
   public static final String SERIALIZED_NAME_LAT = "lat";
   @SerializedName(SERIALIZED_NAME_LAT)
-  private BigDecimal lat;
+  private double lat;
 
   public static final String SERIALIZED_NAME_LON = "lon";
   @SerializedName(SERIALIZED_NAME_LON)
-  private BigDecimal lon;
+  private double lon;
 
 
-  public Coordinates lat(BigDecimal lat) {
+  public Coordinates lat(double lat) {
     
     this.lat = lat;
     return this;
@@ -48,17 +47,17 @@ public class Coordinates {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "Latitude coordinate")
 
-  public BigDecimal getLat() {
+  public double getLat() {
     return lat;
   }
 
 
-  public void setLat(BigDecimal lat) {
+  public void setLat(double lat) {
     this.lat = lat;
   }
 
 
-  public Coordinates lon(BigDecimal lon) {
+  public Coordinates lon(double lon) {
     
     this.lon = lon;
     return this;
@@ -73,12 +72,12 @@ public class Coordinates {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "Longitude coordinate")
 
-  public BigDecimal getLon() {
+  public double getLon() {
     return lon;
   }
 
 
-  public void setLon(BigDecimal lon) {
+  public void setLon(double lon) {
     this.lon = lon;
   }
 

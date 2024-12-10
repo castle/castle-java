@@ -22,10 +22,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * UserForMonitorAndRisk
+ * RiskUser
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
-public class User {
+public class RiskUser {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   private String id;
@@ -55,7 +55,7 @@ public class User {
   private Address address;
 
 
-  public User id(String id) {
+  public RiskUser id(String id) {
     
     this.id = id;
     return this;
@@ -78,7 +78,7 @@ public class User {
   }
 
 
-  public User email(String email) {
+  public RiskUser email(String email) {
     
     this.email = email;
     return this;
@@ -101,7 +101,7 @@ public class User {
   }
 
 
-  public User phone(String phone) {
+  public RiskUser phone(String phone) {
     
     this.phone = phone;
     return this;
@@ -124,7 +124,7 @@ public class User {
   }
 
 
-  public User registeredAt(OffsetDateTime registeredAt) {
+  public RiskUser registeredAt(OffsetDateTime registeredAt) {
     
     this.registeredAt = registeredAt;
     return this;
@@ -147,7 +147,7 @@ public class User {
   }
 
 
-  public User name(String name) {
+  public RiskUser name(String name) {
     
     this.name = name;
     return this;
@@ -170,7 +170,7 @@ public class User {
   }
 
 
-  public User traits(Object traits) {
+  public RiskUser traits(Object traits) {
     
     this.traits = traits;
     return this;
@@ -193,7 +193,7 @@ public class User {
   }
 
 
-  public User address(Address address) {
+  public RiskUser address(Address address) {
     
     this.address = address;
     return this;
@@ -224,14 +224,14 @@ public class User {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    User userForMonitorAndRisk = (User) o;
-    return Objects.equals(this.id, userForMonitorAndRisk.id) &&
-        Objects.equals(this.email, userForMonitorAndRisk.email) &&
-        Objects.equals(this.phone, userForMonitorAndRisk.phone) &&
-        Objects.equals(this.registeredAt, userForMonitorAndRisk.registeredAt) &&
-        Objects.equals(this.name, userForMonitorAndRisk.name) &&
-        Objects.equals(this.traits, userForMonitorAndRisk.traits) &&
-        Objects.equals(this.address, userForMonitorAndRisk.address);
+    RiskUser riskUser = (RiskUser) o;
+    return Objects.equals(this.id, riskUser.id) &&
+        Objects.equals(this.email, riskUser.email) &&
+        Objects.equals(this.phone, riskUser.phone) &&
+        Objects.equals(this.registeredAt, riskUser.registeredAt) &&
+        Objects.equals(this.name, riskUser.name) &&
+        Objects.equals(this.traits, riskUser.traits) &&
+        Objects.equals(this.address, riskUser.address);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -255,7 +255,7 @@ public class User {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserForMonitorAndRisk {\n");
+    sb.append("class RiskUser {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");

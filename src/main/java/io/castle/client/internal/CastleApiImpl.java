@@ -13,10 +13,13 @@ import io.castle.client.internal.utils.ContextMerge;
 import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
-import io.castle.client.model.generated.*;
+import io.castle.client.model.generated.Filter;
+import io.castle.client.model.generated.FilterAndRiskResponse;
+import io.castle.client.model.generated.Log;
+import io.castle.client.model.generated.Risk;
+import jakarta.servlet.http.HttpServletRequest;
 
 import javax.annotation.Nullable;
-import jakarta.servlet.http.HttpServletRequest;
 
 public class CastleApiImpl implements CastleApi {
 
@@ -322,11 +325,11 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public RiskResponse risk(Risk payload) {
+    public FilterAndRiskResponse risk(Risk payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         CastleResponse castleResponse = restApi.post(Castle.URL_RISK, payload);
-        return configuration.getModel().getGson().fromJson(castleResponse.json(), RiskResponse.class);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), FilterAndRiskResponse.class);
     }
 
     @Override
@@ -337,11 +340,11 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public FilterResponse filter(Filter payload) {
+    public FilterAndRiskResponse filter(Filter payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         CastleResponse castleResponse = restApi.post(Castle.URL_FILTER, payload);
-        return configuration.getModel().getGson().fromJson(castleResponse.json(), FilterResponse.class);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), FilterAndRiskResponse.class);
     }
 
     @Override

@@ -58,11 +58,11 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
 
         Filter filter = new Filter()
                 .type(Filter.TypeEnum.CHALLENGE)
-                .status(Filter.StatusEnum.REQUESTED)
+                .status(Filter.StatusEnum.SUCCEEDED)
                 .requestToken("4-ugt5CFooaxt5KbpISi1Kurm5KTpqawlYmFs5PXsqKootPgRB3z12OpvPOWOQ9PkztagtqicAnk9Qowu7FlU9qabyi4k2QR6KUUL5p3gr-A2w8Ju8gWe0XyRi_OkmFj2oZiU9OTPAjijjIK4sA-a7f19GC_xzhYurdkWM-ZY1jR_l4R8JloVdGTfj7IhXY6_pd5SNGThjmM2DoSjWNup74xC3v-l3lI0ZMlDZPGJAyd3jsVnd5JXc6CZlmdxSQMk8UxHPyYbk7Sn24cjMQxHPqZZVvRkypP2Z1VW82eZVLYwD5jxc48Y4vCI4C1gDJWiIVMXssRDTmrPME9aeZPSc-ZelmSpX5T3p1iU9Gb1jnYmCdp7gnJ");
 
-        User user = new User()
-                .id("12345");
+        FilterUser user = new FilterUser()
+                .email("12345");
         filter.user(user);
 
         Context context = new Context()
@@ -84,7 +84,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
 
         filter.createdAt(OffsetDateTime.parse("2022-05-20T09:03:27.468+02:00"));
 
-        FilterResponse response = sdk.onRequest(request).filter(filter);
+        FilterAndRiskResponse response = sdk.onRequest(request).filter(filter);
 
         // Check response object
         Assert.assertNotNull(response.getRisk());
@@ -106,7 +106,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
 
         String body = recordedRequest.getBody().readUtf8();
 
-        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"properties\":{\"property2\":{},\"property1\":{}},\"product\":{\"id\":\"1234\"},\"created_at\":\"2022-05-20T09:03:27.468+02:00\",\"request_token\":\"4-ugt5CFooaxt5KbpISi1Kurm5KTpqawlYmFs5PXsqKootPgRB3z12OpvPOWOQ9PkztagtqicAnk9Qowu7FlU9qabyi4k2QR6KUUL5p3gr-A2w8Ju8gWe0XyRi_OkmFj2oZiU9OTPAjijjIK4sA-a7f19GC_xzhYurdkWM-ZY1jR_l4R8JloVdGTfj7IhXY6_pd5SNGThjmM2DoSjWNup74xC3v-l3lI0ZMlDZPGJAyd3jsVnd5JXc6CZlmdxSQMk8UxHPyYbk7Sn24cjMQxHPqZZVvRkypP2Z1VW82eZVLYwD5jxc48Y4vCI4C1gDJWiIVMXssRDTmrPME9aeZPSc-ZelmSpX5T3p1iU9Gb1jnYmCdp7gnJ\",\"user\":{\"id\":\"12345\"},\"skip_request_token_validation\":false,\"skip_context_validation\":false,\"type\":\"$challenge\",\"status\":\"$requested\",\"authentication_method\":{\"type\":\"$social\",\"variant\":\"facebook\"}}";
+        String expected = "{\"context\":{\"headers\":[[\"User-Agent\",\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15\"]],\"ip\":\"211.96.77.55\"},\"properties\":{\"property2\":{},\"property1\":{}},\"product\":{\"id\":\"1234\"},\"created_at\":\"2022-05-20T09:03:27.468+02:00\",\"request_token\":\"4-ugt5CFooaxt5KbpISi1Kurm5KTpqawlYmFs5PXsqKootPgRB3z12OpvPOWOQ9PkztagtqicAnk9Qowu7FlU9qabyi4k2QR6KUUL5p3gr-A2w8Ju8gWe0XyRi_OkmFj2oZiU9OTPAjijjIK4sA-a7f19GC_xzhYurdkWM-ZY1jR_l4R8JloVdGTfj7IhXY6_pd5SNGThjmM2DoSjWNup74xC3v-l3lI0ZMlDZPGJAyd3jsVnd5JXc6CZlmdxSQMk8UxHPyYbk7Sn24cjMQxHPqZZVvRkypP2Z1VW82eZVLYwD5jxc48Y4vCI4C1gDJWiIVMXssRDTmrPME9aeZPSc-ZelmSpX5T3p1iU9Gb1jnYmCdp7gnJ\",\"user\":{\"email\":\"12345\"},\"skip_request_token_validation\":false,\"skip_context_validation\":false,\"type\":\"$challenge\",\"status\":\"$succeeded\",\"authentication_method\":{\"type\":\"$social\",\"variant\":\"facebook\"}}";
         Assertions.assertThat(JsonParser.parseString(body)).isEqualTo(JsonParser.parseString(expected));
     }
 
@@ -136,11 +136,11 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
 
         Filter filter = new Filter()
                 .type(Filter.TypeEnum.CHALLENGE)
-                .status(Filter.StatusEnum.REQUESTED)
+                .status(Filter.StatusEnum.ATTEMPTED)
                 .requestToken("4-ugt5CFooaxt5KbpISi1Kurm5KTpqawlYmFs5PXsqKootPgRB3z12OpvPOWOQ9PkztagtqicAnk9Qowu7FlU9qabyi4k2QR6KUUL5p3gr-A2w8Ju8gWe0XyRi_OkmFj2oZiU9OTPAjijjIK4sA-a7f19GC_xzhYurdkWM-ZY1jR_l4R8JloVdGTfj7IhXY6_pd5SNGThjmM2DoSjWNup74xC3v-l3lI0ZMlDZPGJAyd3jsVnd5JXc6CZlmdxSQMk8UxHPyYbk7Sn24cjMQxHPqZZVvRkypP2Z1VW82eZVLYwD5jxc48Y4vCI4C1gDJWiIVMXssRDTmrPME9aeZPSc-ZelmSpX5T3p1iU9Gb1jnYmCdp7gnJ");
 
-        User user = new User()
-                .id("12345");
+        FilterUser user = new FilterUser()
+                .email("12345");
         filter.user(user);
 
         Context context = new Context()
@@ -162,7 +162,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
 
         filter.createdAt(OffsetDateTime.parse("2022-05-20T09:03:27.468+02:00"));
 
-        FilterResponse response = sdk.onRequest(request).filter(filter);
+        FilterAndRiskResponse response = sdk.onRequest(request).filter(filter);
 
         // Check response object
         Assert.assertNull(response.getRisk());

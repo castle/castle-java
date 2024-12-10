@@ -13,17 +13,11 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
-import java.math.BigDecimal;
+
+import java.util.Objects;
 
 /**
  * Location of matched device.
@@ -53,11 +47,11 @@ public class DeviceContextLocation {
 
   public static final String SERIALIZED_NAME_LAT = "lat";
   @SerializedName(SERIALIZED_NAME_LAT)
-  private BigDecimal lat;
+  private double lat;
 
   public static final String SERIALIZED_NAME_LON = "lon";
   @SerializedName(SERIALIZED_NAME_LON)
-  private BigDecimal lon;
+  private double lon;
 
 
    /**
@@ -137,7 +131,7 @@ public class DeviceContextLocation {
   @javax.annotation.Nonnull
   @ApiModelProperty(example = "37.7749", required = true, value = "")
 
-  public BigDecimal getLat() {
+  public double getLat() {
     return lat;
   }
 
@@ -151,7 +145,7 @@ public class DeviceContextLocation {
   @javax.annotation.Nonnull
   @ApiModelProperty(example = "122.4194", required = true, value = "")
 
-  public BigDecimal getLon() {
+  public double getLon() {
     return lon;
   }
 
