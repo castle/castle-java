@@ -2,6 +2,11 @@
 
 ## master
 
+## 2.4.3 (2024-11-10)
+
+- [#143](https://github.com/castle/castle-java/pull/143) Add custom deserializer for BaseChangesetEntry
+- [#142](https://github.com/castle/castle-java/pull/142) Update models to add expand to risk and filter api
+
 ## 2.4.2 (2024-10-02)
 
 - [#140](https://github.com/castle/castle-java/pull/140) Add attempted to filter status enum
