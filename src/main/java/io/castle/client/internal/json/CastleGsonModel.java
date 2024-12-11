@@ -8,6 +8,7 @@ import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.RiskPolicyType;
 import io.castle.client.model.CastleHeaders;
 import io.castle.client.model.CastleMessage;
+import io.castle.client.model.generated.BaseChangesetEntry;
 import okio.ByteString;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
@@ -32,6 +33,7 @@ public class CastleGsonModel {
         builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         builder.registerTypeAdapter(RiskPolicyType.class, new RiskPolicyTypeDeserializer());
         builder.registerTypeAdapterFactory(ChangesetEntryTypeAdapter.FACTORY);
+        builder.registerTypeAdapter(BaseChangesetEntry.class, new BaseChangesetEntryDeserializer());
 
         builder.registerTypeAdapter(Date.class, new DateTypeAdapter());
         builder.registerTypeAdapter(java.sql.Date.class, new SqlDateTypeAdapter());
