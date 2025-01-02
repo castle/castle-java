@@ -135,6 +135,8 @@ public class Risk {
     SUCCEEDED("$succeeded"),
     
     FAILED("$failed"),
+
+    REQUESTED("$requested"),
     
     NULL("null");
 
