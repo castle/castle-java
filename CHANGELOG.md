@@ -2,6 +2,10 @@
 
 ## master
 
+## 2.4.4 (2025-01-02)
+
+- [#145](https://github.com/castle/castle-java/pull/145) Readd $requested to risk status enum
+
 ## 2.4.3 (2024-11-10)
 
 - [#143](https://github.com/castle/castle-java/pull/143) Add custom deserializer for BaseChangesetEntry
