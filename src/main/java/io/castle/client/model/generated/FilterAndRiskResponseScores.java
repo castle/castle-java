@@ -1,6 +1,6 @@
 /*
  * Castle API
- * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).  ## Rate limits  Our APIs implement rate-limiting based on the number of requests made to them. Each request will return the following headers:  - `X-RateLimit-Limit` - The maximum number of requests you're permitted to make in the current time window. - `X-RateLimit-Remaining` - The number of requests remaining in the current time window. - `X-RateLimit-Reset` - The remaining time in seconds until the current time window resets.  Additionally, Our Risk, Filter (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
+ * ## Introduction  **Just getting started? Check out our [quick start guide](https://docs.castle.io/docs/quickstart)**  Castle APIs uses standard HTTP response codes, authentication and verbs. JSON is used as data exchange format, both for parsing incoming request bodies, and in the returned response. This means that the `Content-Type` header should to be set to `application/json` in requests with a body, such as `POST` or `PUT`.  All API requests must be made over [HTTPS](http://en.wikipedia.org/wiki/HTTP_Secure). Non-HTTPS calls will fail and the **TLS version needs to be 1.1 or higher**.  ## Supported types  For a list of supported types, see our [Types Reference](https://docs.castle.io/docs/events).   ## Rate limits  Our Risk, Log (and the legacy Authenticate) APIs have a per-user-id rate limit of 6 requests per second and 10 requests per 5 seconds. 
  *
  * The version of the OpenAPI document: 1
  * 
@@ -13,40 +13,30 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.castle.client.model.generated.FilterAndRiskResponseScoresAccountAbuse;
-import io.castle.client.model.generated.FilterAndRiskResponseScoresAccountTakeover;
-import io.castle.client.model.generated.FilterAndRiskResponseScoresBot;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
+
+import java.util.Objects;
 
 /**
- * Castle Scores breakdown. Calculated only when &#x60;request_token&#x60; and &#x60;context&#x60; are provided.
+ * FilterResponseScores
  */
-@ApiModel(description = "Castle Scores breakdown. Calculated only when `request_token` and `context` are provided.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-09-05T12:03:37.030848+02:00[Europe/Stockholm]")
 public class FilterAndRiskResponseScores {
   public static final String SERIALIZED_NAME_ACCOUNT_ABUSE = "account_abuse";
   @SerializedName(SERIALIZED_NAME_ACCOUNT_ABUSE)
-  private FilterAndRiskResponseScoresAccountAbuse accountAbuse;
+  private Score accountAbuse;
 
   public static final String SERIALIZED_NAME_ACCOUNT_TAKEOVER = "account_takeover";
   @SerializedName(SERIALIZED_NAME_ACCOUNT_TAKEOVER)
-  private FilterAndRiskResponseScoresAccountTakeover accountTakeover;
+  private Score accountTakeover;
 
   public static final String SERIALIZED_NAME_BOT = "bot";
   @SerializedName(SERIALIZED_NAME_BOT)
-  private FilterAndRiskResponseScoresBot bot;
+  private Score bot;
 
 
-  public FilterAndRiskResponseScores accountAbuse(FilterAndRiskResponseScoresAccountAbuse accountAbuse) {
+  public FilterAndRiskResponseScores accountAbuse(Score accountAbuse) {
     
     this.accountAbuse = accountAbuse;
     return this;
@@ -59,17 +49,17 @@ public class FilterAndRiskResponseScores {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public FilterAndRiskResponseScoresAccountAbuse getAccountAbuse() {
+  public Score getAccountAbuse() {
     return accountAbuse;
   }
 
 
-  public void setAccountAbuse(FilterAndRiskResponseScoresAccountAbuse accountAbuse) {
+  public void setAccountAbuse(Score accountAbuse) {
     this.accountAbuse = accountAbuse;
   }
 
 
-  public FilterAndRiskResponseScores accountTakeover(FilterAndRiskResponseScoresAccountTakeover accountTakeover) {
+  public FilterAndRiskResponseScores accountTakeover(Score accountTakeover) {
     
     this.accountTakeover = accountTakeover;
     return this;
@@ -82,17 +72,17 @@ public class FilterAndRiskResponseScores {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public FilterAndRiskResponseScoresAccountTakeover getAccountTakeover() {
+  public Score getAccountTakeover() {
     return accountTakeover;
   }
 
 
-  public void setAccountTakeover(FilterAndRiskResponseScoresAccountTakeover accountTakeover) {
+  public void setAccountTakeover(Score accountTakeover) {
     this.accountTakeover = accountTakeover;
   }
 
 
-  public FilterAndRiskResponseScores bot(FilterAndRiskResponseScoresBot bot) {
+  public FilterAndRiskResponseScores bot(Score bot) {
     
     this.bot = bot;
     return this;
@@ -105,12 +95,12 @@ public class FilterAndRiskResponseScores {
   @javax.annotation.Nonnull
   @ApiModelProperty(required = true, value = "")
 
-  public FilterAndRiskResponseScoresBot getBot() {
+  public Score getBot() {
     return bot;
   }
 
 
-  public void setBot(FilterAndRiskResponseScoresBot bot) {
+  public void setBot(Score bot) {
     this.bot = bot;
   }
 
@@ -123,10 +113,10 @@ public class FilterAndRiskResponseScores {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseScores filterAndRiskResponseScores = (FilterAndRiskResponseScores) o;
-    return Objects.equals(this.accountAbuse, filterAndRiskResponseScores.accountAbuse) &&
-        Objects.equals(this.accountTakeover, filterAndRiskResponseScores.accountTakeover) &&
-        Objects.equals(this.bot, filterAndRiskResponseScores.bot);
+    FilterAndRiskResponseScores scores = (FilterAndRiskResponseScores) o;
+    return Objects.equals(this.accountAbuse, scores.accountAbuse) &&
+        Objects.equals(this.accountTakeover, scores.accountTakeover) &&
+        Objects.equals(this.bot, scores.bot);
   }
 
   @Override
@@ -137,7 +127,7 @@ public class FilterAndRiskResponseScores {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseScores {\n");
+    sb.append("class FilterResponseScores {\n");
     sb.append("    accountAbuse: ").append(toIndentedString(accountAbuse)).append("\n");
     sb.append("    accountTakeover: ").append(toIndentedString(accountTakeover)).append("\n");
     sb.append("    bot: ").append(toIndentedString(bot)).append("\n");

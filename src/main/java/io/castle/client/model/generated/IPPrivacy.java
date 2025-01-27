@@ -17,52 +17,94 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 /**
- * FilterAndRiskResponseSdksClient
+ * IPPrivacy
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdksClient {
-  @SerializedName("name")
-  private String name = null;
+public class IPPrivacy {
+  @SerializedName("anonymous")
+  private Boolean anonymous = null;
 
-  @SerializedName("version")
-  private String version = null;
+  @SerializedName("datacenter")
+  private Boolean datacenter = null;
 
-  public FilterAndRiskResponseSdksClient name(String name) {
-    this.name = name;
+  @SerializedName("proxy")
+  private Boolean proxy = null;
+
+  @SerializedName("tor")
+  private Boolean tor = null;
+
+  public IPPrivacy anonymous(Boolean anonymous) {
+    this.anonymous = anonymous;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get anonymous
+   * @return anonymous
   **/
-  @ApiModelProperty(example = "castle-web", value = "")
-  public String getName() {
-    return name;
+  @ApiModelProperty(example = "false", value = "")
+  public Boolean isAnonymous() {
+    return anonymous;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setAnonymous(Boolean anonymous) {
+    this.anonymous = anonymous;
   }
 
-  public FilterAndRiskResponseSdksClient version(String version) {
-    this.version = version;
+  public IPPrivacy datacenter(Boolean datacenter) {
+    this.datacenter = datacenter;
     return this;
   }
 
    /**
-   * Get version
-   * @return version
+   * Get datacenter
+   * @return datacenter
   **/
-  @ApiModelProperty(example = "2.0.0", value = "")
-  public String getVersion() {
-    return version;
+  @ApiModelProperty(example = "false", value = "")
+  public Boolean isDatacenter() {
+    return datacenter;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
+  public void setDatacenter(Boolean datacenter) {
+    this.datacenter = datacenter;
+  }
+
+  public IPPrivacy proxy(Boolean proxy) {
+    this.proxy = proxy;
+    return this;
+  }
+
+   /**
+   * Get proxy
+   * @return proxy
+  **/
+  @ApiModelProperty(example = "false", value = "")
+  public Boolean isProxy() {
+    return proxy;
+  }
+
+  public void setProxy(Boolean proxy) {
+    this.proxy = proxy;
+  }
+
+  public IPPrivacy tor(Boolean tor) {
+    this.tor = tor;
+    return this;
+  }
+
+   /**
+   * Get tor
+   * @return tor
+  **/
+  @ApiModelProperty(example = "false", value = "")
+  public Boolean isTor() {
+    return tor;
+  }
+
+  public void setTor(Boolean tor) {
+    this.tor = tor;
   }
 
 
@@ -74,24 +116,28 @@ public class FilterAndRiskResponseSdksClient {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdksClient sdksClient = (FilterAndRiskResponseSdksClient) o;
-    return Objects.equals(this.name, sdksClient.name) &&
-        Objects.equals(this.version, sdksClient.version);
+    IPPrivacy ipPrivacy = (IPPrivacy) o;
+    return Objects.equals(this.anonymous, ipPrivacy.anonymous) &&
+        Objects.equals(this.datacenter, ipPrivacy.datacenter) &&
+        Objects.equals(this.proxy, ipPrivacy.proxy) &&
+        Objects.equals(this.tor, ipPrivacy.tor);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version);
+    return Objects.hash(anonymous, datacenter, proxy, tor);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdksClient {\n");
+    sb.append("class IPPrivacy {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    anonymous: ").append(toIndentedString(anonymous)).append("\n");
+    sb.append("    datacenter: ").append(toIndentedString(datacenter)).append("\n");
+    sb.append("    proxy: ").append(toIndentedString(proxy)).append("\n");
+    sb.append("    tor: ").append(toIndentedString(tor)).append("\n");
     sb.append("}");
     return sb.toString();
   }

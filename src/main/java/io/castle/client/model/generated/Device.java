@@ -21,7 +21,9 @@ import java.util.Objects;
 /**
  * Device
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
+
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
+
 public class Device {
   public static final String SERIALIZED_NAME_USER_AGENT = "user_agent";
   @SerializedName(SERIALIZED_NAME_USER_AGENT)
@@ -47,6 +49,8 @@ public class Device {
   @SerializedName(SERIALIZED_NAME_TIMEZONE)
   private DeviceTimezone timezone;
 
+  @SerializedName("screen")
+  private DeviceScreen screen = null;
 
   public Device userAgent(String userAgent) {
     
@@ -185,6 +189,24 @@ public class Device {
     this.timezone = timezone;
   }
 
+  public Device screen(DeviceScreen screen) {
+    this.screen = screen;
+    return this;
+  }
+
+   /**
+   * Get screen
+   * @return screen
+  **/
+  @ApiModelProperty(value = "")
+  public DeviceScreen getScreen() {
+    return screen;
+  }
+
+  public void setScreen(DeviceScreen screen) {
+    this.screen = screen;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -200,12 +222,13 @@ public class Device {
         Objects.equals(this.hardware, device.hardware) &&
         Objects.equals(this.os, device.os) &&
         Objects.equals(this.software, device.software) &&
-        Objects.equals(this.timezone, device.timezone);
+        Objects.equals(this.timezone, device.timezone) &&
+        Objects.equals(this.screen, device.screen);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userAgent, fingerprint, hardware, os, software, timezone);
+    return Objects.hash(userAgent, fingerprint, hardware, os, software, timezone, screen);
   }
 
   @Override
@@ -218,6 +241,7 @@ public class Device {
     sb.append("    os: ").append(toIndentedString(os)).append("\n");
     sb.append("    software: ").append(toIndentedString(software)).append("\n");
     sb.append("    timezone: ").append(toIndentedString(timezone)).append("\n");
+    sb.append("    screen: ").append(toIndentedString(screen)).append("\n");
     sb.append("}");
     return sb.toString();
   }

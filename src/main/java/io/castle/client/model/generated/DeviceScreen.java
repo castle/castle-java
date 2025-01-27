@@ -17,52 +17,52 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 /**
- * FilterAndRiskResponseSdksClient
+ * DeviceScreen
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdksClient {
-  @SerializedName("name")
-  private String name = null;
+public class DeviceScreen {
+  @SerializedName("screen")
+  private Integer screen = null;
 
-  @SerializedName("version")
-  private String version = null;
+  @SerializedName("orientation")
+  private String orientation = null;
 
-  public FilterAndRiskResponseSdksClient name(String name) {
-    this.name = name;
+  public DeviceScreen screen(Integer screen) {
+    this.screen = screen;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get screen
+   * @return screen
   **/
-  @ApiModelProperty(example = "castle-web", value = "")
-  public String getName() {
-    return name;
+  @ApiModelProperty(example = "2", value = "")
+  public int getScreen() {
+    return screen;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setScreen(int screen) {
+    this.screen = screen;
   }
 
-  public FilterAndRiskResponseSdksClient version(String version) {
-    this.version = version;
+  public DeviceScreen orientation(String orientation) {
+    this.orientation = orientation;
     return this;
   }
 
    /**
-   * Get version
-   * @return version
+   * Get orientation
+   * @return orientation
   **/
-  @ApiModelProperty(example = "2.0.0", value = "")
-  public String getVersion() {
-    return version;
+  @ApiModelProperty(example = "landscape", value = "")
+  public String getOrientation() {
+    return orientation;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
+  public void setOrientation(String orientation) {
+    this.orientation = orientation;
   }
 
 
@@ -74,24 +74,24 @@ public class FilterAndRiskResponseSdksClient {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdksClient sdksClient = (FilterAndRiskResponseSdksClient) o;
-    return Objects.equals(this.name, sdksClient.name) &&
-        Objects.equals(this.version, sdksClient.version);
+    DeviceScreen deviceScreen = (DeviceScreen) o;
+    return Objects.equals(this.screen, deviceScreen.screen) &&
+        Objects.equals(this.orientation, deviceScreen.orientation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version);
+    return Objects.hash(screen, orientation);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdksClient {\n");
+    sb.append("class DeviceScreen {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    screen: ").append(toIndentedString(screen)).append("\n");
+    sb.append("    orientation: ").append(toIndentedString(orientation)).append("\n");
     sb.append("}");
     return sb.toString();
   }

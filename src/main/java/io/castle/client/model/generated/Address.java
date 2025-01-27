@@ -13,54 +13,39 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
-import org.openapitools.jackson.nullable.JsonNullable;
 
+import java.util.Objects;
 /**
  * Address
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2023-06-05T10:18:20.077062+02:00[Europe/Stockholm]")
+
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
+
 public class Address {
-  public static final String SERIALIZED_NAME_LINE1 = "line1";
-  @SerializedName(SERIALIZED_NAME_LINE1)
-  private String line1;
+  @SerializedName("line1")
+  private String line1 = null;
 
-  public static final String SERIALIZED_NAME_LINE2 = "line2";
-  @SerializedName(SERIALIZED_NAME_LINE2)
-  private String line2;
+  @SerializedName("line2")
+  private String line2 = null;
 
-  public static final String SERIALIZED_NAME_CITY = "city";
-  @SerializedName(SERIALIZED_NAME_CITY)
-  private String city;
+  @SerializedName("city")
+  private String city = null;
 
-  public static final String SERIALIZED_NAME_COUNTRY_CODE = "country_code";
-  @SerializedName(SERIALIZED_NAME_COUNTRY_CODE)
-  private String countryCode;
+  @SerializedName("country_code")
+  private String countryCode = null;
 
-  public static final String SERIALIZED_NAME_REGION_CODE = "region_code";
-  @SerializedName(SERIALIZED_NAME_REGION_CODE)
-  private String regionCode;
+  @SerializedName("region_code")
+  private String regionCode = null;
 
-  public static final String SERIALIZED_NAME_POSTAL_CODE = "postal_code";
-  @SerializedName(SERIALIZED_NAME_POSTAL_CODE)
-  private String postalCode;
+  @SerializedName("postal_code")
+  private String postalCode = null;
 
-  public static final String SERIALIZED_NAME_FINGERPRINT = "fingerprint";
-  @SerializedName(SERIALIZED_NAME_FINGERPRINT)
-  private String fingerprint;
-
+  @SerializedName("fingerprint")
+  private String fingerprint = null;
 
   public Address line1(String line1) {
-    
     this.line1 = line1;
     return this;
   }
@@ -69,21 +54,16 @@ public class Address {
    * Get line1
    * @return line1
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(example = "60 Rausch Street", value = "")
-
   public String getLine1() {
     return line1;
   }
-
 
   public void setLine1(String line1) {
     this.line1 = line1;
   }
 
-
   public Address line2(String line2) {
-    
     this.line2 = line2;
     return this;
   }
@@ -92,21 +72,16 @@ public class Address {
    * Get line2
    * @return line2
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(value = "")
-
   public String getLine2() {
     return line2;
   }
-
 
   public void setLine2(String line2) {
     this.line2 = line2;
   }
 
-
   public Address city(String city) {
-    
     this.city = city;
     return this;
   }
@@ -115,21 +90,16 @@ public class Address {
    * Name of the city associated to this address.
    * @return city
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(example = "San Francisco", value = "Name of the city associated to this address.")
-
   public String getCity() {
     return city;
   }
-
 
   public void setCity(String city) {
     this.city = city;
   }
 
-
   public Address countryCode(String countryCode) {
-    
     this.countryCode = countryCode;
     return this;
   }
@@ -138,21 +108,16 @@ public class Address {
    * ISO-3166 country code
    * @return countryCode
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(example = "US", required = true, value = "ISO-3166 country code")
-
   public String getCountryCode() {
     return countryCode;
   }
-
 
   public void setCountryCode(String countryCode) {
     this.countryCode = countryCode;
   }
 
-
   public Address regionCode(String regionCode) {
-    
     this.regionCode = regionCode;
     return this;
   }
@@ -161,21 +126,16 @@ public class Address {
    * ISO region code
    * @return regionCode
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(example = "CA", value = "ISO region code")
-
   public String getRegionCode() {
     return regionCode;
   }
-
 
   public void setRegionCode(String regionCode) {
     this.regionCode = regionCode;
   }
 
-
   public Address postalCode(String postalCode) {
-    
     this.postalCode = postalCode;
     return this;
   }
@@ -184,21 +144,16 @@ public class Address {
    * Get postalCode
    * @return postalCode
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(example = "94103", value = "")
-
   public String getPostalCode() {
     return postalCode;
   }
-
 
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
   }
 
-
   public Address fingerprint(String fingerprint) {
-    
     this.fingerprint = fingerprint;
     return this;
   }
@@ -207,13 +162,10 @@ public class Address {
    * Get fingerprint
    * @return fingerprint
   **/
-  @javax.annotation.Nullable
   @ApiModelProperty(example = "8a33j2lir9", value = "")
-
   public String getFingerprint() {
     return fingerprint;
   }
-
 
   public void setFingerprint(String fingerprint) {
     this.fingerprint = fingerprint;
@@ -238,23 +190,11 @@ public class Address {
         Objects.equals(this.fingerprint, address.fingerprint);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && a.get().getClass().isArray() ? Arrays.equals((T[])a.get(), (T[])b.get()) : Objects.equals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
     return Objects.hash(line1, line2, city, countryCode, regionCode, postalCode, fingerprint);
   }
 
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent()
-      ? (a.get().getClass().isArray() ? Arrays.hashCode((T[])a.get()) : Objects.hashCode(a.get()))
-      : 31;
-  }
 
   @Override
   public String toString() {
@@ -283,4 +223,3 @@ public class Address {
   }
 
 }
-

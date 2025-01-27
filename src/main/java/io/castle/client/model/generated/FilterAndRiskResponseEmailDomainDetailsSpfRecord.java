@@ -17,52 +17,31 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 /**
- * FilterAndRiskResponseSdksClient
+ * FilterAndRiskResponseEmailDomainDetailsSpfRecord
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdksClient {
-  @SerializedName("name")
-  private String name = null;
+public class FilterAndRiskResponseEmailDomainDetailsSpfRecord {
+  @SerializedName("exists")
+  private Boolean exists = null;
 
-  @SerializedName("version")
-  private String version = null;
-
-  public FilterAndRiskResponseSdksClient name(String name) {
-    this.name = name;
+  public FilterAndRiskResponseEmailDomainDetailsSpfRecord exists(Boolean exists) {
+    this.exists = exists;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get exists
+   * @return exists
   **/
-  @ApiModelProperty(example = "castle-web", value = "")
-  public String getName() {
-    return name;
+  @ApiModelProperty(example = "false", value = "")
+  public Boolean isExists() {
+    return exists;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public FilterAndRiskResponseSdksClient version(String version) {
-    this.version = version;
-    return this;
-  }
-
-   /**
-   * Get version
-   * @return version
-  **/
-  @ApiModelProperty(example = "2.0.0", value = "")
-  public String getVersion() {
-    return version;
-  }
-
-  public void setVersion(String version) {
-    this.version = version;
+  public void setExists(Boolean exists) {
+    this.exists = exists;
   }
 
 
@@ -74,24 +53,22 @@ public class FilterAndRiskResponseSdksClient {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdksClient sdksClient = (FilterAndRiskResponseSdksClient) o;
-    return Objects.equals(this.name, sdksClient.name) &&
-        Objects.equals(this.version, sdksClient.version);
+    FilterAndRiskResponseEmailDomainDetailsSpfRecord emailDomainDetailsSpfRecord = (FilterAndRiskResponseEmailDomainDetailsSpfRecord) o;
+    return Objects.equals(this.exists, emailDomainDetailsSpfRecord.exists);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version);
+    return Objects.hash(exists);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdksClient {\n");
+    sb.append("class FilterAndRiskResponseEmailDomainDetailsSpfRecord {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
     sb.append("}");
     return sb.toString();
   }

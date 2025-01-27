@@ -17,52 +17,31 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 /**
- * FilterAndRiskResponseSdksClient
+ * FilterAndRiskResponseEmailDomainDetailsMxRecords
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdksClient {
-  @SerializedName("name")
-  private String name = null;
+public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
+  @SerializedName("null_mx")
+  private Boolean nullMx = null;
 
-  @SerializedName("version")
-  private String version = null;
-
-  public FilterAndRiskResponseSdksClient name(String name) {
-    this.name = name;
+  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
+    this.nullMx = nullMx;
     return this;
   }
 
    /**
-   * Get name
-   * @return name
+   * Get nullMx
+   * @return nullMx
   **/
-  @ApiModelProperty(example = "castle-web", value = "")
-  public String getName() {
-    return name;
+  @ApiModelProperty(example = "false", value = "")
+  public Boolean isNullMx() {
+    return nullMx;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public FilterAndRiskResponseSdksClient version(String version) {
-    this.version = version;
-    return this;
-  }
-
-   /**
-   * Get version
-   * @return version
-  **/
-  @ApiModelProperty(example = "2.0.0", value = "")
-  public String getVersion() {
-    return version;
-  }
-
-  public void setVersion(String version) {
-    this.version = version;
+  public void setNullMx(Boolean nullMx) {
+    this.nullMx = nullMx;
   }
 
 
@@ -74,24 +53,22 @@ public class FilterAndRiskResponseSdksClient {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdksClient sdksClient = (FilterAndRiskResponseSdksClient) o;
-    return Objects.equals(this.name, sdksClient.name) &&
-        Objects.equals(this.version, sdksClient.version);
+    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
+    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version);
+    return Objects.hash(nullMx);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdksClient {\n");
+    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
     
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
     sb.append("}");
     return sb.toString();
   }
