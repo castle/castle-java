@@ -39,9 +39,12 @@ public class DeviceHardware {
   @SerializedName(SERIALIZED_NAME_MODEL)
   private DeviceHardwareModel model;
 
+  public static final String SERIALIZED_NAME_DISPLAY = "display";
+  @SerializedName(SERIALIZED_NAME_DISPLAY)
+  private DeviceHardwareDisplay display = null;
+
 
   public DeviceHardware type(String type) {
-    
     this.type = type;
     return this;
   }
@@ -103,14 +106,30 @@ public class DeviceHardware {
     return brand;
   }
 
-
   public void setBrand(String brand) {
     this.brand = brand;
   }
 
+  public DeviceHardware display(DeviceHardwareDisplay display) {
+    this.display = display;
+    return this;
+  }
+
+   /**
+   * Get display
+   * @return display
+  **/
+  @javax.annotation.Nonnull
+  @ApiModelProperty(required = true, value = "")
+  public DeviceHardwareDisplay getDisplay() {
+    return display;
+  }
+
+  public void setDisplay(DeviceHardwareDisplay display) {
+    this.display = display;
+  }
 
   public DeviceHardware model(DeviceHardwareModel model) {
-    
     this.model = model;
     return this;
   }
@@ -144,12 +163,13 @@ public class DeviceHardware {
     return Objects.equals(this.type, deviceHardware.type) &&
         Objects.equals(this.name, deviceHardware.name) &&
         Objects.equals(this.brand, deviceHardware.brand) &&
+        Objects.equals(this.display, deviceHardware.display) &&
         Objects.equals(this.model, deviceHardware.model);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, name, brand, model);
+    return Objects.hash(type, name, brand, display, model);
   }
 
   @Override
@@ -159,6 +179,7 @@ public class DeviceHardware {
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    brand: ").append(toIndentedString(brand)).append("\n");
+    sb.append("    display: ").append(toIndentedString(display)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     sb.append("}");
     return sb.toString();

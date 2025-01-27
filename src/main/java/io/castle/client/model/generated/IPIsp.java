@@ -17,19 +17,19 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 /**
- * FilterAndRiskResponseSdksClient
+ * IPIsp
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdksClient {
+public class IPIsp {
   @SerializedName("name")
   private String name = null;
 
-  @SerializedName("version")
-  private String version = null;
+  @SerializedName("organization")
+  private String organization = null;
 
-  public FilterAndRiskResponseSdksClient name(String name) {
+  public IPIsp name(String name) {
     this.name = name;
     return this;
   }
@@ -38,7 +38,7 @@ public class FilterAndRiskResponseSdksClient {
    * Get name
    * @return name
   **/
-  @ApiModelProperty(example = "castle-web", value = "")
+  @ApiModelProperty(example = "verizon fios", value = "")
   public String getName() {
     return name;
   }
@@ -47,22 +47,22 @@ public class FilterAndRiskResponseSdksClient {
     this.name = name;
   }
 
-  public FilterAndRiskResponseSdksClient version(String version) {
-    this.version = version;
+  public IPIsp organization(String organization) {
+    this.organization = organization;
     return this;
   }
 
    /**
-   * Get version
-   * @return version
+   * Get organization
+   * @return organization
   **/
-  @ApiModelProperty(example = "2.0.0", value = "")
-  public String getVersion() {
-    return version;
+  @ApiModelProperty(example = "verizon fios", value = "")
+  public String getOrganization() {
+    return organization;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
+  public void setOrganization(String organization) {
+    this.organization = organization;
   }
 
 
@@ -74,24 +74,23 @@ public class FilterAndRiskResponseSdksClient {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdksClient sdksClient = (FilterAndRiskResponseSdksClient) o;
-    return Objects.equals(this.name, sdksClient.name) &&
-        Objects.equals(this.version, sdksClient.version);
+    IPIsp ipIsp = (IPIsp) o;
+    return Objects.equals(this.name, ipIsp.name) &&
+        Objects.equals(this.organization, ipIsp.organization);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version);
+    return Objects.hash(name, organization);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdksClient {\n");
-    
+    sb.append("class IPIsp {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    organization: ").append(toIndentedString(organization)).append("\n");
     sb.append("}");
     return sb.toString();
   }

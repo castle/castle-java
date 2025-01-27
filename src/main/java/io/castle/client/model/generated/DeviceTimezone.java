@@ -27,10 +27,12 @@ import java.util.Objects;
 public class DeviceTimezone {
   public static final String SERIALIZED_NAME_OFFSET = "offset";
   @SerializedName(SERIALIZED_NAME_OFFSET)
-  private Integer offset;
+  private int offset;
 
+  @SerializedName("name")
+  private String name = null;
 
-  public DeviceTimezone offset(Integer offset) {
+  public DeviceTimezone offset(int offset) {
     
     this.offset = offset;
     return this;
@@ -43,13 +45,31 @@ public class DeviceTimezone {
   @javax.annotation.Nullable
   @ApiModelProperty(example = "-300", value = "Time offset from UTC measured in minutes")
 
-  public Integer getOffset() {
+  public int getOffset() {
     return offset;
   }
 
 
-  public void setOffset(Integer offset) {
+  public void setOffset(int offset) {
     this.offset = offset;
+  }
+
+  public DeviceTimezone name(String name) {
+    this.name = name;
+    return this;
+  }
+
+   /**
+   * Get name
+   * @return name
+  **/
+  @ApiModelProperty(example = "America/New_York", value = "")
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
 
@@ -71,7 +91,7 @@ public class DeviceTimezone {
 
   @Override
   public int hashCode() {
-    return Objects.hash(offset);
+    return Objects.hash(offset, name);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -88,6 +108,7 @@ public class DeviceTimezone {
     StringBuilder sb = new StringBuilder();
     sb.append("class DeviceTimezone {\n");
     sb.append("    offset: ").append(toIndentedString(offset)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }

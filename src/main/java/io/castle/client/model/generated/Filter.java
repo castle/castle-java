@@ -55,7 +55,7 @@ public class Filter {
 
   public static final String SERIALIZED_NAME_USER = "user";
   @SerializedName(SERIALIZED_NAME_USER)
-  private FilterUser user;
+  private User user;
 
   public static final String SERIALIZED_NAME_PARAMS = "params";
   @SerializedName(SERIALIZED_NAME_PARAMS)
@@ -344,7 +344,7 @@ public class Filter {
   }
 
 
-  public Filter user(FilterUser user) {
+  public Filter user(User user) {
     
     this.user = user;
     return this;
@@ -357,12 +357,12 @@ public class Filter {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public FilterUser getUser() {
+  public User getUser() {
     return user;
   }
 
 
-  public void setUser(FilterUser user) {
+  public void setUser(User user) {
     this.user = user;
   }
 

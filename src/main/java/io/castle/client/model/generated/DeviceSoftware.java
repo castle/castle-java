@@ -10,18 +10,18 @@
  * Do not edit the class manually.
  */
 
-
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
 /**
  * DeviceSoftware
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-05T19:53:01.452316+01:00[Europe/Stockholm]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 public class DeviceSoftware {
   public static final String SERIALIZED_NAME_TYPE = "type";
   @SerializedName(SERIALIZED_NAME_TYPE)
@@ -31,13 +31,19 @@ public class DeviceSoftware {
   @SerializedName(SERIALIZED_NAME_NAME)
   private String name;
 
+  public static final String SERIALIZED_NAME_LANGUAGES = "languages";
+  @SerializedName(SERIALIZED_NAME_LANGUAGES)
+  private List<String> languages = new ArrayList<String>();
+
   public static final String SERIALIZED_NAME_VERSION = "version";
   @SerializedName(SERIALIZED_NAME_VERSION)
   private DeviceSoftwareVersion version;
 
+  public static final String SERIALIZED_NAME_FINGERPRINT = "fingerprint";
+  @SerializedName(SERIALIZED_NAME_FINGERPRINT)
+  private String fingerprint = null;
 
   public DeviceSoftware type(String type) {
-    
     this.type = type;
     return this;
   }
@@ -81,6 +87,28 @@ public class DeviceSoftware {
     this.name = name;
   }
 
+  public DeviceSoftware languages(List<String> languages) {
+    this.languages = languages;
+    return this;
+  }
+
+  public DeviceSoftware addLanguagesItem(String languagesItem) {
+    this.languages.add(languagesItem);
+    return this;
+  }
+
+   /**
+   * Get languages
+   * @return languages
+  **/
+  @ApiModelProperty(example = "[\"en-us\",\"en\"]", required = true)
+  public List<String> getLanguages() {
+    return languages;
+  }
+
+  public void setLanguages(List<String> languages) {
+    this.languages = languages;
+  }
 
   public DeviceSoftware version(DeviceSoftwareVersion version) {
     
@@ -104,6 +132,24 @@ public class DeviceSoftware {
     this.version = version;
   }
 
+  public DeviceSoftware fingerprint(String fingerprint) {
+    this.fingerprint = fingerprint;
+    return this;
+  }
+
+   /**
+   * Get fingerprint
+   * @return fingerprint
+  **/
+  @ApiModelProperty(example = "vOch_0a_fpkl1Tf-pVPuDA", required = true)
+  public String getFingerprint() {
+    return fingerprint;
+  }
+
+  public void setFingerprint(String fingerprint) {
+    this.fingerprint = fingerprint;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -116,13 +162,16 @@ public class DeviceSoftware {
     DeviceSoftware deviceSoftware = (DeviceSoftware) o;
     return Objects.equals(this.type, deviceSoftware.type) &&
         Objects.equals(this.name, deviceSoftware.name) &&
-        Objects.equals(this.version, deviceSoftware.version);
+        Objects.equals(this.languages, deviceSoftware.languages) &&
+        Objects.equals(this.version, deviceSoftware.version) &&
+        Objects.equals(this.fingerprint, deviceSoftware.fingerprint);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, name, version);
+    return Objects.hash(type, name, languages, version, fingerprint);
   }
+
 
   @Override
   public String toString() {
@@ -130,7 +179,9 @@ public class DeviceSoftware {
     sb.append("class DeviceSoftware {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    languages: ").append(toIndentedString(languages)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    fingerprint: ").append(toIndentedString(fingerprint)).append("\n");
     sb.append("}");
     return sb.toString();
   }
