@@ -2,6 +2,10 @@
 
 ## master
 
+## 2.5.0 (2025-01-28)
+
+- [#147](https://github.com/castle/castle-java/pull/147) Update response models and related classes for risk and filter
+
 ## 2.4.4 (2025-01-02)
 
 - [#145](https://github.com/castle/castle-java/pull/145) Readd $requested to risk status enum
