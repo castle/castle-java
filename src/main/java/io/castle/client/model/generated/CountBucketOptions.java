@@ -12,58 +12,41 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.Objects;
+import java.util.Arrays;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModelProperty;
+import java.io.IOException;
 /**
- * Castle SDKs details
+ * CountBucketOptions
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class CountBucketOptions {
+  @SerializedName("size")
+  private CountBucketOptionsSize size = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
-
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public CountBucketOptions size(CountBucketOptionsSize size) {
+    this.size = size;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get size
+   * @return size
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  public CountBucketOptionsSize getSize() {
+    return size;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setSize(CountBucketOptionsSize size) {
+    this.size = size;
   }
 
 
@@ -75,24 +58,22 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    CountBucketOptions countBucketOptions = (CountBucketOptions) o;
+    return Objects.equals(this.size, countBucketOptions.size);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(size);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class CountBucketOptions {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("}");
     return sb.toString();
   }

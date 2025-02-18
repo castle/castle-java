@@ -12,58 +12,82 @@
 
 package io.castle.client.model.generated;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.IOException;
 import java.util.Objects;
 /**
- * Castle SDKs details
+ * CountBucketOptionsSize
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class CountBucketOptionsSize {
+  /**
+   * Gets or Sets dataType
+   */
+  @JsonAdapter(DataTypeEnum.Adapter.class)
+  public enum DataTypeEnum {
+    @SerializedName("integer")
+    INTEGER("integer");
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+    private String value;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+    DataTypeEnum(String value) {
+      this.value = value;
+    }
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+    public static DataTypeEnum fromValue(String input) {
+      for (DataTypeEnum b : DataTypeEnum.values()) {
+        if (b.value.equals(input)) {
+          return b;
+        }
+      }
+      return null;
+    }
+    public static class Adapter extends TypeAdapter<DataTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final DataTypeEnum enumeration) throws IOException {
+        jsonWriter.value(String.valueOf(enumeration.getValue()));
+      }
+
+      @Override
+      public DataTypeEnum read(final JsonReader jsonReader) throws IOException {
+        Object value = jsonReader.nextString();
+        return DataTypeEnum.fromValue((String)(value));
+      }
+    }
+  }  @SerializedName("data_type")
+  private DataTypeEnum dataType = DataTypeEnum.INTEGER;
+
+  public CountBucketOptionsSize dataType(DataTypeEnum dataType) {
+    this.dataType = dataType;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get dataType
+   * @return dataType
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(required = true, value = "")
+  public DataTypeEnum getDataType() {
+    return dataType;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setDataType(DataTypeEnum dataType) {
+    this.dataType = dataType;
   }
 
 
@@ -75,24 +99,22 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    CountBucketOptionsSize countBucketOptionsSize = (CountBucketOptionsSize) o;
+    return Objects.equals(this.dataType, countBucketOptionsSize.dataType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(dataType);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class CountBucketOptionsSize {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    dataType: ").append(toIndentedString(dataType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

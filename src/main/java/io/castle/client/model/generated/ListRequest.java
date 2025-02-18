@@ -13,86 +13,87 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * ListRequest
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class ListRequest extends BaseList {
+  @SerializedName("primary_field")
+  private String primaryField = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("secondary_field")
+  private String secondaryField = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public ListRequest primaryField(String primaryField) {
+    this.primaryField = primaryField;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get primaryField
+   * @return primaryField
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(required = true, value = "")
+  public String getPrimaryField() {
+    return primaryField;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setPrimaryField(String primaryField) {
+    this.primaryField = primaryField;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public ListRequest secondaryField(String secondaryField) {
+    this.secondaryField = secondaryField;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * Get secondaryField
+   * @return secondaryField
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  public String getSecondaryField() {
+    return secondaryField;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setSecondaryField(String secondaryField) {
+    this.secondaryField = secondaryField;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    ListRequest listRequest = (ListRequest) o;
+    return Objects.equals(this.primaryField, listRequest.primaryField) &&
+        Objects.equals(this.secondaryField, listRequest.secondaryField) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(primaryField, secondaryField, super.hashCode());
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
-    
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("class ListRequest {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    primaryField: ").append(toIndentedString(primaryField)).append("\n");
+    sb.append("    secondaryField: ").append(toIndentedString(secondaryField)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -101,7 +102,7 @@ public class FilterAndRiskResponseSdks {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

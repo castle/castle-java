@@ -13,86 +13,63 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * GeoHashBucketOptions
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class GeoHashBucketOptions {
+  @SerializedName("precision")
+  private CountBucketOptionsSize precision = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
-
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public GeoHashBucketOptions precision(CountBucketOptionsSize precision) {
+    this.precision = precision;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get precision
+   * @return precision
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(required = true, value = "")
+  public CountBucketOptionsSize getPrecision() {
+    return precision;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setPrecision(CountBucketOptionsSize precision) {
+    this.precision = precision;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    GeoHashBucketOptions geoHashBucketOptions = (GeoHashBucketOptions) o;
+    return Objects.equals(this.precision, geoHashBucketOptions.precision);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(precision);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class GeoHashBucketOptions {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    precision: ").append(toIndentedString(precision)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -101,7 +78,7 @@ public class FilterAndRiskResponseSdks {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

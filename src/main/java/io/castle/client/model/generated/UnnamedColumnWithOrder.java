@@ -12,58 +12,84 @@
 
 package io.castle.client.model.generated;
 
+import java.util.Objects;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
+import java.io.IOException;
 /**
- * Castle SDKs details
+ * UnnamedColumnWithOrder
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class UnnamedColumnWithOrder extends UnnamedColumn {
+  /**
+   * Gets or Sets order
+   */
+  @JsonAdapter(OrderEnum.Adapter.class)
+  public enum OrderEnum {
+    @SerializedName("asc")
+    ASC("asc"),
+    @SerializedName("desc")
+    DESC("desc");
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+    private String value;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+    OrderEnum(String value) {
+      this.value = value;
+    }
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+    public static OrderEnum fromValue(String input) {
+      for (OrderEnum b : OrderEnum.values()) {
+        if (b.value.equals(input)) {
+          return b;
+        }
+      }
+      return null;
+    }
+    public static class Adapter extends TypeAdapter<OrderEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final OrderEnum enumeration) throws IOException {
+        jsonWriter.value(String.valueOf(enumeration.getValue()));
+      }
+
+      @Override
+      public OrderEnum read(final JsonReader jsonReader) throws IOException {
+        Object value = jsonReader.nextString();
+        return OrderEnum.fromValue((String)(value));
+      }
+    }
+  }  @SerializedName("order")
+  private OrderEnum order = null;
+
+  public UnnamedColumnWithOrder order(OrderEnum order) {
+    this.order = order;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get order
+   * @return order
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  public OrderEnum getOrder() {
+    return order;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setOrder(OrderEnum order) {
+    this.order = order;
   }
 
 
@@ -75,24 +101,23 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    UnnamedColumnWithOrder unnamedColumnWithOrder = (UnnamedColumnWithOrder) o;
+    return Objects.equals(this.order, unnamedColumnWithOrder.order) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(order, super.hashCode());
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
-    
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("class UnnamedColumnWithOrder {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
   }

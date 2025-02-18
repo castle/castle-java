@@ -13,57 +13,56 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 /**
- * Castle SDKs details
+ * CountQueryBuckets
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class CountQueryBuckets {
+  @SerializedName("name")
+  private String name = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("options")
+  private Object options = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public CountQueryBuckets name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get name
+   * @return name
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(example = "sub_bucket_count", required = true, value = "")
+  public String getName() {
+    return name;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public CountQueryBuckets options(Object options) {
+    this.options = options;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * options to pass to query. see fields response
+   * @return options
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  @ApiModelProperty(value = "options to pass to query. see fields response")
+  public Object getOptions() {
+    return options;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setOptions(Object options) {
+    this.options = options;
   }
 
 
@@ -75,24 +74,24 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    CountQueryBuckets countQueryBuckets = (CountQueryBuckets) o;
+    return Objects.equals(this.name, countQueryBuckets.name) &&
+        Objects.equals(this.options, countQueryBuckets.options);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(name, options);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class CountQueryBuckets {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    options: ").append(toIndentedString(options)).append("\n");
     sb.append("}");
     return sb.toString();
   }

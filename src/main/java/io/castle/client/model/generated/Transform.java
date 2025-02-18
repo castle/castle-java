@@ -17,53 +17,54 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * Describes how to transform the column value. The transformation is applied before the &#x60;func&#x60; aggregation function.
  */
-@ApiModel(description = "Castle SDKs details")
+@ApiModel(description = "Describes how to transform the column value. The transformation is applied before the `func` aggregation function.")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class Transform {
+  @SerializedName("transform")
+  private Transforms transform = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("options")
+  private Object options = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public Transform transform(Transforms transform) {
+    this.transform = transform;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get transform
+   * @return transform
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(required = true, value = "")
+  public Transforms getTransform() {
+    return transform;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setTransform(Transforms transform) {
+    this.transform = transform;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public Transform options(Object options) {
+    this.options = options;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * Options specific for each transformation function
+   * @return options
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  @ApiModelProperty(value = "Options specific for each transformation function")
+  public Object getOptions() {
+    return options;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setOptions(Object options) {
+    this.options = options;
   }
 
 
@@ -75,24 +76,24 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    Transform transform = (Transform) o;
+    return Objects.equals(this.transform, transform.transform) &&
+        Objects.equals(this.options, transform.options);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(transform, options);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class Transform {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    transform: ").append(toIndentedString(transform)).append("\n");
+    sb.append("    options: ").append(toIndentedString(options)).append("\n");
     sb.append("}");
     return sb.toString();
   }

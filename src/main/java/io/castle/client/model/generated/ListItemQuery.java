@@ -13,86 +13,90 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * ListItemQuery
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class ListItemQuery {
+  @SerializedName("page")
+  private Integer page = 1;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("results_size")
+  private Integer resultsSize = 20;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public ListItemQuery page(Integer page) {
+    this.page = page;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Page number
+   * minimum: 1
+   * maximum: 1000
+   * @return page
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(example = "1", value = "Page number")
+  public Integer getPage() {
+    return page;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setPage(Integer page) {
+    this.page = page;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public ListItemQuery resultsSize(Integer resultsSize) {
+    this.resultsSize = resultsSize;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * How many records to show per page
+   * minimum: 1
+   * maximum: 100
+   * @return resultsSize
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  @ApiModelProperty(example = "50", value = "How many records to show per page")
+  public Integer getResultsSize() {
+    return resultsSize;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setResultsSize(Integer resultsSize) {
+    this.resultsSize = resultsSize;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    ListItemQuery listItemQuery = (ListItemQuery) o;
+    return Objects.equals(this.page, listItemQuery.page) &&
+        Objects.equals(this.resultsSize, listItemQuery.resultsSize);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(page, resultsSize);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class ListItemQuery {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    page: ").append(toIndentedString(page)).append("\n");
+    sb.append("    resultsSize: ").append(toIndentedString(resultsSize)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -101,7 +105,7 @@ public class FilterAndRiskResponseSdks {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

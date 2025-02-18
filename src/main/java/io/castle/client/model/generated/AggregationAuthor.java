@@ -17,53 +17,54 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * Indicates who created the Aggregation record.
  */
-@ApiModel(description = "Castle SDKs details")
+@ApiModel(description = "Indicates who created the Aggregation record.")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class AggregationAuthor {
+  @SerializedName("type")
+  private AuthorType type = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("identifier")
+  private String identifier = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public AggregationAuthor type(AuthorType type) {
+    this.type = type;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get type
+   * @return type
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  public AuthorType getType() {
+    return type;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setType(AuthorType type) {
+    this.type = type;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public AggregationAuthor identifier(String identifier) {
+    this.identifier = identifier;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * Get identifier
+   * @return identifier
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  public String getIdentifier() {
+    return identifier;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
   }
 
 
@@ -75,24 +76,24 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    AggregationAuthor aggregationAuthor = (AggregationAuthor) o;
+    return Objects.equals(this.type, aggregationAuthor.type) &&
+        Objects.equals(this.identifier, aggregationAuthor.identifier);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(type, identifier);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class AggregationAuthor {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    identifier: ").append(toIndentedString(identifier)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * User Email Object
  */
-@ApiModel(value = "User Email Object")
+@ApiModel(description = "User Email Object")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
 public class FilterAndRiskResponseEmail {

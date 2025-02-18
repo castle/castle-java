@@ -12,87 +12,133 @@
 
 package io.castle.client.model.generated;
 
+import java.util.Objects;
+
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
 /**
- * Castle SDKs details
+ * RelativeRangeQueryFilterValue
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class RelativeRangeQueryFilterValue {
+  @SerializedName("gteq")
+  private Integer gteq = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("gt")
+  private Integer gt = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  @SerializedName("lteq")
+  private Integer lteq = null;
+
+  @SerializedName("lt")
+  private Integer lt = null;
+
+  public RelativeRangeQueryFilterValue gteq(Integer gteq) {
+    this.gteq = gteq;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get gteq
+   * @return gteq
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  public Integer getGteq() {
+    return gteq;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setGteq(Integer gteq) {
+    this.gteq = gteq;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public RelativeRangeQueryFilterValue gt(Integer gt) {
+    this.gt = gt;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * Get gt
+   * @return gt
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  public Integer getGt() {
+    return gt;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setGt(Integer gt) {
+    this.gt = gt;
+  }
+
+  public RelativeRangeQueryFilterValue lteq(Integer lteq) {
+    this.lteq = lteq;
+    return this;
+  }
+
+   /**
+   * Get lteq
+   * @return lteq
+  **/
+  @ApiModelProperty(value = "")
+  public Integer getLteq() {
+    return lteq;
+  }
+
+  public void setLteq(Integer lteq) {
+    this.lteq = lteq;
+  }
+
+  public RelativeRangeQueryFilterValue lt(Integer lt) {
+    this.lt = lt;
+    return this;
+  }
+
+   /**
+   * Get lt
+   * @return lt
+  **/
+  @ApiModelProperty(value = "")
+  public Integer getLt() {
+    return lt;
+  }
+
+  public void setLt(Integer lt) {
+    this.lt = lt;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    RelativeRangeQueryFilterValue relativeRangeQueryFilterValue = (RelativeRangeQueryFilterValue) o;
+    return Objects.equals(this.gteq, relativeRangeQueryFilterValue.gteq) &&
+        Objects.equals(this.gt, relativeRangeQueryFilterValue.gt) &&
+        Objects.equals(this.lteq, relativeRangeQueryFilterValue.lteq) &&
+        Objects.equals(this.lt, relativeRangeQueryFilterValue.lt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(gteq, gt, lteq, lt);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class RelativeRangeQueryFilterValue {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    gteq: ").append(toIndentedString(gteq)).append("\n");
+    sb.append("    gt: ").append(toIndentedString(gt)).append("\n");
+    sb.append("    lteq: ").append(toIndentedString(lteq)).append("\n");
+    sb.append("    lt: ").append(toIndentedString(lt)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -101,7 +147,7 @@ public class FilterAndRiskResponseSdks {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

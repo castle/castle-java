@@ -13,57 +13,36 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * AggregationBaseGroupByFields
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class AggregationBaseGroupByFields {
+  @SerializedName("field")
+  private String field = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
-
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public AggregationBaseGroupByFields field(String field) {
+    this.field = field;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get field
+   * @return field
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(example = "ip.address", required = true, value = "")
+  public String getField() {
+    return field;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setField(String field) {
+    this.field = field;
   }
 
 
@@ -75,24 +54,22 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    AggregationBaseGroupByFields aggregationBaseGroupByFields = (AggregationBaseGroupByFields) o;
+    return Objects.equals(this.field, aggregationBaseGroupByFields.field);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(field);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class AggregationBaseGroupByFields {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    field: ").append(toIndentedString(field)).append("\n");
     sb.append("}");
     return sb.toString();
   }

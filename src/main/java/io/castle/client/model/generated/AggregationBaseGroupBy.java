@@ -13,57 +13,45 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 /**
- * Castle SDKs details
+ * AggregationBaseGroupBy
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class AggregationBaseGroupBy {
+  @SerializedName("fields")
+  private List<AggregationBaseGroupByFields> fields = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  public AggregationBaseGroupBy fields(List<AggregationBaseGroupByFields> fields) {
+    this.fields = fields;
+    return this;
+  }
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public AggregationBaseGroupBy addFieldsItem(AggregationBaseGroupByFields fieldsItem) {
+    if (this.fields == null) {
+      this.fields = new ArrayList<AggregationBaseGroupByFields>();
+    }
+    this.fields.add(fieldsItem);
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * The fields names to group by
+   * @return fields
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(value = "The fields names to group by")
+  public List<AggregationBaseGroupByFields> getFields() {
+    return fields;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setFields(List<AggregationBaseGroupByFields> fields) {
+    this.fields = fields;
   }
 
 
@@ -75,24 +63,22 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    AggregationBaseGroupBy aggregationBaseGroupBy = (AggregationBaseGroupBy) o;
+    return Objects.equals(this.fields, aggregationBaseGroupBy.fields);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(fields);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class AggregationBaseGroupBy {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    fields: ").append(toIndentedString(fields)).append("\n");
     sb.append("}");
     return sb.toString();
   }

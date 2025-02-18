@@ -13,57 +13,78 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * Column
  */
-@ApiModel(description = "Castle SDKs details")
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class Column extends GroupingField {
+  @SerializedName("name")
+  private String name = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("func")
+  private Func func = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  @SerializedName("options")
+  private Object options = null;
+
+  public Column name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Display name of the column
+   * @return name
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(example = "Sum of Risk", required = true, value = "Display name of the column")
+  public String getName() {
+    return name;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public Column func(Func func) {
+    this.func = func;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * Get func
+   * @return func
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  public Func getFunc() {
+    return func;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setFunc(Func func) {
+    this.func = func;
+  }
+
+  public Column options(Object options) {
+    this.options = options;
+    return this;
+  }
+
+   /**
+   * Options specific for each aggregation function
+   * @return options
+  **/
+  @ApiModelProperty(value = "Options specific for each aggregation function")
+  public Object getOptions() {
+    return options;
+  }
+
+  public void setOptions(Object options) {
+    this.options = options;
   }
 
 
@@ -75,24 +96,27 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    Column column = (Column) o;
+    return Objects.equals(this.name, column.name) &&
+        Objects.equals(this.func, column.func) &&
+        Objects.equals(this.options, column.options) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(name, func, options, super.hashCode());
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
-    
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("class Column {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    func: ").append(toIndentedString(func)).append("\n");
+    sb.append("    options: ").append(toIndentedString(options)).append("\n");
     sb.append("}");
     return sb.toString();
   }

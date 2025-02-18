@@ -17,53 +17,54 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * Castle SDKs details
+ * Metadata is useful for providing additional, structured information on an object.
  */
-@ApiModel(description = "Castle SDKs details")
+@ApiModel(description = "Metadata is useful for providing additional, structured information on an object.")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class Metadata {
+  @SerializedName("whodunnit")
+  private String whodunnit = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  @SerializedName("whodunnit_type")
+  private AuthorType whodunnitType = null;
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public Metadata whodunnit(String whodunnit) {
+    this.whodunnit = whodunnit;
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Get whodunnit
+   * @return whodunnit
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  public String getWhodunnit() {
+    return whodunnit;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public void setWhodunnit(String whodunnit) {
+    this.whodunnit = whodunnit;
   }
 
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public Metadata whodunnitType(AuthorType whodunnitType) {
+    this.whodunnitType = whodunnitType;
     return this;
   }
 
    /**
-   * Get server
-   * @return server
+   * Get whodunnitType
+   * @return whodunnitType
   **/
   @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
+  public AuthorType getWhodunnitType() {
+    return whodunnitType;
   }
 
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setWhodunnitType(AuthorType whodunnitType) {
+    this.whodunnitType = whodunnitType;
   }
 
 
@@ -75,24 +76,24 @@ public class FilterAndRiskResponseSdks {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    Metadata metadata = (Metadata) o;
+    return Objects.equals(this.whodunnit, metadata.whodunnit) &&
+        Objects.equals(this.whodunnitType, metadata.whodunnitType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(whodunnit, whodunnitType);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class Metadata {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    whodunnit: ").append(toIndentedString(whodunnit)).append("\n");
+    sb.append("    whodunnitType: ").append(toIndentedString(whodunnitType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -16,83 +16,70 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 /**
- * Castle SDKs details
+ * List Item Count
  */
-@ApiModel(description = "Castle SDKs details")
+@ApiModel(description = "List Item Count")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdks {
-  @SerializedName("client")
-  private FilterAndRiskResponseSdksClient client = null;
+public class ListItemCount {
+  @SerializedName("filters")
+  private List<OneOfListItemCountFiltersItems> filters = null;
 
-  @SerializedName("server")
-  private FilterAndRiskResponseSdksServer server = null;
+  public ListItemCount filters(List<OneOfListItemCountFiltersItems> filters) {
+    this.filters = filters;
+    return this;
+  }
 
-  public FilterAndRiskResponseSdks client(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
+  public ListItemCount addFiltersItem(OneOfListItemCountFiltersItems filtersItem) {
+    if (this.filters == null) {
+      this.filters = new ArrayList<OneOfListItemCountFiltersItems>();
+    }
+    this.filters.add(filtersItem);
     return this;
   }
 
    /**
-   * Get client
-   * @return client
+   * Additional filters to query list items by fields and archival status
+   * @return filters
   **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksClient getClient() {
-    return client;
+  @ApiModelProperty(example = "[{\"field\":\"primary_value\",\"op\":\"$eq\",\"value\":\"Uc80JFKRRvm\"},{\"field\":\"archived\",\"op\":\"$eq\",\"value\":false},{\"op\":\"$or\",\"value\":[{\"field\":\"secondary_value\",\"op\":\"$eq\",\"value\":\"1\"}]},{\"op\":\"$or\",\"value\":[{\"field\":\"secondary_value\",\"op\":\"$eq\",\"value\":\"2\"}]}]", value = "Additional filters to query list items by fields and archival status")
+  public List<OneOfListItemCountFiltersItems> getFilters() {
+    return filters;
   }
 
-  public void setClient(FilterAndRiskResponseSdksClient client) {
-    this.client = client;
-  }
-
-  public FilterAndRiskResponseSdks server(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
-    return this;
-  }
-
-   /**
-   * Get server
-   * @return server
-  **/
-  @ApiModelProperty(value = "")
-  public FilterAndRiskResponseSdksServer getServer() {
-    return server;
-  }
-
-  public void setServer(FilterAndRiskResponseSdksServer server) {
-    this.server = server;
+  public void setFilters(List<OneOfListItemCountFiltersItems> filters) {
+    this.filters = filters;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdks sdks = (FilterAndRiskResponseSdks) o;
-    return Objects.equals(this.client, sdks.client) &&
-        Objects.equals(this.server, sdks.server);
+    ListItemCount listItemCount = (ListItemCount) o;
+    return Objects.equals(this.filters, listItemCount.filters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(client, server);
+    return Objects.hash(filters);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdks {\n");
+    sb.append("class ListItemCount {\n");
     
-    sb.append("    client: ").append(toIndentedString(client)).append("\n");
-    sb.append("    server: ").append(toIndentedString(server)).append("\n");
+    sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -101,7 +88,7 @@ public class FilterAndRiskResponseSdks {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
