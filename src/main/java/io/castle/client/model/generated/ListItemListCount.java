@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class ListItemListCount {
   @SerializedName("total_count")
-  private Integer totalCount = null;
+  private int totalCount;
 
-  public ListItemListCount totalCount(Integer totalCount) {
+  public ListItemListCount totalCount(int totalCount) {
     this.totalCount = totalCount;
     return this;
   }
@@ -38,11 +38,11 @@ public class ListItemListCount {
    * @return totalCount
   **/
   @ApiModelProperty(example = "1", required = true, value = "A number of list items matching the query capped at 100,000.")
-  public Integer getTotalCount() {
+  public int getTotalCount() {
     return totalCount;
   }
 
-  public void setTotalCount(Integer totalCount) {
+  public void setTotalCount(int totalCount) {
     this.totalCount = totalCount;
   }
 

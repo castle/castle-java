@@ -36,7 +36,7 @@ public class ListItemQuery {
   private ListItemQuerySort sort = null;
 
   @SerializedName("filters")
-  private List<ListItemQuerySort> filters = null;
+  private List<BaseListItemQueryFilter> filters = null;
 
   public ListItemQuery sort(ListItemQuerySort sort) {
     this.sort = sort;
@@ -56,14 +56,14 @@ public class ListItemQuery {
     this.sort = sort;
   }
 
-  public ListItemQuery filters(List<ListItemQuerySort> filters) {
+  public ListItemQuery filters(List<BaseListItemQueryFilter> filters) {
     this.filters = filters;
     return this;
   }
 
-  public ListItemQuery addFiltersItem(ListItemQuerySort filtersItem) {
+  public ListItemQuery addFiltersItem(BaseListItemQueryFilter filtersItem) {
     if (this.filters == null) {
-      this.filters = new ArrayList<ListItemQuerySort>();
+      this.filters = new ArrayList<BaseListItemQueryFilter>();
     }
     this.filters.add(filtersItem);
     return this;
@@ -74,11 +74,11 @@ public class ListItemQuery {
    * @return filters
    **/
   @ApiModelProperty(value = "")
-  public List<ListItemQuerySort> getFilters() {
+  public List<BaseListItemQueryFilter> getFilters() {
     return filters;
   }
 
-  public void setFilters(List<ListItemQuerySort> filters) {
+  public void setFilters(List<BaseListItemQueryFilter> filters) {
     this.filters = filters;
   }
 

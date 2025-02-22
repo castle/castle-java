@@ -33,9 +33,6 @@ public class ListItem extends BaseItem {
   @SerializedName("archived")
   private Boolean archived = null;
 
-  @SerializedName("auto_archives_at")
-  private OffsetDateTime listItemAutoArchivesAt = null;
-
   @SerializedName("created_at")
   private OffsetDateTime createdAt = null;
 
@@ -93,24 +90,6 @@ public class ListItem extends BaseItem {
     this.archived = archived;
   }
 
-  public ListItem listItemAutoArchivesAt(OffsetDateTime listItemAutoArchivesAt) {
-    this.listItemAutoArchivesAt = listItemAutoArchivesAt;
-    return this;
-  }
-
-   /**
-   * Time after which a the List Item will be automatically archived and no longer matched against each event. A value of &#x60;null&#x60; means auto archivation is disabled and the record will stay active in the list forever.
-   * @return listItemAutoArchivesAt
-  **/
-  @ApiModelProperty(example = "2021-09-27T16:46:38.313Z", value = "Time after which a the List Item will be automatically archived and no longer matched against each event. A value of `null` means auto archivation is disabled and the record will stay active in the list forever.")
-  public OffsetDateTime getListItemAutoArchivesAt() {
-    return listItemAutoArchivesAt;
-  }
-
-  public void setListItemAutoArchivesAt(OffsetDateTime listItemAutoArchivesAt) {
-    this.listItemAutoArchivesAt = listItemAutoArchivesAt;
-  }
-
   public ListItem createdAt(OffsetDateTime createdAt) {
     this.createdAt = createdAt;
     return this;
@@ -142,14 +121,13 @@ public class ListItem extends BaseItem {
     return Objects.equals(this.id, listItem.id) &&
         Objects.equals(this.listId, listItem.listId) &&
         Objects.equals(this.archived, listItem.archived) &&
-        Objects.equals(this.listItemAutoArchivesAt, listItem.listItemAutoArchivesAt) &&
         Objects.equals(this.createdAt, listItem.createdAt) &&
         super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, listId, archived, listItemAutoArchivesAt, createdAt, super.hashCode());
+    return Objects.hash(id, listId, archived, createdAt, super.hashCode());
   }
 
 
@@ -161,7 +139,6 @@ public class ListItem extends BaseItem {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    listId: ").append(toIndentedString(listId)).append("\n");
     sb.append("    archived: ").append(toIndentedString(archived)).append("\n");
-    sb.append("    listItemAutoArchivesAt: ").append(toIndentedString(listItemAutoArchivesAt)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("}");
     return sb.toString();

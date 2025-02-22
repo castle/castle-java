@@ -210,7 +210,8 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("POST", recordedRequest.getMethod());
     }
 
-    @Test public void createList() throws InterruptedException {
+    @Test
+    public void createList() throws InterruptedException {
         MockResponse mockResponse = new MockResponse();
         mockResponse.setBody("{\n" +
                 "  \"name\": \"Malicious IPs\",\n" +

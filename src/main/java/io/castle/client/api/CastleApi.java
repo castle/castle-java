@@ -342,19 +342,19 @@ public interface CastleApi {
     /**
      * Makes a sync PUT request to the list endpoint.
      *
-     * @param id List ID
+     * @param listId List ID
      * @param payload Event parameters
      * @return
      */
-    ListResponse updateList(String id, ListRequest payload);
+    ListResponse updateList(String listId, ListRequest payload);
 
     /**
      * Makes a sync DELETE request to the list endpoint.
      *
-     * @param id List ID
+     * @param listId List ID
      * @return
      */
-    CastleResponse deleteList(String id);
+    CastleResponse deleteList(String listId);
 
     /**
      * Makes a sync POST request to the list endpoint.
@@ -363,6 +363,62 @@ public interface CastleApi {
      * @return
      */
     List<ListResponse> searchLists(ListQuery payload);
+
+    /**
+     * Makes a sync POST request to the list item endpoint.
+     *
+     * @param listId List ID
+     * @param payload Event parameters
+     * @return
+     */
+    ListItem createListItem(String listId, ListItemRequest payload);
+
+    /**
+     * Makes a sync POST request to the list item endpoint.
+     *
+     * @param id List ID
+     * @param payload Event parameters
+     * @return
+     */
+    ListItemsBatchResponse createOrUpdateListItems(String id, ListItemsBatchRequest payload);
+
+    /**
+     * Makes a sync GET request to the list item endpoint.
+     *
+     * @return
+     */
+    ListItemList searchListItems(String listId, ListItemQuery payload);
+
+    /**
+     * Makes a sync GET request to the list item endpoint.
+     *
+     * @param listId List ID
+     * @param payload Event parameters
+     * @return
+     */
+    ListItemListCount countListItems(String listId, ListItemQuery payload);
+
+    /**
+     * Makes a sync GET request to the list item endpoint.
+     *
+     * @param listId List ID
+     * @param itemid Item ID
+     * @return
+     */
+    ListItem updateListItem(String listId, String itemid, ListItemRequest payload);
+
+    /**
+     * Makes a sync GET request to the list item endpoint.
+     *
+     * @param listId List ID
+     * @param itemid Item ID
+     * @return
+     */
+    ListItem getListItem(String listId, String itemid);
+
+    CastleResponse archiveListItem(String listId, String itemid);
+
+    CastleResponse unarchiveListItem(String listId, String itemid);
 
     /**
      * Makes a sync POST request to the filter endpoint.

@@ -381,7 +381,76 @@ public class CastleApiImpl implements CastleApi {
         return configuration.getModel().getGson().fromJson(castleResponse.json(), ListResponse.class);
     }
 
+    @Override
+    public ListItem createListItem(String id, ListItemRequest payload) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(String.format(Castle.URL_LISTS_ITEMS, id), payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItem.class);
+    }
 
+    @Override
+    public ListItemsBatchResponse createOrUpdateListItems(String id, ListItemsBatchRequest payload) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(String.format(Castle.URL_LISTS_ITEMS_BATCH, id), payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItemsBatchResponse.class);
+    }
+
+    @Override
+    public ListItemList searchListItems(String id, ListItemQuery payload) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(String.format(Castle.URL_LISTS_ITEMS_SEARCH, id), payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItemList.class);
+    }
+
+    @Override
+    public ListItemListCount countListItems(String id, ListItemQuery payload) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(String.format(Castle.URL_LISTS_ITEMS_COUNT, id), payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItemListCount.class);
+    }
+
+    @Override
+    public ListItem updateListItem(String listId, String itemId, ListItemRequest payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(String.format(Castle.URL_LISTS_ITEMS_UPDATE, listId, itemId), payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItem.class);
+    }
+
+    @Override
+    public ListItem getListItem(String listId, String itemId) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.get(String.format(Castle.URL_LISTS_ITEMS_GET, listId, itemId));
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItem.class);
+    }
+
+    @Override
+    public CastleResponse archiveListItem(String listId, String itemId) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.delete(String.format(Castle.URL_LISTS_ITEMS_ARCHIVE, listId, itemId));
+    }
+
+    @Override
+    public CastleResponse unarchiveListItem(String listId, String itemId) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.put(String.format(Castle.URL_LISTS_ITEMS_UNARCHIVE, listId, itemId));
+    }
 
     @Override
     public CastleResponse filter(ImmutableMap<Object, Object> payload) {

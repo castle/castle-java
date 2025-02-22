@@ -12,10 +12,10 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Objects;
 
 /**
  * ListItemsBatchResponse
@@ -52,15 +52,15 @@ public class ListItemsBatchResponse {
    * @return totalReceived
   **/
   @ApiModelProperty(required = true, value = "Total number of items received")
-  public Integer getTotalReceived() {
+  public int getTotalReceived() {
     return totalReceived;
   }
 
-  public void setTotalReceived(Integer totalReceived) {
+  public void setTotalReceived(int totalReceived) {
     this.totalReceived = totalReceived;
   }
 
-  public ListItemsBatchResponse totalProcessed(Integer totalProcessed) {
+  public ListItemsBatchResponse totalProcessed(int totalProcessed) {
     this.totalProcessed = totalProcessed;
     return this;
   }
@@ -70,15 +70,15 @@ public class ListItemsBatchResponse {
    * @return totalProcessed
   **/
   @ApiModelProperty(required = true, value = "Total number of items processed without any errors")
-  public Integer getTotalProcessed() {
+  public int getTotalProcessed() {
     return totalProcessed;
   }
 
-  public void setTotalProcessed(Integer totalProcessed) {
+  public void setTotalProcessed(int totalProcessed) {
     this.totalProcessed = totalProcessed;
   }
 
-  public ListItemsBatchResponse created(Integer created) {
+  public ListItemsBatchResponse created(int created) {
     this.created = created;
     return this;
   }
@@ -88,15 +88,15 @@ public class ListItemsBatchResponse {
    * @return created
   **/
   @ApiModelProperty(value = "Number of items created")
-  public Integer getCreated() {
+  public int getCreated() {
     return created;
   }
 
-  public void setCreated(Integer created) {
+  public void setCreated(int created) {
     this.created = created;
   }
 
-  public ListItemsBatchResponse updated(Integer updated) {
+  public ListItemsBatchResponse updated(int updated) {
     this.updated = updated;
     return this;
   }
@@ -106,15 +106,15 @@ public class ListItemsBatchResponse {
    * @return updated
   **/
   @ApiModelProperty(value = "Number of items updated")
-  public Integer getUpdated() {
+  public int getUpdated() {
     return updated;
   }
 
-  public void setUpdated(Integer updated) {
+  public void setUpdated(int updated) {
     this.updated = updated;
   }
 
-  public ListItemsBatchResponse replaced(Integer replaced) {
+  public ListItemsBatchResponse replaced(int replaced) {
     this.replaced = replaced;
     return this;
   }
@@ -124,15 +124,15 @@ public class ListItemsBatchResponse {
    * @return replaced
   **/
   @ApiModelProperty(value = "Total number of items replaced")
-  public Integer getReplaced() {
+  public int getReplaced() {
     return replaced;
   }
 
-  public void setReplaced(Integer replaced) {
+  public void setReplaced(int replaced) {
     this.replaced = replaced;
   }
 
-  public ListItemsBatchResponse errored(Integer errored) {
+  public ListItemsBatchResponse errored(int errored) {
     this.errored = errored;
     return this;
   }
@@ -142,11 +142,11 @@ public class ListItemsBatchResponse {
    * @return errored
   **/
   @ApiModelProperty(value = "Total number of items that errored")
-  public Integer getErrored() {
+  public int getErrored() {
     return errored;
   }
 
-  public void setErrored(Integer errored) {
+  public void setErrored(int errored) {
     this.errored = errored;
   }
 
