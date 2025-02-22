@@ -6,6 +6,7 @@ import io.castle.client.model.*;
 import io.castle.client.model.generated.*;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Contains methods for calling the Castle API and the settings needed to properly make such a request.
@@ -315,6 +316,53 @@ public interface CastleApi {
      * @return
      */
     FilterAndRiskResponse risk(Risk payload);
+
+    /**
+     * Makes a sync POST request to the list endpoint.
+     *
+     * @param payload Event parameters
+     * @return
+     */
+    ListResponse createList(ListRequest payload);
+
+    /**
+     * Makes a sync GET request to the list endpoint.
+     * @return
+     */
+    List<ListResponse> listAllLists();
+
+    /**
+     * Makes a sync GET request to the list endpoint.
+     *
+     * @param listId List ID
+     * @return
+     */
+    ListResponse list(String listId);
+
+    /**
+     * Makes a sync PUT request to the list endpoint.
+     *
+     * @param id List ID
+     * @param payload Event parameters
+     * @return
+     */
+    ListResponse updateList(String id, ListRequest payload);
+
+    /**
+     * Makes a sync DELETE request to the list endpoint.
+     *
+     * @param id List ID
+     * @return
+     */
+    CastleResponse deleteList(String id);
+
+    /**
+     * Makes a sync POST request to the list endpoint.
+     *
+     * @param payload Search parameters
+     * @return
+     */
+    List<ListResponse> searchLists(ListQuery payload);
 
     /**
      * Makes a sync POST request to the filter endpoint.

@@ -12,15 +12,10 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.io.IOException;
 import java.util.Objects;
 /**
  * It allows querying data for relative time, eq. events within the last 1 hour.
@@ -28,53 +23,15 @@ import java.util.Objects;
 @ApiModel(description = "It allows querying data for relative time, eq. events within the last 1 hour.")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class RelativeRangeQueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBaseQueryFiltersItems, OneOfOrQueryFilterValueItems {
+public class RelativeRangeQueryFilter extends BaseQueryFilter {
   @SerializedName("field")
   private String field = null;
 
   /**
    * Gets or Sets op
    */
-  @JsonAdapter(OpEnum.Adapter.class)
-  public enum OpEnum {
-    @SerializedName("$relative_range")
-    _RELATIVE_RANGE("$relative_range");
-
-    private String value;
-
-    OpEnum(String value) {
-      this.value = value;
-    }
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-    public static OpEnum fromValue(String input) {
-      for (OpEnum b : OpEnum.values()) {
-        if (b.value.equals(input)) {
-          return b;
-        }
-      }
-      return null;
-    }
-    public static class Adapter extends TypeAdapter<OpEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
-        jsonWriter.value(String.valueOf(enumeration.getValue()));
-      }
-
-      @Override
-      public OpEnum read(final JsonReader jsonReader) throws IOException {
-        Object value = jsonReader.nextString();
-        return OpEnum.fromValue((String)(value));
-      }
-    }
-  }  @SerializedName("op")
-  private OpEnum op = null;
+  @SerializedName("op")
+  private Op op = null;
 
   @SerializedName("value")
   private RelativeRangeQueryFilterValue value = null;
@@ -97,7 +54,7 @@ public class RelativeRangeQueryFilter implements OneOfAggregationBaseFiltersItem
     this.field = field;
   }
 
-  public RelativeRangeQueryFilter op(OpEnum op) {
+  public RelativeRangeQueryFilter op(Op op) {
     this.op = op;
     return this;
   }
@@ -107,11 +64,11 @@ public class RelativeRangeQueryFilter implements OneOfAggregationBaseFiltersItem
    * @return op
   **/
   @ApiModelProperty(example = "$relative_range", required = true, value = "")
-  public OpEnum getOp() {
+  public Op getOp() {
     return op;
   }
 
-  public void setOp(OpEnum op) {
+  public void setOp(Op op) {
     this.op = op;
   }
 

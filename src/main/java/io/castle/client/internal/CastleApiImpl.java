@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import io.castle.client.Castle;
 import io.castle.client.api.CastleApi;
 import io.castle.client.internal.backend.RestApi;
@@ -13,13 +14,12 @@ import io.castle.client.internal.utils.ContextMerge;
 import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
-import io.castle.client.model.generated.Filter;
-import io.castle.client.model.generated.FilterAndRiskResponse;
-import io.castle.client.model.generated.Log;
-import io.castle.client.model.generated.Risk;
+import io.castle.client.model.generated.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class CastleApiImpl implements CastleApi {
 
@@ -331,6 +331,57 @@ public class CastleApiImpl implements CastleApi {
         CastleResponse castleResponse = restApi.post(Castle.URL_RISK, payload);
         return configuration.getModel().getGson().fromJson(castleResponse.json(), FilterAndRiskResponse.class);
     }
+
+    @Override
+    public ListResponse createList(ListRequest payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(Castle.URL_LISTS, payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListResponse.class);
+    }
+
+    @Override
+    public CastleResponse deleteList(String id) {
+        Preconditions.checkNotNull(id);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.delete(String.format(Castle.URL_LISTS_ID, id));
+    }
+
+    @Override
+    public List<ListResponse> searchLists(ListQuery payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.post(Castle.URL_LISTS_SEARCH, payload);
+        Type listType = new TypeToken<List<ListResponse>>(){}.getType();
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), listType);
+    }
+
+    @Override
+    public List<ListResponse> listAllLists() {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.get(Castle.URL_LISTS);
+        Type listType = new TypeToken<List<ListResponse>>(){}.getType();
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), listType);
+    }
+
+    @Override
+    public ListResponse updateList(String id, ListRequest payload) {
+        Preconditions.checkNotNull(id);
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.put(String.format(Castle.URL_LISTS_ID, id), payload);
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListResponse.class);
+    }
+
+    @Override
+    public ListResponse list(String id) {
+        Preconditions.checkNotNull(id);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        CastleResponse castleResponse = restApi.get(String.format(Castle.URL_LISTS_ID, id));
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListResponse.class);
+    }
+
+
 
     @Override
     public CastleResponse filter(ImmutableMap<Object, Object> payload) {

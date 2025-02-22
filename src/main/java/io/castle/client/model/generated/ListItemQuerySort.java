@@ -17,24 +17,25 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.IOException;
 import java.util.Objects;
 /**
- * ListItemQueryWithSortFilters
+ * List Item sort order, based on creation timestamp
  */
-
+@ApiModel(description = "List Item sort order, based on creation timestamp")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class ListItemQueryWithSortFilters {
+public class ListItemQuerySort {
   /**
-   * Gets or Sets field
+   * created_at is the only allowed field for sorting List Items
    */
   @JsonAdapter(FieldEnum.Adapter.class)
   public enum FieldEnum {
-    @SerializedName("archived")
-    ARCHIVED("archived");
+    @SerializedName("created_at")
+    CREATED_AT("created_at");
 
     private String value;
 
@@ -73,16 +74,18 @@ public class ListItemQueryWithSortFilters {
   private FieldEnum field = null;
 
   /**
-   * Gets or Sets op
+   * Gets or Sets order
    */
-  @JsonAdapter(OpEnum.Adapter.class)
-  public enum OpEnum {
-    @SerializedName("$eq")
-    _EQ("$eq");
+  @JsonAdapter(OrderEnum.Adapter.class)
+  public enum OrderEnum {
+    @SerializedName("asc")
+    ASC("asc"),
+    @SerializedName("desc")
+    DESC("desc");
 
     private String value;
 
-    OpEnum(String value) {
+    OrderEnum(String value) {
       this.value = value;
     }
     public String getValue() {
@@ -93,42 +96,39 @@ public class ListItemQueryWithSortFilters {
     public String toString() {
       return String.valueOf(value);
     }
-    public static OpEnum fromValue(String input) {
-      for (OpEnum b : OpEnum.values()) {
+    public static OrderEnum fromValue(String input) {
+      for (OrderEnum b : OrderEnum.values()) {
         if (b.value.equals(input)) {
           return b;
         }
       }
       return null;
     }
-    public static class Adapter extends TypeAdapter<OpEnum> {
+    public static class Adapter extends TypeAdapter<OrderEnum> {
       @Override
-      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
+      public void write(final JsonWriter jsonWriter, final OrderEnum enumeration) throws IOException {
         jsonWriter.value(String.valueOf(enumeration.getValue()));
       }
 
       @Override
-      public OpEnum read(final JsonReader jsonReader) throws IOException {
+      public OrderEnum read(final JsonReader jsonReader) throws IOException {
         Object value = jsonReader.nextString();
-        return OpEnum.fromValue((String)(value));
+        return OrderEnum.fromValue((String)(value));
       }
     }
-  }  @SerializedName("op")
-  private OpEnum op = null;
+  }  @SerializedName("order")
+  private OrderEnum order = null;
 
-  @SerializedName("value")
-  private Boolean value = null;
-
-  public ListItemQueryWithSortFilters field(FieldEnum field) {
+  public ListItemQuerySort field(FieldEnum field) {
     this.field = field;
     return this;
   }
 
    /**
-   * Get field
+   * created_at is the only allowed field for sorting List Items
    * @return field
   **/
-  @ApiModelProperty(example = "archived", required = true, value = "")
+  @ApiModelProperty(example = "created_at", required = true, value = "created_at is the only allowed field for sorting List Items")
   public FieldEnum getField() {
     return field;
   }
@@ -137,40 +137,22 @@ public class ListItemQueryWithSortFilters {
     this.field = field;
   }
 
-  public ListItemQueryWithSortFilters op(OpEnum op) {
-    this.op = op;
+  public ListItemQuerySort order(OrderEnum order) {
+    this.order = order;
     return this;
   }
 
    /**
-   * Get op
-   * @return op
+   * Get order
+   * @return order
   **/
-  @ApiModelProperty(example = "$eq", required = true, value = "")
-  public OpEnum getOp() {
-    return op;
+  @ApiModelProperty(example = "asc", required = true, value = "")
+  public OrderEnum getOrder() {
+    return order;
   }
 
-  public void setOp(OpEnum op) {
-    this.op = op;
-  }
-
-  public ListItemQueryWithSortFilters value(Boolean value) {
-    this.value = value;
-    return this;
-  }
-
-   /**
-   * Get value
-   * @return value
-  **/
-  @ApiModelProperty(example = "true", required = true, value = "")
-  public Boolean isValue() {
-    return value;
-  }
-
-  public void setValue(Boolean value) {
-    this.value = value;
+  public void setOrder(OrderEnum order) {
+    this.order = order;
   }
 
 
@@ -182,26 +164,24 @@ public class ListItemQueryWithSortFilters {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ListItemQueryWithSortFilters listItemQueryWithSortFilters = (ListItemQueryWithSortFilters) o;
-    return Objects.equals(this.field, listItemQueryWithSortFilters.field) &&
-        Objects.equals(this.op, listItemQueryWithSortFilters.op) &&
-        Objects.equals(this.value, listItemQueryWithSortFilters.value);
+    ListItemQuerySort listItemQuerySort = (ListItemQuerySort) o;
+    return Objects.equals(this.field, listItemQuerySort.field) &&
+        Objects.equals(this.order, listItemQuerySort.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(field, op, value);
+    return Objects.hash(field, order);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ListItemQueryWithSortFilters {\n");
+    sb.append("class ListItemQueryWithSortSort {\n");
     
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
-    sb.append("    op: ").append(toIndentedString(op)).append("\n");
-    sb.append("    value: ").append(toIndentedString(value)).append("\n");
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
   }

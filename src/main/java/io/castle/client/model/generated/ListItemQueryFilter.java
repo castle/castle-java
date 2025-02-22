@@ -27,7 +27,7 @@ import java.util.Objects;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class ListItemQueryFilter implements OneOfListItemCountFiltersItems, OneOfListItemQueryWithoutSortFiltersItems {
+public class ListItemQueryFilter extends BaseListItemQueryFilter {
   /**
    * List Item field name
    */
@@ -79,49 +79,11 @@ public class ListItemQueryFilter implements OneOfListItemCountFiltersItems, OneO
   /**
    * Gets or Sets op
    */
-  @JsonAdapter(OpEnum.Adapter.class)
-  public enum OpEnum {
-    @SerializedName("$eq")
-    _EQ("$eq");
-
-    private String value;
-
-    OpEnum(String value) {
-      this.value = value;
-    }
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-    public static OpEnum fromValue(String input) {
-      for (OpEnum b : OpEnum.values()) {
-        if (b.value.equals(input)) {
-          return b;
-        }
-      }
-      return null;
-    }
-    public static class Adapter extends TypeAdapter<OpEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
-        jsonWriter.value(String.valueOf(enumeration.getValue()));
-      }
-
-      @Override
-      public OpEnum read(final JsonReader jsonReader) throws IOException {
-        Object value = jsonReader.nextString();
-        return OpEnum.fromValue((String)(value));
-      }
-    }
-  }  @SerializedName("op")
-  private OpEnum op = null;
+  @SerializedName("op")
+  private Op op = null;
 
   @SerializedName("value")
-  private OneOfListItemQueryFilterValue value = null;
+  private Object value = null;
 
   public ListItemQueryFilter field(FieldEnum field) {
     this.field = field;
@@ -141,7 +103,7 @@ public class ListItemQueryFilter implements OneOfListItemCountFiltersItems, OneO
     this.field = field;
   }
 
-  public ListItemQueryFilter op(OpEnum op) {
+  public ListItemQueryFilter op(Op op) {
     this.op = op;
     return this;
   }
@@ -151,15 +113,15 @@ public class ListItemQueryFilter implements OneOfListItemCountFiltersItems, OneO
    * @return op
   **/
   @ApiModelProperty(example = "$eq", required = true, value = "")
-  public OpEnum getOp() {
+  public Op getOp() {
     return op;
   }
 
-  public void setOp(OpEnum op) {
+  public void setOp(Op op) {
     this.op = op;
   }
 
-  public ListItemQueryFilter value(OneOfListItemQueryFilterValue value) {
+  public ListItemQueryFilter value(Object value) {
     this.value = value;
     return this;
   }
@@ -169,11 +131,11 @@ public class ListItemQueryFilter implements OneOfListItemCountFiltersItems, OneO
    * @return value
   **/
   @ApiModelProperty(example = "effb8e3c-084c-4d3e-b7ee-f8741b79c8d2", required = true, value = "Can be string or bool")
-  public OneOfListItemQueryFilterValue getValue() {
+  public Object getValue() {
     return value;
   }
 
-  public void setValue(OneOfListItemQueryFilterValue value) {
+  public void setValue(Object value) {
     this.value = value;
   }
 

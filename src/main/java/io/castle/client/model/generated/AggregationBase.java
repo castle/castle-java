@@ -39,7 +39,7 @@ public class AggregationBase {
   private AggregationBaseGroupBy groupBy = null;
 
   @SerializedName("filters")
-  private List<OneOfAggregationBaseFiltersItems> filters = null;
+  private List<BaseQueryFilter> filters = null;
 
   @SerializedName("value")
   private AggregationBaseValue value = null;
@@ -118,14 +118,14 @@ public class AggregationBase {
     this.groupBy = groupBy;
   }
 
-  public AggregationBase filters(List<OneOfAggregationBaseFiltersItems> filters) {
+  public AggregationBase filters(List<BaseQueryFilter> filters) {
     this.filters = filters;
     return this;
   }
 
-  public AggregationBase addFiltersItem(OneOfAggregationBaseFiltersItems filtersItem) {
+  public AggregationBase addFiltersItem(BaseQueryFilter filtersItem) {
     if (this.filters == null) {
-      this.filters = new ArrayList<OneOfAggregationBaseFiltersItems>();
+      this.filters = new ArrayList<BaseQueryFilter>();
     }
     this.filters.add(filtersItem);
     return this;
@@ -136,11 +136,11 @@ public class AggregationBase {
    * @return filters
   **/
   @ApiModelProperty(value = "Event filters to define when aggregation should be triggered.")
-  public List<OneOfAggregationBaseFiltersItems> getFilters() {
+  public List<BaseQueryFilter> getFilters() {
     return filters;
   }
 
-  public void setFilters(List<OneOfAggregationBaseFiltersItems> filters) {
+  public void setFilters(List<BaseQueryFilter> filters) {
     this.filters = filters;
   }
 

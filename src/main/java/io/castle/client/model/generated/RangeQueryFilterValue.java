@@ -25,18 +25,18 @@ import java.util.Objects;
 
 public class RangeQueryFilterValue {
   @SerializedName("gteq")
-  private OneOfRangeQueryFilterValueGteq gteq = null;
+  private Object gteq = null;
 
   @SerializedName("gt")
-  private OneOfRangeQueryFilterValueGt gt = null;
+  private Object gt = null;
 
   @SerializedName("lteq")
-  private OneOfRangeQueryFilterValueLteq lteq = null;
+  private Object lteq = null;
 
   @SerializedName("lt")
-  private OneOfRangeQueryFilterValueLt lt = null;
+  private Object lt = null;
 
-  public RangeQueryFilterValue gteq(OneOfRangeQueryFilterValueGteq gteq) {
+  public RangeQueryFilterValue gteq(Object gteq) {
     this.gteq = gteq;
     return this;
   }
@@ -46,15 +46,15 @@ public class RangeQueryFilterValue {
    * @return gteq
   **/
   @ApiModelProperty(value = "")
-  public OneOfRangeQueryFilterValueGteq getGteq() {
+  public Object getGteq() {
     return gteq;
   }
 
-  public void setGteq(OneOfRangeQueryFilterValueGteq gteq) {
+  public void setGteq(Object gteq) {
     this.gteq = gteq;
   }
 
-  public RangeQueryFilterValue gt(OneOfRangeQueryFilterValueGt gt) {
+  public RangeQueryFilterValue gt(Object gt) {
     this.gt = gt;
     return this;
   }
@@ -64,15 +64,15 @@ public class RangeQueryFilterValue {
    * @return gt
   **/
   @ApiModelProperty(value = "")
-  public OneOfRangeQueryFilterValueGt getGt() {
+  public Object getGt() {
     return gt;
   }
 
-  public void setGt(OneOfRangeQueryFilterValueGt gt) {
+  public void setGt(Object gt) {
     this.gt = gt;
   }
 
-  public RangeQueryFilterValue lteq(OneOfRangeQueryFilterValueLteq lteq) {
+  public RangeQueryFilterValue lteq(Object lteq) {
     this.lteq = lteq;
     return this;
   }
@@ -82,15 +82,15 @@ public class RangeQueryFilterValue {
    * @return lteq
   **/
   @ApiModelProperty(value = "")
-  public OneOfRangeQueryFilterValueLteq getLteq() {
+  public Object getLteq() {
     return lteq;
   }
 
-  public void setLteq(OneOfRangeQueryFilterValueLteq lteq) {
+  public void setLteq(Object lteq) {
     this.lteq = lteq;
   }
 
-  public RangeQueryFilterValue lt(OneOfRangeQueryFilterValueLt lt) {
+  public RangeQueryFilterValue lt(Object lt) {
     this.lt = lt;
     return this;
   }
@@ -100,11 +100,11 @@ public class RangeQueryFilterValue {
    * @return lt
   **/
   @ApiModelProperty(value = "")
-  public OneOfRangeQueryFilterValueLt getLt() {
+  public Object getLt() {
     return lt;
   }
 
-  public void setLt(OneOfRangeQueryFilterValueLt lt) {
+  public void setLt(Object lt) {
     this.lt = lt;
   }
 

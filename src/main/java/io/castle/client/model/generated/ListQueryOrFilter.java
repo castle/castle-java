@@ -12,72 +12,29 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 /**
- * OrQueryFilter
+ * ListOrQueryFilter
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class OrQueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBaseQueryFiltersItems, OneOfGroupByFiltersItems {
+public class ListQueryOrFilter extends BaseListQueryFilter {
   /**
    * Gets or Sets op
    */
-  @JsonAdapter(OpEnum.Adapter.class)
-  public enum OpEnum {
-    @SerializedName("$or")
-    _OR("$or");
-
-    private String value;
-
-    OpEnum(String value) {
-      this.value = value;
-    }
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-    public static OpEnum fromValue(String input) {
-      for (OpEnum b : OpEnum.values()) {
-        if (b.value.equals(input)) {
-          return b;
-        }
-      }
-      return null;
-    }
-    public static class Adapter extends TypeAdapter<OpEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
-        jsonWriter.value(String.valueOf(enumeration.getValue()));
-      }
-
-      @Override
-      public OpEnum read(final JsonReader jsonReader) throws IOException {
-        Object value = jsonReader.nextString();
-        return OpEnum.fromValue((String)(value));
-      }
-    }
-  }  @SerializedName("op")
-  private OpEnum op = null;
+  @SerializedName("op")
+  private Op op = null;
 
   @SerializedName("value")
-  private List<OneOfOrQueryFilterValueItems> value = new ArrayList<OneOfOrQueryFilterValueItems>();
+  private List<ListQueryFilter> value = new ArrayList<ListQueryFilter>();
 
-  public OrQueryFilter op(OpEnum op) {
+  public ListQueryOrFilter op(Op op) {
     this.op = op;
     return this;
   }
@@ -87,20 +44,20 @@ public class OrQueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBas
    * @return op
   **/
   @ApiModelProperty(example = "$or", required = true, value = "")
-  public OpEnum getOp() {
+  public Op getOp() {
     return op;
   }
 
-  public void setOp(OpEnum op) {
+  public void setOp(Op op) {
     this.op = op;
   }
 
-  public OrQueryFilter value(List<OneOfOrQueryFilterValueItems> value) {
+  public ListQueryOrFilter value(List<ListQueryFilter> value) {
     this.value = value;
     return this;
   }
 
-  public OrQueryFilter addValueItem(OneOfOrQueryFilterValueItems valueItem) {
+  public ListQueryOrFilter addValueItem(ListQueryFilter valueItem) {
     this.value.add(valueItem);
     return this;
   }
@@ -110,11 +67,11 @@ public class OrQueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBas
    * @return value
   **/
   @ApiModelProperty(required = true, value = "")
-  public List<OneOfOrQueryFilterValueItems> getValue() {
+  public List<ListQueryFilter> getValue() {
     return value;
   }
 
-  public void setValue(List<OneOfOrQueryFilterValueItems> value) {
+  public void setValue(List<ListQueryFilter> value) {
     this.value = value;
   }
 
@@ -127,9 +84,9 @@ public class OrQueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBas
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrQueryFilter orQueryFilter = (OrQueryFilter) o;
-    return Objects.equals(this.op, orQueryFilter.op) &&
-        Objects.equals(this.value, orQueryFilter.value);
+    ListQueryOrFilter listQueryOrFilter = (ListQueryOrFilter) o;
+    return Objects.equals(this.op, listQueryOrFilter.op) &&
+        Objects.equals(this.value, listQueryOrFilter.value);
   }
 
   @Override
@@ -141,7 +98,7 @@ public class OrQueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBas
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrQueryFilter {\n");
+    sb.append("class ListOrQueryFilter {\n");
     
     sb.append("    op: ").append(toIndentedString(op)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");

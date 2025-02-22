@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class ListQuery {
   @SerializedName("filters")
-  private List<OneOfListQueryFiltersItems> filters = null;
+  private List<BaseListQueryFilter> filters = null;
 
   @SerializedName("page")
   private Integer page = null;
@@ -41,14 +41,14 @@ public class ListQuery {
   @SerializedName("sort")
   private ListQuerySort sort = null;
 
-  public ListQuery filters(List<OneOfListQueryFiltersItems> filters) {
+  public ListQuery filters(List<BaseListQueryFilter> filters) {
     this.filters = filters;
     return this;
   }
 
-  public ListQuery addFiltersItem(OneOfListQueryFiltersItems filtersItem) {
+  public ListQuery addFiltersItem(ListQueryFilter filtersItem) {
     if (this.filters == null) {
-      this.filters = new ArrayList<OneOfListQueryFiltersItems>();
+      this.filters = new ArrayList<BaseListQueryFilter>();
     }
     this.filters.add(filtersItem);
     return this;
@@ -59,11 +59,11 @@ public class ListQuery {
    * @return filters
   **/
   @ApiModelProperty(example = "[{\"field\":\"primary_field\",\"op\":\"$eq\",\"value\":\"device.fingerprint\"},{\"field\":\"archived\",\"op\":\"$eq\",\"value\":false},{\"op\":\"$or\",\"value\":[{\"field\":\"secondary_field\",\"op\":\"$eq\",\"value\":\"user.id\"}]},{\"op\":\"$or\",\"value\":[{\"field\":\"secondary_field\",\"op\":\"$eq\",\"value\":\"user.email\"}]}]", value = "Additional filters to query lists by fields and archival status")
-  public List<OneOfListQueryFiltersItems> getFilters() {
+  public List<BaseListQueryFilter> getFilters() {
     return filters;
   }
 
-  public void setFilters(List<OneOfListQueryFiltersItems> filters) {
+  public void setFilters(List<BaseListQueryFilter> filters) {
     this.filters = filters;
   }
 

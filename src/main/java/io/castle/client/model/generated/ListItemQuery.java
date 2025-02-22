@@ -15,6 +15,8 @@ package io.castle.client.model.generated;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,6 +31,56 @@ public class ListItemQuery {
 
   @SerializedName("results_size")
   private Integer resultsSize = 20;
+
+  @SerializedName("sort")
+  private ListItemQuerySort sort = null;
+
+  @SerializedName("filters")
+  private List<ListItemQuerySort> filters = null;
+
+  public ListItemQuery sort(ListItemQuerySort sort) {
+    this.sort = sort;
+    return this;
+  }
+
+  /**
+   * Get sort
+   * @return sort
+   **/
+  @ApiModelProperty(value = "")
+  public ListItemQuerySort getSort() {
+    return sort;
+  }
+
+  public void setSort(ListItemQuerySort sort) {
+    this.sort = sort;
+  }
+
+  public ListItemQuery filters(List<ListItemQuerySort> filters) {
+    this.filters = filters;
+    return this;
+  }
+
+  public ListItemQuery addFiltersItem(ListItemQuerySort filtersItem) {
+    if (this.filters == null) {
+      this.filters = new ArrayList<ListItemQuerySort>();
+    }
+    this.filters.add(filtersItem);
+    return this;
+  }
+
+  /**
+   * Get filters
+   * @return filters
+   **/
+  @ApiModelProperty(value = "")
+  public List<ListItemQuerySort> getFilters() {
+    return filters;
+  }
+
+  public void setFilters(List<ListItemQuerySort> filters) {
+    this.filters = filters;
+  }
 
   public ListItemQuery page(Integer page) {
     this.page = page;
@@ -81,12 +133,14 @@ public class ListItemQuery {
     }
     ListItemQuery listItemQuery = (ListItemQuery) o;
     return Objects.equals(this.page, listItemQuery.page) &&
-        Objects.equals(this.resultsSize, listItemQuery.resultsSize);
+        Objects.equals(this.resultsSize, listItemQuery.resultsSize) &&
+            Objects.equals(this.sort, listItemQuery.sort) &&
+            Objects.equals(this.filters, listItemQuery.filters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(page, resultsSize);
+    return Objects.hash(page, resultsSize, sort, filters);
   }
 
 
@@ -94,7 +148,8 @@ public class ListItemQuery {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListItemQuery {\n");
-    
+    sb.append("    sort: ").append(toIndentedString(sort)).append("\n");
+    sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    page: ").append(toIndentedString(page)).append("\n");
     sb.append("    resultsSize: ").append(toIndentedString(resultsSize)).append("\n");
     sb.append("}");

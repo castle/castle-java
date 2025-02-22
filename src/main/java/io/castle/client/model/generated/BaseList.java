@@ -103,7 +103,7 @@ public class BaseList {
    * @return defaultItemArchivationTime
   **/
   @ApiModelProperty(example = "2592000", value = "Default time, in seconds, after which Items in this List automatically gets archived after they are created. It is possible to override this value when creating the individual List Items")
-  public Integer getDefaultItemArchivationTime() {
+  public int getDefaultItemArchivationTime() {
     return defaultItemArchivationTime;
   }
 

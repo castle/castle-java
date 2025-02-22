@@ -12,101 +12,28 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.IOException;
+
+import java.util.Objects;
 /**
  * QueryFilter
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class QueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBaseQueryFiltersItems, OneOfGroupByFiltersItems, OneOfOrQueryFilterValueItems {
+public class QueryFilter extends BaseQueryFilter {
   @SerializedName("field")
   private String field = null;
 
   /**
    * Gets or Sets op
    */
-  @JsonAdapter(OpEnum.Adapter.class)
-  public enum OpEnum {
-    @SerializedName("$in")
-    IN("$in"),
-    @SerializedName("$nin")
-    NIN("$nin"),
-    @SerializedName("$eq")
-    EQ("$eq"),
-    @SerializedName("$neq")
-    NEQ("$neq"),
-    @SerializedName("$like")
-    LIKE("$like"),
-    @SerializedName("$nlike")
-    NLIKE("$nlike"),
-    @SerializedName("$contains")
-    CONTAINS("$contains"),
-    @SerializedName("$ncontains")
-    NCONTAINS("$ncontains"),
-    @SerializedName("$starts_with")
-    STARTS_WITH("$starts_with"),
-    @SerializedName("$nstarts_with")
-    NSTARTS_WITH("$nstarts_with"),
-    @SerializedName("$ends_with")
-    ENDS_WITH("$ends_with"),
-    @SerializedName("$nends_with")
-    NENDS_WITH("$nends_with"),
-    @SerializedName("$matches")
-    MATCHES("$matches"),
-    @SerializedName("$nmatches")
-    NMATCHES("$nmatches"),
-    @SerializedName("$ip_range")
-    IP_RANGE("$ip_range"),
-    @SerializedName("$nip_range")
-    NIP_RANGE("$nip_range");
-
-    private String value;
-
-    OpEnum(String value) {
-      this.value = value;
-    }
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-    public static OpEnum fromValue(String input) {
-      for (OpEnum b : OpEnum.values()) {
-        if (b.value.equals(input)) {
-          return b;
-        }
-      }
-      return null;
-    }
-    public static class Adapter extends TypeAdapter<OpEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
-        jsonWriter.value(String.valueOf(enumeration.getValue()));
-      }
-
-      @Override
-      public OpEnum read(final JsonReader jsonReader) throws IOException {
-        Object value = jsonReader.nextString();
-        return OpEnum.fromValue((String)(value));
-      }
-    }
-  }  @SerializedName("op")
-  private OpEnum op = null;
+  @SerializedName("op")
+  private Op op = null;
 
   @SerializedName("value")
-  private OneOfQueryFilterValue value = null;
+  private Object value = null;
 
   public QueryFilter field(String field) {
     this.field = field;
@@ -126,7 +53,7 @@ public class QueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBaseQ
     this.field = field;
   }
 
-  public QueryFilter op(OpEnum op) {
+  public QueryFilter op(Op op) {
     this.op = op;
     return this;
   }
@@ -136,15 +63,15 @@ public class QueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBaseQ
    * @return op
   **/
   @ApiModelProperty(example = "$eq", required = true, value = "")
-  public OpEnum getOp() {
+  public Op getOp() {
     return op;
   }
 
-  public void setOp(OpEnum op) {
+  public void setOp(Op op) {
     this.op = op;
   }
 
-  public QueryFilter value(OneOfQueryFilterValue value) {
+  public QueryFilter value(Object value) {
     this.value = value;
     return this;
   }
@@ -154,11 +81,11 @@ public class QueryFilter implements OneOfAggregationBaseFiltersItems, OneOfBaseQ
    * @return value
   **/
   @ApiModelProperty(required = true, value = "Can be string, bool, numeric, object, or an array of string/numeric values")
-  public OneOfQueryFilterValue getValue() {
+  public Object getValue() {
     return value;
   }
 
-  public void setValue(OneOfQueryFilterValue value) {
+  public void setValue(Object value) {
     this.value = value;
   }
 

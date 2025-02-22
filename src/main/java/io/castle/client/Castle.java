@@ -38,6 +38,10 @@ public class Castle {
 
     public static final String URL_RECOVER = "/v1/users/%s/recover";
 
+    public static final String URL_LISTS = "/v1/lists";
+    public static final String URL_LISTS_ID = "/v1/lists/%s";
+    public static final String URL_LISTS_SEARCH = "/v1/lists/query";
+
     public static final String KEY_EVENT = "event";
     public static final String KEY_USER = "user";
     public static final String KEY_STATUS = "status";

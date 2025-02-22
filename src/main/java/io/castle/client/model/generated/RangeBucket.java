@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class RangeBucket extends BaseBucket implements AnyOfSearchSchemaBucketsItems {
+public class RangeBucket extends BaseBucket {
   @SerializedName("name")
   private String rangeBucketName = null;
 

@@ -31,7 +31,7 @@ import java.util.Objects;
 
 public class BaseQuery {
   @SerializedName("filters")
-  private List<OneOfBaseQueryFiltersItems> filters = new ArrayList<OneOfBaseQueryFiltersItems>();
+  private List<BaseQueryFilter> filters = new ArrayList<BaseQueryFilter>();
 
   /**
    * The type of query to perform.  - &#x60;$count&#x60; returns the number of records matching the query (&#x60;total_count&#x60; will be present and &#x60;data&#x60; will be empty) - &#x60;$records&#x60; returns the records matching the query (&#x60;total_count&#x60; will be 0) - &#x60;$records_with_count&#x60; returns the number of records matching the query and the records matching the query 
@@ -84,12 +84,12 @@ public class BaseQuery {
   @SerializedName("page")
   private Integer page = null;
 
-  public BaseQuery filters(List<OneOfBaseQueryFiltersItems> filters) {
+  public BaseQuery filters(List<BaseQueryFilter> filters) {
     this.filters = filters;
     return this;
   }
 
-  public BaseQuery addFiltersItem(OneOfBaseQueryFiltersItems filtersItem) {
+  public BaseQuery addFiltersItem(BaseQueryFilter filtersItem) {
     this.filters.add(filtersItem);
     return this;
   }
@@ -99,11 +99,11 @@ public class BaseQuery {
    * @return filters
   **/
   @ApiModelProperty(required = true, value = "")
-  public List<OneOfBaseQueryFiltersItems> getFilters() {
+  public List<BaseQueryFilter> getFilters() {
     return filters;
   }
 
-  public void setFilters(List<OneOfBaseQueryFiltersItems> filters) {
+  public void setFilters(List<BaseQueryFilter> filters) {
     this.filters = filters;
   }
 

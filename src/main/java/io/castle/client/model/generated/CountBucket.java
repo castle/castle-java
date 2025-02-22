@@ -12,22 +12,22 @@
 
 package io.castle.client.model.generated;
 
-import java.util.Objects;
-import java.util.Arrays;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.io.IOException;
+import java.util.Objects;
 /**
  * CountBucket
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class CountBucket extends BaseBucket implements AnyOfSearchSchemaBucketsItems {
+public class CountBucket extends BaseBucket {
   /**
    * Gets or Sets type
    */

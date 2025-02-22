@@ -12,12 +12,13 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.annotations.SerializedName;
-import java.io.IOException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Gets or Sets Op
@@ -56,10 +57,16 @@ public enum Op {
   ENDS_WITH("$ends_with"),
   @SerializedName("$nends_with")
   NENDS_WITH("$nends_with"),
+  @SerializedName("$matches")
+  MATCHES("$matches"),
+  @SerializedName("$nmatches")
+  NMATCHES("$nmatches"),
   @SerializedName("$ip_range")
   IP_RANGE("$ip_range"),
   @SerializedName("$nip_range")
-  NIP_RANGE("$nip_range");
+  NIP_RANGE("$nip_range"),
+  @SerializedName("$or")
+  OR("$or");
 
   private String value;
 

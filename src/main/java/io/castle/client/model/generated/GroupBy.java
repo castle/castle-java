@@ -29,7 +29,7 @@ public class GroupBy {
   private List<GroupingField> fields = new ArrayList<GroupingField>();
 
   @SerializedName("filters")
-  private List<OneOfGroupByFiltersItems> filters = null;
+  private List<BaseQueryFilter> filters = null;
 
   public GroupBy fields(List<GroupingField> fields) {
     this.fields = fields;
@@ -54,14 +54,14 @@ public class GroupBy {
     this.fields = fields;
   }
 
-  public GroupBy filters(List<OneOfGroupByFiltersItems> filters) {
+  public GroupBy filters(List<BaseQueryFilter> filters) {
     this.filters = filters;
     return this;
   }
 
-  public GroupBy addFiltersItem(OneOfGroupByFiltersItems filtersItem) {
+  public GroupBy addFiltersItem(BaseQueryFilter filtersItem) {
     if (this.filters == null) {
-      this.filters = new ArrayList<OneOfGroupByFiltersItems>();
+      this.filters = new ArrayList<BaseQueryFilter>();
     }
     this.filters.add(filtersItem);
     return this;
@@ -72,11 +72,11 @@ public class GroupBy {
    * @return filters
   **/
   @ApiModelProperty(value = "The filters to apply to the grouping level. This let's you have separate filters on the grouping level compared to the top-level query. For example, you can query events in the last 24 hours with risk score > 90, group by user id and then compute aggregate columns with a 30-day time-range.")
-  public List<OneOfGroupByFiltersItems> getFilters() {
+  public List<BaseQueryFilter> getFilters() {
     return filters;
   }
 
-  public void setFilters(List<OneOfGroupByFiltersItems> filters) {
+  public void setFilters(List<BaseQueryFilter> filters) {
     this.filters = filters;
   }
 

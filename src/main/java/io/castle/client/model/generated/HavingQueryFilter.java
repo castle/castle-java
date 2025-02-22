@@ -23,7 +23,7 @@ import java.util.Objects;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class HavingQueryFilter extends QueryFilter implements OneOfOrHavingQueryFilterValueItems {
+public class HavingQueryFilter extends QueryFilter {
   @SerializedName("func")
   private Func func = null;
 
