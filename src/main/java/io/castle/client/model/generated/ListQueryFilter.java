@@ -79,8 +79,46 @@ public class ListQueryFilter extends BaseListQueryFilter{
   /**
    * Gets or Sets op
    */
-  @SerializedName("op")
-  private Op op = null;
+  @JsonAdapter(OpEnum.Adapter.class)
+  public enum OpEnum {
+    @SerializedName("$eq")
+    _EQ("$eq");
+
+    private String value;
+
+    OpEnum(String value) {
+      this.value = value;
+    }
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+    public static OpEnum fromValue(String input) {
+      for (OpEnum b : OpEnum.values()) {
+        if (b.value.equals(input)) {
+          return b;
+        }
+      }
+      return null;
+    }
+    public static class Adapter extends TypeAdapter<OpEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
+        jsonWriter.value(String.valueOf(enumeration.getValue()));
+      }
+
+      @Override
+      public OpEnum read(final JsonReader jsonReader) throws IOException {
+        Object value = jsonReader.nextString();
+        return OpEnum.fromValue((String)(value));
+      }
+    }
+  }  @SerializedName("op")
+  private OpEnum op = null;
 
   @SerializedName("value")
   private Object value = null;
@@ -103,7 +141,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
     this.field = field;
   }
 
-  public ListQueryFilter op(Op op) {
+  public ListQueryFilter op(OpEnum op) {
     this.op = op;
     return this;
   }
@@ -113,11 +151,11 @@ public class ListQueryFilter extends BaseListQueryFilter{
    * @return op
   **/
   @ApiModelProperty(example = "$eq", required = true, value = "")
-  public Op getOp() {
+  public OpEnum getOp() {
     return op;
   }
 
-  public void setOp(Op op) {
+  public void setOp(OpEnum op) {
     this.op = op;
   }
 
@@ -141,7 +179,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -176,7 +214,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

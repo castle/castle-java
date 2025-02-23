@@ -178,7 +178,7 @@ public class ListItemQuerySort {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ListItemQueryWithSortSort {\n");
+    sb.append("class ListItemQuerySort {\n");
     
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");

@@ -133,9 +133,9 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
         listItemQuery.resultsSize(50);
 
         List<BaseListItemQueryFilter> filters = new ArrayList<>();
-        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.PRIMARY_VALUE).op(Op.EQ).value("Uc80JFKRRvm"));
-        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.ARCHIVED).op(Op.EQ).value(false));
-        filters.add(new ListItemOrQueryFilter().op(Op.EQ).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(Op.EQ).value("1"))));
+        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.PRIMARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("Uc80JFKRRvm"));
+        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.ARCHIVED).op(ListItemQueryFilter.OpEnum._EQ).value(false));
+        filters.add(new ListItemOrQueryFilter().op(ListItemOrQueryFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
         listItemQuery.filters(filters);
 
         ListItemList response = sdk.onRequest(request).searchListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", listItemQuery);
@@ -174,10 +174,10 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
 
         ListItemQuery listItemQuery = new ListItemQuery();
         List<BaseListItemQueryFilter> filters = new ArrayList<>();
-        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.PRIMARY_VALUE).op(Op.EQ).value("Uc80JFKRRvm"));
-        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.ARCHIVED).op(Op.EQ).value(false));
-        filters.add(new ListItemOrQueryFilter().op(Op.EQ).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(Op.EQ).value("1"))));
-        filters.add(new ListItemOrQueryFilter().op(Op.EQ).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(Op.EQ).value("2"))));
+        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.PRIMARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("Uc80JFKRRvm"));
+        filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.ARCHIVED).op(ListItemQueryFilter.OpEnum._EQ).value(false));
+        filters.add(new ListItemOrQueryFilter().op(ListItemOrQueryFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
+        filters.add(new ListItemOrQueryFilter().op(ListItemOrQueryFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("2"))));
         listItemQuery.filters(filters);
 
         ListItemListCount response = sdk.onRequest(request).countListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", listItemQuery);

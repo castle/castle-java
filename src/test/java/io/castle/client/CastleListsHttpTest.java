@@ -266,24 +266,24 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
 
         ListQueryFilter filter = new ListQueryFilter();
         filter.field(ListQueryFilter.FieldEnum.PRIMARY_FIELD);
-        filter.op(Op.EQ);
+        filter.op(ListQueryFilter.OpEnum._EQ);
         filter.value("device.fingerprint");
         filters.add(filter);
 
         filter = new ListQueryFilter();
         filter.field(ListQueryFilter.FieldEnum.ARCHIVED);
-        filter.op(Op.EQ);
+        filter.op(ListQueryFilter.OpEnum._EQ);
         filter.value(false);
         filters.add(filter);
 
         ListQueryOrFilter orFilter = new ListQueryOrFilter();
-        orFilter.op(Op.OR);
-        orFilter.value(List.of(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(Op.EQ).value("user.id")));
+        orFilter.op(ListQueryOrFilter.OpEnum._OR);
+        orFilter.value(List.of(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(ListQueryFilter.OpEnum._EQ).value("user.id")));
         filters.add(orFilter);
 
         orFilter = new ListQueryOrFilter();
-        orFilter.op(Op.OR);
-        orFilter.value(List.of(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(Op.EQ).value("user.email")));
+        orFilter.op(ListQueryOrFilter.OpEnum._OR);
+        orFilter.value(List.of(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(ListQueryFilter.OpEnum._EQ).value("user.email")));
         filters.add(orFilter);
 
         query.filters(filters);

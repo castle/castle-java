@@ -12,10 +12,15 @@
 
 package io.castle.client.model.generated;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.IOException;
 import java.util.Objects;
 /**
  * It allows querying data for relative time, eq. events within the last 1 hour.
@@ -30,8 +35,46 @@ public class RelativeRangeQueryFilter extends BaseQueryFilter {
   /**
    * Gets or Sets op
    */
-  @SerializedName("op")
-  private Op op = null;
+  @JsonAdapter(OpEnum.Adapter.class)
+  public enum OpEnum {
+    @SerializedName("$relative_range")
+    _RELATIVE_RANGE("$relative_range");
+
+    private String value;
+
+    OpEnum(String value) {
+      this.value = value;
+    }
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+    public static OpEnum fromValue(String input) {
+      for (OpEnum b : OpEnum.values()) {
+        if (b.value.equals(input)) {
+          return b;
+        }
+      }
+      return null;
+    }
+    public static class Adapter extends TypeAdapter<OpEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
+        jsonWriter.value(String.valueOf(enumeration.getValue()));
+      }
+
+      @Override
+      public OpEnum read(final JsonReader jsonReader) throws IOException {
+        Object value = jsonReader.nextString();
+        return OpEnum.fromValue((String)(value));
+      }
+    }
+  }  @SerializedName("op")
+  private OpEnum op = null;
 
   @SerializedName("value")
   private RelativeRangeQueryFilterValue value = null;
@@ -54,7 +97,7 @@ public class RelativeRangeQueryFilter extends BaseQueryFilter {
     this.field = field;
   }
 
-  public RelativeRangeQueryFilter op(Op op) {
+  public RelativeRangeQueryFilter op(OpEnum op) {
     this.op = op;
     return this;
   }
@@ -64,11 +107,11 @@ public class RelativeRangeQueryFilter extends BaseQueryFilter {
    * @return op
   **/
   @ApiModelProperty(example = "$relative_range", required = true, value = "")
-  public Op getOp() {
+  public OpEnum getOp() {
     return op;
   }
 
-  public void setOp(Op op) {
+  public void setOp(OpEnum op) {
     this.op = op;
   }
 
@@ -92,7 +135,7 @@ public class RelativeRangeQueryFilter extends BaseQueryFilter {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -127,7 +170,7 @@ public class RelativeRangeQueryFilter extends BaseQueryFilter {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
