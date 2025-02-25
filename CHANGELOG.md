@@ -2,6 +2,10 @@
 
 ## master
 
+## 2.6.0 (2025-02-25)
+
+- [#149](https://github.com/castle/castle-java/pull/149) Add support for List API
+
 ## 2.5.0 (2025-01-28)
 
 - [#147](https://github.com/castle/castle-java/pull/147) Update response models and related classes for risk and filter
