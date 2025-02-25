@@ -51,6 +51,7 @@ public class ListItemQueryOrFilter extends BaseListItemQueryFilter {
     public String toString() {
       return String.valueOf(value);
     }
+
     public static OpEnum fromValue(String input) {
       for (OpEnum b : OpEnum.values()) {
         if (b.value.equals(input)) {
@@ -59,6 +60,7 @@ public class ListItemQueryOrFilter extends BaseListItemQueryFilter {
       }
       return null;
     }
+
     public static class Adapter extends TypeAdapter<OpEnum> {
       @Override
       public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
@@ -71,7 +73,9 @@ public class ListItemQueryOrFilter extends BaseListItemQueryFilter {
         return OpEnum.fromValue((String)(value));
       }
     }
-  }  @SerializedName("op")
+  }
+
+  @SerializedName("op")
   private OpEnum op = null;
 
   @SerializedName("value")

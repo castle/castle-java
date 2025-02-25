@@ -41,7 +41,6 @@ public class ListQueryResponse extends ArrayList<Object> {
     return Objects.hash(super.hashCode());
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

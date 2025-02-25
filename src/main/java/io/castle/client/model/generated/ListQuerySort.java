@@ -50,6 +50,7 @@ public class ListQuerySort {
     public String toString() {
       return String.valueOf(value);
     }
+
     public static FieldEnum fromValue(String input) {
       for (FieldEnum b : FieldEnum.values()) {
         if (b.value.equals(input)) {
@@ -58,6 +59,7 @@ public class ListQuerySort {
       }
       return null;
     }
+
     public static class Adapter extends TypeAdapter<FieldEnum> {
       @Override
       public void write(final JsonWriter jsonWriter, final FieldEnum enumeration) throws IOException {
@@ -97,6 +99,7 @@ public class ListQuerySort {
     public String toString() {
       return String.valueOf(value);
     }
+
     public static OrderEnum fromValue(String input) {
       for (OrderEnum b : OrderEnum.values()) {
         if (b.value.equals(input)) {
@@ -105,6 +108,7 @@ public class ListQuerySort {
       }
       return null;
     }
+
     public static class Adapter extends TypeAdapter<OrderEnum> {
       @Override
       public void write(final JsonWriter jsonWriter, final OrderEnum enumeration) throws IOException {

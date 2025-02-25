@@ -53,6 +53,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
     public String toString() {
       return String.valueOf(value);
     }
+
     public static FieldEnum fromValue(String input) {
       for (FieldEnum b : FieldEnum.values()) {
         if (b.value.equals(input)) {
@@ -61,6 +62,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
       }
       return null;
     }
+
     public static class Adapter extends TypeAdapter<FieldEnum> {
       @Override
       public void write(final JsonWriter jsonWriter, final FieldEnum enumeration) throws IOException {
@@ -97,6 +99,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
     public String toString() {
       return String.valueOf(value);
     }
+
     public static OpEnum fromValue(String input) {
       for (OpEnum b : OpEnum.values()) {
         if (b.value.equals(input)) {
@@ -105,6 +108,7 @@ public class ListQueryFilter extends BaseListQueryFilter{
       }
       return null;
     }
+
     public static class Adapter extends TypeAdapter<OpEnum> {
       @Override
       public void write(final JsonWriter jsonWriter, final OpEnum enumeration) throws IOException {
@@ -117,7 +121,9 @@ public class ListQueryFilter extends BaseListQueryFilter{
         return OpEnum.fromValue((String)(value));
       }
     }
-  }  @SerializedName("op")
+  }
+
+  @SerializedName("op")
   private OpEnum op = null;
 
   @SerializedName("value")
