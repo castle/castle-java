@@ -62,12 +62,10 @@ public class Behavior {
     return Objects.hash(fingerprint);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseBehavior {\n");
-    
     sb.append("    fingerprint: ").append(toIndentedString(fingerprint)).append("\n");
     sb.append("}");
     return sb.toString();

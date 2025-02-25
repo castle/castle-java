@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * Castle SDKs details
  */
-@ApiModel(value = "Castle SDKs details")
+@ApiModel(description = "Castle SDKs details")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
 public class FilterAndRiskResponseSdks {
@@ -85,12 +85,10 @@ public class FilterAndRiskResponseSdks {
     return Objects.hash(client, server);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseSdks {\n");
-    
     sb.append("    client: ").append(toIndentedString(client)).append("\n");
     sb.append("    server: ").append(toIndentedString(server)).append("\n");
     sb.append("}");

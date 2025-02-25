@@ -8,9 +8,9 @@ import java.util.Properties;
 
 public class SDKVersion {
 
-    private static String libraryString = "\"library\":{\"name\":\"castle-java\",\"version\":\"" + getSDKVersion() + "\",\"platform\":\"" + getJavaPlatform() + "\",\"platform_version\":\"" + getJavaVersion() + "\"}";
+    private static final String libraryString = "\"library\":{\"name\":\"castle-java\",\"version\":\"" + getSDKVersion() + "\",\"platform\":\"" + getJavaPlatform() + "\",\"platform_version\":\"" + getJavaVersion() + "\"}";
 
-    private static String version = getSDKVersion();
+    private static final String version = getSDKVersion();
 
     public static String getLibraryString() {
         return libraryString;

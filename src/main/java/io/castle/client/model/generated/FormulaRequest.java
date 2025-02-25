@@ -16,57 +16,83 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * FilterAndRiskResponseEmailDomainDetailsMxRecords
+ * FormulaRequest
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
-  @SerializedName("null_mx")
-  private Boolean nullMx = null;
+public class FormulaRequest {
+  @SerializedName("name")
+  private String name = null;
 
-  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  @SerializedName("value")
+  private String value = null;
+
+  public FormulaRequest name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get nullMx
-   * @return nullMx
+   * Formula name
+   * @return name
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isNullMx() {
-    return nullMx;
+  @ApiModelProperty(required = true, value = "Formula name")
+  public String getName() {
+    return name;
   }
 
-  public void setNullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public FormulaRequest value(String value) {
+    this.value = value;
+    return this;
+  }
+
+   /**
+   * Formula to calculate value
+   * @return value
+  **/
+  @ApiModelProperty(required = true, value = "Formula to calculate value")
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
-    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
+    FormulaRequest formulaRequest = (FormulaRequest) o;
+    return Objects.equals(this.name, formulaRequest.name) &&
+        Objects.equals(this.value, formulaRequest.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nullMx);
+    return Objects.hash(name, value);
   }
+
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
+    sb.append("class FormulaRequest {\n");
+    
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -75,7 +101,7 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

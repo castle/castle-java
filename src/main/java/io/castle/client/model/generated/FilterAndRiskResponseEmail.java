@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * User Email Object
  */
-@ApiModel(value = "User Email Object")
+@ApiModel(description = "User Email Object")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
 public class FilterAndRiskResponseEmail {
@@ -151,12 +151,10 @@ public class FilterAndRiskResponseEmail {
     return Objects.hash(normalized, domain, disposable, unreachable, domainDetails);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseEmail {\n");
-    
     sb.append("    normalized: ").append(toIndentedString(normalized)).append("\n");
     sb.append("    domain: ").append(toIndentedString(domain)).append("\n");
     sb.append("    disposable: ").append(toIndentedString(disposable)).append("\n");

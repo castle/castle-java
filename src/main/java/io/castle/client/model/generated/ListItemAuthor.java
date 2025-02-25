@@ -13,60 +13,84 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
-/**
- * FilterAndRiskResponseEmailDomainDetailsMxRecords
- */
 
+/**
+ * Indicates who or how the list item was created. Typically, this refers to the user that created the item from within the Castle Dashboard, or the policy ID if it was automatically created via automation.
+ */
+@ApiModel(description = "Indicates who or how the list item was created. Typically, this refers to the user that created the item from within the Castle Dashboard, or the policy ID if it was automatically created via automation.")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
-  @SerializedName("null_mx")
-  private Boolean nullMx = null;
+public class ListItemAuthor {
+  @SerializedName("type")
+  private AuthorType type = null;
 
-  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  @SerializedName("identifier")
+  private String identifier = null;
+
+  public ListItemAuthor type(AuthorType type) {
+    this.type = type;
     return this;
   }
 
    /**
-   * Get nullMx
-   * @return nullMx
+   * Get type
+   * @return type
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isNullMx() {
-    return nullMx;
+  @ApiModelProperty(required = true, value = "")
+  public AuthorType getType() {
+    return type;
   }
 
-  public void setNullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  public void setType(AuthorType type) {
+    this.type = type;
   }
 
+  public ListItemAuthor identifier(String identifier) {
+    this.identifier = identifier;
+    return this;
+  }
+
+   /**
+   * Get identifier
+   * @return identifier
+  **/
+  @ApiModelProperty(required = true, value = "")
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
-    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
+    ListItemAuthor listItemAuthor = (ListItemAuthor) o;
+    return Objects.equals(this.type, listItemAuthor.type) &&
+        Objects.equals(this.identifier, listItemAuthor.identifier);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nullMx);
+    return Objects.hash(type, identifier);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
+    sb.append("class ListItemAuthor {\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    identifier: ").append(toIndentedString(identifier)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -75,7 +99,7 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

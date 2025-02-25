@@ -55,12 +55,10 @@ public class FilterAndRiskResponseScoresAccountTakeover {
     return Objects.hash(score);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseScoresAccountTakeover {\n");
-    
     sb.append("    score: ").append(toIndentedString(score)).append("\n");
     sb.append("}");
     return sb.toString();

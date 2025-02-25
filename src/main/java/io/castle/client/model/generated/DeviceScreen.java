@@ -84,12 +84,10 @@ public class DeviceScreen {
     return Objects.hash(screen, orientation);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class DeviceScreen {\n");
-    
     sb.append("    screen: ").append(toIndentedString(screen)).append("\n");
     sb.append("    orientation: ").append(toIndentedString(orientation)).append("\n");
     sb.append("}");

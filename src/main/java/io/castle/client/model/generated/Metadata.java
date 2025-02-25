@@ -13,35 +13,58 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
-/**
- * FilterAndRiskResponseEmailDomainDetailsMxRecords
- */
 
+/**
+ * Metadata is useful for providing additional, structured information on an object.
+ */
+@ApiModel(description = "Metadata is useful for providing additional, structured information on an object.")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
-  @SerializedName("null_mx")
-  private Boolean nullMx = null;
+public class Metadata {
+  @SerializedName("whodunnit")
+  private String whodunnit = null;
 
-  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  @SerializedName("whodunnit_type")
+  private AuthorType whodunnitType = null;
+
+  public Metadata whodunnit(String whodunnit) {
+    this.whodunnit = whodunnit;
     return this;
   }
 
    /**
-   * Get nullMx
-   * @return nullMx
+   * Get whodunnit
+   * @return whodunnit
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isNullMx() {
-    return nullMx;
+  @ApiModelProperty(value = "")
+  public String getWhodunnit() {
+    return whodunnit;
   }
 
-  public void setNullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  public void setWhodunnit(String whodunnit) {
+    this.whodunnit = whodunnit;
+  }
+
+  public Metadata whodunnitType(AuthorType whodunnitType) {
+    this.whodunnitType = whodunnitType;
+    return this;
+  }
+
+   /**
+   * Get whodunnitType
+   * @return whodunnitType
+  **/
+  @ApiModelProperty(value = "")
+  public AuthorType getWhodunnitType() {
+    return whodunnitType;
+  }
+
+  public void setWhodunnitType(AuthorType whodunnitType) {
+    this.whodunnitType = whodunnitType;
   }
 
 
@@ -53,20 +76,24 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
-    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
+    Metadata metadata = (Metadata) o;
+    return Objects.equals(this.whodunnit, metadata.whodunnit) &&
+        Objects.equals(this.whodunnitType, metadata.whodunnitType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nullMx);
+    return Objects.hash(whodunnit, whodunnitType);
   }
+
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
+    sb.append("class Metadata {\n");
+    
+    sb.append("    whodunnit: ").append(toIndentedString(whodunnit)).append("\n");
+    sb.append("    whodunnitType: ").append(toIndentedString(whodunnitType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

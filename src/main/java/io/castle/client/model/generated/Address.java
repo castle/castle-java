@@ -195,7 +195,6 @@ public class Address {
     return Objects.hash(line1, line2, city, countryCode, regionCode, postalCode, fingerprint);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

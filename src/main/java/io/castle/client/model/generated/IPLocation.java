@@ -194,12 +194,10 @@ public class IPLocation {
     return Objects.hash(city, continentCode, countryCode, postalCode, regionCode, latitude, longitude);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class IPLocation {\n");
-    
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    continentCode: ").append(toIndentedString(continentCode)).append("\n");
     sb.append("    countryCode: ").append(toIndentedString(countryCode)).append("\n");

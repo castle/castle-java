@@ -12,67 +12,70 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
+import com.google.gson.annotations.SerializedName;
+import java.io.IOException;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
-import java.util.Objects;
 /**
- * FilterAndRiskResponseScoresAccountAbuse
+ * Color assigned to the List. These colors can be used to represent different sentiments, such as red for blocked records or green for trusted.
  */
+@JsonAdapter(ListColor.Adapter.class)
+public enum ListColor {
+  @SerializedName("$red")
+  RED("$red"),
+  @SerializedName("$orange")
+  ORANGE("$orange"),
+  @SerializedName("$yellow")
+  YELLOW("$yellow"),
+  @SerializedName("$green")
+  GREEN("$green"),
+  @SerializedName("$blue")
+  BLUE("$blue"),
+  @SerializedName("$purple")
+  PURPLE("$purple"),
+  @SerializedName("$gray")
+  GRAY("$gray"),
+  @SerializedName("$black")
+  BLACK("$black");
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
+  private String value;
 
-public class FilterAndRiskResponseScoresAccountAbuse {
-  @SerializedName("score")
-  private double score;
-
-   /**
-   * Calculated Account Abuse Risk Score.
-   * minimum: 0
-   * maximum: 1
-   * @return score
-  **/
-  @ApiModelProperty(example = "0.65", required = true, value = "Calculated Account Abuse Risk Score.")
-  public double getScore() {
-    return score;
+  ListColor(String value) {
+    this.value = value;
   }
 
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    FilterAndRiskResponseScoresAccountAbuse scoresAccountAbuse = (FilterAndRiskResponseScoresAccountAbuse) o;
-    return Objects.equals(this.score, scoresAccountAbuse.score);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(score);
+  public String getValue() {
+    return value;
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseScoresAccountAbuse {\n");
-    sb.append("    score: ").append(toIndentedString(score)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    return String.valueOf(value);
   }
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
+  public static ListColor fromValue(String input) {
+    for (ListColor b : ListColor.values()) {
+      if (b.value.equals(input)) {
+        return b;
+      }
     }
-    return o.toString().replace("\n", "\n    ");
+    return null;
   }
 
+  public static class Adapter extends TypeAdapter<ListColor> {
+    @Override
+    public void write(final JsonWriter jsonWriter, final ListColor enumeration) throws IOException {
+      jsonWriter.value(String.valueOf(enumeration.getValue()));
+    }
+
+    @Override
+    public ListColor read(final JsonReader jsonReader) throws IOException {
+      Object value = jsonReader.nextString();
+      return ListColor.fromValue((String)(value));
+    }
+  }
 }

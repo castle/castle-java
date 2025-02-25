@@ -38,6 +38,19 @@ public class Castle {
 
     public static final String URL_RECOVER = "/v1/users/%s/recover";
 
+    public static final String URL_LISTS = "/v1/lists";
+    public static final String URL_LISTS_ID = "/v1/lists/%s";
+    public static final String URL_LISTS_SEARCH = "/v1/lists/query";
+
+    public static final String URL_LISTS_ITEMS = "/v1/lists/%s/items";
+    public static final String URL_LISTS_ITEMS_BATCH = "/v1/lists/%s/items/batch";
+    public static final String URL_LISTS_ITEMS_SEARCH = "/v1/lists/%s/items/query";
+    public static final String URL_LISTS_ITEMS_COUNT = "/v1/lists/%s/items/count";
+    public static final String URL_LISTS_ITEMS_UPDATE = "/v1/lists/%s/items/%s";
+    public static final String URL_LISTS_ITEMS_GET = "/v1/lists/%s/items/%s";
+    public static final String URL_LISTS_ITEMS_ARCHIVE = "/v1/lists/%s/items/%s/archive";
+    public static final String URL_LISTS_ITEMS_UNARCHIVE = "/v1/lists/%s/items/%s/unarchive";
+
     public static final String KEY_EVENT = "event";
     public static final String KEY_USER = "user";
     public static final String KEY_STATUS = "status";

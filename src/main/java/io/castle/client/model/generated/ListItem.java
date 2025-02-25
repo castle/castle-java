@@ -14,129 +14,131 @@ package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
+import org.threeten.bp.OffsetDateTime;
 
 import java.util.Objects;
 /**
- * IPPrivacy
+ * ListItem
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class IPPrivacy {
-  @SerializedName("anonymous")
-  private Boolean anonymous = null;
+public class ListItem extends BaseItem {
+  @SerializedName("id")
+  private String id = null;
 
-  @SerializedName("datacenter")
-  private Boolean datacenter = null;
+  @SerializedName("list_id")
+  private String listId = null;
 
-  @SerializedName("proxy")
-  private Boolean proxy = null;
+  @SerializedName("archived")
+  private Boolean archived = null;
 
-  @SerializedName("tor")
-  private Boolean tor = null;
+  @SerializedName("created_at")
+  private OffsetDateTime createdAt = null;
 
-  public IPPrivacy anonymous(Boolean anonymous) {
-    this.anonymous = anonymous;
+  public ListItem id(String id) {
+    this.id = id;
     return this;
   }
 
    /**
-   * Get anonymous
-   * @return anonymous
+   * Get id
+   * @return id
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isAnonymous() {
-    return anonymous;
+  @ApiModelProperty(example = "2ee938c8-24c2-4c26-9d25-19511dd75029", required = true, value = "")
+  public String getId() {
+    return id;
   }
 
-  public void setAnonymous(Boolean anonymous) {
-    this.anonymous = anonymous;
+  public void setId(String id) {
+    this.id = id;
   }
 
-  public IPPrivacy datacenter(Boolean datacenter) {
-    this.datacenter = datacenter;
+  public ListItem listId(String listId) {
+    this.listId = listId;
     return this;
   }
 
    /**
-   * Get datacenter
-   * @return datacenter
+   * ID of the List to which this List Item belongs to
+   * @return listId
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isDatacenter() {
-    return datacenter;
+  @ApiModelProperty(example = "2ee938c8-24c2-4c26-9d25-19511dd75029", required = true, value = "ID of the List to which this List Item belongs to")
+  public String getListId() {
+    return listId;
   }
 
-  public void setDatacenter(Boolean datacenter) {
-    this.datacenter = datacenter;
+  public void setListId(String listId) {
+    this.listId = listId;
   }
 
-  public IPPrivacy proxy(Boolean proxy) {
-    this.proxy = proxy;
+  public ListItem archived(Boolean archived) {
+    this.archived = archived;
     return this;
   }
 
    /**
-   * Get proxy
-   * @return proxy
+   * Get archived
+   * @return archived
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isProxy() {
-    return proxy;
+  @ApiModelProperty(value = "")
+  public Boolean isArchived() {
+    return archived;
   }
 
-  public void setProxy(Boolean proxy) {
-    this.proxy = proxy;
+  public void setArchived(Boolean archived) {
+    this.archived = archived;
   }
 
-  public IPPrivacy tor(Boolean tor) {
-    this.tor = tor;
+  public ListItem createdAt(OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Get tor
-   * @return tor
+   * Get createdAt
+   * @return createdAt
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isTor() {
-    return tor;
+  @ApiModelProperty(example = "2021-09-27T16:46:38.313Z", value = "")
+  public OffsetDateTime getCreatedAt() {
+    return createdAt;
   }
 
-  public void setTor(Boolean tor) {
-    this.tor = tor;
+  public void setCreatedAt(OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    IPPrivacy ipPrivacy = (IPPrivacy) o;
-    return Objects.equals(this.anonymous, ipPrivacy.anonymous) &&
-        Objects.equals(this.datacenter, ipPrivacy.datacenter) &&
-        Objects.equals(this.proxy, ipPrivacy.proxy) &&
-        Objects.equals(this.tor, ipPrivacy.tor);
+    ListItem listItem = (ListItem) o;
+    return Objects.equals(this.id, listItem.id) &&
+        Objects.equals(this.listId, listItem.listId) &&
+        Objects.equals(this.archived, listItem.archived) &&
+        Objects.equals(this.createdAt, listItem.createdAt) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(anonymous, datacenter, proxy, tor);
+    return Objects.hash(id, listId, archived, createdAt, super.hashCode());
   }
-
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class IPPrivacy {\n");
-    sb.append("    anonymous: ").append(toIndentedString(anonymous)).append("\n");
-    sb.append("    datacenter: ").append(toIndentedString(datacenter)).append("\n");
-    sb.append("    proxy: ").append(toIndentedString(proxy)).append("\n");
-    sb.append("    tor: ").append(toIndentedString(tor)).append("\n");
+    sb.append("class ListItem {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    listId: ").append(toIndentedString(listId)).append("\n");
+    sb.append("    archived: ").append(toIndentedString(archived)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -145,7 +147,7 @@ public class IPPrivacy {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

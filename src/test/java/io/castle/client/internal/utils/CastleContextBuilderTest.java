@@ -307,25 +307,25 @@ public class CastleContextBuilderTest {
         Assertions.assertThat(context.getIp()).isEqualTo(standardContext.getIp());
     }
 
-    private String valueControlCache = "max-age=0";
-    private String keyControlCache = "Cache-Control";
-    private String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";
-    private String ip = "8.8.8.8";
-    private String userAgentHeader = "User-Agent";
-    private String customClientIdHeader = "X-Castle-Client-Id";
-    private String acceptHeader = "Accept";
-    private String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-    private String acceptLanguageHeader = "Accept-Language";
-    private String acceptLanguage = "en-US,en;q=0.5";
-    private String connectionHeader = "Connection";
-    private String connection = "keep-alive";
-    private String refererHeader = "Referer";
-    private String referer = "http://localhost:8080/";
-    private String headerHost = "Host";
-    private String hostValue = "localhost:8080";
-    private String acceptEncodingHeader = "Accept-Encoding";
-    private String acceptEncoding = "gzip, deflate";
-    private String cgiSpecHeaderName = "REMOTE_ADDR";
+    private final String valueControlCache = "max-age=0";
+    private final String keyControlCache = "Cache-Control";
+    private final String userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0";
+    private final String ip = "8.8.8.8";
+    private final String userAgentHeader = "User-Agent";
+    private final String customClientIdHeader = "X-Castle-Client-Id";
+    private final String acceptHeader = "Accept";
+    private final String accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+    private final String acceptLanguageHeader = "Accept-Language";
+    private final String acceptLanguage = "en-US,en;q=0.5";
+    private final String connectionHeader = "Connection";
+    private final String connection = "keep-alive";
+    private final String refererHeader = "Referer";
+    private final String referer = "http://localhost:8080/";
+    private final String headerHost = "Host";
+    private final String hostValue = "localhost:8080";
+    private final String acceptEncodingHeader = "Accept-Encoding";
+    private final String acceptEncoding = "gzip, deflate";
+    private final String cgiSpecHeaderName = "REMOTE_ADDR";
 
     public MockHttpServletRequest getStandardRequestMock() {
         MockHttpServletRequest request = new MockHttpServletRequest();

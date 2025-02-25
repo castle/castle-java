@@ -12,61 +12,40 @@
 
 package io.castle.client.model.generated;
 
-import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModel;
 
+import java.util.ArrayList;
 import java.util.Objects;
-/**
- * FilterAndRiskResponseEmailDomainDetailsMxRecords
- */
 
+/**
+ * List Query Response
+ */
+@ApiModel(description = "List Query Response")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
-  @SerializedName("null_mx")
-  private Boolean nullMx = null;
-
-  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
-    return this;
-  }
-
-   /**
-   * Get nullMx
-   * @return nullMx
-  **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isNullMx() {
-    return nullMx;
-  }
-
-  public void setNullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
-  }
-
+public class ListQueryResponse extends ArrayList<Object> {
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
-    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
+    return super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nullMx);
+    return Objects.hash(super.hashCode());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
+    sb.append("class ListQueryResponse {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -75,7 +54,7 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

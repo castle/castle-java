@@ -16,57 +16,59 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * FilterAndRiskResponseEmailDomainDetailsMxRecords
+ * ListItemListCount
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
-  @SerializedName("null_mx")
-  private Boolean nullMx = null;
+public class ListItemListCount {
+  @SerializedName("total_count")
+  private int totalCount;
 
-  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  public ListItemListCount totalCount(int totalCount) {
+    this.totalCount = totalCount;
     return this;
   }
 
    /**
-   * Get nullMx
-   * @return nullMx
+   * A number of list items matching the query capped at 100,000.
+   * minimum: 0
+   * @return totalCount
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isNullMx() {
-    return nullMx;
+  @ApiModelProperty(example = "1", required = true, value = "A number of list items matching the query capped at 100,000.")
+  public int getTotalCount() {
+    return totalCount;
   }
 
-  public void setNullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  public void setTotalCount(int totalCount) {
+    this.totalCount = totalCount;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
-    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
+    ListItemListCount listItemListCount = (ListItemListCount) o;
+    return Objects.equals(this.totalCount, listItemListCount.totalCount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nullMx);
+    return Objects.hash(totalCount);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
+    sb.append("class ListItemListCount {\n");
+    sb.append("    totalCount: ").append(toIndentedString(totalCount)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -75,7 +77,7 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

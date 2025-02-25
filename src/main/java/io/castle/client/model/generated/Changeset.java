@@ -192,16 +192,15 @@ public class Changeset {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Changeset {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
-    sb.append("    authenticationMethodType: ").append(toIndentedString(authenticationMethodType)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("}");
-    return sb.toString();
+      String sb = "class Changeset {\n" +
+              "    " + toIndentedString(super.toString()) + "\n" +
+              "    password: " + toIndentedString(password) + "\n" +
+              "    email: " + toIndentedString(email) + "\n" +
+              "    phone: " + toIndentedString(phone) + "\n" +
+              "    authenticationMethodType: " + toIndentedString(authenticationMethodType) + "\n" +
+              "    name: " + toIndentedString(name) + "\n" +
+              "}";
+    return sb;
   }
 
   /**

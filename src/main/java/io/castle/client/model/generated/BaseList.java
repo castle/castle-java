@@ -13,32 +13,40 @@
 package io.castle.client.model.generated;
 
 import com.google.gson.annotations.SerializedName;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
-/**
- * FilterAndRiskResponseSdksServer
- */
 
+/**
+ * List
+ */
+@ApiModel(description = "List")
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseSdksServer {
+public class BaseList {
   @SerializedName("name")
   private String name = null;
 
-  @SerializedName("version")
-  private String version = null;
+  @SerializedName("description")
+  private String description = null;
 
-  public FilterAndRiskResponseSdksServer name(String name) {
+  @SerializedName("color")
+  private ListColor color = null;
+
+  @SerializedName("default_item_archivation_time")
+  private Integer defaultItemArchivationTime = null;
+
+  public BaseList name(String name) {
     this.name = name;
     return this;
   }
 
    /**
-   * Get name
+   * Name of the List
    * @return name
   **/
-  @ApiModelProperty(example = "castle-postman", value = "")
+  @ApiModelProperty(example = "Malicious IPs", value = "Name of the List")
   public String getName() {
     return name;
   }
@@ -47,22 +55,60 @@ public class FilterAndRiskResponseSdksServer {
     this.name = name;
   }
 
-  public FilterAndRiskResponseSdksServer version(String version) {
-    this.version = version;
+  public BaseList description(String description) {
+    this.description = description;
     return this;
   }
 
    /**
-   * Get version
-   * @return version
+   * Description of the List
+   * @return description
   **/
-  @ApiModelProperty(example = "0.1.0", value = "")
-  public String getVersion() {
-    return version;
+  @ApiModelProperty(example = "We block these IPs from withdrawing funds. Please be careful.", value = "Description of the List")
+  public String getDescription() {
+    return description;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public BaseList color(ListColor color) {
+    this.color = color;
+    return this;
+  }
+
+   /**
+   * Get color
+   * @return color
+  **/
+  @ApiModelProperty(value = "")
+  public ListColor getColor() {
+    return color;
+  }
+
+  public void setColor(ListColor color) {
+    this.color = color;
+  }
+
+  public BaseList defaultItemArchivationTime(Integer defaultItemArchivationTime) {
+    this.defaultItemArchivationTime = defaultItemArchivationTime;
+    return this;
+  }
+
+   /**
+   * Default time, in seconds, after which Items in this List automatically gets archived after they are created. It is possible to override this value when creating the individual List Items
+   * minimum: 1
+   * maximum: 63113904
+   * @return defaultItemArchivationTime
+  **/
+  @ApiModelProperty(example = "2592000", value = "Default time, in seconds, after which Items in this List automatically gets archived after they are created. It is possible to override this value when creating the individual List Items")
+  public int getDefaultItemArchivationTime() {
+    return defaultItemArchivationTime;
+  }
+
+  public void setDefaultItemArchivationTime(Integer defaultItemArchivationTime) {
+    this.defaultItemArchivationTime = defaultItemArchivationTime;
   }
 
 
@@ -74,22 +120,28 @@ public class FilterAndRiskResponseSdksServer {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseSdksServer sdksServer = (FilterAndRiskResponseSdksServer) o;
-    return Objects.equals(this.name, sdksServer.name) &&
-        Objects.equals(this.version, sdksServer.version);
+    BaseList baseList = (BaseList) o;
+    return Objects.equals(this.name, baseList.name) &&
+        Objects.equals(this.description, baseList.description) &&
+        Objects.equals(this.color, baseList.color) &&
+        Objects.equals(this.defaultItemArchivationTime, baseList.defaultItemArchivationTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version);
+    return Objects.hash(name, description, color, defaultItemArchivationTime);
   }
+
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseSdksServer {\n");
+    sb.append("class BaseList {\n");
+    
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    color: ").append(toIndentedString(color)).append("\n");
+    sb.append("    defaultItemArchivationTime: ").append(toIndentedString(defaultItemArchivationTime)).append("\n");
     sb.append("}");
     return sb.toString();
   }

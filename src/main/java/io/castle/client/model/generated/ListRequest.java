@@ -16,57 +16,84 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
+
 /**
- * FilterAndRiskResponseEmailDomainDetailsMxRecords
+ * ListRequest
  */
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaClientCodegen", date = "2025-01-20T18:58:06.855017776Z[GMT]")
 
-public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
-  @SerializedName("null_mx")
-  private Boolean nullMx = null;
+public class ListRequest extends BaseList {
+  @SerializedName("primary_field")
+  private String primaryField = null;
 
-  public FilterAndRiskResponseEmailDomainDetailsMxRecords nullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  @SerializedName("secondary_field")
+  private String secondaryField = null;
+
+  public ListRequest primaryField(String primaryField) {
+    this.primaryField = primaryField;
     return this;
   }
 
    /**
-   * Get nullMx
-   * @return nullMx
+   * Get primaryField
+   * @return primaryField
   **/
-  @ApiModelProperty(example = "false", value = "")
-  public Boolean isNullMx() {
-    return nullMx;
+  @ApiModelProperty(required = true, value = "")
+  public String getPrimaryField() {
+    return primaryField;
   }
 
-  public void setNullMx(Boolean nullMx) {
-    this.nullMx = nullMx;
+  public void setPrimaryField(String primaryField) {
+    this.primaryField = primaryField;
+  }
+
+  public ListRequest secondaryField(String secondaryField) {
+    this.secondaryField = secondaryField;
+    return this;
+  }
+
+   /**
+   * Get secondaryField
+   * @return secondaryField
+  **/
+  @ApiModelProperty(value = "")
+  public String getSecondaryField() {
+    return secondaryField;
+  }
+
+  public void setSecondaryField(String secondaryField) {
+    this.secondaryField = secondaryField;
   }
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FilterAndRiskResponseEmailDomainDetailsMxRecords emailDomainDetailsMxRecords = (FilterAndRiskResponseEmailDomainDetailsMxRecords) o;
-    return Objects.equals(this.nullMx, emailDomainDetailsMxRecords.nullMx);
+    ListRequest listRequest = (ListRequest) o;
+    return Objects.equals(this.primaryField, listRequest.primaryField) &&
+        Objects.equals(this.secondaryField, listRequest.secondaryField) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(nullMx);
+    return Objects.hash(primaryField, secondaryField, super.hashCode());
   }
+
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
+    sb.append("class ListRequest {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    primaryField: ").append(toIndentedString(primaryField)).append("\n");
+    sb.append("    secondaryField: ").append(toIndentedString(secondaryField)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -75,7 +102,7 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
