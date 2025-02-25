@@ -104,24 +104,22 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
     @Test
     public void searchListItems() throws InterruptedException {
         MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody("{\n" +
-                "  \"data\": [\n" +
-                "    {\n" +
-                "      \"primary_value\": \"A04t7AcfSA69cBTTusx0RQ\",\n" +
-                "      \"secondary_value\": \"2ee938c8-24c2-4c26-9d25-19511dd75029\",\n" +
-                "      \"comment\": \"Fradulent user found through manual inspection\",\n" +
-                "      \"author\": {\n" +
-                "        \"type\": \"$analyst_email\",\n" +
-                "        \"identifier\": \"string\"\n" +
-                "      },\n" +
-                "      \"auto_archives_at\": \"2021-09-27T16:46:38.313Z\",\n" +
-                "      \"id\": \"2ee938c8-24c2-4c26-9d25-19511dd75029\",\n" +
-                "      \"list_id\": \"2ee938c8-24c2-4c26-9d25-19511dd75029\",\n" +
-                "      \"archived\": true,\n" +
-                "      \"created_at\": \"2021-09-27T16:46:38.313Z\"\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}");
+        mockResponse.setBody("[\n" +
+                "{\n" +
+                "\"primary_value\": \"A04t7AcfSA69cBTTusx0RQ\",\n" +
+                "\"secondary_value\": \"2ee938c8-24c2-4c26-9d25-19511dd75029\",\n" +
+                "\"comment\": \"Fradulent user found through manual inspection\",\n" +
+                "\"author\": {\n" +
+                "\"type\": \"$analyst_email\",\n" +
+                "\"identifier\": \"string\"\n" +
+                "},\n" +
+                "\"auto_archives_at\": \"2021-09-27T16:46:38.313Z\",\n" +
+                "\"id\": \"2ee938c8-24c2-4c26-9d25-19511dd75029\",\n" +
+                "\"list_id\": \"2ee938c8-24c2-4c26-9d25-19511dd75029\",\n" +
+                "\"archived\": true,\n" +
+                "\"created_at\": \"2021-09-27T16:46:38.313Z\"\n" +
+                "}\n" +
+                "]");
         mockResponse.setResponseCode(200);
         server.enqueue(mockResponse);
 
@@ -138,11 +136,11 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
         filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
         listItemQuery.filters(filters);
 
-        ListItemList response = sdk.onRequest(request).searchListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", listItemQuery);
+        List<ListItem> response = sdk.onRequest(request).searchListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", listItemQuery);
 
         // Check response object
-        Assert.assertEquals(1, response.getData().size());
-        ListItem listItem = response.getData().get(0);
+        Assert.assertEquals(1, response.size());
+        ListItem listItem = response.get(0);
         Assert.assertEquals("A04t7AcfSA69cBTTusx0RQ", listItem.getPrimaryValue());
         Assert.assertEquals("2ee938c8-24c2-4c26-9d25-19511dd75029", listItem.getSecondaryValue());
         Assert.assertEquals("Fradulent user found through manual inspection", listItem.getComment());

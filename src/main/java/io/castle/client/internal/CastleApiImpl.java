@@ -400,12 +400,13 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
-    public ListItemList searchListItems(String id, ListItemQuery payload) {
+    public List<ListItem> searchListItems(String id, ListItemQuery payload) {
         Preconditions.checkNotNull(id);
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         CastleResponse castleResponse = restApi.post(String.format(Castle.URL_LISTS_ITEMS_SEARCH, id), payload);
-        return configuration.getModel().getGson().fromJson(castleResponse.json(), ListItemList.class);
+        Type listType = new TypeToken<List<ListItem>>(){}.getType();
+        return configuration.getModel().getGson().fromJson(castleResponse.json(), listType);
     }
 
     @Override

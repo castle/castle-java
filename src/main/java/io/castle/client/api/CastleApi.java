@@ -387,7 +387,7 @@ public interface CastleApi {
      *
      * @return
      */
-    ListItemList searchListItems(String listId, ListItemQuery payload);
+    List<ListItem> searchListItems(String listId, ListItemQuery payload);
 
     /**
      * Makes a sync GET request to the list item endpoint.
