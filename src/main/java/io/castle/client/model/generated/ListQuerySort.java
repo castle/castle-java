@@ -180,12 +180,10 @@ public class ListQuerySort {
     return Objects.hash(field, order);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListQuerySort {\n");
-    
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
