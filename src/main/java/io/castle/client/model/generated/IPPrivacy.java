@@ -133,7 +133,6 @@ public class IPPrivacy {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class IPPrivacy {\n");
-    
     sb.append("    anonymous: ").append(toIndentedString(anonymous)).append("\n");
     sb.append("    datacenter: ").append(toIndentedString(datacenter)).append("\n");
     sb.append("    proxy: ").append(toIndentedString(proxy)).append("\n");

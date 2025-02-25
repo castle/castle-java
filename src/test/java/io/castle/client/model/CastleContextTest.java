@@ -43,8 +43,7 @@ public class CastleContextTest {
 
         //Then generated json match the api contract
         String expectedJson = "{\"active\":true," +
-                "\"client_id\":true," +
-                "" + SDKVersion.getLibraryString() +"," +
+                "\"client_id\":true," + SDKVersion.getLibraryString() +"," +
                 "\"user_agent\":true}";
 
         JSONAssert.assertEquals(expectedJson, contextJson, true);
@@ -126,8 +125,7 @@ public class CastleContextTest {
                 "\"page\":{\"path\":\"p_path\",\"referrer\":\"p_referrer\",\"search\":\"p_search\",\"title\":\"p_title\",\"url\":\"p_url\"}," +
                 "\"referrer\":{\"id\":\"r_id\",\"type\":\"r_type\"}," +
                 "\"headers\":{\"key1\":\"value1\",\"key2\":\"value2\"}," +
-                "\"ip\":\"ip\"," +
-                "" + SDKVersion.getLibraryString() +"," +
+                "\"ip\":\"ip\"," + SDKVersion.getLibraryString() +"," +
                 "\"locale\":\"locale\"," +
                 "\"location\":{\"city\":\"l_city\",\"country\":\"l_country\",\"latitude\":10,\"longitude\":10,\"speed\":0}," +
                 "\"network\":{\"bluetooth\":true,\"cellular\":true,\"carrier\":\"n_carrier\",\"wifi\":true}," +

@@ -78,7 +78,6 @@ public class ListItemsBatchRequest {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListItemsBatchRequest {\n");
-    
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("}");
     return sb.toString();

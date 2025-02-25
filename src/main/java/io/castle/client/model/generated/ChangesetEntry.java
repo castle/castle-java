@@ -105,12 +105,11 @@ public class ChangesetEntry extends BaseChangesetEntry {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ChangesetEntry {\n");
-    sb.append("    from: ").append(toIndentedString(from)).append("\n");
-    sb.append("    to: ").append(toIndentedString(to)).append("\n");
-    sb.append("}");
-    return sb.toString();
+      String sb = "class ChangesetEntry {\n" +
+              "    from: " + toIndentedString(from) + "\n" +
+              "    to: " + toIndentedString(to) + "\n" +
+              "}";
+    return sb;
   }
 
   /**

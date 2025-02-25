@@ -178,7 +178,6 @@ public class ListItemsBatchResponse {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListItemsBatchResponse {\n");
-    
     sb.append("    totalReceived: ").append(toIndentedString(totalReceived)).append("\n");
     sb.append("    totalProcessed: ").append(toIndentedString(totalProcessed)).append("\n");
     sb.append("    created: ").append(toIndentedString(created)).append("\n");

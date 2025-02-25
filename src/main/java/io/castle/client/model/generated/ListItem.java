@@ -130,7 +130,6 @@ public class ListItem extends BaseItem {
     return Objects.hash(id, listId, archived, createdAt, super.hashCode());
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

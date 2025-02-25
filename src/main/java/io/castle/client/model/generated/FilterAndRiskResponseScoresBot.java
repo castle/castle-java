@@ -55,12 +55,10 @@ public class FilterAndRiskResponseScoresBot {
     return Objects.hash(score);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseScoresBot {\n");
-    
     sb.append("    score: ").append(toIndentedString(score)).append("\n");
     sb.append("}");
     return sb.toString();

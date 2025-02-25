@@ -118,7 +118,6 @@ public class ListQueryOrFilter extends BaseListQueryFilter {
     this.value = value;
   }
 
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -159,5 +158,4 @@ public class ListQueryOrFilter extends BaseListQueryFilter {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
 }

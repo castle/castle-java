@@ -64,12 +64,10 @@ public class ListItemListCount {
     return Objects.hash(totalCount);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListItemListCount {\n");
-    
     sb.append("    totalCount: ").append(toIndentedString(totalCount)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -152,12 +152,10 @@ public class BaseItem {
     return Objects.hash(primaryValue, secondaryValue, comment, author, autoArchivesAt);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class BaseItem {\n");
-    
     sb.append("    primaryValue: ").append(toIndentedString(primaryValue)).append("\n");
     sb.append("    secondaryValue: ").append(toIndentedString(secondaryValue)).append("\n");
     sb.append("    comment: ").append(toIndentedString(comment)).append("\n");

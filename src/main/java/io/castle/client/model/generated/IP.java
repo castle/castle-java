@@ -172,7 +172,6 @@ public class IP {
     return Objects.hash(asn, location, address, isp, type, privacy);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

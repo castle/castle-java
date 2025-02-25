@@ -85,12 +85,10 @@ public class FilterAndRiskResponseSdks {
     return Objects.hash(client, server);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseSdks {\n");
-    
     sb.append("    client: ").append(toIndentedString(client)).append("\n");
     sb.append("    server: ").append(toIndentedString(server)).append("\n");
     sb.append("}");

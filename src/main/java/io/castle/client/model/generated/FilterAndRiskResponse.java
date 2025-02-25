@@ -491,12 +491,10 @@ public class FilterAndRiskResponse {
     return Objects.hash(risk, scores, policy, signals, metrics, device, id, name, type, status, createdAt, authenticated, authenticationMethod, email, endpoint, ip, params, product, sdks, session, user, behavior, properties);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponse {\n");
-    
     sb.append("    risk: ").append(toIndentedString(risk)).append("\n");
     sb.append("    scores: ").append(toIndentedString(scores)).append("\n");
     sb.append("    policy: ").append(toIndentedString(policy)).append("\n");

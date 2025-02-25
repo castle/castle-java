@@ -170,7 +170,6 @@ public class ListQuery {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListQuery {\n");
-    
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    page: ").append(toIndentedString(page)).append("\n");
     sb.append("    resultsSize: ").append(toIndentedString(resultsSize)).append("\n");

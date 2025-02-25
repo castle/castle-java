@@ -62,12 +62,10 @@ public class FilterAndRiskResponseEmailDomainDetailsMxRecords {
     return Objects.hash(nullMx);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseEmailDomainDetailsMxRecords {\n");
-    
     sb.append("    nullMx: ").append(toIndentedString(nullMx)).append("\n");
     sb.append("}");
     return sb.toString();

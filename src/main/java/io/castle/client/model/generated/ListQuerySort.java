@@ -70,7 +70,8 @@ public class ListQuerySort {
         return FieldEnum.fromValue((String)(value));
       }
     }
-  }  @SerializedName("field")
+  }
+  @SerializedName("field")
   private FieldEnum field = null;
 
   /**
@@ -116,7 +117,8 @@ public class ListQuerySort {
         return OrderEnum.fromValue((String)(value));
       }
     }
-  }  @SerializedName("order")
+  }
+  @SerializedName("order")
   private OrderEnum order = null;
 
   public ListQuerySort field(FieldEnum field) {

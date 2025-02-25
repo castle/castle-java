@@ -143,7 +143,6 @@ public class ListItemQuery {
     return Objects.hash(page, resultsSize, sort, filters);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

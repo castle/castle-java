@@ -227,12 +227,10 @@ public class FilterAndRiskResponseEmailDomainDetails {
     return Objects.hash(createdAt, updatedAt, expiresAt, registrar, nameservers, spfRecord, dmarcRecord, mxRecords);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseEmailDomainDetails {\n");
-    
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");

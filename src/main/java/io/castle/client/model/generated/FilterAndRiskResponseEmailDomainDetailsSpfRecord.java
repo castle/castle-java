@@ -62,12 +62,10 @@ public class FilterAndRiskResponseEmailDomainDetailsSpfRecord {
     return Objects.hash(exists);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseEmailDomainDetailsSpfRecord {\n");
-    
     sb.append("    exists: ").append(toIndentedString(exists)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -96,6 +96,7 @@ public class ListItemQuerySort {
     public String toString() {
       return String.valueOf(value);
     }
+
     public static OrderEnum fromValue(String input) {
       for (OrderEnum b : OrderEnum.values()) {
         if (b.value.equals(input)) {
@@ -174,12 +175,10 @@ public class ListItemQuerySort {
     return Objects.hash(field, order);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListItemQuerySort {\n");
-    
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");

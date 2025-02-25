@@ -67,7 +67,6 @@ public class ListItemAuthor {
     this.identifier = identifier;
   }
 
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -86,12 +85,10 @@ public class ListItemAuthor {
     return Objects.hash(type, identifier);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ListItemAuthor {\n");
-    
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    identifier: ").append(toIndentedString(identifier)).append("\n");
     sb.append("}");

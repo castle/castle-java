@@ -56,6 +56,7 @@ public class ListItemRequest extends BaseItem {
     public String toString() {
       return String.valueOf(value);
     }
+
     public static ModeEnum fromValue(String input) {
       for (ModeEnum b : ModeEnum.values()) {
         if (b.value.equals(input)) {
@@ -64,6 +65,7 @@ public class ListItemRequest extends BaseItem {
       }
       return null;
     }
+
     public static class Adapter extends TypeAdapter<ModeEnum> {
       @Override
       public void write(final JsonWriter jsonWriter, final ModeEnum enumeration) throws IOException {
@@ -76,7 +78,8 @@ public class ListItemRequest extends BaseItem {
         return ModeEnum.fromValue((String)(value));
       }
     }
-  }  @SerializedName("mode")
+  }
+  @SerializedName("mode")
   private ModeEnum mode = ModeEnum.ERROR;
 
   public ListItemRequest mode(ModeEnum mode) {

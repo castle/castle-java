@@ -84,7 +84,6 @@ public class DeviceHardwareDisplay {
     return Objects.hash(width, height);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

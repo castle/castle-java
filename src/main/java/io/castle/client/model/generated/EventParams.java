@@ -107,7 +107,6 @@ public class EventParams {
     return Objects.hash(email, phone, username);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

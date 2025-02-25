@@ -84,7 +84,6 @@ public class IPIsp {
     return Objects.hash(name, organization);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

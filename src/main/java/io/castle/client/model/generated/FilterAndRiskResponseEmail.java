@@ -151,12 +151,10 @@ public class FilterAndRiskResponseEmail {
     return Objects.hash(normalized, domain, disposable, unreachable, domainDetails);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseEmail {\n");
-    
     sb.append("    normalized: ").append(toIndentedString(normalized)).append("\n");
     sb.append("    domain: ").append(toIndentedString(domain)).append("\n");
     sb.append("    disposable: ").append(toIndentedString(disposable)).append("\n");

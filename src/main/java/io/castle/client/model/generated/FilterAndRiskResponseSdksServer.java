@@ -84,12 +84,10 @@ public class FilterAndRiskResponseSdksServer {
     return Objects.hash(name, version);
   }
 
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FilterAndRiskResponseSdksServer {\n");
-    
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("}");

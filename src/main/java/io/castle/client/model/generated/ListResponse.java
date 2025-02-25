@@ -106,15 +106,14 @@ public class ListResponse extends ListRequest {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ListResponse {\n");
-        sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    sizeLabel: ").append(toIndentedString(sizeLabel)).append("\n");
-        sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-        sb.append("    archivedAt: ").append(toIndentedString(archivedAt)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        String sb = "class ListResponse {\n" +
+                "    " + toIndentedString(super.toString()) + "\n" +
+                "    id: " + toIndentedString(id) + "\n" +
+                "    sizeLabel: " + toIndentedString(sizeLabel) + "\n" +
+                "    createdAt: " + toIndentedString(createdAt) + "\n" +
+                "    archivedAt: " + toIndentedString(archivedAt) + "\n" +
+                "}";
+        return sb;
     }
 
     /**
