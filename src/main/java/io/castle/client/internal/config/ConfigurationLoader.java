@@ -150,6 +150,11 @@ class ConfigurationLoader {
                 "ip_headers",
                 "CASTLE_SDK_IP_HEADERS"
         );
+        String httpProxyAddress = loadConfigurationValue(
+                castleConfigurationProperties,
+                "http_proxy_address",
+                "CASTLE_SDK_HTTP_PROXY_ADDRESS"
+        );
         CastleConfigurationBuilder builder = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret(envApiSecret)
@@ -193,6 +198,9 @@ class ConfigurationLoader {
         }
         if (ipHeadersValue != null) {
             builder.withIPHeaders(Splitter.on(",").splitToList(ipHeadersValue));
+        }
+        if (httpProxyAddress != null) {
+            builder.withHttpProxyAddress(httpProxyAddress);
         }
 
         return builder;

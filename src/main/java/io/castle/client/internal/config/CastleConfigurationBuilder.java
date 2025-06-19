@@ -92,6 +92,11 @@ public class CastleConfigurationBuilder {
      */
     private int maxRequests = 5;
 
+    /**
+     * Address to proxy the HTTP requests through.
+     */
+    private String httpProxyAddress;
+
     private CastleConfigurationBuilder() {
     }
 
@@ -336,7 +341,8 @@ public class CastleConfigurationBuilder {
                 backendProvider,
                 logHttpRequests,
                 ipHeaders,
-                maxRequests);
+                maxRequests,
+                httpProxyAddress);
     }
 
     /**
@@ -406,5 +412,21 @@ public class CastleConfigurationBuilder {
     /* alias for withIPHeaders */
     public CastleConfigurationBuilder ipHeaders(List<String> ipHeaders) {
         return withIPHeaders(ipHeaders);
+    }
+
+    /**
+     * Address to proxy the HTTP requests through.
+     *
+     * @param httpProxyAddress address (host:port) to proxy the HTTP requests through.
+     * @return a castleConfigurationBuilder with HTTP proxy address set
+     */
+    public CastleConfigurationBuilder withHttpProxyAddress(String httpProxyAddress) {
+        this.httpProxyAddress = httpProxyAddress;
+        return this;
+    }
+
+    /* alias for withHttpProxyAddress */
+    public CastleConfigurationBuilder httpProxyAddress(String httpProxyAddress) {
+        return withHttpProxyAddress(httpProxyAddress);
     }
 }

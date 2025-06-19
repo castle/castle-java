@@ -66,7 +66,12 @@ public class CastleConfiguration {
      */
     private final int maxRequests;
 
-    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> allowListHeaders, List<String> denyListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests) {
+    /**
+     * Address to proxy the HTTP requests through.
+     */
+    private final String httpProxyAddress;
+
+    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> allowListHeaders, List<String> denyListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests, String httpProxyAddress) {
         this.apiBaseUrl = apiBaseUrl;
         this.timeout = timeout;
         this.authenticateFailoverStrategy = authenticateFailoverStrategy;
@@ -78,6 +83,7 @@ public class CastleConfiguration {
         this.logHttpRequests = logHttpRequests;
         this.ipHeaders = ipHeaders;
         this.maxRequests = maxRequests;
+        this.httpProxyAddress = httpProxyAddress;
     }
 
     public String getApiBaseUrl() {
@@ -132,5 +138,9 @@ public class CastleConfiguration {
 
     public int getMaxRequests() {
         return maxRequests;
+    }
+
+    public String getHttpProxyAddress() {
+        return httpProxyAddress;
     }
 }
