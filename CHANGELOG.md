@@ -2,6 +2,11 @@
 
 ## master
 
+## 2.6.1 (2025-07-28)
+
+- [#153](https://github.com/castle/castle-java/pull/153) Remove string json serialization cap
+- [#151](https://github.com/castle/castle-java/pull/151) Bump org.springframework:spring-web from 6.0.23 to 6.1.14
+
 ## 2.6.0 (2025-02-25)
 
 - [#149](https://github.com/castle/castle-java/pull/149) Add support for List API
