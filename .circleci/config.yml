@@ -41,11 +41,12 @@ jobs:
             chmod +x ./cc-test-reporter
 
       - run:
-          name: Run tests
+          name: Run tests and upload coverage
           command: |
             mvn test
-            ./cc-test-reporter format-coverage -t jacoco ./target/jacoco-ut/jacoco.xml
-            ./cc-test-reporter upload-coverage
+            mkdir -p coverage
+            ./cc-test-reporter format-coverage -t jacoco ./target/jacoco-ut/jacoco.xml -o coverage/codeclimate.json
+            ./cc-test-reporter upload-coverage -i coverage/codeclimate.json
 
       - store_artifacts:
           path: target/surefire-reports
