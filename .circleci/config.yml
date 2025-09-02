@@ -35,18 +35,9 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-
-      - run:
-          name: Run tests and upload coverage
+          name: Run tests
           command: |
             mvn test
-            mkdir -p coverage
-            ./cc-test-reporter format-coverage -t jacoco ./target/jacoco-ut/jacoco.xml -o coverage/codeclimate.json
-            ./cc-test-reporter upload-coverage -i coverage/codeclimate.json
 
       - store_artifacts:
           path: target/surefire-reports
