@@ -5,8 +5,7 @@ import io.castle.client.model.CastleUserDeviceContext;
 import io.castle.client.model.CastleUserDevices;
 import io.castle.client.model.DeviceUserAgent;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 public class DeviceUtils {
 
@@ -63,7 +62,7 @@ public class DeviceUtils {
 
     public static CastleUserDevices createExpectedDevices() {
         CastleUserDevices devices = new CastleUserDevices();
-        devices.setDevices(List.of(createExpectedDevice()));
+        devices.setDevices(Collections.singletonList(createExpectedDevice()));
         return devices;
     }
 

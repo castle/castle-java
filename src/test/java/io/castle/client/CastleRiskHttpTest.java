@@ -13,8 +13,8 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.threeten.bp.OffsetDateTime;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
 
@@ -338,7 +338,7 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
 
         risk.skipContextValidation(false);
         risk.skipRequestTokenValidation(false);
-        risk.expand(List.of("all"));
+        risk.expand(Collections.singletonList("all"));;
 
         AuthenticationMethod authenticationMethod = new AuthenticationMethod()
                 .type(AuthenticationMethodType.SOCIAL)

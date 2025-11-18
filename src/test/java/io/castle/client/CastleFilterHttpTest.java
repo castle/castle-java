@@ -13,8 +13,8 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.threeten.bp.OffsetDateTime;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
 
@@ -365,7 +365,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
         filter.matchingUserId("123");
         filter.skipRequestTokenValidation(false);
         filter.skipContextValidation(false);
-        filter.expand(List.of("all"));
+        filter.expand(Collections.singletonList("all"));
 
         return filter;
     }

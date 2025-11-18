@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.threeten.bp.OffsetDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
@@ -133,7 +134,7 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
         List<BaseListItemQueryFilter> filters = new ArrayList<>();
         filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.PRIMARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("Uc80JFKRRvm"));
         filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.ARCHIVED).op(ListItemQueryFilter.OpEnum._EQ).value(false));
-        filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
+        filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(Collections.singletonList(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
         listItemQuery.filters(filters);
 
         List<ListItem> response = sdk.onRequest(request).searchListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", listItemQuery);
@@ -174,8 +175,8 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
         List<BaseListItemQueryFilter> filters = new ArrayList<>();
         filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.PRIMARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("Uc80JFKRRvm"));
         filters.add(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.ARCHIVED).op(ListItemQueryFilter.OpEnum._EQ).value(false));
-        filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
-        filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(List.of(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("2"))));
+        filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(Collections.singletonList(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("1"))));
+        filters.add(new ListItemQueryOrFilter().op(ListItemQueryOrFilter.OpEnum._OR).value(Collections.singletonList(new ListItemQueryFilter().field(ListItemQueryFilter.FieldEnum.SECONDARY_VALUE).op(ListItemQueryFilter.OpEnum._EQ).value("2"))));
         listItemQuery.filters(filters);
 
         ListItemListCount response = sdk.onRequest(request).countListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", listItemQuery);
@@ -314,7 +315,7 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
 
     private ListItemsBatchRequest createListItemBulkRequest() {
         ListItemsBatchRequest listItemsBatchRequest = new ListItemsBatchRequest();
-        listItemsBatchRequest.setItems(List.of(createListItemRequest()));
+        listItemsBatchRequest.setItems(Collections.singletonList(createListItemRequest()));
         return listItemsBatchRequest;
     }
 
