@@ -4,7 +4,7 @@
 
 # Requirements
 
-- **Java Version:** This SDK requires **Java 17** or higher.
+- **Java Version:** This SDK requires **Java 8** or higher.
 
 # Usage
 See the [documentation](https://docs.castle.io) for how to use this SDK with the Castle APIs
