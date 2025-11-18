@@ -14,6 +14,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.threeten.bp.OffsetDateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
@@ -278,12 +279,12 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
 
         ListQueryOrFilter orFilter = new ListQueryOrFilter();
         orFilter.op(ListQueryOrFilter.OpEnum._OR);
-        orFilter.value(List.of(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(ListQueryFilter.OpEnum._EQ).value("user.id")));
+        orFilter.value(Collections.singletonList(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(ListQueryFilter.OpEnum._EQ).value("user.id")));
         filters.add(orFilter);
 
         orFilter = new ListQueryOrFilter();
         orFilter.op(ListQueryOrFilter.OpEnum._OR);
-        orFilter.value(List.of(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(ListQueryFilter.OpEnum._EQ).value("user.email")));
+        orFilter.value(Collections.singletonList(new ListQueryFilter().field(ListQueryFilter.FieldEnum.SECONDARY_FIELD).op(ListQueryFilter.OpEnum._EQ).value("user.email")));
         filters.add(orFilter);
 
         query.filters(filters);
