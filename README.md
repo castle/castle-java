@@ -15,7 +15,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
 ```xml
         <dependency>
             <groupId>io.castle</groupId>
-            <artifactId>castle-java</artifactId>
+            <artifactId>castle-java-8</artifactId>
             <version>2.6.1</version>
         </dependency>
 ```
