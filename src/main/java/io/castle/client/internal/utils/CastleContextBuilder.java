@@ -7,8 +7,8 @@ import io.castle.client.model.CastleDevice;
 import io.castle.client.model.CastleHeader;
 import io.castle.client.model.CastleHeaders;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Enumeration;
 

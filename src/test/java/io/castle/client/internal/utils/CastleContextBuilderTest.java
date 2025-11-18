@@ -11,8 +11,8 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

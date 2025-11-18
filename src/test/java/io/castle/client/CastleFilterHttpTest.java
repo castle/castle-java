@@ -5,7 +5,7 @@ import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.generated.*;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;

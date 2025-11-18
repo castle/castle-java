@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CastleNoTrackOptionTest extends AbstractCastleHttpLayerTest {

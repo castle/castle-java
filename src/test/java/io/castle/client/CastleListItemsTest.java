@@ -4,7 +4,6 @@ import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleResponse;
 import io.castle.client.model.generated.*;
-import jakarta.servlet.http.HttpServletRequest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
@@ -12,6 +11,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.threeten.bp.OffsetDateTime;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

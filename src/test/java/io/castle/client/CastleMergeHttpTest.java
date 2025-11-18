@@ -14,7 +14,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.google.common.collect.ImmutableMap;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.atomic.AtomicReference;
 import io.castle.client.model.AsyncCallbackHandler;
 import org.assertj.core.api.Assertions;

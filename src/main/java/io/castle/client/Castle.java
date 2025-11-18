@@ -14,7 +14,7 @@ import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Creates an instance of the Castle SDK

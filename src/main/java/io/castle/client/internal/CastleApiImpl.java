@@ -15,7 +15,7 @@ import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
 import io.castle.client.model.generated.*;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
