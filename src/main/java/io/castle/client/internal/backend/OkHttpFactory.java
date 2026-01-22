@@ -7,6 +7,8 @@ import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 public class OkHttpFactory implements RestApiFactory {
@@ -18,7 +20,7 @@ public class OkHttpFactory implements RestApiFactory {
     public OkHttpFactory(CastleConfiguration configuration, CastleGsonModel modelInstance) {
         this.configuration = configuration;
         this.modelInstance = modelInstance;
-        client = createOkHttpClient();
+        this.client = createOkHttpClient();
     }
 
     private OkHttpClient createOkHttpClient() {
@@ -39,6 +41,14 @@ public class OkHttpFactory implements RestApiFactory {
             // TODO provide more configurable logging features.
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder = builder.addInterceptor(logging);
+        }
+
+        String httpProxyAddress = configuration.getHttpProxyAddress();
+        if (httpProxyAddress != null && !httpProxyAddress.isEmpty()) {
+            String[] proxyParts = httpProxyAddress.split(":");
+            String proxyHost = proxyParts[0];
+            int proxyPort = Integer.parseInt(proxyParts[1]);
+            builder = builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
         }
 
         OkHttpClient client = builder
