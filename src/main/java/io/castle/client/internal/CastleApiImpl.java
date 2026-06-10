@@ -334,6 +334,130 @@ public class CastleApiImpl implements CastleApi {
         return restApi.post(Castle.URL_LOG, payload);
     }
 
+    @Override
+    public CastleResponse createList(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        return backend().post(Castle.URL_LISTS, payload);
+    }
+
+    @Override
+    public CastleResponse getAllLists() {
+        return backend().get(Castle.URL_LISTS);
+    }
+
+    @Override
+    public CastleResponse getList(String listId) {
+        Preconditions.checkNotNull(listId);
+        return backend().get(Castle.URL_LISTS + "/" + listId);
+    }
+
+    @Override
+    public CastleResponse queryLists(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        return backend().post(Castle.URL_LISTS + "/query", payload);
+    }
+
+    @Override
+    public CastleResponse updateList(String listId, ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(payload);
+        return backend().put(Castle.URL_LISTS + "/" + listId, payload);
+    }
+
+    @Override
+    public CastleResponse deleteList(String listId) {
+        Preconditions.checkNotNull(listId);
+        return backend().delete(Castle.URL_LISTS + "/" + listId);
+    }
+
+    @Override
+    public CastleResponse createListItem(String listId, ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(payload);
+        return backend().post(listItemsPath(listId), payload);
+    }
+
+    @Override
+    public CastleResponse createListItemsBatch(String listId, ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(payload);
+        return backend().post(listItemsPath(listId) + "/batch", payload);
+    }
+
+    @Override
+    public CastleResponse getListItem(String listId, String itemId) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        return backend().get(listItemsPath(listId) + "/" + itemId);
+    }
+
+    @Override
+    public CastleResponse queryListItems(String listId, ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(payload);
+        return backend().post(listItemsPath(listId) + "/query", payload);
+    }
+
+    @Override
+    public CastleResponse countListItems(String listId, ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(payload);
+        return backend().post(listItemsPath(listId) + "/count", payload);
+    }
+
+    @Override
+    public CastleResponse updateListItem(String listId, String itemId, ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        Preconditions.checkNotNull(payload);
+        return backend().put(listItemsPath(listId) + "/" + itemId, payload);
+    }
+
+    @Override
+    public CastleResponse archiveListItem(String listId, String itemId) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        return backend().put(listItemsPath(listId) + "/" + itemId + "/archive");
+    }
+
+    @Override
+    public CastleResponse unarchiveListItem(String listId, String itemId) {
+        Preconditions.checkNotNull(listId);
+        Preconditions.checkNotNull(itemId);
+        return backend().put(listItemsPath(listId) + "/" + itemId + "/unarchive");
+    }
+
+    @Override
+    public CastleResponse requestUserData(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        return backend().post(Castle.URL_PRIVACY + "users", payload);
+    }
+
+    @Override
+    public CastleResponse eventsSchema() {
+        return backend().get(Castle.URL_EVENTS + "/schema");
+    }
+
+    @Override
+    public CastleResponse queryEvents(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        return backend().post(Castle.URL_EVENTS + "/query", payload);
+    }
+
+    @Override
+    public CastleResponse groupEvents(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        return backend().post(Castle.URL_EVENTS + "/group", payload);
+    }
+
+    private RestApi backend() {
+        return configuration.getRestApiFactory().buildBackend();
+    }
+
+    private String listItemsPath(String listId) {
+        return Castle.URL_LISTS + "/" + listId + "/items";
+    }
+
     private CastleMessage buildMessage(String event, String userId, @Nullable Object properties, @Nullable Object traits) {
         CastleMessage message = new CastleMessage(event);
 

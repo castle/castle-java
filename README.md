@@ -187,6 +187,69 @@ See [configuration](#configuring-the-sdk) to find out how to enable a failover s
 learn about its default value.
 
 
+# Lists API
+
+Manage lists and their items:
+
+```java
+CastleApi client = Castle.instance().client();
+
+CastleResponse list = client.createList(ImmutableMap.builder()
+    .put("name", "Trusted devices")
+    .put("color", "$green")
+    .put("primary_field", "device.fingerprint")
+    .build());
+
+String listId = list.json().getAsJsonObject().get("id").getAsString();
+
+client.getAllLists();
+client.getList(listId);
+client.queryLists(ImmutableMap.builder().put("name", "Trusted devices").build());
+client.updateList(listId, ImmutableMap.builder().put("name", "Renamed").build());
+client.deleteList(listId);
+```
+
+List items, including a batch helper, querying, counting and (un)archiving:
+
+```java
+client.createListItem(listId, ImmutableMap.builder().put("primary_value", "1.2.3.4").build());
+client.createListItemsBatch(listId, ImmutableMap.builder().put("items", items).build());
+client.getListItem(listId, itemId);
+client.queryListItems(listId, ImmutableMap.builder().put("filters", filters).build());
+client.countListItems(listId, ImmutableMap.builder().put("filters", filters).build());
+client.updateListItem(listId, itemId, ImmutableMap.builder().put("comment", "spammer").build());
+client.archiveListItem(listId, itemId);
+client.unarchiveListItem(listId, itemId);
+```
+
+# Events API
+
+```java
+client.eventsSchema();
+client.queryEvents(ImmutableMap.builder().put("filters", filters).build());
+client.groupEvents(ImmutableMap.builder().put("filters", filters).build());
+```
+
+# Privacy API
+
+Request the data Castle holds for a user:
+
+```java
+client.requestUserData(ImmutableMap.builder().put("user_id", "97131").build());
+```
+
+# Verifying webhooks
+
+Castle signs every webhook with an HMAC-SHA256 of the raw request body, base64
+encoded and delivered in the `X-Castle-Signature` header. Verify it against the
+raw body bytes before trusting the payload:
+
+```java
+boolean valid = Castle.instance().verifyWebhookSignature(request, rawBodyBytes);
+// or pass the signature directly
+boolean valid = Castle.instance().verifyWebhookSignature(signatureHeader, rawBodyBytes);
+```
+
 # Development branch
 
 Branch for development process. The castle-java-example application have a parallel dev branch for test proposes.

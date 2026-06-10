@@ -2,6 +2,14 @@
 
 ## master
 
+## 2.2.0
+
+- Add Lists API (`createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList`)
+- Add List items API (`createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem`)
+- Add `requestUserData` for privacy data requests
+- Add Events API (`eventsSchema`, `queryEvents`, `groupEvents`)
+- Add `verifyWebhookSignature` for verifying Castle webhook payloads
+
 ## 2.1.0 (2022-03-07)
 
 - [#108](https://github.com/castle/castle-java/pull/108) Add exception for handling invalid request token
