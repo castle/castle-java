@@ -7,6 +7,34 @@
 # Usage
 See the [documentation](https://docs.castle.io) for how to use this SDK with the Castle APIs
 
+# Supported APIs
+
+The SDK targets the modern Castle API surface while keeping the previous
+endpoints available for backward compatibility.
+
+### Modern API (recommended)
+
+| Capability | Methods | Since |
+| --- | --- | --- |
+| Scoring | `risk`, `filter`, `log` | 2.0.0 |
+| Generic requests | `get`, `post`, `put`, `delete` | 2.0.0 |
+| Lists | `createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList` | 2.2.0 |
+| List items | `createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem` | 2.2.0 |
+| Privacy | `requestUserData` | 2.2.0 |
+| Events | `eventsSchema`, `queryEvents`, `groupEvents` | 2.2.0 |
+| Webhooks | `verifyWebhookSignature` | 2.2.0 |
+| Secure mode | `secureUserID` | 1.x |
+
+### Previous API (deprecated, still supported)
+
+| Capability | Methods | Status |
+| --- | --- | --- |
+| Authenticate | `authenticate`, `authenticateAsync` | Deprecated — use `risk` / `filter` |
+| Track | `track` | Deprecated — use `log` |
+| Devices | `approve`, `report`, `userDevices`, `device` | Deprecated |
+| Impersonation | `impersonateStart`, `impersonateEnd` | Deprecated |
+| Privacy (by id) | `removeUser` | Deprecated — use `requestUserData` |
+
 # Quickstart
 
 When using Maven, add the following dependency to your `pom.xml` file:
@@ -14,7 +42,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.0</version>
         </dependency>
 ```
 
