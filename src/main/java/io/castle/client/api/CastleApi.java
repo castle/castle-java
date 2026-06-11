@@ -302,6 +302,22 @@ public interface CastleApi {
     CastleResponse delete(String path, Object payload);
 
     /**
+     * Makes a sync POST request to the privacy endpoint to request a user's data.
+     *
+     * @param payload request parameters
+     * @return a decoded json response
+     */
+    CastleResponse requestUserData(ImmutableMap<Object, Object> payload);
+
+    /**
+     * Makes a sync DELETE request to the privacy endpoint to delete a user's data.
+     *
+     * @param payload request parameters
+     * @return a decoded json response
+     */
+    CastleResponse deleteUserData(ImmutableMap<Object, Object> payload);
+
+    /**
      * Makes a sync GET request to the events schema endpoint.
      *
      * @return a decoded json response

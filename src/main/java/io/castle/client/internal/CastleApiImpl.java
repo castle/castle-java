@@ -325,6 +325,20 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public CastleResponse requestUserData(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_PRIVACY + "users", payload);
+    }
+
+    @Override
+    public CastleResponse deleteUserData(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.delete(Castle.URL_PRIVACY + "users", payload);
+    }
+
+    @Override
     public CastleResponse eventsSchema() {
         RestApi restApi = configuration.getRestApiFactory().buildBackend();
         return restApi.get(Castle.URL_EVENTS + "/schema");
