@@ -11,6 +11,7 @@
 - Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
 - Remove the `recover` endpoint and the `removeUser` privacy method
 - Remove the authenticate failover configuration (`AuthenticateFailoverStrategy`, `withAuthenticateFailoverStrategy`, the `failover_strategy` setting) and the `Verdict`/`CastleMessage` models
+- Build and test against Java 17, 21 and 25 (CI matrix); bump JaCoCo to 0.8.15, Mockito to 5.23.0 and System Stubs to 2.1.8
 
 ## 2.6.1 (2025-07-28)
 

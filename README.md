@@ -4,7 +4,7 @@
 
 # Requirements
 
-- **Java Version:** This SDK requires **Java 17** or higher.
+- **Java Version:** This SDK requires **Java 17** or higher, and is built and tested against Java 17, 21 and 25.
 
 # Supported APIs
 
