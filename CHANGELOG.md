@@ -2,13 +2,19 @@
 
 ## master
 
-## 2.2.0
+## 3.0.0
 
 - Add Lists API (`createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList`)
 - Add List items API (`createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem`)
 - Add `requestUserData` and `deleteUserData` for privacy data requests
 - Add Events API (`eventsSchema`, `queryEvents`, `groupEvents`)
 - Add `verifyWebhookSignature` for verifying Castle webhook payloads
+- **Breaking:** remove the Authenticate endpoint (`authenticate`, `authenticateAsync`); use `risk` / `filter`
+- **Breaking:** remove the Track endpoint (`track`); use `log`
+- **Breaking:** remove the device endpoints (`approve`, `report`, `userDevices`, `device`)
+- **Breaking:** remove impersonation (`impersonateStart`, `impersonateEnd`)
+- **Breaking:** remove `removeUser`; use `requestUserData` / `deleteUserData`
+- **Breaking:** remove the authenticate failover strategy configuration and the `doNotTrack` option
 
 ## 2.1.0 (2022-03-07)
 

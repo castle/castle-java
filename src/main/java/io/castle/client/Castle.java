@@ -27,11 +27,6 @@ import javax.servlet.http.HttpServletRequest;
  * Once set the {@code this#instance()} method will return that instance
  */
 public class Castle {
-    public static final String URL_TRACK = "/v1/track";
-    public static final String URL_AUTHENTICATE = "/v1/authenticate";
-    public static final String URL_DEVICES = "/v1/devices/";
-    public static final String URL_USERS = "/v1/users/";
-    public static final String URL_IMPERSONATE = "/v1/impersonate";
     public static final String URL_PRIVACY = "/v1/privacy/";
     public static final String URL_RISK = "/v1/risk";
     public static final String URL_FILTER = "/v1/filter";
@@ -43,27 +38,6 @@ public class Castle {
      * Header used by Castle to sign webhook payloads.
      */
     public static final String WEBHOOK_SIGNATURE_HEADER = "X-Castle-Signature";
-
-    public static final String KEY_EVENT = "event";
-    public static final String KEY_USER = "user";
-    public static final String KEY_STATUS = "status";
-    public static final String KEY_FINGERPRINT = "fingerprint";
-    public static final String KEY_REGISTERED_AT = "registered_at";
-    public static final String KEY_CREATED_AT = "created_at";
-    public static final String KEY_PROPERTIES = "properties";
-    public static final String KEY_REQUEST_TOKEN = "request_token";
-    public static final String KEY_CONTEXT = "context";
-
-    // Context
-    public static final String KEY_IP = "ip";
-    public static final String KEY_HEADERS = "headers";
-
-    // User
-    public static final String KEY_ID = "id";
-    public static final String KEY_USER_ID = "user_id";
-    public static final String KEY_NAME = "name";
-    public static final String KEY_EMAIL = "email";
-    public static final String KEY_TRAITS = "traits";
 
     public static final Logger logger = LoggerFactory.getLogger(Castle.class);
 
@@ -112,17 +86,7 @@ public class Castle {
      * @throws IllegalStateException when the SDK has not been properly initialized
      */
     public CastleApi client() throws IllegalStateException {
-        return buildApiClient(false);
-    }
-
-    /**
-     * Creates a API client instance for sending a request
-     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
-     * @return A new instance of the API client {@code CastleApiImpl}
-     * @throws IllegalStateException when the SDK has not been properly initialized
-     */
-    public CastleApi client(boolean doNotTrack) throws IllegalStateException {
-        return buildApiClient(doNotTrack);
+        return buildApiClient();
     }
 
     /**
@@ -198,33 +162,17 @@ public class Castle {
     }
 
     public CastleApi buildApiClient() {
-        return buildApiClient(false);
-    }
-
-    public CastleApi buildApiClient(boolean doNotTrack) {
-        return new CastleApiImpl(internalConfiguration, doNotTrack);
+        return new CastleApiImpl(internalConfiguration);
     }
 
     /**
      * Create a API context for the given request.
-     * Tracking is ON by default.
      *
      * @param request The request for data extraction
      * @return a API reference to make backend calls to the castle.io rest api.
      */
     public CastleApi onRequest(HttpServletRequest request) {
-        return onRequest(request, false);
-    }
-
-    /**
-     * Create a API context for the given request.
-     *
-     * @param request    The request for data extraction
-     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
-     * @return a API reference to make backend calls to the castle.io rest api.
-     */
-    public CastleApi onRequest(HttpServletRequest request, boolean doNotTrack) {
-        return new CastleApiImpl(request, doNotTrack, internalConfiguration);
+        return new CastleApiImpl(request, internalConfiguration);
     }
 
     /**
@@ -296,7 +244,7 @@ public class Castle {
     }
 
     /**
-     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     * Make a GET request to a Castle API endpoint such as /v1/lists/{listId}
      *
      * @param path api path
      * @return a decoded json response
@@ -306,7 +254,7 @@ public class Castle {
     }
 
     /**
-     * Make a POST request to a Castle API endpoint such as /v1/track
+     * Make a POST request to a Castle API endpoint such as /v1/risk
      *
      * @param path api path
      * @param payload request payload
@@ -316,7 +264,7 @@ public class Castle {
         return client().post(path, payload);
     }
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{listId}
      *
      * @param path api path
      * @return a decoded json response
@@ -326,7 +274,7 @@ public class Castle {
     }
 
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{listId}
      *
      * @param path api path
      * @param payload request payload
@@ -337,7 +285,7 @@ public class Castle {
     }
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{listId}
      *
      * @param path api path
      * @return a decoded json response
@@ -347,7 +295,7 @@ public class Castle {
     }
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{listId}
      *
      * @param path api path
      * @param payload request payload

@@ -6,9 +6,7 @@ import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.Timestamp;
-import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
-import io.castle.client.utils.DeviceUtils;
 import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -38,10 +36,6 @@ public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
                                                 "    \"type\": \"bot\"\n" +
                                                 "  }\n" +
                                                 "}";
-
-    public CastleGenericAPIHttpTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
-    }
 
     @Test
     public void postRequest() throws InterruptedException, JSONException {

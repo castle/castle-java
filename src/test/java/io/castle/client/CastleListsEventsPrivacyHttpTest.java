@@ -1,8 +1,6 @@
 package io.castle.client;
 
 import com.google.common.collect.ImmutableMap;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -10,10 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class CastleListsEventsPrivacyHttpTest extends AbstractCastleHttpLayerTest {
-
-    public CastleListsEventsPrivacyHttpTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW));
-    }
 
     @Test
     public void createList() throws InterruptedException {

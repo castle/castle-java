@@ -23,7 +23,6 @@ public class CastleConfigurationBuilderTest {
         Assertions.assertThat(config.getDenyListHeaders()).contains("cookie");
         Assertions.assertThat(config.getDenyListHeaders()).contains("authorization");
         Assertions.assertThat(config.getAllowListHeaders()).isEmpty();
-        Assertions.assertThat(config.getAuthenticateFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
         Assertions.assertThat(config.getTimeout()).isEqualTo(500);
 
 

@@ -4,7 +4,6 @@ import io.castle.client.internal.backend.OkHttpFactory;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
 import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockWebServer;
@@ -18,15 +17,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractCastleHttpLayerTest {
 
-    private final AuthenticateFailoverStrategy testAuthenticateFailoverStrategy;
-
     Castle sdk;
     MockWebServer server;
     HttpUrl testServerBaseUrl;
-
-    protected AbstractCastleHttpLayerTest(AuthenticateFailoverStrategy testAuthenticateFailoverStrategy) {
-        this.testAuthenticateFailoverStrategy = testAuthenticateFailoverStrategy;
-    }
 
     @Before
     public void prepare() throws NoSuchFieldException, IllegalAccessException, CastleSdkConfigurationException, IOException {
@@ -45,7 +38,6 @@ public abstract class AbstractCastleHttpLayerTest {
                 .withAllowListHeaders(configuration.getAllowListHeaders())
                 .withCastleAppId(configuration.getCastleAppId())
                 .withBackendProvider(configuration.getBackendProvider())
-                .withAuthenticateFailoverStrategy(testAuthenticateFailoverStrategy)
                 .withTimeout(configuration.getTimeout())
                 .build();
         OkHttpFactory mockedFactory = new OkHttpFactory(mockedApiConfiguration, sdk.getInternalConfiguration().getModel());

@@ -5,10 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.RiskPolicyType;
 import io.castle.client.model.CastleHeaders;
-import io.castle.client.model.CastleMessage;
 
 public class CastleGsonModel {
 
@@ -19,9 +17,7 @@ public class CastleGsonModel {
         GsonBuilder builder = createGsonBuilder();
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersSerializer());
         builder.registerTypeAdapter(String.class, new StringJsonSerializer());
-        builder.registerTypeAdapter(CastleMessage.class, new CastleMessageSerializer());
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersDeserializer());
-        builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         builder.registerTypeAdapter(RiskPolicyType.class, new RiskPolicyTypeDeserializer());
         this.gson = builder.create();
 

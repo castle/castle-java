@@ -9,31 +9,18 @@ See the [documentation](https://docs.castle.io) for how to use this SDK with the
 
 # Supported APIs
 
-The SDK targets the modern Castle API surface while keeping the previous
-endpoints available for backward compatibility.
+The SDK exposes the modern Castle API surface:
 
-### Modern API (recommended)
-
-| Capability | Methods | Since |
-| --- | --- | --- |
-| Scoring | `risk`, `filter`, `log` | 2.0.0 |
-| Generic requests | `get`, `post`, `put`, `delete` | 2.0.0 |
-| Lists | `createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList` | 2.2.0 |
-| List items | `createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem` | 2.2.0 |
-| Privacy | `requestUserData`, `deleteUserData` | 2.2.0 |
-| Events | `eventsSchema`, `queryEvents`, `groupEvents` | 2.2.0 |
-| Webhooks | `verifyWebhookSignature` | 2.2.0 |
-| Secure mode | `secureUserID` | 1.x |
-
-### Previous API (deprecated, still supported)
-
-| Capability | Methods | Status |
-| --- | --- | --- |
-| Authenticate | `authenticate`, `authenticateAsync` | Deprecated — use `risk` / `filter` |
-| Track | `track` | Deprecated — use `log` |
-| Devices | `approve`, `report`, `userDevices`, `device` | Deprecated |
-| Impersonation | `impersonateStart`, `impersonateEnd` | Deprecated |
-| Privacy (by id) | `removeUser` | Deprecated — use `requestUserData` / `deleteUserData` |
+| Capability | Methods |
+| --- | --- |
+| Scoring | `risk`, `filter`, `log` |
+| Generic requests | `get`, `post`, `put`, `delete` |
+| Lists | `createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList` |
+| List items | `createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem` |
+| Privacy | `requestUserData`, `deleteUserData` |
+| Events | `eventsSchema`, `queryEvents`, `groupEvents` |
+| Webhooks | `verifyWebhookSignature` |
+| Secure mode | `secureUserID` |
 
 # Quickstart
 
@@ -42,7 +29,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>2.2.0</version>
+            <version>3.0.0</version>
         </dependency>
 ```
 
@@ -131,8 +118,6 @@ that can be optionally configured:
  * **Allowlisted Headers**: this is a comma-separated list of strings representing HTTP headers
  that will get passed to the context object with each call to the Castle API,
  unless they are denylisted. If not set or empty all headers will be sent. See [The Context Object](#the-context-object).
- * **Authenticate Failover Strategy**: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
- See also [Authenticate](#authenticate)
  * **Timeout**: an integer that represents the time in milliseconds after which a request fails.
  * **Backend Provider**: The HTTP layer that will be used to make requests to the Castle API.
  Currently there is only one available and it uses [OkHttp](https://square.github.io/okhttp/).
@@ -161,7 +146,6 @@ API Secret |   | `api_secret` | `CASTLE_API_SECRET` |
 Allowlisted Headers |   | `allow_list` | `CASTLE_SDK_ALLOWLIST_HEADERS` |
 Denylisted Headers | `Cookie` | `deny_list` | `CASTLE_SDK_DENYLIST_HEADERS` |
 Timeout | `500` | `timeout` | `CASTLE_SDK_TIMEOUT` |
-Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
 Backend Provider | `OKHTTP` | `backend_provide` | `CASTLE_SDK_BACKEND_PROVIDER` |
 Base URL | `https://api.castle.io/` | `base_url` | `CASTLE_SDK_BASE_URL` |
 Log HTTP | false | `log_http` | `CASTLE_SDK_LOG_HTTP` |
@@ -179,7 +163,6 @@ allow_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Acce
 deny_list=Cookie
 timeout=500
 backend_provider=OKHTTP
-failover_strategy=ALLOW
 base_url=https://api.castle.io/
 log_http=false
 ip_headers=
@@ -194,26 +177,11 @@ Castle castle = Castle.initialize(Castle.configurationBuilder()
     .withDenyListHeaders("Cookie")
     .withTimeout(500)
     .withBackendProvider(CastleBackendProvider.OKHTTP)
-    .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW))
     .withApiBaseUrl("https://api.castle.io/")
     .withLogHttpRequests(true)
     .ipHeaders(Arrays.asList("X-Forwarded-For", "CF-Connecting-IP"))
     .build());
 ```
-
-### The Authenticate Failover Strategy
-
-It is the strategy that will be used when a request to the `/v1/authenticate` endpoint
-of the Castle API fails.
-Also, see [`doNotTrack` boolean](the-donottrack-boolean) for another use case of a failover strategy.
-
-It can be one of the following options:
-* return a specific *authenticate action* inside an instance of `Verdict`;
-* throw an `io.castle.client.model.CastleRuntimeException`.
-
-See [configuration](#configuring-the-sdk) to find out how to enable a failover strategy and to
-learn about its default value.
-
 
 # Lists API
 
