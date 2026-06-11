@@ -325,6 +325,26 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public CastleResponse eventsSchema() {
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.get(Castle.URL_EVENTS + "/schema");
+    }
+
+    @Override
+    public CastleResponse queryEvents(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_EVENTS + "/query", payload);
+    }
+
+    @Override
+    public CastleResponse groupEvents(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        RestApi restApi = configuration.getRestApiFactory().buildBackend();
+        return restApi.post(Castle.URL_EVENTS + "/group", payload);
+    }
+
+    @Override
     public FilterAndRiskResponse risk(Risk payload) {
         Preconditions.checkNotNull(payload);
         RestApi restApi = configuration.getRestApiFactory().buildBackend();

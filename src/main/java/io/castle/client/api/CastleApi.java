@@ -302,6 +302,29 @@ public interface CastleApi {
     CastleResponse delete(String path, Object payload);
 
     /**
+     * Makes a sync GET request to the events schema endpoint.
+     *
+     * @return a decoded json response
+     */
+    CastleResponse eventsSchema();
+
+    /**
+     * Makes a sync POST request to the events query endpoint.
+     *
+     * @param payload query parameters
+     * @return a decoded json response
+     */
+    CastleResponse queryEvents(ImmutableMap<Object, Object> payload);
+
+    /**
+     * Makes a sync POST request to the events group endpoint.
+     *
+     * @param payload group parameters
+     * @return a decoded json response
+     */
+    CastleResponse groupEvents(ImmutableMap<Object, Object> payload);
+
+    /**
      * Makes a sync POST request to the risk endpoint.
      *
      * @param payload Event parameters

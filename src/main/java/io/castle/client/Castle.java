@@ -36,6 +36,7 @@ public class Castle {
     public static final String URL_RISK = "/v1/risk";
     public static final String URL_FILTER = "/v1/filter";
     public static final String URL_LOG = "/v1/log";
+    public static final String URL_EVENTS = "/v1/events";
 
     /**
      * Header used by Castle to sign webhook payloads.
