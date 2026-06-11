@@ -123,7 +123,7 @@ public class CastleListsEventsPrivacyHttpTest extends AbstractCastleHttpLayerTes
         server.enqueue(new MockResponse().setBody("{}"));
         sdk.client().archiveListItem("list-1", "item-1");
         RecordedRequest archive = server.takeRequest();
-        Assert.assertEquals("PUT", archive.getMethod());
+        Assert.assertEquals("DELETE", archive.getMethod());
         Assert.assertEquals(testServerBaseUrl.resolve("v1/lists/list-1/items/item-1/archive"), archive.getRequestUrl());
 
         server.enqueue(new MockResponse().setBody("{}"));

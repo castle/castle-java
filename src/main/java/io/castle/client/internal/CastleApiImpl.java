@@ -417,7 +417,7 @@ public class CastleApiImpl implements CastleApi {
     public CastleResponse archiveListItem(String listId, String itemId) {
         Preconditions.checkNotNull(listId);
         Preconditions.checkNotNull(itemId);
-        return backend().put(listItemsPath(listId) + "/" + itemId + "/archive");
+        return backend().delete(listItemsPath(listId) + "/" + itemId + "/archive");
     }
 
     @Override
