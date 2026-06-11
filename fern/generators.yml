@@ -1,0 +1,15 @@
+api:
+  specs:
+    - openapi: ./openapi/openapi.yml
+groups:
+  java-sdk:
+    generators:
+      - name: fernapi/fern-java-sdk
+        version: 4.9.3
+        output:
+          location: local-file-system
+          path: ../generated/java
+        github:
+          repository: castle/castle-java
+        config:
+          package-prefix: io.castle.client.generated
