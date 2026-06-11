@@ -434,6 +434,12 @@ public class CastleApiImpl implements CastleApi {
     }
 
     @Override
+    public CastleResponse deleteUserData(ImmutableMap<Object, Object> payload) {
+        Preconditions.checkNotNull(payload);
+        return backend().delete(Castle.URL_PRIVACY + "users", payload);
+    }
+
+    @Override
     public CastleResponse eventsSchema() {
         return backend().get(Castle.URL_EVENTS + "/schema");
     }

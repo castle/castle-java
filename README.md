@@ -20,7 +20,7 @@ endpoints available for backward compatibility.
 | Generic requests | `get`, `post`, `put`, `delete` | 2.0.0 |
 | Lists | `createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList` | 2.2.0 |
 | List items | `createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem` | 2.2.0 |
-| Privacy | `requestUserData` | 2.2.0 |
+| Privacy | `requestUserData`, `deleteUserData` | 2.2.0 |
 | Events | `eventsSchema`, `queryEvents`, `groupEvents` | 2.2.0 |
 | Webhooks | `verifyWebhookSignature` | 2.2.0 |
 | Secure mode | `secureUserID` | 1.x |
@@ -33,7 +33,7 @@ endpoints available for backward compatibility.
 | Track | `track` | Deprecated — use `log` |
 | Devices | `approve`, `report`, `userDevices`, `device` | Deprecated |
 | Impersonation | `impersonateStart`, `impersonateEnd` | Deprecated |
-| Privacy (by id) | `removeUser` | Deprecated — use `requestUserData` |
+| Privacy (by id) | `removeUser` | Deprecated — use `requestUserData` / `deleteUserData` |
 
 # Quickstart
 
@@ -264,6 +264,12 @@ Request the data Castle holds for a user:
 
 ```java
 client.requestUserData(ImmutableMap.builder().put("user_id", "97131").build());
+```
+
+Request deletion of the data Castle holds for a user:
+
+```java
+client.deleteUserData(ImmutableMap.builder().put("user_id", "97131").build());
 ```
 
 # Verifying webhooks

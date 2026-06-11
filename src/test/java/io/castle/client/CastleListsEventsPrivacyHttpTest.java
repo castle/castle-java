@@ -147,6 +147,19 @@ public class CastleListsEventsPrivacyHttpTest extends AbstractCastleHttpLayerTes
     }
 
     @Test
+    public void deleteUserData() throws InterruptedException {
+        server.enqueue(new MockResponse().setBody("{}"));
+
+        sdk.client().deleteUserData(ImmutableMap.builder()
+                .put("user_id", "12345")
+                .build());
+
+        RecordedRequest recordedRequest = server.takeRequest();
+        Assert.assertEquals("DELETE", recordedRequest.getMethod());
+        Assert.assertEquals(testServerBaseUrl.resolve("v1/privacy/users"), recordedRequest.getRequestUrl());
+    }
+
+    @Test
     public void eventsApi() throws InterruptedException {
         server.enqueue(new MockResponse().setBody("{}"));
         sdk.client().eventsSchema();

@@ -458,6 +458,14 @@ public interface CastleApi {
      */
     CastleResponse requestUserData(ImmutableMap<Object, Object> payload);
 
+    /**
+     * Requests deletion of the data Castle holds for a user.
+     *
+     * @param payload privacy request parameters
+     * @return a decoded json response
+     */
+    CastleResponse deleteUserData(ImmutableMap<Object, Object> payload);
+
     // Events API
 
     /**

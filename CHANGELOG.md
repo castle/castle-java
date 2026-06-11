@@ -6,7 +6,7 @@
 
 - Add Lists API (`createList`, `getAllLists`, `getList`, `queryLists`, `updateList`, `deleteList`)
 - Add List items API (`createListItem`, `createListItemsBatch`, `getListItem`, `queryListItems`, `countListItems`, `updateListItem`, `archiveListItem`, `unarchiveListItem`)
-- Add `requestUserData` for privacy data requests
+- Add `requestUserData` and `deleteUserData` for privacy data requests
 - Add Events API (`eventsSchema`, `queryEvents`, `groupEvents`)
 - Add `verifyWebhookSignature` for verifying Castle webhook payloads
 
