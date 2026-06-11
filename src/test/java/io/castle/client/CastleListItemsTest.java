@@ -1,7 +1,5 @@
 package io.castle.client;
 
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleResponse;
 import io.castle.client.model.generated.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +15,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
-
-    public CastleListItemsTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
-    }
 
     @Test
     public void createListItem() throws InterruptedException {

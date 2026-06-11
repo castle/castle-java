@@ -1,7 +1,5 @@
 package io.castle.client.internal.config;
 
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleRuntimeException;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
@@ -88,7 +86,6 @@ public class ConfigurationLoaderTest {
                 )
                 .withDefaultBackendProvider()
                 .withTimeout(100)
-                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE))
                 .build();
 
         //Then the value of the timeout should be the one in the properties file castle_sdk.properties
@@ -145,7 +142,6 @@ public class ConfigurationLoaderTest {
                 .withApiBaseUrl("https://api.dev.castle.io/v1/")
                 .withTimeout(700)
                 .withLogHttpRequests(true)
-                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.DENY))
                 .build();
 
         testLoad(expectedConfiguration);
@@ -193,7 +189,6 @@ public class ConfigurationLoaderTest {
                 .defaultConfigBuilder()
                 .withApiSecret("1234")
                 .withCastleAppId("test_app_id_env")
-                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy())
                 .build();
 
         // when then

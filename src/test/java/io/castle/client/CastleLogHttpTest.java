@@ -1,11 +1,8 @@
 package io.castle.client;
 
 import com.google.gson.JsonParser;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleResponse;
 import io.castle.client.model.generated.*;
-import io.castle.client.utils.DeviceUtils;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.Assertions;
@@ -19,10 +16,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class CastleLogHttpTest extends AbstractCastleHttpLayerTest {
-
-    public CastleLogHttpTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
-    }
 
     @Test public void log() throws InterruptedException {
         MockResponse mockResponse = new MockResponse();

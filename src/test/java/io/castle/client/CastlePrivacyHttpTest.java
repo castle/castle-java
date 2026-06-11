@@ -1,8 +1,6 @@
 package io.castle.client;
 
 import com.google.common.collect.ImmutableMap;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleResponse;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -16,10 +14,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class CastlePrivacyHttpTest extends AbstractCastleHttpLayerTest {
-
-    public CastlePrivacyHttpTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
-    }
 
     @Test
     public void requestUserData() throws InterruptedException, JSONException {

@@ -27,11 +27,6 @@ import jakarta.servlet.http.HttpServletRequest;
  * Once set the {@code this#instance()} method will return that instance
  */
 public class Castle {
-    public static final String URL_TRACK = "/v1/track";
-    public static final String URL_AUTHENTICATE = "/v1/authenticate";
-    public static final String URL_DEVICES = "/v1/devices/";
-    public static final String URL_USERS = "/v1/users/";
-    public static final String URL_IMPERSONATE = "/v1/impersonate";
     public static final String URL_PRIVACY = "/v1/privacy/";
     public static final String URL_RISK = "/v1/risk";
     public static final String URL_FILTER = "/v1/filter";
@@ -42,8 +37,6 @@ public class Castle {
      * Header used by Castle to sign webhook payloads.
      */
     public static final String WEBHOOK_SIGNATURE_HEADER = "X-Castle-Signature";
-
-    public static final String URL_RECOVER = "/v1/users/%s/recover";
 
     public static final String URL_LISTS = "/v1/lists";
     public static final String URL_LISTS_ID = "/v1/lists/%s";
