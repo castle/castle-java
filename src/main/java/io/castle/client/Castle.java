@@ -296,10 +296,7 @@ public class Castle {
      * @return {@code true} when the signature matches the computed signature
      */
     public boolean verifyWebhookSignature(HttpServletRequest request, byte[] body) {
-        if (request == null) {
-            return false;
-        }
-        return verifyWebhookSignature(request.getHeader(WEBHOOK_SIGNATURE_HEADER), body);
+        return io.castle.client.servlet.CastleServletContext.verifyWebhookSignature(this, request, body);
     }
 
     /**
