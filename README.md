@@ -6,6 +6,21 @@
 
 - **Java Version:** This SDK requires **Java 17** or higher.
 
+# Supported APIs
+
+The SDK exposes the modern Castle API surface:
+
+| Group | Methods |
+| --- | --- |
+| Scoring | `risk`, `filter`, `log` |
+| Lists | `createList`, `list`, `updateList`, `deleteList` |
+| List items | `createListItem`, `createOrUpdateListItems`, `searchListItems`, `countListItems`, `getListItem`, `updateListItem`, `archiveListItem`, `unarchiveListItem` |
+| Privacy | `requestUserData`, `deleteUserData` |
+| Events | `eventsSchema`, `queryEvents`, `groupEvents` |
+| Webhooks | `verifyWebhookSignature` |
+| Secure mode | `secureUserID` |
+| Generic | `get`, `post`, `put`, `delete` |
+
 # Usage
 See the [documentation](https://docs.castle.io) for how to use this SDK with the Castle APIs
 
@@ -16,7 +31,7 @@ When using Maven, add the following dependency to your `pom.xml` file:
         <dependency>
             <groupId>io.castle</groupId>
             <artifactId>castle-java</artifactId>
-            <version>2.6.1</version>
+            <version>3.0.0</version>
         </dependency>
 ```
 

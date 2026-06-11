@@ -2,6 +2,16 @@
 
 ## master
 
+## 3.0.0 (2026-06-11)
+
+- Add webhook signature verification (`Castle#verifyWebhookSignature`) and the `X-Castle-Signature` header constant
+- Add the Events API: `eventsSchema`, `queryEvents` and `groupEvents`
+- Add the privacy methods `requestUserData` and `deleteUserData`
+- Remove the legacy `authenticate` and `track` endpoints
+- Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
+- Remove the `recover` endpoint and the `removeUser` privacy method
+- Remove the authenticate failover configuration (`AuthenticateFailoverStrategy`, `withAuthenticateFailoverStrategy`, the `failover_strategy` setting) and the `Verdict`/`CastleMessage` models
+
 ## 2.6.1 (2025-07-28)
 
 - [#153](https://github.com/castle/castle-java/pull/153) Remove string json serialization cap
