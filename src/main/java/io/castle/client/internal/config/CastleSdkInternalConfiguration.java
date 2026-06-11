@@ -13,7 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class CastleSdkInternalConfiguration {
 
-    private final RestApiFactory restApiFactory;
+    private RestApiFactory restApiFactory;
     private final CastleGsonModel model;
     private final CastleConfiguration configuration;
 

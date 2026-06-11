@@ -48,9 +48,23 @@
         <jdkVersion>1.7</jdkVersion>
         <targetJdk>1.7</targetJdk>
         <jacoco.version>0.8.3</jacoco.version>
+        <extraSurefireArgs></extraSurefireArgs>
     </properties>
 
     <profiles>
+        <profile>
+            <!-- JDK 9+ strongly encapsulates the JDK internals that the
+                 environment-variable test rule mutates by reflection, so the
+                 relevant packages have to be opened to the test runtime. The
+                 flags are unknown to JDK 8 and must not be added there. -->
+            <id>jdk9plus</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <properties>
+                <extraSurefireArgs>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED</extraSurefireArgs>
+            </properties>
+        </profile>
         <profile>
             <id>deploy</id>
             <build>
@@ -223,6 +237,7 @@
                 <version>3.0.0-M3</version>
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
+                    <argLine>@{argLine} ${extraSurefireArgs}</argLine>
                 </configuration>
             </plugin>
             <plugin>
