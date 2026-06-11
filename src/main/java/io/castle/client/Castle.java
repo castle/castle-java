@@ -9,6 +9,7 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.CastleContextBuilder;
+import io.castle.client.internal.utils.Webhook;
 import io.castle.client.model.CastleResponse;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
@@ -35,6 +36,11 @@ public class Castle {
     public static final String URL_RISK = "/v1/risk";
     public static final String URL_FILTER = "/v1/filter";
     public static final String URL_LOG = "/v1/log";
+
+    /**
+     * Header used by Castle to sign webhook payloads.
+     */
+    public static final String WEBHOOK_SIGNATURE_HEADER = "X-Castle-Signature";
 
     public static final String URL_RECOVER = "/v1/users/%s/recover";
 
@@ -268,6 +274,38 @@ public class Castle {
     public String secureUserID(String userId) {
         HashFunction hashFunction = internalConfiguration.getSecureHashFunction();
         return hashFunction.hashString(userId,com.google.common.base.Charsets.UTF_8).toString();
+    }
+
+    /**
+     * Verifies a Castle webhook signature against the raw request body.
+     * <p>
+     * Castle signs every webhook with an HMAC-SHA256 of the raw request body using
+     * the account API secret, base64 encoded and sent in the
+     * {@code X-Castle-Signature} header.
+     *
+     * @param signature the value of the {@code X-Castle-Signature} header
+     * @param body      the raw request body bytes
+     * @return {@code true} when the signature matches the computed signature
+     */
+    public boolean verifyWebhookSignature(String signature, byte[] body) {
+        return Webhook.verifySignature(internalConfiguration.getConfiguration().getApiSecret(), body, signature);
+    }
+
+    /**
+     * Verifies a Castle webhook signature for the given servlet request.
+     * <p>
+     * The signature is read from the {@code X-Castle-Signature} header and verified
+     * against the supplied raw request body bytes.
+     *
+     * @param request the incoming webhook request
+     * @param body    the raw request body bytes
+     * @return {@code true} when the signature matches the computed signature
+     */
+    public boolean verifyWebhookSignature(HttpServletRequest request, byte[] body) {
+        if (request == null) {
+            return false;
+        }
+        return verifyWebhookSignature(request.getHeader(WEBHOOK_SIGNATURE_HEADER), body);
     }
 
     /**
