@@ -12,7 +12,7 @@
 - Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
 - Remove the `recover` endpoint and the `removeUser` privacy method
 - Remove the authenticate failover configuration (`AuthenticateFailoverStrategy`, `withAuthenticateFailoverStrategy`, the `failover_strategy` setting) and the `Verdict`/`CastleMessage` models
-- Build and test against Java 17, 21 and 25 (CI matrix); bump JaCoCo to 0.8.15, Mockito to 5.23.0, System Stubs to 2.1.8 and AssertJ to 3.27.7
+- Build and test against Java 17, 21 and 25 (CI matrix); bump JaCoCo to 0.8.15, Mockito to 5.23.0, System Stubs to 2.1.8, AssertJ to 3.27.7 and JUnit to 5.14.4
 - Upgrade runtime dependencies: Gson 2.14.0, Guava 33.6.0-jre, SLF4J 2.0.18, OkHttp 4.12.0, jackson-databind-nullable 0.2.10, swagger-annotations 1.6.16, ThreeTen-Backport 1.7.3; declare an explicit `jsr305` dependency for the JSR-305 annotations
 - Upgrade test dependencies: Logback 1.5.34, JSONassert 1.5.3, spring-test 6.1.21; remove the unused System Rules dependency
 - Upgrade build plugins: maven-compiler-plugin 3.14.0, maven-surefire-plugin 3.5.6, maven-source-plugin 3.4.0, maven-javadoc-plugin 3.12.0, versions-maven-plugin 2.18.0, maven-gpg-plugin 3.2.8 and central-publishing-maven-plugin 0.10.0
