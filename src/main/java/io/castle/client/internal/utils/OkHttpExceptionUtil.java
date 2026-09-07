@@ -34,6 +34,8 @@ public class OkHttpExceptionUtil {
                     throw new CastleApiInvalidParametersException(response);
                 case 404:
                     throw new CastleApiNotFoundException(response);
+                case 402:
+                    throw new CastleApiPaymentRequiredException(response);
             }
             throw new CastleServerErrorException(response);
         }
