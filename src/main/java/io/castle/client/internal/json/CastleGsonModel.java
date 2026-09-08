@@ -4,10 +4,8 @@ import com.google.gson.*;
 import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import io.castle.client.model.AuthenticateAction;
 import io.castle.client.model.RiskPolicyType;
 import io.castle.client.model.CastleHeaders;
-import io.castle.client.model.CastleMessage;
 import io.castle.client.model.generated.BaseChangesetEntry;
 import okio.ByteString;
 import org.threeten.bp.LocalDate;
@@ -27,9 +25,7 @@ public class CastleGsonModel {
     public CastleGsonModel() {
         GsonBuilder builder = createGsonBuilder();
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersSerializer());
-        builder.registerTypeAdapter(CastleMessage.class, new CastleMessageSerializer());
         builder.registerTypeAdapter(CastleHeaders.class, new CastleHeadersDeserializer());
-        builder.registerTypeAdapter(AuthenticateAction.class, new AuthenticateActionDeserializer());
         builder.registerTypeAdapter(RiskPolicyType.class, new RiskPolicyTypeDeserializer());
         builder.registerTypeAdapterFactory(ChangesetEntryTypeAdapter.FACTORY);
         builder.registerTypeAdapter(BaseChangesetEntry.class, new BaseChangesetEntryDeserializer());

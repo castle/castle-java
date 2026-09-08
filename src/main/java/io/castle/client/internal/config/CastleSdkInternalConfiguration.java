@@ -70,4 +70,8 @@ public class CastleSdkInternalConfiguration {
     public HashFunction getSecureHashFunction() {
         return Hashing.hmacSha256(sha256Key);
     }
+
+    public void close() {
+        restApiFactory.close();
+    }
 }

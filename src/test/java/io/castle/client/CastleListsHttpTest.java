@@ -2,8 +2,6 @@ package io.castle.client;
 
 import com.google.gson.JsonParser;
 import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.generated.*;
 import jakarta.servlet.http.HttpServletRequest;
 import okhttp3.mockwebserver.MockResponse;
@@ -18,10 +16,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
-
-    public CastleListsHttpTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
-    }
 
     @Test
     public void updateList() throws InterruptedException {

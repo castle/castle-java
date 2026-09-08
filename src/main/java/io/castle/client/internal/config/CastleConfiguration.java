@@ -1,7 +1,6 @@
 package io.castle.client.internal.config;
 
 import io.castle.client.internal.backend.CastleBackendProvider;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleRuntimeException;
 
 import java.util.List;
@@ -20,14 +19,9 @@ public class CastleConfiguration {
     private final String apiBaseUrl;
 
     /**
-     * Timeout after which a request fails.
+     * Timeout in milliseconds applied to connect, read, and write.
      */
     private final int timeout;
-
-    /**
-     * Strategy for returning a {@code verdict} when an authenticate call fails.
-     */
-    private final AuthenticateFailoverStrategy authenticateFailoverStrategy;
 
     /**
      * List of headers that will get passed to the {@code CastleContext} unless they are denyListed.
@@ -66,10 +60,9 @@ public class CastleConfiguration {
      */
     private final int maxRequests;
 
-    public CastleConfiguration(String apiBaseUrl, int timeout, AuthenticateFailoverStrategy authenticateFailoverStrategy, List<String> allowListHeaders, List<String> denyListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests) {
+    public CastleConfiguration(String apiBaseUrl, int timeout, List<String> allowListHeaders, List<String> denyListHeaders, String apiSecret, String castleAppId, CastleBackendProvider backendProvider, boolean logHttpRequests, List<String> ipHeaders, Integer maxRequests) {
         this.apiBaseUrl = apiBaseUrl;
         this.timeout = timeout;
-        this.authenticateFailoverStrategy = authenticateFailoverStrategy;
         this.allowListHeaders = allowListHeaders;
         this.denyListHeaders = denyListHeaders;
         this.apiSecret = apiSecret;
@@ -86,10 +79,6 @@ public class CastleConfiguration {
 
     public int getTimeout() {
         return timeout;
-    }
-
-    public AuthenticateFailoverStrategy getAuthenticateFailoverStrategy() {
-        return authenticateFailoverStrategy;
     }
 
     public List<String> getAllowListHeaders() {

@@ -3,8 +3,7 @@ package io.castle.client.model;
 import okhttp3.Response;
 
 /**
- * Exception thrown if the client is configured to use a THROW
- * {@code AuthenticateFailoverStrategy} and if a call to the authenticate endpoint of the Castle API fails.
+ * Unchecked exception thrown when a Castle API call fails.
  */
 public class CastleRuntimeException extends RuntimeException {
 

@@ -1,11 +1,9 @@
 package io.castle.client;
 
-import io.castle.client.internal.backend.RestApiFactory;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class CastleTest {
 
@@ -82,6 +80,7 @@ public class CastleTest {
 
         //Then the same singleton instance is returned
         Assertions.assertThat(sdk1).isSameAs(sdk2);
+        sdk.close();
     }
 
     @Test
@@ -125,5 +124,35 @@ public class CastleTest {
         Assertions.assertThat(sdkConfiguration)
                 .extracting("apiSecret")
                 .isEqualTo("abcd");
+        sdk.close();
+    }
+
+    @Test
+    public void closeReleasesHttpClient() throws CastleSdkConfigurationException {
+        Castle sdk = Castle.initialize("abcd");
+        sdk.close();
+    }
+
+    @Test
+    public void closeClearsTheSingletonWhenThisInstanceIsTheSingleton() throws CastleSdkConfigurationException {
+        Castle sdk = Castle.verifySdkConfigurationAndInitialize();
+        Castle.setSingletonInstance(sdk);
+
+        sdk.close();
+
+        Assertions.assertThatThrownBy(Castle::instance)
+                .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    public void closeDoesNotClearADifferentSingleton() throws CastleSdkConfigurationException {
+        Castle singleton = Castle.verifySdkConfigurationAndInitialize();
+        Castle.setSingletonInstance(singleton);
+        Castle other = Castle.initialize("abcd");
+
+        other.close();
+
+        Assertions.assertThat(Castle.instance()).isSameAs(singleton);
+        singleton.close();
     }
 }

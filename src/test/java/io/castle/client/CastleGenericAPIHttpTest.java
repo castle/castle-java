@@ -1,14 +1,8 @@
 package io.castle.client;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import io.castle.client.internal.json.CastleGsonModel;
-import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.Timestamp;
-import io.castle.client.internal.utils.VerdictBuilder;
 import io.castle.client.model.*;
-import io.castle.client.utils.DeviceUtils;
 import io.castle.client.utils.SDKVersion;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -21,9 +15,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static okhttp3.mockwebserver.SocketPolicy.NO_RESPONSE;
 
 public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
 
@@ -39,10 +30,6 @@ public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
                                                 "  }\n" +
                                                 "}";
 
-    public CastleGenericAPIHttpTest() {
-        super(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE));
-    }
-
     @Test
     public void postRequest() throws InterruptedException, JSONException {
         // Given
@@ -54,8 +41,7 @@ public class CastleGenericAPIHttpTest extends AbstractCastleHttpLayerTest {
         CastleContext payload = sdk.contextBuilder()
                 .build();
 
-        // and an authenticate request is made
-        CastleResponse response = sdk.onRequest(request).post("/v1/authenticate", ImmutableMap.builder()
+        CastleResponse response = sdk.onRequest(request).post("/v1/risk", ImmutableMap.builder()
                 .put("event", "$login.succeeded")
                 .put("userId", "12345")
                 .put("context", payload)

@@ -4,10 +4,9 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import io.castle.client.internal.backend.CastleBackendProvider;
 import io.castle.client.internal.utils.HeaderNormalizer;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
 
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import java.util.List;
  * The fields that can be set in a CastleConfiguration:
  * <ul>
  * <li> timeout
- * <li> failoverStrategy
  * <li> allowListHeaders
  * <li> denyListHeaders
  * <li> apiSecret
@@ -38,14 +36,9 @@ import java.util.List;
  */
 public class CastleConfigurationBuilder {
     /**
-     * Represents the milliseconds after which a request fails.
+     * Milliseconds applied to connect, read, and write for each request.
      */
-    private int timeout = 500;
-
-    /**
-     * Strategy used when an authenticate call to the Castle API fails.
-     */
-    private AuthenticateFailoverStrategy failoverStrategy;
+    private int timeout = 1000;
 
     /**
      * Strings representing headers that should be passed to the context object unless they are also denyListed.
@@ -110,8 +103,7 @@ public class CastleConfigurationBuilder {
                 .withDefaultAllowList()
                 .withDefaultDenyList()
                 .withDefaultApiBaseUrl()
-                .withTimeout(500)
-                .withDefaultAuthenticateFailoverStrategy()
+                .withTimeout(1000)
                 .withDefaultBackendProvider()
                 .withMaxRequests(5);
         return builder;
@@ -120,7 +112,7 @@ public class CastleConfigurationBuilder {
     /**
      * Provides a fresh castleConfigurationBuilder.
      * <p>
-     * The only default value provided is the timeout, which is set to 500 milliseconds.
+     * The only default value provided is the timeout, which is set to 1000 milliseconds.
      *
      * @return a castleConfigurationBuilder with all values set to null, except timeout
      */
@@ -141,7 +133,7 @@ public class CastleConfigurationBuilder {
     /**
      * Sets the default list of denyListed headers.
      * <p>
-     * The default value is a list whose single element is the {@code Cookie} header.
+     * The default value is {@code Cookie} and {@code Authorization}.
      *
      * @return a castleConfigurationBuilder instance with the default list of denyListed headers
      */
@@ -153,7 +145,7 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Sets the timeout in milliseconds for a request.
+     * Sets the connect, read, and write timeout in milliseconds for a request.
      *
      * @param timeout milliseconds after which a request times out
      * @return a castleConfigurationBuilder with a timeout set to a new value
@@ -164,26 +156,13 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Establishes the authentication strategy that will be used in case of a timeout when performing a
-     * {@code CastleApi#authenticate} call.
+     * Sets the connect, read, and write timeout for a request.
      *
-     * @param failoverStrategy strategy to use for failed authenticate API calls; not null.
-     * @return a castleConfigurationBuilder with the chosen AuthenticationStrategy set
+     * @param timeout duration after which a request times out
+     * @return a castleConfigurationBuilder with a timeout set to a new value
      */
-    public CastleConfigurationBuilder withAuthenticateFailoverStrategy(AuthenticateFailoverStrategy failoverStrategy) {
-        this.failoverStrategy = failoverStrategy;
-        return this;
-    }
-
-    /**
-     * Sets the failover strategy for the authenticate Castle API call to allow.
-     * <p>
-     * The authenticate failover strategy for the default configuration is to return {@link AuthenticateAction#ALLOW}.
-     *
-     * @return a castleConfigurationBuilder with allow as the authenticate failover strategy
-     */
-    public CastleConfigurationBuilder withDefaultAuthenticateFailoverStrategy() {
-        return this.withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW));
+    public CastleConfigurationBuilder withTimeout(Duration timeout) {
+        return withTimeout(Math.toIntExact(timeout.toMillis()));
     }
 
     /**
@@ -292,7 +271,7 @@ public class CastleConfigurationBuilder {
      *
      * @return a castleConfiguration with all fields set to some meaningful value
      * @throws CastleSdkConfigurationException if at least one of castleAppId, apiSecret, allowListHeaders,
-     *                                         denyListHeaders, failoverStrategy, backendProvider is not provided
+     *                                         denyListHeaders, backendProvider is not provided
      *                                         during the building stage of the
      *                                         CastleConfiguration instance.
      */
@@ -310,10 +289,6 @@ public class CastleConfigurationBuilder {
             builder.add("A denyList of headers must be provided. If not sure, then use the default values provided " +
                     "by method withDefaultDenyList. Read documentation for further details.");
         }
-        if (failoverStrategy == null) {
-            builder.add("A failover strategy must be provided. If not sure, then use the default values provided " +
-                    "by method withDefaultAuthenticateFailoverStrategy. Read documentation for further details.");
-        }
         if (backendProvider == null) {
             builder.add("A backend provider must be selected. If not sure, then use the default values provided " +
                     "by method withDefaultBackendProvider. Read documentation for further details.");
@@ -328,7 +303,6 @@ public class CastleConfigurationBuilder {
         HeaderNormalizer normalizer = new HeaderNormalizer();
         return new CastleConfiguration(apiBaseUrl,
                 timeout,
-                failoverStrategy,
                 normalizer.normalizeList(allowListHeaders),
                 normalizer.normalizeList(denyListHeaders),
                 apiSecret,
@@ -378,6 +352,7 @@ public class CastleConfigurationBuilder {
 
     /**
      * Flag to enable logging on backend HTTP requests.
+     * When enabled, the {@code Authorization} header is redacted from the log.
      *
      * @param logHttpRequests boolean to switch logging on or off.
      * @return a castleConfigurationBuilder with logging setup set

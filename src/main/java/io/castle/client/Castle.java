@@ -9,6 +9,7 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.json.CastleGsonModel;
 import io.castle.client.internal.utils.CastleContextBuilder;
+import io.castle.client.internal.utils.Webhook;
 import io.castle.client.model.CastleResponse;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.slf4j.Logger;
@@ -17,26 +18,26 @@ import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Creates an instance of the Castle SDK
- *
- * This also provides methods for initialization of the SDK.
- * {@code this#initialize()} must be called once per instance of the SDK
- *
- * Static method {@code this#setSingletonInstance()} can be called to set a global instance of the SDK.
- * Once set the {@code this#instance()} method will return that instance
+ * Creates an instance of the Castle SDK.
+ * <p>
+ * Initialize once with {@link #initialize()} or {@link #initialize(CastleConfiguration)},
+ * then call {@link #client()} or {@link #onRequest(HttpServletRequest)} to send requests.
+ * {@code Castle} implements {@link AutoCloseable}; call {@link #close()} to release the HTTP client.
+ * <p>
+ * Static method {@link #setSingletonInstance(Castle)} can be called to set a global instance of the SDK.
+ * Once set, {@link #instance()} returns that instance.
  */
-public class Castle {
-    public static final String URL_TRACK = "/v1/track";
-    public static final String URL_AUTHENTICATE = "/v1/authenticate";
-    public static final String URL_DEVICES = "/v1/devices/";
-    public static final String URL_USERS = "/v1/users/";
-    public static final String URL_IMPERSONATE = "/v1/impersonate";
+public class Castle implements AutoCloseable {
     public static final String URL_PRIVACY = "/v1/privacy/";
     public static final String URL_RISK = "/v1/risk";
     public static final String URL_FILTER = "/v1/filter";
     public static final String URL_LOG = "/v1/log";
+    public static final String URL_EVENTS = "/v1/events";
 
-    public static final String URL_RECOVER = "/v1/users/%s/recover";
+    /**
+     * Header used by Castle to sign webhook payloads.
+     */
+    public static final String WEBHOOK_SIGNATURE_HEADER = "X-Castle-Signature";
 
     public static final String URL_LISTS = "/v1/lists";
     public static final String URL_LISTS_ID = "/v1/lists/%s";
@@ -123,8 +124,11 @@ public class Castle {
     }
 
     /**
-     * Creates a API client instance for sending a request
-     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
+     * Creates an API client instance for sending a request.
+     * The {@code doNotTrack} flag is stored on the returned client and is not read by
+     * {@code risk}, {@code filter}, {@code log}, or other API methods.
+     *
+     * @param doNotTrack tracking flag stored on the returned client
      * @return A new instance of the API client {@code CastleApiImpl}
      * @throws IllegalStateException when the SDK has not been properly initialized
      */
@@ -213,8 +217,8 @@ public class Castle {
     }
 
     /**
-     * Create a API context for the given request.
-     * Tracking is ON by default.
+     * Creates an API client and extracts servlet headers and IP into an internal context object.
+     * {@code risk}, {@code filter}, and {@code log} send the payload as given; set {@code context} on the payload.
      *
      * @param request The request for data extraction
      * @return a API reference to make backend calls to the castle.io rest api.
@@ -224,10 +228,12 @@ public class Castle {
     }
 
     /**
-     * Create a API context for the given request.
+     * Creates an API client and extracts servlet headers and IP into an internal context object.
+     * {@code risk}, {@code filter}, and {@code log} send the payload as given; set {@code context} on the payload.
+     * The {@code doNotTrack} flag is stored on the returned client and is not read by those methods.
      *
      * @param request    The request for data extraction
-     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
+     * @param doNotTrack tracking flag stored on the returned client
      * @return a API reference to make backend calls to the castle.io rest api.
      */
     public CastleApi onRequest(HttpServletRequest request, boolean doNotTrack) {
@@ -271,7 +277,39 @@ public class Castle {
     }
 
     /**
-     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     * Verifies a Castle webhook signature against the raw request body.
+     * <p>
+     * Castle signs every webhook with an HMAC-SHA256 of the raw request body using
+     * the account API secret, base64 encoded and sent in the
+     * {@code X-Castle-Signature} header.
+     *
+     * @param signature the value of the {@code X-Castle-Signature} header
+     * @param body      the raw request body bytes
+     * @return {@code true} when the signature matches the computed signature
+     */
+    public boolean verifyWebhookSignature(String signature, byte[] body) {
+        return Webhook.verifySignature(internalConfiguration.getConfiguration().getApiSecret(), body, signature);
+    }
+
+    /**
+     * Verifies a Castle webhook signature for the given servlet request.
+     * <p>
+     * The signature is read from the {@code X-Castle-Signature} header and verified
+     * against the supplied raw request body bytes.
+     *
+     * @param request the incoming webhook request
+     * @param body    the raw request body bytes
+     * @return {@code true} when the signature matches the computed signature
+     */
+    public boolean verifyWebhookSignature(HttpServletRequest request, byte[] body) {
+        if (request == null) {
+            return false;
+        }
+        return verifyWebhookSignature(request.getHeader(WEBHOOK_SIGNATURE_HEADER), body);
+    }
+
+    /**
+     * Make a GET request to a Castle API endpoint such as /v1/lists
      *
      * @param path api path
      * @return a decoded json response
@@ -281,7 +319,7 @@ public class Castle {
     }
 
     /**
-     * Make a POST request to a Castle API endpoint such as /v1/track
+     * Make a POST request to a Castle API endpoint such as /v1/risk
      *
      * @param path api path
      * @param payload request payload
@@ -291,7 +329,7 @@ public class Castle {
         return client().post(path, payload);
     }
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @return a decoded json response
@@ -301,7 +339,7 @@ public class Castle {
     }
 
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @param payload request payload
@@ -312,7 +350,7 @@ public class Castle {
     }
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @return a decoded json response
@@ -322,7 +360,7 @@ public class Castle {
     }
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @param payload request payload
@@ -330,5 +368,17 @@ public class Castle {
      */
     public CastleResponse delete(String path, ImmutableMap<Object, Object> payload) {
         return client().delete(path, payload);
+    }
+
+    /**
+     * Releases the HTTP dispatcher and connection pool used by this instance.
+     * When this instance is the SDK singleton, {@link #instance()} is cleared.
+     */
+    @Override
+    public void close() {
+        internalConfiguration.close();
+        if (instance == this) {
+            instance = null;
+        }
     }
 }

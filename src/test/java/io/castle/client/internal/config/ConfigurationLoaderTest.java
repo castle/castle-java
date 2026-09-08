@@ -1,7 +1,5 @@
 package io.castle.client.internal.config;
 
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleRuntimeException;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
@@ -88,7 +86,6 @@ public class ConfigurationLoaderTest {
                 )
                 .withDefaultBackendProvider()
                 .withTimeout(100)
-                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.CHALLENGE))
                 .build();
 
         //Then the value of the timeout should be the one in the properties file castle_sdk.properties
@@ -104,10 +101,6 @@ public class ConfigurationLoaderTest {
         setEnvAndTestCorrectness(
                 "CASTLE_SDK_TIMEOUT",
                 "700"
-        );
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
-                "DENY"
         );
         setEnvAndTestCorrectness(
                 "CASTLE_SDK_ALLOWLIST_HEADERS",
@@ -145,7 +138,6 @@ public class ConfigurationLoaderTest {
                 .withApiBaseUrl("https://api.dev.castle.io/v1/")
                 .withTimeout(700)
                 .withLogHttpRequests(true)
-                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.DENY))
                 .build();
 
         testLoad(expectedConfiguration);
@@ -160,7 +152,6 @@ public class ConfigurationLoaderTest {
                 "CASTLE_SDK_API_SECRET",
                 "1234"
         );
-        // and a expected config is the default configuration with the throw strategy
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("1234")
@@ -169,37 +160,6 @@ public class ConfigurationLoaderTest {
         // when then
         testLoad(expectedConfiguration);
     }
-
-    @Test
-    public void loadFailoverThrowStrategyFromEnv() throws CastleSdkConfigurationException {
-        //given a property file not existing is provided
-        setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
-        // and a minimal sdk configuration is provided in environment
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_APP_ID",
-                "test_app_id_env"
-        );
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_API_SECRET",
-                "1234"
-        );
-        // and the failover strategy environment value is throw
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
-                "throw"
-        );
-        // and an expected config is the default configuration with the throw strategy
-        CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
-                .defaultConfigBuilder()
-                .withApiSecret("1234")
-                .withCastleAppId("test_app_id_env")
-                .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy())
-                .build();
-
-        // when then
-        testLoad(expectedConfiguration);
-    }
-
 
     @Test
     public void ignoreNonExistingPropertiesFileTest() throws CastleSdkConfigurationException {

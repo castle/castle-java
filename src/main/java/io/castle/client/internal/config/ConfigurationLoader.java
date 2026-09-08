@@ -3,8 +3,6 @@ package io.castle.client.internal.config;
 import com.google.common.base.Splitter;
 import io.castle.client.Castle;
 import io.castle.client.internal.backend.CastleBackendProvider;
-import io.castle.client.model.AuthenticateAction;
-import io.castle.client.model.AuthenticateFailoverStrategy;
 import io.castle.client.model.CastleSdkConfigurationException;
 
 import java.io.InputStream;
@@ -78,8 +76,6 @@ class ConfigurationLoader {
      * Loads the application level configuration for the Castle SDK with values taken from environmental variables,
      * a properties file or default values in that order of precedence.
      * <p>
-     * When wrong failover strategy or backend, null is returned instead.
-     *
      * @return a CastleConfiguration instance
      * @throws CastleSdkConfigurationException if at least one of apiSecret or castleAppId is not provided in either the
      *                                         environment or the properties file in the classpath
@@ -130,11 +126,6 @@ class ConfigurationLoader {
                 "backend_provider",
                 "CASTLE_SDK_BACKEND_PROVIDER"
         );
-        String authenticateFailoverStrategyValue = loadConfigurationValue(
-                castleConfigurationProperties,
-                "failover_strategy",
-                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY"
-        );
         String apiBaseUrl = loadConfigurationValue(
                 castleConfigurationProperties,
                 "base_url",
@@ -169,19 +160,6 @@ class ConfigurationLoader {
             // might throw NumberFormatException if string is not parsable to int
             int timeout = Integer.parseInt(timeoutValue);
             builder.withTimeout(timeout);
-        }
-        if (authenticateFailoverStrategyValue != null) {
-            if (authenticateFailoverStrategyValue.compareTo("throw") == 0) {
-                builder.withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy());
-            } else {
-                builder.withAuthenticateFailoverStrategy(
-                        new AuthenticateFailoverStrategy(
-                                AuthenticateAction.fromAction(authenticateFailoverStrategyValue)
-                        )
-                );
-            }
-        } else {
-            builder.withDefaultAuthenticateFailoverStrategy();
         }
         if (backendProviderValue != null) {
             builder.withBackendProvider(

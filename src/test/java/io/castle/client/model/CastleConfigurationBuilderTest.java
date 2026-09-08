@@ -5,6 +5,8 @@ import io.castle.client.internal.config.CastleConfigurationBuilder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+import java.time.Duration;
+
 public class CastleConfigurationBuilderTest {
 
     @Test
@@ -23,10 +25,20 @@ public class CastleConfigurationBuilderTest {
         Assertions.assertThat(config.getDenyListHeaders()).contains("cookie");
         Assertions.assertThat(config.getDenyListHeaders()).contains("authorization");
         Assertions.assertThat(config.getAllowListHeaders()).isEmpty();
-        Assertions.assertThat(config.getAuthenticateFailoverStrategy().getDefaultAction()).isEqualTo(AuthenticateAction.ALLOW);
-        Assertions.assertThat(config.getTimeout()).isEqualTo(500);
+        Assertions.assertThat(config.getTimeout()).isEqualTo(1000);
 
 
+    }
+
+    @Test
+    public void buildConfigurationWithDurationTimeout() throws CastleSdkConfigurationException {
+        CastleConfiguration config = CastleConfigurationBuilder.defaultConfigBuilder()
+                .withApiSecret("TestApiSecret")
+                .withCastleAppId("TestCastleAppId")
+                .withTimeout(Duration.ofSeconds(2))
+                .build();
+
+        Assertions.assertThat(config.getTimeout()).isEqualTo(2000);
     }
 
     @Test(expected = CastleSdkConfigurationException.class)
