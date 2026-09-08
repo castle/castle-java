@@ -6,6 +6,7 @@ import io.castle.client.internal.backend.CastleBackendProvider;
 import io.castle.client.internal.utils.HeaderNormalizer;
 import io.castle.client.model.CastleSdkConfigurationException;
 
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -152,6 +153,16 @@ public class CastleConfigurationBuilder {
     public CastleConfigurationBuilder withTimeout(int timeout) {
         this.timeout = timeout;
         return this;
+    }
+
+    /**
+     * Sets the connect, read, and write timeout for a request.
+     *
+     * @param timeout duration after which a request times out
+     * @return a castleConfigurationBuilder with a timeout set to a new value
+     */
+    public CastleConfigurationBuilder withTimeout(Duration timeout) {
+        return withTimeout(Math.toIntExact(timeout.toMillis()));
     }
 
     /**
