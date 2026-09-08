@@ -19,7 +19,7 @@ public class CastleConfiguration {
     private final String apiBaseUrl;
 
     /**
-     * Timeout after which a request fails.
+     * Timeout in milliseconds applied to connect, read, and write.
      */
     private final int timeout;
 

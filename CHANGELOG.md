@@ -8,6 +8,7 @@
 - Add webhook signature verification (`Castle#verifyWebhookSignature`) and the `X-Castle-Signature` header constant
 - Add the Events API: `eventsSchema`, `queryEvents` and `groupEvents`
 - Add the privacy methods `requestUserData` and `deleteUserData`
+- Set the default request timeout to 1000 milliseconds
 - Remove the legacy `authenticate` and `track` endpoints
 - Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
 - Remove the `recover` endpoint and the `removeUser` privacy method

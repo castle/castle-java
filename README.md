@@ -127,7 +127,7 @@ Setting | Default values, when they exist | Properties file key | Environment va
 API Secret |   | `api_secret`        | `CASTLE_API_SECRET` |
 Allowlisted Headers |   | `allow_list`        | `CASTLE_SDK_ALLOWLIST_HEADERS` |
 Denylisted Headers | `Cookie` | `deny_list`         | `CASTLE_SDK_DENYLIST_HEADERS` |
-Timeout | `500` | `timeout`           | `CASTLE_SDK_TIMEOUT` |
+Timeout | `1000` | `timeout`           | `CASTLE_SDK_TIMEOUT` |
 Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
 Backend Provider | `OKHTTP` | `backend_provider`  | `CASTLE_SDK_BACKEND_PROVIDER` |
 Base URL | `https://api.castle.io/` | `base_url`          | `CASTLE_SDK_BASE_URL` |
@@ -144,7 +144,7 @@ modified:
 api_secret=
 allow_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
 deny_list=Cookie
-timeout=500
+timeout=1000
 backend_provider=OKHTTP
 failover_strategy=ALLOW
 base_url=https://api.castle.io/
@@ -159,7 +159,7 @@ Castle castle = Castle.initialize(Castle.configurationBuilder()
     .apiSecret("abcd")
     .withAllowListHeaders("User-Agent", "Accept-Language", "Accept-Encoding")
     .withDenyListHeaders("Cookie")
-    .withTimeout(500)
+    .withTimeout(1000)
     .withBackendProvider(CastleBackendProvider.OKHTTP)
     .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW))
     .withApiBaseUrl("https://api.castle.io/")

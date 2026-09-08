@@ -35,9 +35,9 @@ import java.util.List;
  */
 public class CastleConfigurationBuilder {
     /**
-     * Represents the milliseconds after which a request fails.
+     * Milliseconds applied to connect, read, and write for each request.
      */
-    private int timeout = 500;
+    private int timeout = 1000;
 
     /**
      * Strings representing headers that should be passed to the context object unless they are also denyListed.
@@ -102,7 +102,7 @@ public class CastleConfigurationBuilder {
                 .withDefaultAllowList()
                 .withDefaultDenyList()
                 .withDefaultApiBaseUrl()
-                .withTimeout(500)
+                .withTimeout(1000)
                 .withDefaultBackendProvider()
                 .withMaxRequests(5);
         return builder;
@@ -111,7 +111,7 @@ public class CastleConfigurationBuilder {
     /**
      * Provides a fresh castleConfigurationBuilder.
      * <p>
-     * The only default value provided is the timeout, which is set to 500 milliseconds.
+     * The only default value provided is the timeout, which is set to 1000 milliseconds.
      *
      * @return a castleConfigurationBuilder with all values set to null, except timeout
      */
@@ -144,7 +144,7 @@ public class CastleConfigurationBuilder {
     }
 
     /**
-     * Sets the timeout in milliseconds for a request.
+     * Sets the connect, read, and write timeout in milliseconds for a request.
      *
      * @param timeout milliseconds after which a request times out
      * @return a castleConfigurationBuilder with a timeout set to a new value
