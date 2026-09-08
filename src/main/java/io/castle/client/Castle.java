@@ -18,15 +18,16 @@ import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Creates an instance of the Castle SDK
- *
- * This also provides methods for initialization of the SDK.
- * {@code this#initialize()} must be called once per instance of the SDK
- *
- * Static method {@code this#setSingletonInstance()} can be called to set a global instance of the SDK.
- * Once set the {@code this#instance()} method will return that instance
+ * Creates an instance of the Castle SDK.
+ * <p>
+ * Initialize once with {@link #initialize()} or {@link #initialize(CastleConfiguration)},
+ * then call {@link #client()} or {@link #onRequest(HttpServletRequest)} to send requests.
+ * {@code Castle} implements {@link AutoCloseable}; call {@link #close()} to release the HTTP client.
+ * <p>
+ * Static method {@link #setSingletonInstance(Castle)} can be called to set a global instance of the SDK.
+ * Once set, {@link #instance()} returns that instance.
  */
-public class Castle {
+public class Castle implements AutoCloseable {
     public static final String URL_PRIVACY = "/v1/privacy/";
     public static final String URL_RISK = "/v1/risk";
     public static final String URL_FILTER = "/v1/filter";
@@ -362,5 +363,13 @@ public class Castle {
      */
     public CastleResponse delete(String path, ImmutableMap<Object, Object> payload) {
         return client().delete(path, payload);
+    }
+
+    /**
+     * Releases the HTTP dispatcher and connection pool used by this instance.
+     */
+    @Override
+    public void close() {
+        internalConfiguration.close();
     }
 }

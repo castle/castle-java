@@ -27,8 +27,8 @@ public abstract class AbstractCastleHttpLayerTest {
         server = new MockWebServer();
         server.start(InetAddress.getByName("127.0.0.1"),0);
         //Given a SDK instance
-        sdk = new Castle(CastleSdkInternalConfiguration.getInternalConfiguration());
-        CastleConfiguration configuration = sdk.getInternalConfiguration().getConfiguration();
+        Castle loaded = new Castle(CastleSdkInternalConfiguration.getInternalConfiguration());
+        CastleConfiguration configuration = loaded.getInternalConfiguration().getConfiguration();
         testServerBaseUrl = server.url("/");
         CastleConfiguration mockedApiConfiguration = CastleConfigurationBuilder.aConfigBuilder()
                 .withApiSecret(configuration.getApiSecret())
@@ -40,12 +40,16 @@ public abstract class AbstractCastleHttpLayerTest {
                 .withBackendProvider(configuration.getBackendProvider())
                 .withTimeout(configuration.getTimeout())
                 .build();
+        loaded.close();
 
         sdk = Castle.initialize(mockedApiConfiguration);
     }
 
     @After
     public void tearDown() throws Exception {
+        if (sdk != null) {
+            sdk.close();
+        }
         server.shutdown();
     }
 

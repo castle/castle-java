@@ -61,4 +61,10 @@ public class OkHttpFactory implements RestApiFactory {
     public RestApi buildBackend() {
         return new OkRestApiBackend(client, modelInstance, configuration);
     }
+
+    @Override
+    public void close() {
+        client.dispatcher().executorService().shutdown();
+        client.connectionPool().evictAll();
+    }
 }

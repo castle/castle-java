@@ -125,5 +125,12 @@ public class CastleTest {
         Assertions.assertThat(sdkConfiguration)
                 .extracting("apiSecret")
                 .isEqualTo("abcd");
+        sdk.close();
+    }
+
+    @Test
+    public void closeReleasesHttpClient() throws CastleSdkConfigurationException {
+        Castle sdk = Castle.initialize("abcd");
+        sdk.close();
     }
 }
