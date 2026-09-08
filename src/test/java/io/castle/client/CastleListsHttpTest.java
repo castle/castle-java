@@ -45,7 +45,7 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("Malicious IPs", response.getName());
         Assert.assertEquals("We block these IPs from withdrawing funds. Please be careful.", response.getDescription());
         Assert.assertEquals(ListColor.RED, response.getColor());
-        Assert.assertEquals(2592000, response.getDefaultItemArchivationTime());
+        Assert.assertEquals(Integer.valueOf(2592000), response.getDefaultItemArchivationTime());
         Assert.assertEquals("2ee938c8-24c2-4c26-9d25-19511dd75029", response.getId());
         Assert.assertEquals("device.fingerprint", response.getPrimaryField());
         Assert.assertEquals("ip.value", response.getSecondaryField());
@@ -88,7 +88,7 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("Malicious IPs", list.getName());
         Assert.assertEquals("We block these IPs from withdrawing funds. Please be careful.", list.getDescription());
         Assert.assertEquals(ListColor.RED, list.getColor());
-        Assert.assertEquals(2592000, list.getDefaultItemArchivationTime());
+        Assert.assertEquals(Integer.valueOf(2592000), list.getDefaultItemArchivationTime());
         Assert.assertEquals("2ee938c8-24c2-4c26-9d25-19511dd75029", list.getId());
         Assert.assertEquals("device.fingerprint", list.getPrimaryField());
         Assert.assertEquals("ip.value", list.getSecondaryField());
@@ -128,7 +128,7 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("Malicious IPs", response.getName());
         Assert.assertEquals("We block these IPs from withdrawing funds. Please be careful.", response.getDescription());
         Assert.assertEquals(ListColor.RED, response.getColor());
-        Assert.assertEquals(2592000, response.getDefaultItemArchivationTime());
+        Assert.assertEquals(Integer.valueOf(2592000), response.getDefaultItemArchivationTime());
         Assert.assertEquals("2ee938c8-24c2-4c26-9d25-19511dd75029", response.getId());
         Assert.assertEquals("device.fingerprint", response.getPrimaryField());
         Assert.assertEquals("ip.value", response.getSecondaryField());
@@ -191,7 +191,7 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("Malicious IPs", list.getName());
         Assert.assertEquals("We block these IPs from withdrawing funds. Please be careful.", list.getDescription());
         Assert.assertEquals(ListColor.RED, list.getColor());
-        Assert.assertEquals(2592000, list.getDefaultItemArchivationTime());
+        Assert.assertEquals(Integer.valueOf(2592000), list.getDefaultItemArchivationTime());
         Assert.assertEquals("2ee938c8-24c2-4c26-9d25-19511dd75029", list.getId());
         Assert.assertEquals("device.fingerprint", list.getPrimaryField());
         Assert.assertEquals("ip.value", list.getSecondaryField());
@@ -233,7 +233,7 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("Malicious IPs", response.getName());
         Assert.assertEquals("We block these IPs from withdrawing funds. Please be careful.", response.getDescription());
         Assert.assertEquals(ListColor.RED, response.getColor());
-        Assert.assertEquals(2592000, response.getDefaultItemArchivationTime());
+        Assert.assertEquals(Integer.valueOf(2592000), response.getDefaultItemArchivationTime());
         Assert.assertEquals("2ee938c8-24c2-4c26-9d25-19511dd75029", response.getId());
         Assert.assertEquals("device.fingerprint", response.getPrimaryField());
         Assert.assertEquals("ip.value", response.getSecondaryField());
@@ -414,5 +414,14 @@ public class CastleListsHttpTest extends AbstractCastleHttpLayerTest {
 
         // Compare the JSON strings
         Assert.assertEquals(JsonParser.parseString(providedJson), JsonParser.parseString(listJson));
+    }
+
+    @Test
+    public void listResponseAllowsMissingArchivationTime() {
+        ListResponse response = new CastleGsonModel().getGson().fromJson(
+                "{\"name\":\"demo\",\"id\":\"abc\",\"primary_field\":\"user.email\"}",
+                ListResponse.class);
+
+        Assert.assertNull(response.getDefaultItemArchivationTime());
     }
 }

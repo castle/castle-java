@@ -39,7 +39,7 @@ public class DeviceScreen {
    * @return screen
   **/
   @ApiModelProperty(example = "2", value = "")
-  public int getScreen() {
+  public Integer getScreen() {
     return screen;
   }
 

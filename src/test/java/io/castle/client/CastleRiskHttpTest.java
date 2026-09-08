@@ -223,7 +223,7 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("America/New_York", response.getDevice().getTimezone().getName());
         Assert.assertEquals(-300, response.getDevice().getTimezone().getOffset());
 
-        Assert.assertEquals(2, response.getDevice().getScreen().getScreen());
+        Assert.assertEquals(Integer.valueOf(2), response.getDevice().getScreen().getScreen());
         Assert.assertEquals("landscape", response.getDevice().getScreen().getOrientation());
         Assert.assertEquals("ASZoelALT5-PaVw2pAVMXg", response.getId());
 
@@ -426,5 +426,16 @@ public class CastleRiskHttpTest extends AbstractCastleHttpLayerTest {
 
         // Compare the JSON strings
         Assert.assertEquals(JsonParser.parseString(providedJson), JsonParser.parseString(riskJson));
+    }
+
+    @Test
+    public void expandedEventAllowsMissingOptionalIntegers() {
+        FilterAndRiskResponse response = new CastleGsonModel().getGson().fromJson(
+                "{\"type\":\"$login\",\"status\":\"$succeeded\",\"id\":\"evt_1\","
+                        + "\"device\":{\"screen\":{}},\"ip\":{}}",
+                FilterAndRiskResponse.class);
+
+        Assert.assertNull(response.getDevice().getScreen().getScreen());
+        Assert.assertNull(response.getIp().getAsn());
     }
 }

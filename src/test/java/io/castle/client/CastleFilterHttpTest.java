@@ -236,7 +236,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertEquals("en", response.getDevice().getSoftware().getLanguages().get(1));
         Assert.assertEquals("91.0.4472", response.getDevice().getSoftware().getVersion().getFull());
         Assert.assertEquals("91", response.getDevice().getSoftware().getVersion().getMajor());
-        Assert.assertEquals(2, response.getDevice().getScreen().getScreen());
+        Assert.assertEquals(Integer.valueOf(2), response.getDevice().getScreen().getScreen());
         Assert.assertEquals("landscape", response.getDevice().getScreen().getOrientation());
         Assert.assertEquals("America/New_York", response.getDevice().getTimezone().getName());
         Assert.assertEquals(-300, response.getDevice().getTimezone().getOffset());
@@ -264,7 +264,7 @@ public class CastleFilterHttpTest extends AbstractCastleHttpLayerTest {
         Assert.assertFalse(response.getEmail().getDomainDetails().getDmarcRecord().isExists());
         Assert.assertFalse(response.getEmail().getDomainDetails().getMxRecords().isNullMx());
         Assert.assertEquals("/v1/risk", response.getEndpoint());
-        Assert.assertEquals(14618, response.getIp().getAsn());
+        Assert.assertEquals(Integer.valueOf(14618), response.getIp().getAsn());
         Assert.assertEquals("Ashburn", response.getIp().getLocation().getCity());
         Assert.assertEquals("NA", response.getIp().getLocation().getContinentCode());
         Assert.assertEquals("US", response.getIp().getLocation().getCountryCode());

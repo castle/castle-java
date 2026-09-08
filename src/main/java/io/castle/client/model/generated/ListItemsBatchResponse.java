@@ -52,7 +52,7 @@ public class ListItemsBatchResponse {
    * @return totalReceived
   **/
   @ApiModelProperty(required = true, value = "Total number of items received")
-  public int getTotalReceived() {
+  public Integer getTotalReceived() {
     return totalReceived;
   }
 
@@ -70,7 +70,7 @@ public class ListItemsBatchResponse {
    * @return totalProcessed
   **/
   @ApiModelProperty(required = true, value = "Total number of items processed without any errors")
-  public int getTotalProcessed() {
+  public Integer getTotalProcessed() {
     return totalProcessed;
   }
 
@@ -88,7 +88,7 @@ public class ListItemsBatchResponse {
    * @return created
   **/
   @ApiModelProperty(value = "Number of items created")
-  public int getCreated() {
+  public Integer getCreated() {
     return created;
   }
 
@@ -106,7 +106,7 @@ public class ListItemsBatchResponse {
    * @return updated
   **/
   @ApiModelProperty(value = "Number of items updated")
-  public int getUpdated() {
+  public Integer getUpdated() {
     return updated;
   }
 
@@ -124,7 +124,7 @@ public class ListItemsBatchResponse {
    * @return replaced
   **/
   @ApiModelProperty(value = "Total number of items replaced")
-  public int getReplaced() {
+  public Integer getReplaced() {
     return replaced;
   }
 
@@ -142,7 +142,7 @@ public class ListItemsBatchResponse {
    * @return errored
   **/
   @ApiModelProperty(value = "Total number of items that errored")
-  public int getErrored() {
+  public Integer getErrored() {
     return errored;
   }
 
