@@ -134,6 +134,37 @@ public class CastleExceptionTest {
         OkHttpExceptionUtil.handle(response);
     }
 
+    @Test
+    public void emptyBodyIsAccepted() throws IOException {
+        Response response = new Response.Builder()
+                .code(204)
+                .request(new Request.Builder().url("http://localhost").build())
+                .protocol(Protocol.HTTP_1_1)
+                .message("No Content")
+                .body(ResponseBody.create("", JsonMediaType))
+                .build();
+
+        CastleResponse castleResponse = new CastleResponse(response);
+
+        Assert.assertTrue(castleResponse.isSuccessful());
+        Assert.assertTrue(castleResponse.json().isJsonNull());
+    }
+
+    @Test
+    public void missingBodyIsAccepted() throws IOException {
+        Response response = new Response.Builder()
+                .code(204)
+                .request(new Request.Builder().url("http://localhost").build())
+                .protocol(Protocol.HTTP_1_1)
+                .message("No Content")
+                .build();
+
+        CastleResponse castleResponse = new CastleResponse(response);
+
+        Assert.assertTrue(castleResponse.isSuccessful());
+        Assert.assertTrue(castleResponse.json().isJsonNull());
+    }
+
     @Test(expected = CastleApiNotFoundException.class)
     public void notFoundError() {
         //Given

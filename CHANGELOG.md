@@ -13,6 +13,7 @@
 - Scope `system-stubs-jupiter` to tests
 - Redact the `Authorization` header when HTTP request logging is enabled
 - Add `Castle#close()` (`AutoCloseable`) to shut down the HTTP dispatcher and connection pool
+- Accept an empty response body in `CastleResponse`
 - Remove the legacy `authenticate` and `track` endpoints
 - Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
 - Remove the `recover` endpoint and the `removeUser` privacy method
