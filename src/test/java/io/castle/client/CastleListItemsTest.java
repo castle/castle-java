@@ -83,12 +83,12 @@ public class CastleListItemsTest extends AbstractCastleHttpLayerTest {
         ListItemsBatchResponse response = sdk.onRequest(request).createOrUpdateListItems("2ee938c8-24c2-4c26-9d25-19511dd75029", items);
 
         // Check response object
-        Assert.assertEquals(135, response.getTotalReceived());
-        Assert.assertEquals(130, response.getTotalProcessed());
-        Assert.assertEquals(5, response.getErrored());
-        Assert.assertEquals(10, response.getReplaced());
-        Assert.assertEquals(20, response.getUpdated());
-        Assert.assertEquals(100, response.getCreated());
+        Assert.assertEquals(Integer.valueOf(135), response.getTotalReceived());
+        Assert.assertEquals(Integer.valueOf(130), response.getTotalProcessed());
+        Assert.assertEquals(Integer.valueOf(5), response.getErrored());
+        Assert.assertEquals(Integer.valueOf(10), response.getReplaced());
+        Assert.assertEquals(Integer.valueOf(20), response.getUpdated());
+        Assert.assertEquals(Integer.valueOf(100), response.getCreated());
 
         // Then
         RecordedRequest recordedRequest = server.takeRequest();

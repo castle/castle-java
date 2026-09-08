@@ -51,7 +51,7 @@ public class IP {
    * @return asn
   **/
   @ApiModelProperty(example = "14618", required = true, value = "")
-  public int getAsn() {
+  public Integer getAsn() {
     return asn;
   }
 

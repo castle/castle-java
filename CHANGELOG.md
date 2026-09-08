@@ -14,6 +14,7 @@
 - Redact the `Authorization` header when HTTP request logging is enabled
 - Add `Castle#close()` (`AutoCloseable`) to shut down the HTTP dispatcher and connection pool; it also clears the SDK singleton when this instance is the singleton
 - Accept an empty response body in `CastleResponse`
+- Return `Integer` from generated getters whose backing field is nullable (`BaseList#getDefaultItemArchivationTime`, `DeviceScreen#getScreen`, `IP#getAsn`, and the `ListItemsBatchResponse` counters)
 - Remove `CastleUserDeviceContext` and `DeviceUserAgent`
 - Remove the legacy `authenticate` and `track` endpoints
 - Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
