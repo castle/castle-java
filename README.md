@@ -226,11 +226,3 @@ Castle castle = Castle.initialize(Castle.configurationBuilder()
     .ipHeaders(Arrays.asList("X-Forwarded-For", "CF-Connecting-IP"))
     .build());
 ```
-
-# Development branch
-
-Branch for development process. The castle-java-example application have a parallel dev branch for test proposes.
-
-To use on example application dev branch, first install locally:
-
-    mvn clean install
