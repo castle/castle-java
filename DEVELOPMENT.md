@@ -1,6 +1,6 @@
 # Development
 
-Use java8 for development
+Use Java 17 or higher for development
 
 ## Setup
 
@@ -12,7 +12,6 @@ To be able to run tests, create a file `castle_sdk.properties` in the folder `sr
 	deny_list=TestDeny,Cookie
 	timeout=100
 	backend_provider=OKHTTP
-	failover_strategy=CHALLENGE
 	base_url=https://testing.api.dev.castle/v1/
 
 ## Installing dependencies

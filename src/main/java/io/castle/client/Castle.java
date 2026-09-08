@@ -124,8 +124,11 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Creates a API client instance for sending a request
-     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
+     * Creates an API client instance for sending a request.
+     * The {@code doNotTrack} flag is stored on the returned client and is not read by
+     * {@code risk}, {@code filter}, {@code log}, or other API methods.
+     *
+     * @param doNotTrack tracking flag stored on the returned client
      * @return A new instance of the API client {@code CastleApiImpl}
      * @throws IllegalStateException when the SDK has not been properly initialized
      */
@@ -214,8 +217,8 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Create a API context for the given request.
-     * Tracking is ON by default.
+     * Creates an API client and extracts servlet headers and IP into an internal context object.
+     * {@code risk}, {@code filter}, and {@code log} send the payload as given; set {@code context} on the payload.
      *
      * @param request The request for data extraction
      * @return a API reference to make backend calls to the castle.io rest api.
@@ -225,10 +228,12 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Create a API context for the given request.
+     * Creates an API client and extracts servlet headers and IP into an internal context object.
+     * {@code risk}, {@code filter}, and {@code log} send the payload as given; set {@code context} on the payload.
+     * The {@code doNotTrack} flag is stored on the returned client and is not read by those methods.
      *
      * @param request    The request for data extraction
-     * @param doNotTrack when true, the API calls will be not realized and default values will be provided
+     * @param doNotTrack tracking flag stored on the returned client
      * @return a API reference to make backend calls to the castle.io rest api.
      */
     public CastleApi onRequest(HttpServletRequest request, boolean doNotTrack) {
@@ -304,7 +309,7 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     * Make a GET request to a Castle API endpoint such as /v1/lists
      *
      * @param path api path
      * @return a decoded json response
@@ -314,7 +319,7 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Make a POST request to a Castle API endpoint such as /v1/track
+     * Make a POST request to a Castle API endpoint such as /v1/risk
      *
      * @param path api path
      * @param payload request payload
@@ -324,7 +329,7 @@ public class Castle implements AutoCloseable {
         return client().post(path, payload);
     }
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @return a decoded json response
@@ -334,7 +339,7 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @param payload request payload
@@ -345,7 +350,7 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @return a decoded json response
@@ -355,7 +360,7 @@ public class Castle implements AutoCloseable {
     }
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @param payload request payload

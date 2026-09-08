@@ -103,10 +103,6 @@ public class ConfigurationLoaderTest {
                 "700"
         );
         setEnvAndTestCorrectness(
-                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
-                "DENY"
-        );
-        setEnvAndTestCorrectness(
                 "CASTLE_SDK_ALLOWLIST_HEADERS",
                 "Accept-Encoding,Accept-Charset"
         );
@@ -156,7 +152,6 @@ public class ConfigurationLoaderTest {
                 "CASTLE_SDK_API_SECRET",
                 "1234"
         );
-        // and a expected config is the default configuration with the throw strategy
         CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
                 .defaultConfigBuilder()
                 .withApiSecret("1234")
@@ -165,36 +160,6 @@ public class ConfigurationLoaderTest {
         // when then
         testLoad(expectedConfiguration);
     }
-
-    @Test
-    public void loadFailoverThrowStrategyFromEnv() throws CastleSdkConfigurationException {
-        //given a property file not existing is provided
-        setEnvAndTestCorrectness("CASTLE_PROPERTIES_FILE", "notExistingFile.properties");
-        // and a minimal sdk configuration is provided in environment
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_APP_ID",
-                "test_app_id_env"
-        );
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_API_SECRET",
-                "1234"
-        );
-        // and the failover strategy environment value is throw
-        setEnvAndTestCorrectness(
-                "CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY",
-                "throw"
-        );
-        // and an expected config is the default configuration with the throw strategy
-        CastleConfiguration expectedConfiguration = CastleConfigurationBuilder
-                .defaultConfigBuilder()
-                .withApiSecret("1234")
-                .withCastleAppId("test_app_id_env")
-                .build();
-
-        // when then
-        testLoad(expectedConfiguration);
-    }
-
 
     @Test
     public void ignoreNonExistingPropertiesFileTest() throws CastleSdkConfigurationException {

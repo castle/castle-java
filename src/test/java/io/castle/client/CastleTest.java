@@ -1,11 +1,9 @@
 package io.castle.client;
 
-import io.castle.client.internal.backend.RestApiFactory;
 import io.castle.client.internal.config.CastleConfiguration;
 import io.castle.client.model.CastleSdkConfigurationException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class CastleTest {
 

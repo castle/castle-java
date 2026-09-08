@@ -8,12 +8,12 @@
 
 # Supported APIs
 
-The SDK exposes the modern Castle API surface:
+The SDK exposes the Castle API surface:
 
 | Group | Methods |
 | --- | --- |
 | Scoring | `risk`, `filter`, `log` |
-| Lists | `createList`, `list`, `updateList`, `deleteList` |
+| Lists | `createList`, `list`, `listAllLists`, `searchLists`, `updateList`, `deleteList` |
 | List items | `createListItem`, `createOrUpdateListItems`, `searchListItems`, `countListItems`, `getListItem`, `updateListItem`, `archiveListItem`, `unarchiveListItem` |
 | Privacy | `requestUserData`, `deleteUserData` |
 | Events | `eventsSchema`, `queryEvents`, `groupEvents` |
@@ -22,7 +22,7 @@ The SDK exposes the modern Castle API surface:
 | Generic | `get`, `post`, `put`, `delete` |
 
 # Usage
-See the [documentation](https://docs.castle.io) for how to use this SDK with the Castle APIs
+See the [documentation](https://docs.castle.io) for how to use this SDK with the Castle APIs.
 
 # Quickstart
 
@@ -37,11 +37,11 @@ When using Maven, add the following dependency to your `pom.xml` file:
 
 ## Initialize the SDK
 
-Go to the settings page of your Castle account and find your **API Secret**
+Go to the settings page of your Castle account and find your **API Secret**.
 
 **Alt 1. Initialize using ENV variables**
 
-On initialization the Castle SDK will look for the secret in the `CASTLE_API_SECRET` environment variable. If it is set, no options needs to be passed to the initializer.
+On initialization the Castle SDK will look for the secret in the `CASTLE_API_SECRET` environment variable. If it is set, no options need to be passed to the initializer.
 
 ```java
 Castle castle = Castle.initialize();
@@ -53,10 +53,9 @@ Castle castle = Castle.initialize();
 Castle castle = Castle.initialize("abcd");
 ```
 
-
 **Alt 3. Initialize using configuration builder**
 
-If you don't use ENV variables, you can set the secret programatically together
+If you don't use ENV variables, you can set the secret programmatically together
 with other options by using `CastleConfigurationBuilder`. `Castle.configurationBuilder()`
 returns a configuration builder initialized with default settings.
 
@@ -64,19 +63,82 @@ returns a configuration builder initialized with default settings.
 Castle castle = Castle.initialize(
   Castle.configurationBuilder()
     .apiSecret("abcd")
-    .enableHttpLogging(true) // Log all outgoing requests sent to Castle
+    .enableHttpLogging(true)
+    .withTimeout(java.time.Duration.ofMillis(1000))
     .build()
 );
 ```
 All other settings will be set to their default values.
 
-We can also maintain a global instance wich can be set the following way
+`Castle` implements `AutoCloseable`. Call `close()` when the process shuts down, or use try-with-resources:
 
 ```java
-Castle.setSingletonInstance(castle);
+try (Castle castle = Castle.initialize("abcd")) {
+    castle.client().filter(...);
+}
+```
 
-// Use the singleton
-Castle.instance().client().filter(...);
+A Spring bean can release the HTTP client from a destroy callback:
+
+```java
+@PreDestroy
+public void shutdown() {
+    castle.close();
+}
+```
+
+A global instance can be registered with `Castle.setSingletonInstance(castle)` and read with `Castle.instance()`.
+
+# Scoring
+
+`risk`, `filter`, and `log` send the payload you pass. Put `context` (IP and headers) on that payload. `onRequest` and `mergeContext` do not attach fields to these requests.
+
+```java
+CastleResponse response = castle.client().risk(ImmutableMap.builder()
+    .put("type", "$login")
+    .put("status", "$succeeded")
+    .put("request_token", requestToken)
+    .put("user", ImmutableMap.of("id", userId))
+    .put("context", ImmutableMap.of(
+        "ip", ipAddress,
+        "headers", headers
+    ))
+    .build());
+```
+
+Typed payloads work the same way:
+
+```java
+Risk payload = new Risk()
+    .type(Risk.TypeEnum.LOGIN)
+    .status(Risk.StatusEnum.SUCCEEDED)
+    .requestToken(requestToken)
+    .user(new RiskUser().id(userId))
+    .context(new Context()
+        .ip(ipAddress)
+        .addHeadersItem("User-Agent", userAgent));
+
+FilterAndRiskResponse result = castle.client().risk(payload);
+```
+
+`CastleContextBuilder` can extract IP and headers from an `HttpServletRequest` for you to place on the payload:
+
+```java
+CastleContext extracted = castle.contextBuilder()
+    .fromHttpServletRequest(request)
+    .build();
+```
+
+Allowlist and denylist settings apply to that extraction. The default denylist is `Cookie` and `Authorization`.
+
+`doNotTrack(true)`, `client(true)`, and `onRequest(request, true)` store a flag on the client. Scoring and other API methods still send the HTTP request.
+
+# Webhooks
+
+Castle signs every webhook with HMAC-SHA256 of the raw request body. Verify the `X-Castle-Signature` header against those bytes:
+
+```java
+boolean valid = castle.verifyWebhookSignature(request, rawBody);
 ```
 
 # Configuring the SDK
@@ -90,21 +152,21 @@ there is one that must be configured:
 
 If the API Secret is not provided, the client's initialization process will fail. It can be found in the settings page of the Castle dashboard.
 
-Besides the aforementioned settings, the following are other application-level setting
+Besides the aforementioned settings, the following are other application-level settings
 that can be optionally configured:
 
  * **Denylisted Headers**: a comma-separated list of strings representing HTTP headers that will
- never get passed to the context object. See [The Context Object](#the-context-object).
+ never get passed to the context object extracted from an `HttpServletRequest`.
  * **Allowlisted Headers**: this is a comma-separated list of strings representing HTTP headers
- that will get passed to the context object with each call to the Castle API,
- unless they are denylisted. If not set or empty all headers will be sent. See [The Context Object](#the-context-object).
- * **Authenticate Failover Strategy**: it can be set to `ALLOW`, `DENY`, `CHALLENGE` or `THROW`.
- See also [Authenticate](#authenticate)
- * **Timeout**: an integer that represents the time in milliseconds after which a request fails.
+ that will get passed to the extracted context object,
+ unless they are denylisted. If not set or empty all headers will be sent.
+ * **Timeout**: an integer that represents the time in milliseconds applied to connect, read, and write.
+ `CastleConfigurationBuilder#withTimeout(Duration)` accepts the same value as a `java.time.Duration`.
  * **Backend Provider**: The HTTP layer that will be used to make requests to the Castle API.
  Currently there is only one available and it uses [OkHttp](https://square.github.io/okhttp/).
  * **Base URL**: The base endpoint of the Castle API without any relative path.
  * **IP Headers**: The headers checked (in order) to use for the context IP.
+ * **Log HTTP**: when true, OkHttp logs request and response bodies. The `Authorization` header is redacted.
 
 Allowlist and Denylist are case-insensitive.
 
@@ -114,7 +176,7 @@ See *[Where to Configure Settings](#where-to-configure-settings)* for a list of 
 ## Where to Configure Settings
 
 Settings can be provided as a Java Properties file in the classpath, through
-environmental variables or through methods calls on `CastleConfigurationBuilder`
+environmental variables or through methods calls on `CastleConfigurationBuilder`.
 When two of these options are used, environmental variables take precedence over the Java
 Properties file.
 
@@ -126,9 +188,8 @@ Setting | Default values, when they exist | Properties file key | Environment va
 --- | --- |---------------------| --- |
 API Secret |   | `api_secret`        | `CASTLE_API_SECRET` |
 Allowlisted Headers |   | `allow_list`        | `CASTLE_SDK_ALLOWLIST_HEADERS` |
-Denylisted Headers | `Cookie` | `deny_list`         | `CASTLE_SDK_DENYLIST_HEADERS` |
+Denylisted Headers | `Cookie`, `Authorization` | `deny_list`         | `CASTLE_SDK_DENYLIST_HEADERS` |
 Timeout | `1000` | `timeout`           | `CASTLE_SDK_TIMEOUT` |
-Authenticate Failover Strategy | `ALLOW` | `failover_strategy` | `CASTLE_SDK_AUTHENTICATE_FAILOVER_STRATEGY` |
 Backend Provider | `OKHTTP` | `backend_provider`  | `CASTLE_SDK_BACKEND_PROVIDER` |
 Base URL | `https://api.castle.io/` | `base_url`          | `CASTLE_SDK_BASE_URL` |
 Log HTTP | false | `log_http`          | `CASTLE_SDK_LOG_HTTP` |
@@ -143,10 +204,9 @@ modified:
 ```properties
 api_secret=
 allow_list=User-Agent,Accept-Language,Accept-Encoding,Accept-Charset,Accept,Accept-Datetime,X-Forwarded-For,Forwarded,X-Forwarded,X-Real-IP,REMOTE_ADDR
-deny_list=Cookie
+deny_list=Cookie,Authorization
 timeout=1000
 backend_provider=OKHTTP
-failover_strategy=ALLOW
 base_url=https://api.castle.io/
 log_http=false
 ip_headers=
@@ -154,33 +214,18 @@ ip_headers=
 
 To configure using the `CastleConfigurationBuilder` use the corresponding method to set the values
 
-```builder
+```java
 Castle castle = Castle.initialize(Castle.configurationBuilder()
     .apiSecret("abcd")
     .withAllowListHeaders("User-Agent", "Accept-Language", "Accept-Encoding")
-    .withDenyListHeaders("Cookie")
+    .withDenyListHeaders("Cookie", "Authorization")
     .withTimeout(1000)
     .withBackendProvider(CastleBackendProvider.OKHTTP)
-    .withAuthenticateFailoverStrategy(new AuthenticateFailoverStrategy(AuthenticateAction.ALLOW))
     .withApiBaseUrl("https://api.castle.io/")
     .withLogHttpRequests(true)
     .ipHeaders(Arrays.asList("X-Forwarded-For", "CF-Connecting-IP"))
     .build());
 ```
-
-### The Authenticate Failover Strategy
-
-It is the strategy that will be used when a request to the `/v1/authenticate` endpoint
-of the Castle API fails.
-Also, see [`doNotTrack` boolean](the-donottrack-boolean) for another use case of a failover strategy.
-
-It can be one of the following options:
-* return a specific *authenticate action* inside an instance of `Verdict`;
-* throw an `io.castle.client.model.CastleRuntimeException`.
-
-See [configuration](#configuring-the-sdk) to find out how to enable a failover strategy and to
-learn about its default value.
-
 
 # Development branch
 

@@ -1,47 +1,20 @@
 package io.castle.client.api;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
 import io.castle.client.model.*;
 import io.castle.client.model.generated.*;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * Contains methods for calling the Castle API and the settings needed to properly make such a request.
- * <p>
- * Methods of this interface can be used to make calls to Castle's API
- * {@code /v1/authenticate} and {@code /v1/track} endpoints.
- * <p>
- * A {@code castleApi} contains all necessary configurations to correctly call the Castle API.
- * In particular, it contains:
- * <ul>
- * <li>a configuration object containing;
- * <li>an HTTP layer for handling HTTP requests and responses;
- * <li>a context object with metadata on the request made by the user to the server containing this client.
- * </ul><p>
- * The context object could have one of the following origins:
- * <ul>
- * <li>the default setting for a context object;
- * <li>T
- * <li>A context object with metadata on the request made by the user to the server containing this client.
- * </ul><p>
- * An instance of {@code CastleApi} contains a boolean named doNotTrack in a private field.
- * When doNotTrack is set to false, the CastleApi instance created is configured to make requests when any
- * of its methods is called.
- * When set to true, authenticate and track methods return immediately without making any request.
- * The {@code this#authenticate} method will resort to the {@link io.castle.client.model.AuthenticateFailoverStrategy}
- * with authenticate action set to {@link io.castle.client.model.AuthenticateAction#ALLOW}.
- * When doNotTrack is set to true, this will resort to the {@link io.castle.client.model.AuthenticateFailoverStrategy}
- * with authenticate action set to {@link io.castle.client.model.AuthenticateAction#ALLOW}.
+ * Client for the Castle REST API.
  */
 public interface CastleApi {
 
     /**
      * Merges an additional context object with the context object associated with this {@code CastleApi} instance.
-     * <p>
-     * When the additional context is null, then the returned context is an empty JSON object.
+     * The merged object is stored on the returned client and is not attached to {@code risk}, {@code filter}, or {@code log} payloads.
+     * When the additional context is null, then the stored context is an empty JSON object.
      *
      * @param additionalContext client defined model, takes null
      * @return an API reference with the merged context values
@@ -49,11 +22,11 @@ public interface CastleApi {
     CastleApi mergeContext(Object additionalContext);
 
     /**
-     * Sets the doNotTrack boolean of a new instance of {@code CastleApi}
+     * Returns a client that stores the do-not-track flag.
+     * The flag is not read by {@code risk}, {@code filter}, {@code log}, or other API methods.
      *
-     * @param doNotTrack boolean representing the value that the doNotTrack private field of the new instance of
-     *                   {@code CastleApi}
-     * @return a {@code castleApi} reference whose doNotTrack private field is set to the doNotTrack parameter
+     * @param doNotTrack boolean stored on the returned client
+     * @return a {@code CastleApi} reference that stores the given flag
      */
     CastleApi doNotTrack(boolean doNotTrack);
 
@@ -109,7 +82,8 @@ public interface CastleApi {
     CastleResponse groupEvents(ImmutableMap<Object, Object> payload);
 
     /**
-     * Makes a sync POST request to the risk endpoint.
+     * Sends a POST request to {@code /v1/risk}.
+     * The payload is sent as given. Set {@code context} on the payload for IP and headers.
      *
      * @param payload Event parameters
      * @return
@@ -117,7 +91,8 @@ public interface CastleApi {
     CastleResponse risk(ImmutableMap<Object, Object> payload);
 
     /**
-     * Makes a sync POST request to the risk endpoint.
+     * Sends a POST request to {@code /v1/risk}.
+     * The payload is sent as given. Set {@code context} on the payload for IP and headers.
      *
      * @param payload Event parameters
      * @return
@@ -228,7 +203,8 @@ public interface CastleApi {
     CastleResponse unarchiveListItem(String listId, String itemid);
 
     /**
-     * Makes a sync POST request to the filter endpoint.
+     * Sends a POST request to {@code /v1/filter}.
+     * The payload is sent as given. Set {@code context} on the payload for IP and headers.
      *
      * @param payload Event parameters
      * @return
@@ -236,7 +212,8 @@ public interface CastleApi {
     CastleResponse filter(ImmutableMap<Object, Object> payload);
 
     /**
-     * Makes a sync POST request to the filter endpoint.
+     * Sends a POST request to {@code /v1/filter}.
+     * The payload is sent as given. Set {@code context} on the payload for IP and headers.
      *
      * @param payload Event parameters
      * @return
@@ -244,7 +221,8 @@ public interface CastleApi {
     FilterAndRiskResponse filter(Filter payload);
 
     /**
-     * Makes a sync POST request to the log endpoint.
+     * Sends a POST request to {@code /v1/log}.
+     * The payload is sent as given. Set {@code context} on the payload for IP and headers.
      *
      * @param payload Event parameters
      * @return
@@ -252,7 +230,8 @@ public interface CastleApi {
     CastleResponse log(ImmutableMap<Object, Object> payload);
 
     /**
-     * Makes a sync POST request to the log endpoint.
+     * Sends a POST request to {@code /v1/log}.
+     * The payload is sent as given. Set {@code context} on the payload for IP and headers.
      *
      * @param payload Event parameters
      * @return

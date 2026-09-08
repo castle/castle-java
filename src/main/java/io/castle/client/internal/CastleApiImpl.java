@@ -2,7 +2,6 @@ package io.castle.client.internal;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import io.castle.client.Castle;
@@ -11,12 +10,10 @@ import io.castle.client.internal.backend.RestApi;
 import io.castle.client.internal.config.CastleSdkInternalConfiguration;
 import io.castle.client.internal.utils.CastleContextBuilder;
 import io.castle.client.internal.utils.ContextMerge;
-import io.castle.client.internal.utils.Timestamp;
 import io.castle.client.model.*;
 import io.castle.client.model.generated.*;
 import jakarta.servlet.http.HttpServletRequest;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.List;
 

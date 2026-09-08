@@ -76,8 +76,6 @@ class ConfigurationLoader {
      * Loads the application level configuration for the Castle SDK with values taken from environmental variables,
      * a properties file or default values in that order of precedence.
      * <p>
-     * When wrong failover strategy or backend, null is returned instead.
-     *
      * @return a CastleConfiguration instance
      * @throws CastleSdkConfigurationException if at least one of apiSecret or castleAppId is not provided in either the
      *                                         environment or the properties file in the classpath

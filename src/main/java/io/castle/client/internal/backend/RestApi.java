@@ -5,7 +5,7 @@ import io.castle.client.model.*;
 public interface RestApi {
 
     /**
-     * Make a GET request to a Castle API endpoint such as /v1/{userId}/devices
+     * Make a GET request to a Castle API endpoint such as /v1/lists
      *
      * @param path api path
      * @return a decoded json response
@@ -13,7 +13,7 @@ public interface RestApi {
     CastleResponse get(String path);
 
     /**
-     * Make a POST request to a Castle API endpoint such as /v1/track
+     * Make a POST request to a Castle API endpoint such as /v1/risk
      *
      * @param path api path
      * @param payload request payload
@@ -22,7 +22,7 @@ public interface RestApi {
     CastleResponse post(String path, Object payload);
 
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @return a decoded json response
@@ -30,7 +30,7 @@ public interface RestApi {
     CastleResponse put(String path);
 
     /**
-     * Make a PUT request to a Castle API endpoint such as /v1/devices/{deviceToken}/report
+     * Make a PUT request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @param payload request payload
@@ -39,7 +39,7 @@ public interface RestApi {
     CastleResponse put(String path, Object payload);
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @return a decoded json response
@@ -47,7 +47,7 @@ public interface RestApi {
     CastleResponse delete(String path);
 
     /**
-     * Make a DELETE request to a Castle API endpoint such as /v1/impersonate
+     * Make a DELETE request to a Castle API endpoint such as /v1/lists/{id}
      *
      * @param path api path
      * @param payload request payload

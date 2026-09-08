@@ -133,7 +133,7 @@ public class CastleConfigurationBuilder {
     /**
      * Sets the default list of denyListed headers.
      * <p>
-     * The default value is a list whose single element is the {@code Cookie} header.
+     * The default value is {@code Cookie} and {@code Authorization}.
      *
      * @return a castleConfigurationBuilder instance with the default list of denyListed headers
      */
