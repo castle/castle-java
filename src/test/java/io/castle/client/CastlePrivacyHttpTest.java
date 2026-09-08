@@ -21,7 +21,8 @@ public class CastlePrivacyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         CastleResponse response = sdk.onRequest(request).requestUserData(ImmutableMap.builder()
-                .put("user_id", "12345")
+                .put("identifier", "12345")
+                .put("identifier_type", "$id")
                 .build());
         if (response == null) {
             Assertions.fail("error on request");
@@ -31,7 +32,7 @@ public class CastlePrivacyHttpTest extends AbstractCastleHttpLayerTest {
         String body = recordedRequest.getBody().readUtf8();
         Assert.assertEquals(testServerBaseUrl.resolve("v1/privacy/users"), recordedRequest.getRequestUrl());
         Assert.assertEquals("POST", recordedRequest.getMethod());
-        JSONAssert.assertEquals("{\"user_id\":\"12345\"}", body, false);
+        JSONAssert.assertEquals("{\"identifier\":\"12345\",\"identifier_type\":\"$id\"}", body, false);
     }
 
     @Test
@@ -40,14 +41,17 @@ public class CastlePrivacyHttpTest extends AbstractCastleHttpLayerTest {
         HttpServletRequest request = new MockHttpServletRequest();
 
         CastleResponse response = sdk.onRequest(request).deleteUserData(ImmutableMap.builder()
-                .put("user_id", "12345")
+                .put("identifier", "12345")
+                .put("identifier_type", "$id")
                 .build());
         if (response == null) {
             Assertions.fail("error on request");
         }
 
         RecordedRequest recordedRequest = server.takeRequest();
+        String body = recordedRequest.getBody().readUtf8();
         Assert.assertEquals(testServerBaseUrl.resolve("v1/privacy/users"), recordedRequest.getRequestUrl());
         Assert.assertEquals("DELETE", recordedRequest.getMethod());
+        JSONAssert.assertEquals("{\"identifier\":\"12345\",\"identifier_type\":\"$id\"}", body, false);
     }
 }

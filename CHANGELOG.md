@@ -2,7 +2,7 @@
 
 ## master
 
-## 3.0.0 (2026-06-11)
+## 3.0.0 (2026-09-08)
 
 - Add `CastleApiPaymentRequiredException` for HTTP 402
 - Add webhook signature verification (`Castle#verifyWebhookSignature`) and the `X-Castle-Signature` header constant
@@ -12,7 +12,7 @@
 - Add `CastleConfigurationBuilder#withTimeout(java.time.Duration)`
 - Scope `system-stubs-jupiter` to tests
 - Redact the `Authorization` header when HTTP request logging is enabled
-- Add `Castle#close()` (`AutoCloseable`) to shut down the HTTP dispatcher and connection pool
+- Add `Castle#close()` (`AutoCloseable`) to shut down the HTTP dispatcher and connection pool; it also clears the SDK singleton when this instance is the singleton
 - Accept an empty response body in `CastleResponse`
 - Remove `CastleUserDeviceContext` and `DeviceUserAgent`
 - Remove the legacy `authenticate` and `track` endpoints

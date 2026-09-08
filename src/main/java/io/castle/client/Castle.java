@@ -372,9 +372,13 @@ public class Castle implements AutoCloseable {
 
     /**
      * Releases the HTTP dispatcher and connection pool used by this instance.
+     * When this instance is the SDK singleton, {@link #instance()} is cleared.
      */
     @Override
     public void close() {
         internalConfiguration.close();
+        if (instance == this) {
+            instance = null;
+        }
     }
 }
