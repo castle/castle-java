@@ -352,6 +352,7 @@ public class CastleConfigurationBuilder {
 
     /**
      * Flag to enable logging on backend HTTP requests.
+     * When enabled, the {@code Authorization} header is redacted from the log.
      *
      * @param logHttpRequests boolean to switch logging on or off.
      * @return a castleConfigurationBuilder with logging setup set

@@ -11,6 +11,7 @@
 - Set the default request timeout to 1000 milliseconds
 - Add `CastleConfigurationBuilder#withTimeout(java.time.Duration)`
 - Scope `system-stubs-jupiter` to tests
+- Redact the `Authorization` header when HTTP request logging is enabled
 - Remove the legacy `authenticate` and `track` endpoints
 - Remove device management (`approve`, `report`, `userDevices`, `device`) and impersonation (`impersonateStart`, `impersonateEnd`)
 - Remove the `recover` endpoint and the `removeUser` privacy method

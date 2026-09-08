@@ -36,8 +36,8 @@ public class OkHttpFactory implements RestApiFactory {
                 .writeTimeout(configuration.getTimeout(), TimeUnit.MILLISECONDS);
         if (configuration.isLogHttpRequests()) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            // TODO provide more configurable logging features.
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.redactHeader("Authorization");
             builder = builder.addInterceptor(logging);
         }
 
